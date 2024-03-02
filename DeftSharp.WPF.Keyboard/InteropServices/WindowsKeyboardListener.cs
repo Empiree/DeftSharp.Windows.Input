@@ -9,12 +9,12 @@ namespace DeftSharp.Windows.Keyboard.InteropServices;
 /// <summary>
 /// Listens for system keyboard events and raises an event when a key is pressed.
 /// </summary>
-public class WindowsKeyboardListener
+public abstract class WindowsKeyboardListener: IDisposable
 {
     /// <summary>
     /// Occurs when a key is pressed.
     /// </summary>
-    public event EventHandler<KeyPressedArgs>? OnKeyPressed;
+    public event EventHandler<KeyPressedArgs>? KeyPressed;
 
     /// <summary>
     /// Delegate to the keyboard hook procedure.
@@ -29,24 +29,26 @@ public class WindowsKeyboardListener
     /// <summary>
     /// Initializes a new instance of the WindowsKeyboardListener class.
     /// </summary>
-    public WindowsKeyboardListener()
+    protected WindowsKeyboardListener()
     {
         _procedure = HookCallback;
     }
 
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    public void Dispose() => UnHookKeyboard();
+
     /// <summary>
     /// Installs the keyboard hook.
     /// </summary>
-    public void HookKeyboard()
+    protected void HookKeyboard()
     {
         _hookId = SetHook(_procedure);
     }
 
-
     /// <summary>
     /// Uninstalls the keyboard hook.
     /// </summary>
-    public void UnHookKeyboard()
+    protected void UnHookKeyboard()
     {
         WinAPI.UnhookWindowsHookEx(_hookId);
     }
@@ -83,7 +85,7 @@ public class WindowsKeyboardListener
         var virtualKeyCode = Marshal.ReadInt32(lParam);
         var keyPressedArgs = new KeyPressedArgs(KeyInterop.KeyFromVirtualKey(virtualKeyCode));
 
-        OnKeyPressed?.Invoke(this, keyPressedArgs);
+        KeyPressed?.Invoke(this, keyPressedArgs);
 
         return WinAPI.CallNextHookEx(_hookId, nCode, wParam, lParam);
     }
