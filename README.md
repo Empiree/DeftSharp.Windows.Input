@@ -46,6 +46,11 @@ numpadListener.Subscribe(number =>
 });
 ```
 
+## Requirements
+
+- .NET 7.0 for Windows
+- C# 11 language version
+
 ## Coming Soon to NuGet
 
 We're currently in the process of preparing the library for publication on NuGet. Stay tuned for updates!
