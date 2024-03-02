@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <PackageId>DeftSharp.WPF.Keyboard</PackageId>
+        <Authors>DeftSharp</Authors>
+        <Company>DeftSharp</Company>
+        <Product>DeftSharp.WPF.Keyboard</Product>
+        <RootNamespace>DeftSharp.Windows.Keyboard</RootNamespace>
+    </PropertyGroup>
+
+</Project>
