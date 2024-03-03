@@ -34,7 +34,7 @@ Furthermore, you can take advantage of specialized classes for different usage s
 ```c#
 var numpadListener = new NumpadListener(keyboardListener);
             
-// 1-9 numpad buttons
+// 0-9 numpad buttons
 numpadListener.Subscribe(number =>
 {
     // Your code here
