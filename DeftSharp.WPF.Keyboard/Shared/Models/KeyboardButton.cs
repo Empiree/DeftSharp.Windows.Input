@@ -9,18 +9,18 @@ public sealed class KeyboardButton
 
     public Guid Id { get; }
     public Key Key { get; }
-    public TimeSpan IntervalOfClick { get; set; }
+    public TimeSpan IntervalOfClick { get; }
     public DateTime? LastInvoked { get; private set; }
     public bool SingleUse { get; }
-    
-    public KeyboardButton(Key key, Action<Key> onClick, bool singleUse = false)
+
+    public KeyboardButton(Key key, Action<Key> onClick, TimeSpan? interval = null, bool singleUse = false)
     {
         _onClick = onClick;
 
         Key = key;
         SingleUse = singleUse;
-        IntervalOfClick = TimeSpan.Zero;
-        
+        IntervalOfClick = interval ?? TimeSpan.Zero;
+
         Id = Guid.NewGuid();
     }
 
@@ -29,10 +29,10 @@ public sealed class KeyboardButton
         if (LastInvoked.HasValue && SingleUse)
             return;
 
-        if (LastInvoked is null || LastInvoked.Value.Add(IntervalOfClick) < DateTime.Now)
-        {
-            LastInvoked = DateTime.Now;
-            _onClick(Key);
-        }
+        if (LastInvoked?.Add(IntervalOfClick) >= DateTime.Now)
+            return;
+
+        LastInvoked = DateTime.Now;
+        _onClick(Key);
     }
 }

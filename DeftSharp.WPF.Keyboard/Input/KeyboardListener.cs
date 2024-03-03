@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Keyboard.InteropServices;
-using DeftSharp.Windows.Keyboard.Shared.Exceptions;
 using DeftSharp.Windows.Keyboard.Shared.Models;
 
 namespace DeftSharp.Windows.Keyboard.Input;
 
-public sealed class KeyboardListener : WindowsKeyboardListener
+public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
 {
     private readonly List<KeyboardButton> _keyboardButtons;
 
@@ -41,10 +40,7 @@ public sealed class KeyboardListener : WindowsKeyboardListener
 
     public void Subscribe(Key key, Action<Key> onClick, TimeSpan? intervalOfClick = null)
     {
-        var keyboardEvent = new KeyboardButton(key, onClick)
-        {
-            IntervalOfClick = intervalOfClick ?? TimeSpan.Zero
-        };
+        var keyboardEvent = new KeyboardButton(key, onClick, intervalOfClick);
 
         AddKeyboardEvent(keyboardEvent);
     }
@@ -56,7 +52,7 @@ public sealed class KeyboardListener : WindowsKeyboardListener
     }
 
     public void SubscribeOnce(Key key, Action<Key> onClick) =>
-        AddKeyboardEvent(new KeyboardButton(key, onClick, true));
+        AddKeyboardEvent(new KeyboardButton(key, onClick, singleUse:true));
 
     public void Unsubscribe(Key key) =>
         _keyboardButtons.RemoveAll(e => e.Key.Equals(key));
@@ -75,18 +71,21 @@ public sealed class KeyboardListener : WindowsKeyboardListener
     private void AddKeyboardEvent(KeyboardButton keyboardButton)
     {
         if (!IsListening)
-            throw new KeyboardListenerException(
-                "Cannot perform operation because the KeyboardListener is not currently listening for keyboard input. " +
-                "Please ensure that you have called the Register method to start listening for keyboard events before attempting " +
-                "this operation.");
+            Register();
+        // throw new KeyboardListenerException(
+        //     "Cannot perform operation because the KeyboardListener is not currently listening for keyboard input. " +
+        //     "Please ensure that you have called the Register method to start listening for keyboard events before attempting " +
+        //     "this operation.");
 
         _keyboardButtons.Add(keyboardButton);
     }
 
+    public new void Dispose() => Unregister();
+
     private void OnKeyPressed(object? sender, KeyPressedArgs e)
     {
         var keyboardEvents =
-            _keyboardButtons.Where(b => b.Key.Equals(e.KeyPressed)).ToArray();
+            _keyboardButtons.Where(b => b.Key.Equals(e.KeyPressed));
 
         foreach (var keyboardEvent in keyboardEvents)
         {
