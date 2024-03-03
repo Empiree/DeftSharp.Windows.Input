@@ -10,7 +10,6 @@ A lightweight library designed for obtaining information about pressed keys in W
 static int Main(string[] args)
 {
     var keyboardListener = new KeyboardListener();
-    keyboardListener.Register();
 
     keyboardListener.SubscribeOnce(Key.A, key =>
     {
