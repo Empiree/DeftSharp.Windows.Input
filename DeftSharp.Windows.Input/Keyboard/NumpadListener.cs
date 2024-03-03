@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Shared.Models;
 
-namespace DeftSharp.Windows.Input;
+namespace DeftSharp.Windows.Input.Keyboard;
 
 public sealed class NumpadListener
 {

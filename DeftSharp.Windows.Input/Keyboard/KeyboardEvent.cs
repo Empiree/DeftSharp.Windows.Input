@@ -1,4 +1,4 @@
-﻿namespace DeftSharp.Windows.Input.InteropServices.Keyboard;
+﻿namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
 /// Represents keyboard events.

@@ -1,5 +1,6 @@
 ﻿using System;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
+using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.Shared.Models;
 

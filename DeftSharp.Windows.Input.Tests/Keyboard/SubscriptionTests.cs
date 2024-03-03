@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using DeftSharp.Windows.Input.Keyboard;
 
 namespace DeftSharp.Windows.Input.Tests.Keyboard;
 

@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.API;
+using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Shared.Interfaces;
 
 namespace DeftSharp.Windows.Input.InteropServices.Keyboard;

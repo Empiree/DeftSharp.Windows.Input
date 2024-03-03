@@ -8,7 +8,7 @@ using DeftSharp.Windows.Input.InteropServices.Keyboard;
 using DeftSharp.Windows.Input.Shared.Interfaces;
 using DeftSharp.Windows.Input.Shared.Models;
 
-namespace DeftSharp.Windows.Input;
+namespace DeftSharp.Windows.Input.Keyboard;
 
 public sealed class KeyboardListener : IDisposable
 {

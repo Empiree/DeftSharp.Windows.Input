@@ -7,7 +7,7 @@ using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Shared.Interfaces;
 using DeftSharp.Windows.Input.Shared.Models;
 
-namespace DeftSharp.Windows.Input;
+namespace DeftSharp.Windows.Input.Mouse;
 
 public sealed class MouseListener : IDisposable
 {

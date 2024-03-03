@@ -1,4 +1,4 @@
-﻿namespace DeftSharp.Windows.Input.InteropServices.Mouse;
+﻿namespace DeftSharp.Windows.Input.Mouse;
 
 public enum MouseEvent : short
 {
