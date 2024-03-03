@@ -1,33 +1,47 @@
-# DeftSharp.WPF.Keyboard
+# DeftSharp.Windows.Input
 
 
-A lightweight library designed for obtaining information about pressed keys in WPF applications on the Windows platform. Leveraging P/Invoke methods, this library provides an easy-to-use interface for keyboard event handling.
+A lightweight library designed to retrieve information about pressed keyboard keys and mouse buttons in .NET applications on the Windows platform. Using P/Invoke methods, this library provides an easy-to-use interface for event handling.
 
 ## How to use
 
+One-time subscription for pressing a button on the keyboard:
+
 ```c#
 
-static int Main(string[] args)
-{
-    var keyboardListener = new KeyboardListener();
+var keyboardListener = new KeyboardListener();
 
-    keyboardListener.SubscribeOnce(Key.A, key =>
-    {
-        // This code will trigger after the first presses the 'A' button.
-    });
-}
+keyboardListener.SubscribeOnce(Key.A, key =>
+{
+    // This code will only work once, after pressing button 'A'
+});
 
 ```
 
-You can easily handle the press of any button. Additionally, you can configure them to suit your needs:
+Subscription to left mouse click:
 
 ```c#
- Key[] keys = { Key.W, Key.A, Key.S, Key.D };
+
+var mouseListener = new MouseListener();
             
- keyboardListener.Subscribe(keys, key =>
- {
+mouseListener.Subscribe(MouseEvent.LeftButtonDown, () =>
+{
+    // This code will be triggered after each left mouse button click
+});
+
+```
+
+You can customize each subscription to suit your needs:
+
+```c#
+Key[] keys = { Key.W, Key.A, Key.S, Key.D };
+            
+keyboardListener.Subscribe(keys, key =>
+{
     // WASD clicks
- }, TimeSpan.FromSeconds(1)); // Interval of click
+}, 
+ TimeSpan.FromSeconds(1), // Interval of click event
+ KeyboardEvent.KeyUp); // Keyboard event type
 ```
 Furthermore, you can take advantage of specialized classes for different usage scenarios. For example, for the NumPad:
 
