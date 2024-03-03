@@ -15,6 +15,8 @@ public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
 
     public bool IsListening { get; private set; }
 
+    public ReadOnlyCollection<KeyboardButtonSubscription> Subscriptions => _subscriptions.AsReadOnly();
+
     public KeyboardListener()
     {
         _subscriptions = new ObservableCollection<KeyboardButtonSubscription>();
@@ -101,7 +103,7 @@ public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
     private void OnKeyPressed(object? sender, KeyPressedArgs e)
     {
         var keyboardEvents =
-            _subscriptions.Where(b => b.Key.Equals(e.KeyPressed));
+            _subscriptions.Where(b => b.Key.Equals(e.KeyPressed)).ToArray();
 
         foreach (var keyboardEvent in keyboardEvents)
         {
