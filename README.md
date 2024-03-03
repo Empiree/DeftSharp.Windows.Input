@@ -5,19 +5,6 @@ A lightweight library designed to retrieve information about pressed keyboard ke
 
 ## How to use
 
-One-time subscription for pressing a button on the keyboard:
-
-```c#
-
-var keyboardListener = new KeyboardListener();
-
-keyboardListener.SubscribeOnce(Key.A, key =>
-{
-    // This code will only work once, after pressing button 'A'
-});
-
-```
-
 Subscription to left mouse click:
 
 ```c#
@@ -27,6 +14,19 @@ var mouseListener = new MouseListener();
 mouseListener.Subscribe(MouseEvent.LeftButtonDown, () =>
 {
     // This code will be triggered after each left mouse button click
+});
+
+```
+
+One-time subscription for pressing a button on the keyboard:
+
+```c#
+
+var keyboardListener = new KeyboardListener();
+
+keyboardListener.SubscribeOnce(Key.A, key =>
+{
+    // This code will only work once, after pressing button 'A'
 });
 
 ```
