@@ -15,10 +15,6 @@ static int Main(string[] args)
     {
         // This code will trigger after the first presses the 'A' button.
     });
-
-    // ...
-
-    keyboardListener.Unregister();
 }
 
 ```
