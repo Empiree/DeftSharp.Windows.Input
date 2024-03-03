@@ -37,21 +37,23 @@ public sealed class KeyboardListener : IDisposable
             Unregister();
     }
 
-    public void Subscribe(Key key, Action<Key> onClick, TimeSpan? intervalOfClick = null)
+    public void Subscribe(Key key, Action<Key> onClick, 
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
-        var keyboardEvent = new KeyboardButtonSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero);
+        var keyboardSubscription = new KeyboardButtonSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
 
-        AddKeyboardEvent(keyboardEvent);
+        _subscriptions.Add(keyboardSubscription);
     }
 
-    public void Subscribe(IEnumerable<Key> keys, Action<Key> onClick, TimeSpan? intervalOfClick = null)
+    public void Subscribe(IEnumerable<Key> keys, Action<Key> onClick, 
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
         foreach (var key in keys)
-            Subscribe(key, onClick, intervalOfClick);
+            Subscribe(key, onClick, intervalOfClick, keyboardEvent);
     }
 
-    public void SubscribeOnce(Key key, Action<Key> onClick) =>
-        AddKeyboardEvent(new KeyboardButtonSubscription(key, onClick, singleUse: true));
+    public void SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+        _subscriptions.Add(new KeyboardButtonSubscription(key, onClick, keyboardEvent, true));
 
     public void Unsubscribe(Key key)
     {
@@ -96,10 +98,7 @@ public sealed class KeyboardListener : IDisposable
         _keyboardAPI.Unhook();
         IsListening = false;
     }
-
-    private void AddKeyboardEvent(KeyboardButtonSubscription keyboardButtonSubscription) =>
-        _subscriptions.Add(keyboardButtonSubscription);
-
+    
     public void Dispose() => Unregister();
 
     private void OnKeyPressed(object? sender, KeyPressedArgs e)
