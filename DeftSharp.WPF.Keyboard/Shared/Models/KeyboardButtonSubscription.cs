@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace DeftSharp.Windows.Keyboard.Shared.Models;
 
-public sealed class KeyboardButton
+public sealed class KeyboardButtonSubscription
 {
     private readonly Action<Key> _onClick;
 
@@ -13,7 +13,7 @@ public sealed class KeyboardButton
     public DateTime? LastInvoked { get; private set; }
     public bool SingleUse { get; }
 
-    public KeyboardButton(Key key, Action<Key> onClick, TimeSpan? interval = null, bool singleUse = false)
+    public KeyboardButtonSubscription(Key key, Action<Key> onClick, TimeSpan? interval = null, bool singleUse = false)
     {
         _onClick = onClick;
 

@@ -37,5 +37,5 @@ public sealed class NumpadListener
         });
     }
 
-    public void Unsubscribe() => _keyboardListener.Unsubscribe(_numKeys.Select(n => n.Key));
+    public void Unsubscribe() => _keyboardListener.UnsubscribeAll(_numKeys.Select(n => n.Key));
 }
