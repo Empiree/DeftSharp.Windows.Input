@@ -21,7 +21,7 @@ public class UnregisterTests
     }
 
     [Fact]
-    public void Subscribe_Unsubscribe_Test()
+    public void Unregister_Test()
     {
         RunTest(listener =>
         {
@@ -31,7 +31,7 @@ public class UnregisterTests
     }
 
     [Fact]
-    public void Subscribe_Unsubscribe_Test2()
+    public void Unregister_Test2()
     {
         RunTest(listener =>
         {
@@ -41,7 +41,7 @@ public class UnregisterTests
     }
     
     [Fact]
-    public void Subscribe_Unsubscribe_Test3()
+    public void Unregister_Test3()
     {
         RunTest(listener =>
         {
@@ -52,7 +52,7 @@ public class UnregisterTests
     }
     
     [Fact]
-    public void Subscribe_Unsubscribe_Test4()
+    public void Unregister_Test4()
     {
         RunTest(listener =>
         {
@@ -66,7 +66,7 @@ public class UnregisterTests
     }
     
     [Fact]
-    public void Subscribe_Unsubscribe_Test5()
+    public void Unregister_Test5()
     {
         RunTest(listener =>
         {
@@ -78,13 +78,13 @@ public class UnregisterTests
     }
     
     [Fact]
-    public void Subscribe_Unsubscribe_Test6()
+    public void Unregister_Test6()
     {
         RunTest(listener => listener.UnsubscribeAll());
     }
     
     [Fact]
-    public void Subscribe_Unsubscribe_Test7()
+    public void Unregister_Test7()
     {
         RunTest(_ => { });
     }
