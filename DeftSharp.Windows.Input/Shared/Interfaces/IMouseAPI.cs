@@ -7,6 +7,6 @@ public interface IMouseAPI
 {
     void Hook();
     void Unhook();
-    
+
     event EventHandler<MouseInputArgs>? MouseInput;
 }

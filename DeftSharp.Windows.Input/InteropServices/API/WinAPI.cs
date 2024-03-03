@@ -56,7 +56,7 @@ internal static class WinAPI
     /// <returns>A handle to the specified module, or <c>0</c> if the module could not be found.</returns>
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     internal static extern nint GetModuleHandle(string lpModuleName);
-    
+
     /// <summary>
     /// Retrieves the position of the cursor in screen coordinates.
     /// </summary>

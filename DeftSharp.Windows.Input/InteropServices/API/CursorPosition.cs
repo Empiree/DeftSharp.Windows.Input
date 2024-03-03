@@ -2,7 +2,7 @@
 
 public readonly struct CursorPosition
 {
-    public readonly int X; 
+    public readonly int X;
     public readonly int Y;
 
     public CursorPosition(int x, int y)

@@ -3,7 +3,7 @@ using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.InteropServices.Mouse;
 
-public class MouseInputArgs: EventArgs
+public class MouseInputArgs : EventArgs
 {
     public MouseEvent Event { get; }
 

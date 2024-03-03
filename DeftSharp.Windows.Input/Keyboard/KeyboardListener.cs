@@ -23,7 +23,7 @@ public sealed class KeyboardListener : IDisposable
     {
         _keyboardAPI = new WindowsKeyboardListener();
         _keyboardAPI.KeyPressed += OnKeyPressed;
-        
+
         _subscriptions = new ObservableCollection<KeyboardButtonSubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
@@ -37,15 +37,16 @@ public sealed class KeyboardListener : IDisposable
             Unregister();
     }
 
-    public void Subscribe(Key key, Action<Key> onClick, 
+    public void Subscribe(Key key, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
-        var keyboardSubscription = new KeyboardButtonSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
+        var keyboardSubscription =
+            new KeyboardButtonSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
 
         _subscriptions.Add(keyboardSubscription);
     }
 
-    public void Subscribe(IEnumerable<Key> keys, Action<Key> onClick, 
+    public void Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
         foreach (var key in keys)
@@ -101,7 +102,7 @@ public sealed class KeyboardListener : IDisposable
         _keyboardAPI.Unhook();
         IsListening = false;
     }
-    
+
     public void Dispose() => Unregister();
 
     private void OnKeyPressed(object? sender, KeyPressedArgs e)

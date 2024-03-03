@@ -7,6 +7,6 @@ public interface IKeyboardAPI
 {
     void Hook();
     void Unhook();
-    
+
     event EventHandler<KeyPressedArgs>? KeyPressed;
 }

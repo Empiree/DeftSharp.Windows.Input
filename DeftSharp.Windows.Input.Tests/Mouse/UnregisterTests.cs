@@ -10,16 +10,16 @@ public sealed class UnregisterTests
     {
         _emulator = new WPFEmulator();
     }
-    
+
     private void RunTest(Action<MouseListener> onTest)
     {
         var mouseListener = new MouseListener();
         _emulator.Run(() => onTest(mouseListener));
-        
+
         Assert.False(mouseListener.IsListening,
             "The Unregister function is not called after unsubscribing from all events.");
     }
-    
+
     [Fact]
     public void Unregister_Test()
     {
@@ -39,7 +39,7 @@ public sealed class UnregisterTests
             listener.UnsubscribeAll();
         });
     }
-    
+
     [Fact]
     public void Unregister_Test3()
     {
@@ -52,7 +52,7 @@ public sealed class UnregisterTests
             listener.UnsubscribeAll();
         });
     }
-    
+
     [Fact]
     public void Unregister_Test4()
     {
@@ -62,26 +62,26 @@ public sealed class UnregisterTests
             listener.Subscribe(MouseEvent.RightButtonUp, () => { });
             listener.Subscribe(MouseEvent.RightButtonDown, () => { });
             listener.Subscribe(MouseEvent.RightButtonUp, () => { });
-            
+
             listener.Unsubscribe(MouseEvent.LeftButtonDown);
             listener.Unsubscribe(MouseEvent.RightButtonUp);
             listener.Unsubscribe(MouseEvent.RightButtonDown);
             listener.Unsubscribe(MouseEvent.RightButtonUp);
         });
     }
-    
+
     [Fact]
     public void Unregister_Test5()
     {
         RunTest(listener => listener.UnsubscribeAll());
     }
-    
+
     [Fact]
     public void Unregister_Test6()
     {
         RunTest(_ => { });
     }
-    
+
     [Fact]
     public void Unregister_Test7()
     {

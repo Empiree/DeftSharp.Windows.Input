@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Input;
-using DeftSharp.Windows.Input.InteropServices.Keyboard;
 using DeftSharp.Windows.Input.Keyboard;
 
 namespace DeftSharp.Windows.Input.Shared.Models;

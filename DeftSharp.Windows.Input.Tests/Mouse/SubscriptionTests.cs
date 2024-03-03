@@ -10,7 +10,7 @@ public sealed class SubscriptionTests
     {
         _emulator = new WPFEmulator();
     }
-    
+
     [Fact]
     public void Subscribe_Test1()
     {
@@ -18,15 +18,15 @@ public sealed class SubscriptionTests
 
         _emulator.Run(() =>
         {
-            listener.Subscribe(MouseEvent.Move, () =>{ });
-            
+            listener.Subscribe(MouseEvent.Move, () => { });
+
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
             Assert.Single(listener.Subscriptions);
-            
+
             listener.UnsubscribeAll();
         });
     }
-    
+
     [Fact]
     public void Subscribe_Test2()
     {
@@ -34,17 +34,17 @@ public sealed class SubscriptionTests
 
         _emulator.Run(() =>
         {
-            listener.Subscribe(MouseEvent.Move, () =>{ });
-            listener.Subscribe(MouseEvent.Move, () =>{ });
-            listener.Subscribe(MouseEvent.Move, () =>{ });
-            
+            listener.Subscribe(MouseEvent.Move, () => { });
+            listener.Subscribe(MouseEvent.Move, () => { });
+            listener.Subscribe(MouseEvent.Move, () => { });
+
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
             Assert.Equal(3, listener.Subscriptions.Count(s => s.Event == MouseEvent.Move));
 
             listener.UnsubscribeAll();
         });
     }
-    
+
     [Fact]
     public void Subscribe_Test3()
     {

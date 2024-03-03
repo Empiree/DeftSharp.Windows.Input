@@ -11,12 +11,12 @@ public sealed class UnregisterTests
     {
         _emulator = new WPFEmulator();
     }
-    
+
     private void RunTest(Action<KeyboardListener> onTest)
     {
         var keyboardListener = new KeyboardListener();
         _emulator.Run(() => onTest(keyboardListener));
-        
+
         Assert.False(keyboardListener.IsListening,
             "The Unregister function is not called after unsubscribing from all events.");
     }
@@ -40,7 +40,7 @@ public sealed class UnregisterTests
             listener.UnsubscribeAll();
         });
     }
-    
+
     [Fact]
     public void Unregister_Test3()
     {
@@ -51,7 +51,7 @@ public sealed class UnregisterTests
             listener.UnsubscribeAll(keys);
         });
     }
-    
+
     [Fact]
     public void Unregister_Test4()
     {
@@ -65,7 +65,7 @@ public sealed class UnregisterTests
             listener.Unsubscribe(Key.W);
         });
     }
-    
+
     [Fact]
     public void Unregister_Test5()
     {
@@ -73,23 +73,23 @@ public sealed class UnregisterTests
         {
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
             listener.Subscribe(keys, key => { });
-            listener.Subscribe(Key.A, key => {});
+            listener.Subscribe(Key.A, key => { });
             listener.UnsubscribeAll();
         });
     }
-    
+
     [Fact]
     public void Unregister_Test6()
     {
         RunTest(listener => listener.UnsubscribeAll());
     }
-    
+
     [Fact]
     public void Unregister_Test7()
     {
         RunTest(_ => { });
     }
-    
+
     [Fact]
     public void Unregister_Test8()
     {

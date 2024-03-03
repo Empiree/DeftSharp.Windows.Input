@@ -10,7 +10,7 @@ namespace DeftSharp.Windows.Input.InteropServices.Keyboard;
 /// <summary>
 /// Listens for system keyboard events and raises an event when a key is pressed.
 /// </summary>
-public class WindowsKeyboardListener : WindowsListener, IKeyboardAPI,  IDisposable
+public class WindowsKeyboardListener : WindowsListener, IKeyboardAPI, IDisposable
 {
     /// <summary>
     /// Occurs when a key is pressed.
