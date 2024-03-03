@@ -5,13 +5,15 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Keyboard.InteropServices.Keyboard;
+using DeftSharp.Windows.Keyboard.Shared.Interfaces;
 using DeftSharp.Windows.Keyboard.Shared.Models;
 
 namespace DeftSharp.Windows.Keyboard.Input;
 
-public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
+public sealed class KeyboardListener : IDisposable
 {
     private readonly ObservableCollection<KeyboardButtonSubscription> _subscriptions;
+    private readonly IKeyboardAPI _keyboardAPI;
 
     public bool IsListening { get; private set; }
 
@@ -19,11 +21,11 @@ public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
 
     public KeyboardListener()
     {
+        _keyboardAPI = new WindowsKeyboardListener();
+        _keyboardAPI.KeyPressed += OnKeyPressed;
+        
         _subscriptions = new ObservableCollection<KeyboardButtonSubscription>();
-
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
-
-        KeyPressed += OnKeyPressed;
     }
 
     private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -37,7 +39,7 @@ public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
 
     public void Subscribe(Key key, Action<Key> onClick, TimeSpan? intervalOfClick = null)
     {
-        var keyboardEvent = new KeyboardButtonSubscription(key, onClick, interval: intervalOfClick);
+        var keyboardEvent = new KeyboardButtonSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero);
 
         AddKeyboardEvent(keyboardEvent);
     }
@@ -80,7 +82,7 @@ public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
             return;
 
         IsListening = true;
-        HookKeyboard();
+        _keyboardAPI.Hook();
     }
 
     private void Unregister()
@@ -91,14 +93,14 @@ public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
         if (_subscriptions.Count > 0)
             UnsubscribeAll();
 
-        UnHookKeyboard();
+        _keyboardAPI.Unhook();
         IsListening = false;
     }
 
     private void AddKeyboardEvent(KeyboardButtonSubscription keyboardButtonSubscription) =>
         _subscriptions.Add(keyboardButtonSubscription);
 
-    public new void Dispose() => Unregister();
+    public void Dispose() => Unregister();
 
     private void OnKeyPressed(object? sender, KeyPressedArgs e)
     {

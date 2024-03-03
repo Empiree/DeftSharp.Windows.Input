@@ -16,20 +16,27 @@ public sealed class KeyboardButtonSubscription
     public bool SingleUse { get; }
 
     public KeyboardButtonSubscription(
-        Key key, 
-        Action<Key> onClick, 
+        Key key,
+        Action<Key> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown,
-        TimeSpan? interval = null, 
         bool singleUse = false)
     {
         _onClick = onClick;
 
+        SingleUse = singleUse;
         Event = keyboardEvent;
         Key = key;
-        SingleUse = singleUse;
-        IntervalOfClick = interval ?? TimeSpan.Zero;
-
         Id = Guid.NewGuid();
+    }
+
+    public KeyboardButtonSubscription(
+        Key key,
+        Action<Key> onClick,
+        TimeSpan interval,
+        KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
+        : this(key, onClick, keyboardEvent)
+    {
+        IntervalOfClick = interval;
     }
 
     public void Invoke()

@@ -10,7 +10,7 @@ namespace DeftSharp.Windows.Keyboard.InteropServices.API;
 internal static class WinAPI
 {
     /// <summary>
-    /// Defines a delegate for processing keyboard events.
+    /// Defines a delegate for processing windows events.
     /// </summary>
     /// <param name="nCode">Specifies whether the hook procedure must process the message.</param>
     /// <param name="wParam">Specifies additional information about the message.</param>

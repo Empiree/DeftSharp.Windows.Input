@@ -1,13 +1,14 @@
 ﻿using System;
 using DeftSharp.Windows.Keyboard.InteropServices.API;
+using DeftSharp.Windows.Keyboard.Shared.Interfaces;
 
 namespace DeftSharp.Windows.Keyboard.InteropServices.Mouse;
 
-public class WindowsMouseListener : WindowsListener, IDisposable
+public class WindowsMouseListener : WindowsListener, IMouseAPI, IDisposable
 {
     public event EventHandler<MouseInputArgs>? MouseInput;
 
-    public void HookMouse()
+    public void Hook()
     {
         if (Handled)
             return;
@@ -16,7 +17,7 @@ public class WindowsMouseListener : WindowsListener, IDisposable
         Handled = true;
     }
 
-    public void UnHookMouse()
+    public void Unhook()
     {
         if (!Handled)
             return;
@@ -45,5 +46,5 @@ public class WindowsMouseListener : WindowsListener, IDisposable
     }
 
     /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-    public void Dispose() => UnHookMouse();
+    public void Dispose() => Unhook();
 }

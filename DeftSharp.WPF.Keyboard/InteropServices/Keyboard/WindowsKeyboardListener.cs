@@ -2,13 +2,14 @@
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Keyboard.InteropServices.API;
+using DeftSharp.Windows.Keyboard.Shared.Interfaces;
 
 namespace DeftSharp.Windows.Keyboard.InteropServices.Keyboard;
 
 /// <summary>
 /// Listens for system keyboard events and raises an event when a key is pressed.
 /// </summary>
-public abstract class WindowsKeyboardListener : WindowsListener, IDisposable
+public class WindowsKeyboardListener : WindowsListener, IKeyboardAPI,  IDisposable
 {
     /// <summary>
     /// Occurs when a key is pressed.
@@ -18,7 +19,7 @@ public abstract class WindowsKeyboardListener : WindowsListener, IDisposable
     /// <summary>
     /// Installs the keyboard hook.
     /// </summary>
-    protected void HookKeyboard()
+    public void Hook()
     {
         if (Handled)
             return;
@@ -30,7 +31,7 @@ public abstract class WindowsKeyboardListener : WindowsListener, IDisposable
     /// <summary>
     /// Uninstalls the keyboard hook.
     /// </summary>
-    protected void UnHookKeyboard()
+    public void Unhook()
     {
         if (!Handled)
             return;
@@ -64,5 +65,5 @@ public abstract class WindowsKeyboardListener : WindowsListener, IDisposable
     }
 
     /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-    public void Dispose() => UnHookKeyboard();
+    public void Dispose() => Unhook();
 }
