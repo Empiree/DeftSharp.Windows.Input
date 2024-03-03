@@ -1,0 +1,120 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Windows.Input;
+using DeftSharp.Windows.Input.InteropServices.Keyboard;
+using DeftSharp.Windows.Input.Shared.Interfaces;
+using DeftSharp.Windows.Input.Shared.Models;
+
+namespace DeftSharp.Windows.Input;
+
+public sealed class KeyboardListener : IDisposable
+{
+    private readonly ObservableCollection<KeyboardButtonSubscription> _subscriptions;
+    private readonly IKeyboardAPI _keyboardAPI;
+
+    public bool IsListening { get; private set; }
+
+    public ReadOnlyCollection<KeyboardButtonSubscription> Subscriptions => _subscriptions.AsReadOnly();
+
+    public KeyboardListener()
+    {
+        _keyboardAPI = new WindowsKeyboardListener();
+        _keyboardAPI.KeyPressed += OnKeyPressed;
+        
+        _subscriptions = new ObservableCollection<KeyboardButtonSubscription>();
+        _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
+    }
+
+    private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Add && !IsListening)
+            Register();
+
+        if (_subscriptions.Count == 0)
+            Unregister();
+    }
+
+    public void Subscribe(Key key, Action<Key> onClick, 
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
+    {
+        var keyboardSubscription = new KeyboardButtonSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
+
+        _subscriptions.Add(keyboardSubscription);
+    }
+
+    public void Subscribe(IEnumerable<Key> keys, Action<Key> onClick, 
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
+    {
+        foreach (var key in keys)
+            Subscribe(key, onClick, intervalOfClick, keyboardEvent);
+    }
+
+    public void SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+        _subscriptions.Add(new KeyboardButtonSubscription(key, onClick, keyboardEvent, true));
+
+    public void Unsubscribe(Key key)
+    {
+        var subscriptions = _subscriptions.Where(e => e.Key.Equals(key)).ToArray();
+
+        foreach (var buttonSubscription in subscriptions)
+            _subscriptions.Remove(buttonSubscription);
+    }
+
+    public void UnsubscribeAll() => _subscriptions.Clear();
+
+    public void UnsubscribeAll(IEnumerable<Key> keys)
+    {
+        foreach (var key in keys)
+            Unsubscribe(key);
+    }
+
+    public void Unsubscribe(Guid id)
+    {
+        var keyboardSubscribe = _subscriptions.FirstOrDefault(s => s.Id == id);
+
+        if (keyboardSubscribe is null)
+            return;
+
+        _subscriptions.Remove(keyboardSubscribe);
+    }
+
+    private void Register()
+    {
+        if (IsListening)
+            return;
+
+        IsListening = true;
+        _keyboardAPI.Hook();
+    }
+
+    private void Unregister()
+    {
+        if (!IsListening)
+            return;
+
+        if (_subscriptions.Count > 0)
+            UnsubscribeAll();
+
+        _keyboardAPI.Unhook();
+        IsListening = false;
+    }
+    
+    public void Dispose() => Unregister();
+
+    private void OnKeyPressed(object? sender, KeyPressedArgs e)
+    {
+        var keyboardEvents =
+            _subscriptions.Where(s => s.Key.Equals(e.KeyPressed) && s.Event == e.Event).ToArray();
+
+        foreach (var keyboardEvent in keyboardEvents)
+        {
+            if (keyboardEvent.SingleUse)
+                Unsubscribe(keyboardEvent.Id);
+
+            keyboardEvent.Invoke();
+        }
+    }
+}

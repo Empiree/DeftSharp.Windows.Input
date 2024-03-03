@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <PackageId>DeftSharp.Windows.Input</PackageId>
+        <Authors>DeftSharp</Authors>
+        <Company>DeftSharp</Company>
+        <Product>DeftSharp.Windows.Input</Product>
+        <RootNamespace>DeftSharp.Windows.Input</RootNamespace>
+        <AssemblyName>DeftSharp.Windows.Input</AssemblyName>
+    </PropertyGroup>
+
+</Project>

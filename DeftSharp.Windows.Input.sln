@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeftSharp.Windows.Input", "DeftSharp.Windows.Input\DeftSharp.Windows.Input.csproj", "{3D91851D-784F-4C38-B1F9-CD1D08AA364E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFTestApplication", "WPFTestApplication\WPFTestApplication.csproj", "{629A70FA-AB10-42AC-917A-0E86A3EA13D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeftSharp.Windows.Input.Tests", "DeftSharp.Windows.Input.Tests\DeftSharp.Windows.Input.Tests.csproj", "{841090A8-C012-4E7F-86BB-053285D3CD7C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D91851D-784F-4C38-B1F9-CD1D08AA364E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D91851D-784F-4C38-B1F9-CD1D08AA364E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D91851D-784F-4C38-B1F9-CD1D08AA364E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D91851D-784F-4C38-B1F9-CD1D08AA364E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{629A70FA-AB10-42AC-917A-0E86A3EA13D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{629A70FA-AB10-42AC-917A-0E86A3EA13D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{629A70FA-AB10-42AC-917A-0E86A3EA13D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{629A70FA-AB10-42AC-917A-0E86A3EA13D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{841090A8-C012-4E7F-86BB-053285D3CD7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{841090A8-C012-4E7F-86BB-053285D3CD7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{841090A8-C012-4E7F-86BB-053285D3CD7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{841090A8-C012-4E7F-86BB-053285D3CD7C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
