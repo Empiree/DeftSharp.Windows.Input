@@ -3,7 +3,7 @@ using DeftSharp.Windows.Input.Keyboard;
 
 namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
-public class SubscriptionTests
+public sealed class SubscriptionTests
 {
     private readonly WPFEmulator _emulator;
 
@@ -22,7 +22,7 @@ public class SubscriptionTests
             listener.Subscribe(Key.A, key =>{ });
             
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
-            Assert.Equal(1, listener.Subscriptions.Count);
+            Assert.Single(listener.Subscriptions);
             
             listener.UnsubscribeAll();
         });

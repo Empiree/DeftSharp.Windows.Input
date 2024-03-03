@@ -3,7 +3,7 @@ using DeftSharp.Windows.Input.Keyboard;
 
 namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
-public class UnregisterTests
+public sealed class UnregisterTests
 {
     private readonly WPFEmulator _emulator;
 
@@ -88,5 +88,11 @@ public class UnregisterTests
     public void Unregister_Test7()
     {
         RunTest(_ => { });
+    }
+    
+    [Fact]
+    public void Unregister_Test8()
+    {
+        RunTest(listener => listener.Dispose());
     }
 }
