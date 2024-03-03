@@ -16,6 +16,11 @@ internal static class Hooks
     /// Defines a keystroke message sent to the active window when a key is pressed.
     /// </summary>
     internal const int WmKeydown = 0x0100;
+    
+    /// <summary>
+    /// Defines a keystroke message sent to the active window when a key is pressed.
+    /// </summary>
+    internal const int WmKeyup = 0x0101;
 
     /// <summary>
     /// Defines a system keystroke message sent to the active window when a system key is pressed.

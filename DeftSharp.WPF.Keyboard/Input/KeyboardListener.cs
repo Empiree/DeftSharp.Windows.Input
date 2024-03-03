@@ -37,7 +37,7 @@ public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
 
     public void Subscribe(Key key, Action<Key> onClick, TimeSpan? intervalOfClick = null)
     {
-        var keyboardEvent = new KeyboardButtonSubscription(key, onClick, intervalOfClick);
+        var keyboardEvent = new KeyboardButtonSubscription(key, onClick, interval:intervalOfClick);
 
         AddKeyboardEvent(keyboardEvent);
     }
@@ -103,8 +103,8 @@ public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
     private void OnKeyPressed(object? sender, KeyPressedArgs e)
     {
         var keyboardEvents =
-            _subscriptions.Where(b => b.Key.Equals(e.KeyPressed)).ToArray();
-
+            _subscriptions.Where(s => s.Key.Equals(e.KeyPressed) && s.Event == e.Event).ToArray();
+        
         foreach (var keyboardEvent in keyboardEvents)
         {
             if (keyboardEvent.SingleUse)

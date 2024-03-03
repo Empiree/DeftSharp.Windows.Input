@@ -79,11 +79,15 @@ public abstract class WindowsKeyboardListener: IDisposable
     /// <returns>The return value of the next hook procedure in the chain.</returns>
     private nint HookCallback(int nCode, nint wParam, nint lParam)
     {
-        if ((nCode < 0 || wParam != Hooks.WmKeydown) && wParam != Hooks.WmSystemKeyDown)
+        if ((nCode < 0 || (wParam != Hooks.WmKeydown && wParam != Hooks.WmKeyup)) && wParam != Hooks.WmSystemKeyDown)
             return WinAPI.CallNextHookEx(_hookId, nCode, wParam, lParam);
 
         var virtualKeyCode = Marshal.ReadInt32(lParam);
-        var keyPressedArgs = new KeyPressedArgs(KeyInterop.KeyFromVirtualKey(virtualKeyCode));
+
+        var key = KeyInterop.KeyFromVirtualKey(virtualKeyCode);
+        var keyEvent = (KeyEvent)wParam;
+        
+        var keyPressedArgs = new KeyPressedArgs(key, keyEvent);
 
         KeyPressed?.Invoke(this, keyPressedArgs);
 
