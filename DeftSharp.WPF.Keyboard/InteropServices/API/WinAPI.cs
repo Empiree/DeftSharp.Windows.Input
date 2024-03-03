@@ -1,0 +1,99 @@
+﻿using System.Runtime.InteropServices;
+
+namespace DeftSharp.Windows.Keyboard.InteropServices.API;
+
+// https://learn.microsoft.com/en-us/windows/win32/api/
+
+/// <summary>
+/// Provides a set of methods to interact with Windows API functions.
+/// </summary>
+internal static class WinAPI
+{
+    /// <summary>
+    /// Defines a delegate for processing keyboard events.
+    /// </summary>
+    /// <param name="nCode">Specifies whether the hook procedure must process the message.</param>
+    /// <param name="wParam">Specifies additional information about the message.</param>
+    /// <param name="lParam">Specifies additional information about the message.</param>
+    /// <returns>A handle to the next hook procedure in the chain or <c>0</c> if there's no next procedure.</returns>
+    public delegate nint WindowsProcedure(int nCode, nint wParam, nint lParam);
+
+    /// <summary>
+    /// Installs an application-defined hook procedure into a hook chain.
+    /// </summary>
+    /// <param name="idHook">Specifies the type of hook procedure to be installed.</param>
+    /// <param name="lpfn">A pointer to the hook procedure.</param>
+    /// <param name="hMod">A handle to the DLL containing the hook procedure pointed to by lpfn.</param>
+    /// <param name="dwThreadId">The identifier of the thread with which the hook procedure is to be associated.</param>
+    /// <returns>A handle to the hook procedure if successful; otherwise, <c>0</c>.</returns>
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    internal static extern nint SetWindowsHookEx(int idHook, WindowsProcedure lpfn, nint hMod, uint dwThreadId);
+
+    /// <summary>
+    /// Removes a hook procedure installed in a hook chain by the SetWindowsHookEx function.
+    /// </summary>
+    /// <param name="hhk">A handle to the hook to be removed.</param>
+    /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    internal static extern bool UnhookWindowsHookEx(nint hhk);
+
+    /// <summary>
+    /// Passes the hook information to the next hook procedure in the current hook chain.
+    /// </summary>
+    /// <param name="hhk">A handle to the current hook.</param>
+    /// <param name="nCode">Specifies the hook code passed to the current hook procedure.</param>
+    /// <param name="wParam">Specifies additional information about the message.</param>
+    /// <param name="lParam">Specifies additional information about the message.</param>
+    /// <returns>The return value of the next hook procedure in the chain.</returns>
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    internal static extern nint CallNextHookEx(nint hhk, int nCode, nint wParam, nint lParam);
+
+    /// <summary>
+    /// Retrieves a module handle for the specified module.
+    /// </summary>
+    /// <param name="lpModuleName">The name of the loaded module (either a .dll or .exe file).</param>
+    /// <returns>A handle to the specified module, or <c>0</c> if the module could not be found.</returns>
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    internal static extern nint GetModuleHandle(string lpModuleName);
+    
+    /// <summary>
+    /// Retrieves the position of the cursor in screen coordinates.
+    /// </summary>
+    /// <param name="lpPoint">A reference to a <see cref="CursorPosition"/> structure that receives the screen coordinates of the cursor.</param>
+    /// <returns>true if successful; otherwise, false. To get extended error information, call GetLastError.</returns>
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    internal static extern bool GetCursorPos(out CursorPosition lpPoint);
+
+    /// <summary>
+    /// Moves the cursor to the specified screen coordinates.
+    /// </summary>
+    /// <param name="x">The new x-coordinate of the cursor, in screen coordinates.</param>
+    /// <param name="y">The new y-coordinate of the cursor, in screen coordinates.</param>
+    /// <returns>true if successful; otherwise, false. To get extended error information, call GetLastError.</returns>
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    internal static extern bool SetCursorPos(int x, int y);
+
+    /// <summary>
+    /// Synthesizes mouse motion and button clicks.
+    /// </summary>
+    /// <param name="dwFlags">Controls various aspects of mouse motion and button clicking. This parameter can be a combination of the following values:
+    /// <list type="bullet">
+    /// <item><description>MOUSEEVENTF_ABSOLUTE: Specifies absolute coordinates.</description></item>
+    /// <item><description>MOUSEEVENTF_LEFTDOWN: Specifies that the left button is down.</description></item>
+    /// <item><description>MOUSEEVENTF_LEFTUP: Specifies that the left button is up.</description></item>
+    /// <item><description>MOUSEEVENTF_MIDDLEDOWN: Specifies that the middle button is down.</description></item>
+    /// <item><description>MOUSEEVENTF_MIDDLEUP: Specifies that the middle button is up.</description></item>
+    /// <item><description>MOUSEEVENTF_MOVE: Specifies that the mouse moves.</description></item>
+    /// <item><description>MOUSEEVENTF_RIGHTDOWN: Specifies that the right button is down.</description></item>
+    /// <item><description>MOUSEEVENTF_RIGHTUP: Specifies that the right button is up.</description></item>
+    /// <item><description>MOUSEEVENTF_WHEEL: Specifies that the wheel has been moved.</description></item>
+    /// </list>
+    /// </param>
+    /// <param name="dx">The mouse's absolute position along the x-axis or its amount of motion since the last mouse event was generated, depending on the setting of MOUSEEVENTF_ABSOLUTE.</param>
+    /// <param name="dy">The mouse's absolute position along the y-axis or its amount of motion since the last mouse event was generated, depending on the setting of MOUSEEVENTF_ABSOLUTE.</param>
+    /// <param name="cButtons">The number of times the mouse buttons were pressed and released.</param>
+    /// <param name="dwExtraInfo">An additional value associated with the mouse event.</param>
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    internal static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+}

@@ -1,9 +1,9 @@
-﻿namespace DeftSharp.Windows.Keyboard.InteropServices;
+﻿namespace DeftSharp.Windows.Keyboard.InteropServices.Keyboard;
 
 /// <summary>
 /// Represents keyboard events.
 /// </summary>
-public enum KeyEvent : short
+public enum KeyboardEvent : short
 {
     /// <summary>
     /// Indicates a key down event.

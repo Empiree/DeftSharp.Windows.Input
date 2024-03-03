@@ -1,0 +1,49 @@
+﻿using System;
+using DeftSharp.Windows.Keyboard.InteropServices.API;
+
+namespace DeftSharp.Windows.Keyboard.InteropServices.Mouse;
+
+public class WindowsMouseListener : WindowsListener, IDisposable
+{
+    public event EventHandler<MouseInputArgs>? MouseInput;
+
+    public void HookMouse()
+    {
+        if (Handled)
+            return;
+
+        HookId = SetHook(InputMessages.WhMouseLl, WindowsProcedure);
+        Handled = true;
+    }
+
+    public void UnHookMouse()
+    {
+        if (!Handled)
+            return;
+
+        WinAPI.UnhookWindowsHookEx(HookId);
+        Handled = false;
+    }
+
+    /// <summary>
+    /// Callback method for the mouse hook.
+    /// </summary>
+    /// <param name="nCode">Specifies whether the hook procedure must process the message.</param>
+    /// <param name="wParam">Specifies additional information about the message.</param>
+    /// <param name="lParam">Specifies additional information about the message.</param>
+    /// <returns>The return value of the next hook procedure in the chain.</returns>
+    protected override nint HookCallback(int nCode, nint wParam, nint lParam)
+    {
+        if (nCode < 0 || !InputMessages.IsMouseEvent(wParam))
+            return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
+
+        var args = new MouseInputArgs((MouseEvent)wParam);
+
+        MouseInput?.Invoke(this, args);
+
+        return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
+    }
+
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    public void Dispose() => UnHookMouse();
+}

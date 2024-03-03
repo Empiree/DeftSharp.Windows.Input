@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
-using DeftSharp.Windows.Keyboard.InteropServices;
+using DeftSharp.Windows.Keyboard.InteropServices.Keyboard;
 using DeftSharp.Windows.Keyboard.Shared.Models;
 
 namespace DeftSharp.Windows.Keyboard.Input;
@@ -37,7 +37,7 @@ public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
 
     public void Subscribe(Key key, Action<Key> onClick, TimeSpan? intervalOfClick = null)
     {
-        var keyboardEvent = new KeyboardButtonSubscription(key, onClick, interval:intervalOfClick);
+        var keyboardEvent = new KeyboardButtonSubscription(key, onClick, interval: intervalOfClick);
 
         AddKeyboardEvent(keyboardEvent);
     }
@@ -104,7 +104,7 @@ public sealed class KeyboardListener : WindowsKeyboardListener, IDisposable
     {
         var keyboardEvents =
             _subscriptions.Where(s => s.Key.Equals(e.KeyPressed) && s.Event == e.Event).ToArray();
-        
+
         foreach (var keyboardEvent in keyboardEvents)
         {
             if (keyboardEvent.SingleUse)

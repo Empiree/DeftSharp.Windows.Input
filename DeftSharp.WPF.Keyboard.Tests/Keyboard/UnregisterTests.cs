@@ -1,6 +1,6 @@
 using System.Windows.Input;
 
-namespace DeftSharp.WPF.Keyboard.Tests.Tests;
+namespace DeftSharp.WPF.Keyboard.Tests.Keyboard;
 
 public class UnregisterTests
 {

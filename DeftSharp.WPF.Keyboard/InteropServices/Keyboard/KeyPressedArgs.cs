@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace DeftSharp.Windows.Keyboard.InteropServices;
+namespace DeftSharp.Windows.Keyboard.InteropServices.Keyboard;
 
 /// <summary>
 /// Provides data for the event that occurs when a key is pressed.
@@ -16,16 +16,16 @@ public class KeyPressedArgs : EventArgs
     /// <summary>
     /// Gets the key event that was pressed.
     /// </summary>
-    public KeyEvent Event { get; }
+    public KeyboardEvent Event { get; }
 
     /// <summary>
     /// Initializes a new instance of the KeyPressedArgs class with the specified key.
     /// </summary>
     /// <param name="key">The key that was pressed.</param>
-    /// <param name="keyEvent">The key event</param>
-    public KeyPressedArgs(Key key, KeyEvent keyEvent)
+    /// <param name="keyboardEvent">The key event</param>
+    public KeyPressedArgs(Key key, KeyboardEvent keyboardEvent)
     {
         KeyPressed = key;
-        Event = keyEvent;
+        Event = keyboardEvent;
     }
 }
