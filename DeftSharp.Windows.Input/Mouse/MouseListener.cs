@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Shared.Interfaces;
 using DeftSharp.Windows.Input.Shared.Models;
@@ -27,14 +28,7 @@ public sealed class MouseListener : IDisposable
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
-    private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (e.Action == NotifyCollectionChangedAction.Add && !IsListening)
-            Register();
-
-        if (_subscriptions.Count == 0)
-            Unregister();
-    }
+    public Coordinates GetPosition() => _mouseAPI.GetPosition();
 
     public void Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null)
     {
@@ -67,6 +61,17 @@ public sealed class MouseListener : IDisposable
     }
 
     public void UnsubscribeAll() => _subscriptions.Clear();
+    
+    public void Dispose() => Unregister();
+    
+    private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Add && !IsListening)
+            Register();
+
+        if (_subscriptions.Count == 0)
+            Unregister();
+    }
 
     private void Register()
     {
@@ -88,8 +93,6 @@ public sealed class MouseListener : IDisposable
         _mouseAPI.Unhook();
         IsListening = false;
     }
-
-    public void Dispose() => Unregister();
 
     private void OnMouseInput(object? sender, MouseInputArgs e)
     {

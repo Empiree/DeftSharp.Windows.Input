@@ -2,12 +2,19 @@
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Shared.Interfaces;
+using DeftSharp.Windows.Input.Shared.Models;
 
 namespace DeftSharp.Windows.Input.InteropServices.Mouse;
 
 public class WindowsMouseListener : WindowsListener, IMouseAPI, IDisposable
 {
     public event EventHandler<MouseInputArgs>? MouseInput;
+    
+    public Coordinates GetPosition()
+    {
+        WinAPI.GetCursorPos(out var position);
+        return position;
+    }
 
     public void Hook()
     {

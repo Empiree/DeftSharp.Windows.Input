@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.InteropServices.API;
 
@@ -16,7 +17,7 @@ internal static class WinAPI
     /// <param name="wParam">Specifies additional information about the message.</param>
     /// <param name="lParam">Specifies additional information about the message.</param>
     /// <returns>A handle to the next hook procedure in the chain or <c>0</c> if there's no next procedure.</returns>
-    public delegate nint WindowsProcedure(int nCode, nint wParam, nint lParam);
+    internal delegate nint WindowsProcedure(int nCode, nint wParam, nint lParam);
 
     /// <summary>
     /// Installs an application-defined hook procedure into a hook chain.
@@ -60,10 +61,10 @@ internal static class WinAPI
     /// <summary>
     /// Retrieves the position of the cursor in screen coordinates.
     /// </summary>
-    /// <param name="lpPoint">A reference to a <see cref="CursorPosition"/> structure that receives the screen coordinates of the cursor.</param>
+    /// <param name="lpPoint">A reference to a <see cref="Coordinates"/> structure that receives the screen coordinates of the cursor.</param>
     /// <returns>true if successful; otherwise, false. To get extended error information, call GetLastError.</returns>
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    internal static extern bool GetCursorPos(out CursorPosition lpPoint);
+    internal static extern bool GetCursorPos(out Coordinates lpPoint);
 
     /// <summary>
     /// Moves the cursor to the specified screen coordinates.

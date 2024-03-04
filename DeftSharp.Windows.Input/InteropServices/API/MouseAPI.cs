@@ -1,14 +1,7 @@
 ﻿namespace DeftSharp.Windows.Input.InteropServices.API;
 
-public static class MouseAPI
+internal static class MouseAPI
 {
-    public static CursorPosition GetPosition()
-    {
-        WinAPI.GetCursorPos(out var position);
-
-        return position;
-    }
-
     public static void SetPosition(int x, int y)
     {
         WinAPI.SetCursorPos(x, y);
