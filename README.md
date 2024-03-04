@@ -1,9 +1,14 @@
 # DeftSharp.Windows.Input
 
-
 A lightweight library designed to retrieve information about pressed keyboard keys and mouse buttons in WPF applications. Using P/Invoke methods, this library provides an easy-to-use interface for event handling.
 
-## How to use
+## How to Install
+
+The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.Windows.Input)
+
+`dotnet add package DeftSharp.Windows.Input`
+
+## Examples
 
 Subscription to left mouse click:
 
@@ -59,10 +64,6 @@ numpadListener.Subscribe(number =>
 
 - .NET 7.0 for Windows
 - C# 11 language version
-
-## Coming Soon to NuGet
-
-We're currently in the process of preparing the library for publication on NuGet. Stay tuned for updates!
 
 ## License
 
