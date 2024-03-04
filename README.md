@@ -1,7 +1,7 @@
 # DeftSharp.Windows.Input
 
 
-A lightweight library designed to retrieve information about pressed keyboard keys and mouse buttons in WPF .NET applications on the Windows platform. Using P/Invoke methods, this library provides an easy-to-use interface for event handling.
+A lightweight library designed to retrieve information about pressed keyboard keys and mouse buttons in WPF applications. Using P/Invoke methods, this library provides an easy-to-use interface for event handling.
 
 ## How to use
 
