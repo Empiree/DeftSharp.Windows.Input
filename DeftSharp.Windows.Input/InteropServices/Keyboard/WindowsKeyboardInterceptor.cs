@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
@@ -25,8 +24,7 @@ public sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboardIn
     private readonly HashSet<Key> _lockedKeys;
 
     public IEnumerable<Key> LockedKeys => _lockedKeys;
-
-
+    
     /// <summary>
     /// Occurs when a key is pressed.
     /// </summary>

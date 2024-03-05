@@ -12,10 +12,15 @@ public class KeyboardManipulator : IDisposable
     private readonly IKeyboardInterceptor _keyboardInterceptor;
     public IEnumerable<Key> LockedKeys => _keyboardInterceptor.LockedKeys;
 
+    public event Action<Key>? KeyPrevented;
+    public event Action<Key>? KeyReleased;
+
     public KeyboardManipulator()
     {
         _keyboardInterceptor = WindowsKeyboardInterceptor.Instance;
         _keyboardInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
+        _keyboardInterceptor.KeyPrevented += OnInterceptorKeyPrevented;
+        _keyboardInterceptor.KeyReleased += OnInterceptorKeyReleased;
     }
 
     public void Prevent(Key key)
@@ -41,7 +46,11 @@ public class KeyboardManipulator : IDisposable
     {
         ReleaseAll();
         _keyboardInterceptor.UnhookRequested -= OnInterceptorUnhookRequested;
+        _keyboardInterceptor.KeyPrevented -= OnInterceptorKeyPrevented;
+        _keyboardInterceptor.KeyReleased -= OnInterceptorKeyReleased;
     }
 
     private bool OnInterceptorUnhookRequested() => !LockedKeys.Any();
+    private void OnInterceptorKeyPrevented(Key key) => KeyPrevented?.Invoke(key);
+    private void OnInterceptorKeyReleased(Key key) => KeyReleased?.Invoke(key);
 }

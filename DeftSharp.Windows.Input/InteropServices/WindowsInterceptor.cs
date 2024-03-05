@@ -72,18 +72,26 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
         if (!_handled)
             return;
 
-        if (UnhookRequested is not null)
-        {
-            foreach (var handler in UnhookRequested.GetInvocationList())
-            {
-                var canBeUnhooked = (Func<bool>)handler;
-                if (!canBeUnhooked())
-                    return;
-            }
-        }
+        if (!CanBeUnhooked())
+            return;
 
         WinAPI.UnhookWindowsHookEx(HookId);
         HookId = nint.Zero;
         _handled = false;
+    }
+
+    private bool CanBeUnhooked()
+    {
+        if (UnhookRequested is null) 
+            return true;
+        
+        foreach (var handler in UnhookRequested.GetInvocationList())
+        {
+            var canBeUnhooked = (Func<bool>)handler;
+            if (!canBeUnhooked())
+                return false;
+        }
+
+        return true;
     }
 }

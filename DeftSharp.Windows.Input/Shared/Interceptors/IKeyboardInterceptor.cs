@@ -7,11 +7,11 @@ namespace DeftSharp.Windows.Input.Shared.Interceptors;
 
 public interface IKeyboardInterceptor : IRequestedInterceptor
 {
+    IEnumerable<Key> LockedKeys { get; }
+
     void Prevent(Key key);
     void Release(Key key);
     void ReleaseAll();
-    
-    IEnumerable<Key> LockedKeys { get;}
 
     event Action<Key>? KeyPrevented;
     event Action<Key>? KeyReleased;

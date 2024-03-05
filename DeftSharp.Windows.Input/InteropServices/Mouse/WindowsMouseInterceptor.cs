@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Shared.Interceptors;
@@ -14,11 +16,18 @@ public sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseIntercep
 
     #endregion
 
+    private readonly HashSet<MouseEvent> _lockedKeys;
+
+    public IEnumerable<MouseEvent> LockedKeys => _lockedKeys;
+
+    public event Action<MouseEvent>? ClickPrevented;
+    public event Action<MouseEvent>? ClickReleased;
     public event EventHandler<MouseInputArgs>? MouseInput;
 
     private WindowsMouseInterceptor()
         : base(InputMessages.WhMouseLl)
     {
+        _lockedKeys = new HashSet<MouseEvent>();
     }
 
     public Coordinates GetPosition()
@@ -27,8 +36,38 @@ public sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseIntercep
         return position;
     }
 
+    public void Prevent(MouseEvent mouseEvent)
+    {
+        if (_lockedKeys.Any(e => e == mouseEvent))
+            return;
+
+        _lockedKeys.Add(mouseEvent);
+        ClickPrevented?.Invoke(mouseEvent);
+    }
+
+    public void Release(MouseEvent mouseEvent)
+    {
+        if (_lockedKeys.All(e => e != mouseEvent))
+            return;
+
+        _lockedKeys.Remove(mouseEvent);
+        ClickReleased?.Invoke(mouseEvent);
+    }
+
+    public void ReleaseAll()
+    {
+        var events = _lockedKeys.ToArray();
+
+        foreach (var mouseEvent in events)
+            Release(mouseEvent);
+    }
+    
     /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-    public void Dispose() => Unhook();
+    public void Dispose()
+    {
+        ReleaseAll();
+        Unhook();
+    }
 
     /// <summary>
     /// Callback method for the mouse hook.
@@ -42,10 +81,17 @@ public sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseIntercep
         if (nCode < 0 || !InputMessages.IsMouseEvent(wParam))
             return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
 
-        var args = new MouseInputArgs((MouseEvent)wParam);
+        var mouseEvent = (MouseEvent)wParam;
+
+        if (IsClickLocked(mouseEvent))
+            return 1;
+
+        var args = new MouseInputArgs(mouseEvent);
 
         MouseInput?.Invoke(this, args);
 
         return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
     }
+
+    private bool IsClickLocked(MouseEvent mouseEvent) => _lockedKeys.Any(e => e == mouseEvent);
 }
