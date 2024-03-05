@@ -7,16 +7,16 @@ namespace DeftSharp.Windows.Input.Shared.Listeners;
 
 public abstract class InputListener<TSubscription>
 {
-    protected readonly ObservableCollection<TSubscription> _subscriptions;
+    protected readonly ObservableCollection<TSubscription> InputSubscriptions;
 
     public bool IsListening { get; private set; }
 
-    public ReadOnlyCollection<TSubscription> Subscriptions => _subscriptions.AsReadOnly();
+    public ReadOnlyCollection<TSubscription> Subscriptions => InputSubscriptions.AsReadOnly();
 
     protected InputListener()
     {
-        _subscriptions = new ObservableCollection<TSubscription>();
-        _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
+        InputSubscriptions = new ObservableCollection<TSubscription>();
+        InputSubscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
     private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -24,14 +24,14 @@ public abstract class InputListener<TSubscription>
         if (e.Action == NotifyCollectionChangedAction.Add)
             Register();
 
-        if (!_subscriptions.Any())
+        if (!InputSubscriptions.Any())
             Unregister();
     }
 
     public void UnsubscribeAll()
     {
-        if (_subscriptions.Any())
-            _subscriptions.Clear();
+        if (InputSubscriptions.Any())
+            InputSubscriptions.Clear();
     }
 
     protected virtual void Register() => IsListening = true;

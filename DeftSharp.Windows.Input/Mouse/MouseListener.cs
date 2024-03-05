@@ -18,38 +18,38 @@ public sealed class MouseListener : InputListener<MouseSubscription>, IDisposabl
         _mouseInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
-    private bool OnInterceptorUnhookRequested() => !_subscriptions.Any();
+    private bool OnInterceptorUnhookRequested() => !InputSubscriptions.Any();
 
     public Coordinates GetPosition() => _mouseInterceptor.GetPosition();
 
     public void Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null)
     {
         var subscription = new MouseSubscription(mouseEvent, onAction, intervalOfClick ?? TimeSpan.Zero);
-        _subscriptions.Add(subscription);
+        InputSubscriptions.Add(subscription);
     }
 
     public void SubscribeOnce(MouseEvent mouseEvent, Action onAction)
     {
         var subscription = new MouseSubscription(mouseEvent, onAction, true);
-        _subscriptions.Add(subscription);
+        InputSubscriptions.Add(subscription);
     }
 
     public void Unsubscribe(MouseEvent mouseEvent)
     {
-        var subscriptions = _subscriptions.Where(e => e.Event.Equals(mouseEvent)).ToArray();
+        var subscriptions = InputSubscriptions.Where(e => e.Event.Equals(mouseEvent)).ToArray();
 
         foreach (var mouseSubscription in subscriptions)
-            _subscriptions.Remove(mouseSubscription);
+            InputSubscriptions.Remove(mouseSubscription);
     }
 
     public void Unsubscribe(Guid id)
     {
-        var mouseEvent = _subscriptions.FirstOrDefault(s => s.Id == id);
+        var mouseEvent = InputSubscriptions.FirstOrDefault(s => s.Id == id);
 
         if (mouseEvent is null)
             return;
 
-        _subscriptions.Remove(mouseEvent);
+        InputSubscriptions.Remove(mouseEvent);
     }
 
     public void Dispose()
@@ -81,7 +81,7 @@ public sealed class MouseListener : InputListener<MouseSubscription>, IDisposabl
     private void OnMouseInput(object? sender, MouseInputArgs e)
     {
         var mouseEvents =
-            _subscriptions.Where(s => s.Event.Equals(e.Event)).ToArray();
+            InputSubscriptions.Where(s => s.Event.Equals(e.Event)).ToArray();
 
         foreach (var mouseEvent in mouseEvents)
         {

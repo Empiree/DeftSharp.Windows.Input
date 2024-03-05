@@ -3,36 +3,26 @@ using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
-public sealed class MouseSubscription
+public sealed class MouseSubscription : InputSubscription<Action>
 {
-    private readonly Action _onClick;
-
-    public Guid Id { get; }
     public MouseEvent Event { get; }
-    public TimeSpan IntervalOfClick { get; }
-    public DateTime? LastInvoked { get; private set; }
-    public bool SingleUse { get; }
 
     internal MouseSubscription(
         MouseEvent mouseEvent,
         Action onClick,
         bool singleUse = false)
+        : base(onClick, singleUse)
     {
-        _onClick = onClick;
-
-        SingleUse = singleUse;
-        IntervalOfClick = TimeSpan.Zero;
         Event = mouseEvent;
-        Id = Guid.NewGuid();
     }
 
     internal MouseSubscription(
         MouseEvent mouseEvent,
         Action onClick,
         TimeSpan interval)
-        : this(mouseEvent, onClick)
+        : base(onClick, interval)
     {
-        IntervalOfClick = interval;
+        Event = mouseEvent;
     }
 
     internal void Invoke()
@@ -44,6 +34,6 @@ public sealed class MouseSubscription
             return;
 
         LastInvoked = DateTime.Now;
-        _onClick();
+        OnClick();
     }
 }

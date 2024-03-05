@@ -4,39 +4,31 @@ using DeftSharp.Windows.Input.Keyboard;
 
 namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
-public sealed class KeyboardButtonSubscription
+public sealed class KeyboardSubscription : InputSubscription<Action<Key>>
 {
-    private readonly Action<Key> _onClick;
-
-    public Guid Id { get; }
     public Key Key { get; }
     public KeyboardEvent Event { get; }
-    public TimeSpan IntervalOfClick { get; }
-    public DateTime? LastInvoked { get; private set; }
-    public bool SingleUse { get; }
 
-    internal KeyboardButtonSubscription(
+    internal KeyboardSubscription(
         Key key,
         Action<Key> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown,
         bool singleUse = false)
+    : base(onClick, singleUse)
     {
-        _onClick = onClick;
-
-        SingleUse = singleUse;
         Event = keyboardEvent;
         Key = key;
-        Id = Guid.NewGuid();
     }
 
-    internal KeyboardButtonSubscription(
+    internal KeyboardSubscription(
         Key key,
         Action<Key> onClick,
         TimeSpan interval,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
-        : this(key, onClick, keyboardEvent)
+        : base(onClick, interval)
     {
-        IntervalOfClick = interval;
+        Event = keyboardEvent;
+        Key = key;
     }
 
     internal void Invoke()
@@ -48,6 +40,6 @@ public sealed class KeyboardButtonSubscription
             return;
 
         LastInvoked = DateTime.Now;
-        _onClick(Key);
+        OnClick(Key);
     }
 }

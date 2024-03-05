@@ -9,7 +9,7 @@ using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-public sealed class KeyboardListener : InputListener<KeyboardButtonSubscription>, IDisposable
+public sealed class KeyboardListener : InputListener<KeyboardSubscription>, IDisposable
 {
     private readonly IKeyboardInterceptor _keyboardInterceptor;
 
@@ -24,9 +24,9 @@ public sealed class KeyboardListener : InputListener<KeyboardButtonSubscription>
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
         var keyboardSubscription =
-            new KeyboardButtonSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
+            new KeyboardSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
 
-        _subscriptions.Add(keyboardSubscription);
+        InputSubscriptions.Add(keyboardSubscription);
     }
 
     public void Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
@@ -37,14 +37,14 @@ public sealed class KeyboardListener : InputListener<KeyboardButtonSubscription>
     }
 
     public void SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        _subscriptions.Add(new KeyboardButtonSubscription(key, onClick, keyboardEvent, true));
+        InputSubscriptions.Add(new KeyboardSubscription(key, onClick, keyboardEvent, true));
 
     public void Unsubscribe(Key key)
     {
-        var subscriptions = _subscriptions.Where(e => e.Key.Equals(key)).ToArray();
+        var subscriptions = InputSubscriptions.Where(e => e.Key.Equals(key)).ToArray();
 
         foreach (var buttonSubscription in subscriptions)
-            _subscriptions.Remove(buttonSubscription);
+            InputSubscriptions.Remove(buttonSubscription);
     }
 
     public void UnsubscribeAll(IEnumerable<Key> keys)
@@ -55,12 +55,12 @@ public sealed class KeyboardListener : InputListener<KeyboardButtonSubscription>
 
     public void Unsubscribe(Guid id)
     {
-        var keyboardSubscribe = _subscriptions.FirstOrDefault(s => s.Id == id);
+        var keyboardSubscribe = InputSubscriptions.FirstOrDefault(s => s.Id == id);
 
         if (keyboardSubscribe is null)
             return;
 
-        _subscriptions.Remove(keyboardSubscribe);
+        InputSubscriptions.Remove(keyboardSubscribe);
     }
 
     public void Dispose()
@@ -71,7 +71,7 @@ public sealed class KeyboardListener : InputListener<KeyboardButtonSubscription>
         _keyboardInterceptor.UnhookRequested -= OnInterceptorUnhookRequested;
     }
 
-    private bool OnInterceptorUnhookRequested() => !_subscriptions.Any();
+    private bool OnInterceptorUnhookRequested() => !InputSubscriptions.Any();
 
     protected override void Register()
     {
@@ -95,7 +95,7 @@ public sealed class KeyboardListener : InputListener<KeyboardButtonSubscription>
     private void OnKeyPressed(object? sender, KeyPressedArgs e)
     {
         var keyboardEvents =
-            _subscriptions.Where(s => s.Key.Equals(e.KeyPressed) && s.Event == e.Event).ToArray();
+            InputSubscriptions.Where(s => s.Key.Equals(e.KeyPressed) && s.Event == e.Event).ToArray();
 
         foreach (var keyboardEvent in keyboardEvents)
         {

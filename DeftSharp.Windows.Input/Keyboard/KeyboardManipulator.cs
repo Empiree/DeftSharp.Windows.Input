@@ -7,7 +7,7 @@ using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-public class KeyboardManipulator : IDisposable
+public sealed class KeyboardManipulator : IDisposable
 {
     private readonly IKeyboardInterceptor _keyboardInterceptor;
     public IEnumerable<Key> LockedKeys => _keyboardInterceptor.LockedKeys;
