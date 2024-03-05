@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard;
 
-namespace DeftSharp.Windows.Input.Shared.Models;
+namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
 public sealed class KeyboardButtonSubscription
 {
@@ -15,7 +15,7 @@ public sealed class KeyboardButtonSubscription
     public DateTime? LastInvoked { get; private set; }
     public bool SingleUse { get; }
 
-    public KeyboardButtonSubscription(
+    internal KeyboardButtonSubscription(
         Key key,
         Action<Key> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown,
@@ -29,7 +29,7 @@ public sealed class KeyboardButtonSubscription
         Id = Guid.NewGuid();
     }
 
-    public KeyboardButtonSubscription(
+    internal KeyboardButtonSubscription(
         Key key,
         Action<Key> onClick,
         TimeSpan interval,
@@ -39,7 +39,7 @@ public sealed class KeyboardButtonSubscription
         IntervalOfClick = interval;
     }
 
-    public void Invoke()
+    internal void Invoke()
     {
         if (LastInvoked.HasValue && SingleUse)
             return;

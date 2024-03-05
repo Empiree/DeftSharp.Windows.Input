@@ -2,14 +2,11 @@
 using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Mouse;
 
-namespace DeftSharp.Windows.Input.Shared.Interfaces;
+namespace DeftSharp.Windows.Input.Shared.Interceptors;
 
-public interface IMouseAPI
+public interface IMouseInterceptor : IRequestedInterceptor
 {
-    void Hook();
-    void Unhook();
-
     Coordinates GetPosition();
-    
+
     event EventHandler<MouseInputArgs>? MouseInput;
 }

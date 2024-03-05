@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace DeftSharp.Windows.Input.Shared.Models;
+namespace DeftSharp.Windows.Input.Shared.Buttons;
 
 public class NumpadButton
 {

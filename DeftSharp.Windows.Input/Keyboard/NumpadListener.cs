@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Input;
-using DeftSharp.Windows.Input.Shared.Models;
+using DeftSharp.Windows.Input.Shared.Buttons;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 

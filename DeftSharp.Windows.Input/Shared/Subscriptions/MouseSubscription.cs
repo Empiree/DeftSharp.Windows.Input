@@ -1,7 +1,7 @@
 ﻿using System;
 using DeftSharp.Windows.Input.Mouse;
 
-namespace DeftSharp.Windows.Input.Shared.Models;
+namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
 public sealed class MouseSubscription
 {
@@ -13,7 +13,7 @@ public sealed class MouseSubscription
     public DateTime? LastInvoked { get; private set; }
     public bool SingleUse { get; }
 
-    public MouseSubscription(
+    internal MouseSubscription(
         MouseEvent mouseEvent,
         Action onClick,
         bool singleUse = false)
@@ -26,7 +26,7 @@ public sealed class MouseSubscription
         Id = Guid.NewGuid();
     }
 
-    public MouseSubscription(
+    internal MouseSubscription(
         MouseEvent mouseEvent,
         Action onClick,
         TimeSpan interval)
@@ -35,7 +35,7 @@ public sealed class MouseSubscription
         IntervalOfClick = interval;
     }
 
-    public void Invoke()
+    internal void Invoke()
     {
         if (LastInvoked.HasValue && SingleUse)
             return;

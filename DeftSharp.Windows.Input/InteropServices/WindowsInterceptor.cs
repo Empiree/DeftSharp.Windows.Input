@@ -1,29 +1,35 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Shared.Exceptions;
+using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.InteropServices;
 
-public abstract class WindowsListener
+public abstract class WindowsInterceptor : IRequestedInterceptor
 {
+    private readonly int _interceptorHook;
+    private bool _handled;
+
     /// <summary>
     /// Delegate to the hook procedure.
     /// </summary>
-    internal readonly WinAPI.WindowsProcedure WindowsProcedure;
+    private readonly WinAPI.WindowsProcedure _windowsProcedure;
+
+    public event Func<bool>? UnhookRequested;
 
     /// <summary>
     /// Identifier for the installed WinAPI hook.
     /// </summary>
     protected nint HookId = nint.Zero;
 
-    public bool Handled { get; protected set; }
-
     /// <summary>
     /// Initializes a new instance of the WindowsListener class.
     /// </summary>
-    protected WindowsListener()
+    protected WindowsInterceptor(int interceptorHook)
     {
-        WindowsProcedure = HookCallback;
+        _interceptorHook = interceptorHook;
+        _windowsProcedure = HookCallback;
     }
 
     /// <summary>
@@ -32,7 +38,7 @@ public abstract class WindowsListener
     /// <param name="idHook">Identifier for the installed WinAPI hook.</param>
     /// <param name="procedure">A pointer to the windows hook procedure.</param>
     /// <returns>A handle to the hook procedure if successful; otherwise, <c>0</c>.</returns>
-    internal nint SetHook(int idHook, WinAPI.WindowsProcedure procedure)
+    private nint SetHook(int idHook, WinAPI.WindowsProcedure procedure)
     {
         using var currentProcess = Process.GetCurrentProcess();
         using var currentModule = currentProcess.MainModule;
@@ -51,4 +57,33 @@ public abstract class WindowsListener
     /// <param name="lParam">Specifies additional information about the message.</param>
     /// <returns>The return value of the next hook procedure in the chain.</returns>
     protected abstract nint HookCallback(int nCode, nint wParam, nint lParam);
+
+    public void Hook()
+    {
+        if (_handled)
+            return;
+
+        HookId = SetHook(_interceptorHook, _windowsProcedure);
+        _handled = true;
+    }
+
+    public void Unhook()
+    {
+        if (!_handled)
+            return;
+
+        if (UnhookRequested is not null)
+        {
+            foreach (var handler in UnhookRequested.GetInvocationList())
+            {
+                var canBeUnhooked = (Func<bool>)handler;
+                if (!canBeUnhooked())
+                    return;
+            }
+        }
+
+        WinAPI.UnhookWindowsHookEx(HookId);
+        HookId = nint.Zero;
+        _handled = false;
+    }
 }

@@ -1,34 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
-using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
-using DeftSharp.Windows.Input.Shared.Interfaces;
-using DeftSharp.Windows.Input.Shared.Models;
+using DeftSharp.Windows.Input.Shared.Interceptors;
+using DeftSharp.Windows.Input.Shared.Listeners;
+using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Mouse;
 
-public sealed class MouseListener : IDisposable
+public sealed class MouseListener : InputListener<MouseSubscription>, IDisposable
 {
-    private readonly ObservableCollection<MouseSubscription> _subscriptions;
-    private readonly IMouseAPI _mouseAPI;
-
-    public bool IsListening { get; private set; }
-
-    public ReadOnlyCollection<MouseSubscription> Subscriptions => _subscriptions.AsReadOnly();
+    private readonly IMouseInterceptor _mouseInterceptor;
 
     public MouseListener()
     {
-        _mouseAPI = new WindowsMouseListener();
-        _mouseAPI.MouseInput += OnMouseInput;
-
-        _subscriptions = new ObservableCollection<MouseSubscription>();
-        _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
+        _mouseInterceptor = WindowsMouseInterceptor.Instance;
+        _mouseInterceptor.MouseInput += OnMouseInput;
+        _mouseInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
-    public Coordinates GetPosition() => _mouseAPI.GetPosition();
+    private bool OnInterceptorUnhookRequested() => !_subscriptions.Any();
+
+    public Coordinates GetPosition() => _mouseInterceptor.GetPosition();
 
     public void Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null)
     {
@@ -60,38 +52,30 @@ public sealed class MouseListener : IDisposable
         _subscriptions.Remove(mouseEvent);
     }
 
-    public void UnsubscribeAll() => _subscriptions.Clear();
-    
-    public void Dispose() => Unregister();
-    
-    private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    public void Dispose()
     {
-        if (e.Action == NotifyCollectionChangedAction.Add && !IsListening)
-            Register();
-
-        if (_subscriptions.Count == 0)
-            Unregister();
+        Unregister();
+        _mouseInterceptor.MouseInput -= OnMouseInput;
+        _mouseInterceptor.UnhookRequested -= OnInterceptorUnhookRequested;
     }
 
-    private void Register()
+    protected override void Register()
     {
         if (IsListening)
             return;
 
-        IsListening = true;
-        _mouseAPI.Hook();
+        _mouseInterceptor.Hook();
+        base.Register();
     }
 
-    private void Unregister()
+    protected override void Unregister()
     {
         if (!IsListening)
             return;
 
-        if (_subscriptions.Count > 0)
-            UnsubscribeAll();
-
-        _mouseAPI.Unhook();
-        IsListening = false;
+        UnsubscribeAll();
+        _mouseInterceptor.Unhook();
+        base.Unregister();
     }
 
     private void OnMouseInput(object? sender, MouseInputArgs e)

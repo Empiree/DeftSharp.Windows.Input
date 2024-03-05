@@ -1,38 +1,34 @@
 ﻿using System;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Mouse;
-using DeftSharp.Windows.Input.Shared.Interfaces;
-using DeftSharp.Windows.Input.Shared.Models;
+using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.InteropServices.Mouse;
 
-public class WindowsMouseListener : WindowsListener, IMouseAPI, IDisposable
+public sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterceptor, IDisposable
 {
+    #region Singleton
+
+    private static readonly Lazy<WindowsMouseInterceptor> LazyInstance = new(() => new WindowsMouseInterceptor());
+    public static WindowsMouseInterceptor Instance => LazyInstance.Value;
+
+    #endregion
+
     public event EventHandler<MouseInputArgs>? MouseInput;
-    
+
+    private WindowsMouseInterceptor()
+        : base(InputMessages.WhMouseLl)
+    {
+    }
+
     public Coordinates GetPosition()
     {
         WinAPI.GetCursorPos(out var position);
         return position;
     }
 
-    public void Hook()
-    {
-        if (Handled)
-            return;
-
-        HookId = SetHook(InputMessages.WhMouseLl, WindowsProcedure);
-        Handled = true;
-    }
-
-    public void Unhook()
-    {
-        if (!Handled)
-            return;
-
-        WinAPI.UnhookWindowsHookEx(HookId);
-        Handled = false;
-    }
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    public void Dispose() => Unhook();
 
     /// <summary>
     /// Callback method for the mouse hook.
@@ -52,7 +48,4 @@ public class WindowsMouseListener : WindowsListener, IMouseAPI, IDisposable
 
         return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
     }
-
-    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-    public void Dispose() => Unhook();
 }

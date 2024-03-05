@@ -1,40 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
-using DeftSharp.Windows.Input.Shared.Interfaces;
-using DeftSharp.Windows.Input.Shared.Models;
+using DeftSharp.Windows.Input.Shared.Interceptors;
+using DeftSharp.Windows.Input.Shared.Listeners;
+using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-public sealed class KeyboardListener : IDisposable
+public sealed class KeyboardListener : InputListener<KeyboardButtonSubscription>, IDisposable
 {
-    private readonly ObservableCollection<KeyboardButtonSubscription> _subscriptions;
-    private readonly IKeyboardAPI _keyboardAPI;
-
-    public bool IsListening { get; private set; }
-
-    public ReadOnlyCollection<KeyboardButtonSubscription> Subscriptions => _subscriptions.AsReadOnly();
+    private readonly IKeyboardInterceptor _keyboardInterceptor;
 
     public KeyboardListener()
     {
-        _keyboardAPI = new WindowsKeyboardListener();
-        _keyboardAPI.KeyPressed += OnKeyPressed;
-
-        _subscriptions = new ObservableCollection<KeyboardButtonSubscription>();
-        _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
-    }
-
-    private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (e.Action == NotifyCollectionChangedAction.Add && !IsListening)
-            Register();
-
-        if (_subscriptions.Count == 0)
-            Unregister();
+        _keyboardInterceptor = WindowsKeyboardInterceptor.Instance;
+        _keyboardInterceptor.KeyPressed += OnKeyPressed;
+        _keyboardInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
     public void Subscribe(Key key, Action<Key> onClick,
@@ -64,8 +47,6 @@ public sealed class KeyboardListener : IDisposable
             _subscriptions.Remove(buttonSubscription);
     }
 
-    public void UnsubscribeAll() => _subscriptions.Clear();
-
     public void UnsubscribeAll(IEnumerable<Key> keys)
     {
         foreach (var key in keys)
@@ -82,28 +63,34 @@ public sealed class KeyboardListener : IDisposable
         _subscriptions.Remove(keyboardSubscribe);
     }
 
-    private void Register()
+    public void Dispose()
+    {
+        Unregister();
+
+        _keyboardInterceptor.KeyPressed -= OnKeyPressed;
+        _keyboardInterceptor.UnhookRequested -= OnInterceptorUnhookRequested;
+    }
+
+    private bool OnInterceptorUnhookRequested() => !_subscriptions.Any();
+
+    protected override void Register()
     {
         if (IsListening)
             return;
 
-        IsListening = true;
-        _keyboardAPI.Hook();
+        _keyboardInterceptor.Hook();
+        base.Register();
     }
 
-    private void Unregister()
+    protected override void Unregister()
     {
         if (!IsListening)
             return;
 
-        if (_subscriptions.Count > 0)
-            UnsubscribeAll();
-
-        _keyboardAPI.Unhook();
-        IsListening = false;
+        UnsubscribeAll();
+        _keyboardInterceptor.Unhook();
+        base.Unregister();
     }
-
-    public void Dispose() => Unregister();
 
     private void OnKeyPressed(object? sender, KeyPressedArgs e)
     {
