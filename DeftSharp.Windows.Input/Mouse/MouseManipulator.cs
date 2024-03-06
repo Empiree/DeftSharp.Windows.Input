@@ -43,7 +43,8 @@ public sealed class MouseManipulator : IDisposable
     }
 
     public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);
-    public void Click(int x, int y) => MouseAPI.Click(x, y);
+
+    public void Click(int x, int y, MouseButton button = MouseButton.Left) => MouseAPI.Click(button, x, y);
 
     public void Dispose()
     {

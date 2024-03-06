@@ -26,7 +26,7 @@ internal static class InputMessages
     /// Defines a system keystroke message sent to the active window when a system key is pressed.
     /// </summary>
     internal const int WmSystemKeyDown = 0x0104;
-    
+
     /// <summary>
     /// The low-level mouse hook event type.
     /// </summary>
@@ -93,4 +93,24 @@ internal static class InputMessages
     /// The type for a keyboard input event in the INPUT structure.
     /// </summary>
     internal const int InputKeyboard = 1;
+
+    /// <summary>
+    /// Constant representing the left mouse button down event in the INPUT structure.
+    /// </summary>
+    internal const int InputMouseLeftDown = 0x0002;
+
+    /// <summary>
+    /// Constant representing the left mouse button up event in the INPUT structure.
+    /// </summary>
+    internal const int InputMouseLeftUp = 0x0004;
+
+    /// <summary>
+    /// Constant representing the right mouse button down event in the INPUT structure.
+    /// </summary>
+    internal const int InputMouseRightDown = 0x0008;
+
+    /// <summary>
+    /// Constant representing the right mouse button up event in the INPUT structure.
+    /// </summary>
+    internal const int InputMouseRightUp = 0x0010;
 }

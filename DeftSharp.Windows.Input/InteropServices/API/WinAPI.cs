@@ -116,5 +116,4 @@ internal static class WinAPI
     /// <param name="cbSize">The size, in bytes, of an INPUT structure.</param>
     [DllImport("user32.dll", SetLastError = true)]
     internal static extern uint SendInput(uint nInputs, Structures.Input[] pInputs, int cbSize);
-
 }
