@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
@@ -20,25 +20,26 @@ public sealed class KeyboardListener : InputListener<KeyboardSubscription>, IDis
         _keyboardInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
-    public void Subscribe(Key key, Action<Key> onClick,
+    public KeyboardSubscription Subscribe(Key key, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
-        var keyboardSubscription =
-            new KeyboardSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
-
-        InputSubscriptions.Add(keyboardSubscription);
+        var subscription = new KeyboardSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
+        
+        InputSubscriptions.Add(subscription);
+        return subscription;
     }
 
-    public void Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
-        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
+    public IEnumerable<KeyboardSubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+        keys.Select(key => Subscribe(key, onClick, intervalOfClick, keyboardEvent));
+
+    public KeyboardSubscription SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
-        foreach (var key in keys)
-            Subscribe(key, onClick, intervalOfClick, keyboardEvent);
+        var subscription = new KeyboardSubscription(key, onClick, keyboardEvent, true);
+        InputSubscriptions.Add(subscription);
+        return subscription;
     }
-
-    public void SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        InputSubscriptions.Add(new KeyboardSubscription(key, onClick, keyboardEvent, true));
-
+    
     public void Unsubscribe(Key key)
     {
         var subscriptions = InputSubscriptions.Where(e => e.Key.Equals(key)).ToArray();
