@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Shared.Interceptors;
@@ -18,20 +18,20 @@ public sealed class MouseListener : InputListener<MouseSubscription>, IDisposabl
         _mouseInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
-    private bool OnInterceptorUnhookRequested() => !InputSubscriptions.Any();
-
     public Coordinates GetPosition() => _mouseInterceptor.GetPosition();
 
-    public void Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null)
+    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null)
     {
         var subscription = new MouseSubscription(mouseEvent, onAction, intervalOfClick ?? TimeSpan.Zero);
         InputSubscriptions.Add(subscription);
+        return subscription;
     }
 
-    public void SubscribeOnce(MouseEvent mouseEvent, Action onAction)
+    public MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction)
     {
         var subscription = new MouseSubscription(mouseEvent, onAction, true);
         InputSubscriptions.Add(subscription);
+        return subscription;
     }
 
     public void Unsubscribe(MouseEvent mouseEvent)
@@ -77,6 +77,8 @@ public sealed class MouseListener : InputListener<MouseSubscription>, IDisposabl
         _mouseInterceptor.Unhook();
         base.Unregister();
     }
+    
+    private bool OnInterceptorUnhookRequested() => !InputSubscriptions.Any();
 
     private void OnMouseInput(object? sender, MouseInputArgs e)
     {
