@@ -97,4 +97,24 @@ internal static class WinAPI
     /// <param name="dwExtraInfo">An additional value associated with the mouse event.</param>
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     internal static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+    
+    /// <summary>
+    /// Synthesizes a keystroke by generating a KEYBDINPUT structure specifying the event.
+    /// </summary>
+    /// <param name="bVk">The virtual-key code of the key to be pressed.</param>
+    /// <param name="bScan">The hardware scan code of the key to be pressed.</param>
+    /// <param name="dwFlags">Flags that specify various aspects of function operation.</param>
+    /// <param name="dwExtraInfo">An additional value associated with the keystroke.</param>
+    [DllImport("user32.dll", SetLastError = true)]
+    internal static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, nuint dwExtraInfo);
+
+    /// <summary>
+    /// Synthesizes input events such as keystrokes, mouse movement, and mouse clicks.
+    /// </summary>
+    /// <param name="nInputs">The number of structures in the array pointed to by pInputs.</param>
+    /// <param name="pInputs">An array of INPUT structures. Each structure represents an event to be inserted into the keyboard or mouse input stream.</param>
+    /// <param name="cbSize">The size, in bytes, of an INPUT structure.</param>
+    [DllImport("user32.dll", SetLastError = true)]
+    internal static extern uint SendInput(uint nInputs, Structures.Input[] pInputs, int cbSize);
+
 }

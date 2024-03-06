@@ -26,20 +26,71 @@ internal static class InputMessages
     /// Defines a system keystroke message sent to the active window when a system key is pressed.
     /// </summary>
     internal const int WmSystemKeyDown = 0x0104;
-
-
+    
+    /// <summary>
+    /// The low-level mouse hook event type.
+    /// </summary>
     internal const int WhMouseLl = 14;
+
+    /// <summary>
+    /// The message for a mouse move event.
+    /// </summary>
     internal const int MouseMove = 0x0200;
+
+    /// <summary>
+    /// The message for a left mouse button down event.
+    /// </summary>
     internal const int LeftButtonDown = 0x0201;
+
+    /// <summary>
+    /// The message for a left mouse button up event.
+    /// </summary>
     internal const int LeftButtonUp = 0x0202;
+
+    /// <summary>
+    /// The message for a left mouse button double-click event.
+    /// </summary>
     internal const int LeftButtonDoubleClick = 0x0203;
+
+    /// <summary>
+    /// The message for a right mouse button down event.
+    /// </summary>
     internal const int RightButtonDown = 0x0204;
+
+    /// <summary>
+    /// The message for a right mouse button up event.
+    /// </summary>
     internal const int RightButtonUp = 0x0205;
 
+    /// <summary>
+    /// Determines whether the specified Windows message is a mouse event.
+    /// </summary>
+    /// <param name="wParam">The wParam value of the Windows message.</param>
+    /// <returns>True if the message is a mouse event; otherwise, false.</returns>
     internal static bool IsMouseEvent(nint wParam) =>
         wParam is MouseMove or LeftButtonDown or LeftButtonUp
             or LeftButtonDoubleClick or RightButtonDown or RightButtonUp;
 
+    /// <summary>
+    /// Determines whether the specified Windows message is a keyboard event.
+    /// </summary>
+    /// <param name="wParam">The wParam value of the Windows message.</param>
+    /// <returns>True if the message is a keyboard event; otherwise, false.</returns>
     internal static bool IsKeyboardEvent(nint wParam) =>
         wParam is KeyDown or KeyUp;
+
+    /// <summary>
+    /// The flag for a key down event in the INPUT structure.
+    /// </summary>
+    internal const int InputKeydown = 0x0001;
+
+    /// <summary>
+    /// The flag for a key up event in the INPUT structure.
+    /// </summary>
+    internal const int InputKeyup = 0x0002;
+
+    /// <summary>
+    /// The type for a keyboard input event in the INPUT structure.
+    /// </summary>
+    internal const int InputKeyboard = 1;
 }

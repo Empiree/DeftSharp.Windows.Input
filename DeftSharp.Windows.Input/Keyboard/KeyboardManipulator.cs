@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 
@@ -22,6 +23,8 @@ public sealed class KeyboardManipulator : IDisposable
         _keyboardInterceptor.KeyPrevented += OnInterceptorKeyPrevented;
         _keyboardInterceptor.KeyReleased += OnInterceptorKeyReleased;
     }
+
+    public void Press(Key key) => KeyboardAPI.PressButton(key);
 
     public void Prevent(Key key)
     {
