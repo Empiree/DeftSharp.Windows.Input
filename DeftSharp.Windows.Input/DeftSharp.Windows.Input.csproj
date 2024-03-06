@@ -19,7 +19,20 @@
         <RepositoryUrl>https://github.com/Empiree/DeftSharp.Windows.Input</RepositoryUrl>
         <RepositoryType>Open-Source</RepositoryType>
         <PackageTags>#WPF #Input #Keyboard-Listener #Mouse-Listener #WinAPI #listener</PackageTags>
-        <Version>0.1</Version>
+        <Version>0.2</Version>
+        <PackageIcon>DeftSharp-icon.png</PackageIcon>
+        <PackageReleaseNotes>What's new:
+
+- Mouse Manipulator - a mouse control class.
+- Keyboard Manipulator - a keyboard control class.
+- Fixed minor bugs</PackageReleaseNotes>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Update="DeftSharp-icon.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
 
 </Project>

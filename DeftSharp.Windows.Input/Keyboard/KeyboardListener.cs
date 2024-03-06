@@ -96,7 +96,6 @@ public sealed class KeyboardListener : InputListener<KeyboardSubscription>, IDis
     {
         var keyboardEvents =
             InputSubscriptions.Where(s => s.Key.Equals(e.KeyPressed) && s.Event == e.Event).ToArray();
-
         foreach (var keyboardEvent in keyboardEvents)
         {
             if (keyboardEvent.SingleUse)
