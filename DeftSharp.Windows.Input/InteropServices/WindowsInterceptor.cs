@@ -94,4 +94,6 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
 
         return WinAPI.SetWindowsHookEx(idHook, procedure, WinAPI.GetModuleHandle(currentModule.ModuleName), 0);
     }
+
+    public void Dispose() => Unhook();
 }

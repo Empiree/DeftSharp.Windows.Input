@@ -78,7 +78,7 @@ public sealed class SubscriptionTests
             listener.Subscribe(keys, key => { });
 
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
-            Assert.Equal(12, listener.Subscriptions.Count);
+            Assert.Equal(12, listener.Subscriptions.Count());
 
             listener.UnsubscribeAll();
         });
@@ -97,7 +97,7 @@ public sealed class SubscriptionTests
             listener.Subscribe(keys, key => { });
 
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
-            Assert.Equal(9, listener.Subscriptions.Count);
+            Assert.Equal(9, listener.Subscriptions.Count());
 
             listener.UnsubscribeAll();
         });
@@ -116,10 +116,25 @@ public sealed class SubscriptionTests
             listener.Subscribe(Key.Back, key => { });
 
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
-            Assert.Equal(4, listener.Subscriptions.Count);
+            Assert.Equal(4, listener.Subscriptions.Count());
             Assert.Equal(4, listener.Subscriptions.Count(s => s.Key == Key.Back));
 
             listener.UnsubscribeAll();
         });
+    }
+
+    [Fact]
+    public void Subscribe_Test7()
+    {
+        var listener = new KeyboardListener();
+
+        _emulator.Run(() =>
+        {
+            listener.Subscribe(Key.J, key => {});
+            listener.Dispose();
+        });
+        
+        Assert.False(listener.IsListening, "Keyboard listener is not listening subscription events.");
+
     }
 }

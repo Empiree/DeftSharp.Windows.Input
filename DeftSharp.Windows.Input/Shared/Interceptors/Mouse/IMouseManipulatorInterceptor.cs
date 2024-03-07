@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Mouse;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors;
+namespace DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
 
-public interface IMouseInterceptor : IRequestedInterceptor
+internal interface IMouseManipulatorInterceptor : IRequestedInterceptor
 {
     IEnumerable<MouseEvent> LockedKeys { get;}
     
-    Coordinates GetPosition();
-
+    void SetPosition(int x, int y);
+    void Click(int x, int y, MouseButton button);
     void Prevent(MouseEvent mouseEvent);
     void Release(MouseEvent mouseEvent);
     void ReleaseAll();
-
+    
     event Action<MouseEvent> ClickPrevented; 
     event Action<MouseEvent> ClickReleased;
-    event EventHandler<MouseInputArgs>? MouseInput;
 }

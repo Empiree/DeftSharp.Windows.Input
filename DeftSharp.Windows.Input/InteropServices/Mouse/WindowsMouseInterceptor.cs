@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Shared.Interceptors;
+using DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
 
 namespace DeftSharp.Windows.Input.InteropServices.Mouse;
 
-public sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterceptor, IDisposable
+internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterceptor
 {
     #region Singleton
 
@@ -16,58 +16,17 @@ public sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseIntercep
 
     #endregion
 
-    private readonly HashSet<MouseEvent> _lockedKeys;
-
-    public IEnumerable<MouseEvent> LockedKeys => _lockedKeys;
-
-    public event Action<MouseEvent>? ClickPrevented;
-    public event Action<MouseEvent>? ClickReleased;
-    public event EventHandler<MouseInputArgs>? MouseInput;
+    public event Func<MouseInputArgs, PipelineInterceptorOperation>? MouseProcessing;
 
     private WindowsMouseInterceptor()
         : base(InputMessages.WhMouseLl)
     {
-        _lockedKeys = new HashSet<MouseEvent>();
     }
 
-    public Coordinates GetPosition()
-    {
-        WinAPI.GetCursorPos(out var position);
-        return position;
-    }
-
-    public void Prevent(MouseEvent mouseEvent)
-    {
-        if (_lockedKeys.Any(e => e == mouseEvent))
-            return;
-
-        _lockedKeys.Add(mouseEvent);
-        ClickPrevented?.Invoke(mouseEvent);
-    }
-
-    public void Release(MouseEvent mouseEvent)
-    {
-        if (_lockedKeys.All(e => e != mouseEvent))
-            return;
-
-        _lockedKeys.Remove(mouseEvent);
-        ClickReleased?.Invoke(mouseEvent);
-    }
-
-    public void ReleaseAll()
-    {
-        var events = _lockedKeys.ToArray();
-
-        foreach (var mouseEvent in events)
-            Release(mouseEvent);
-    }
+    public Coordinates GetPosition() => MouseAPI.GetPosition();
+    public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);
+    public void Click(int x, int y, MouseButton button) => MouseAPI.Click(button, x, y);
     
-    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-    public void Dispose()
-    {
-        ReleaseAll();
-        Unhook();
-    }
 
     /// <summary>
     /// Callback method for the mouse hook.
@@ -82,16 +41,33 @@ public sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseIntercep
             return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
 
         var mouseEvent = (MouseEvent)wParam;
-
-        if (IsClickLocked(mouseEvent))
-            return 1;
-
         var args = new MouseInputArgs(mouseEvent);
 
-        MouseInput?.Invoke(this, args);
-
-        return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
+        return CanBeProcessed(args)
+            ? WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam)
+            : 1;
     }
 
-    private bool IsClickLocked(MouseEvent mouseEvent) => _lockedKeys.Any(e => e == mouseEvent);
+    private bool CanBeProcessed(MouseInputArgs args)
+    {
+        if (MouseProcessing is null)
+            return true;
+
+        var actions = new List<Action>();
+
+        foreach (var nextInterceptor in MouseProcessing.GetInvocationList())
+        {
+            var interceptor = ((Func<MouseInputArgs, PipelineInterceptorOperation>)nextInterceptor).Invoke(args);
+
+            if (!interceptor.IsSuccess)
+                return false;
+
+            actions.Add(interceptor.Callback!);
+        }
+
+        foreach (var action in actions)
+            action.Invoke();
+
+        return true;
+    }
 }

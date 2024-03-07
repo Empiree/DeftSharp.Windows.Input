@@ -3,7 +3,7 @@
 /// <summary>
 /// Specifies the possible mouse buttons.
 /// </summary>
-public enum MouseButton
+public enum MouseButton : byte
 {
     /// <summary>
     /// The left mouse button.

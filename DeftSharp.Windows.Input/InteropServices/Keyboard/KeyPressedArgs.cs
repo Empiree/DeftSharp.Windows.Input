@@ -7,7 +7,7 @@ namespace DeftSharp.Windows.Input.InteropServices.Keyboard;
 /// <summary>
 /// Provides data for the event that occurs when a key is pressed.
 /// </summary>
-public class KeyPressedArgs : EventArgs
+internal class KeyPressedArgs : EventArgs
 {
     /// <summary>
     /// Gets the key that was pressed.

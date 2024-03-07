@@ -1,6 +1,8 @@
-﻿namespace DeftSharp.Windows.Input.Shared.Interceptors;
+﻿using System;
 
-public interface IInterceptor
+namespace DeftSharp.Windows.Input.Shared.Interceptors;
+
+internal interface IInterceptor : IDisposable
 {
     void Hook();
     void Unhook();

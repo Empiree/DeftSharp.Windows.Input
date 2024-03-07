@@ -81,10 +81,4 @@ public sealed class UnregisterTests
     {
         RunTest(_ => { });
     }
-
-    [Fact]
-    public void Unregister_Test7()
-    {
-        RunTest(listener => listener.Dispose());
-    }
 }

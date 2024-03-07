@@ -48,7 +48,7 @@ public sealed class UnregisterTests
         {
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
             listener.Subscribe(keys, key => { });
-            listener.UnsubscribeAll(keys);
+            listener.Unsubscribe(keys);
         });
     }
 
@@ -88,11 +88,5 @@ public sealed class UnregisterTests
     public void Unregister_Test7()
     {
         RunTest(_ => { });
-    }
-
-    [Fact]
-    public void Unregister_Test8()
-    {
-        RunTest(listener => listener.Dispose());
     }
 }

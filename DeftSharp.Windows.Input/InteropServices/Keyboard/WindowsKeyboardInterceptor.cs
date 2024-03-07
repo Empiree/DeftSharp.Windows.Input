@@ -1,76 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Shared.Interceptors;
+using DeftSharp.Windows.Input.Shared.Interceptors.Keyboard;
 
 namespace DeftSharp.Windows.Input.InteropServices.Keyboard;
 
 /// <summary>
 /// Listens for system keyboard events and raises an event when a key is pressed.
 /// </summary>
-public sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboardInterceptor, IDisposable
+internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboardInterceptor
 {
     #region Singleton
-
     private static readonly Lazy<WindowsKeyboardInterceptor> LazyInstance = new(() => new WindowsKeyboardInterceptor());
     public static WindowsKeyboardInterceptor Instance => LazyInstance.Value;
-
     #endregion
-
-    private readonly HashSet<Key> _lockedKeys;
-
-    public IEnumerable<Key> LockedKeys => _lockedKeys;
     
-    /// <summary>
-    /// Occurs when a key is pressed.
-    /// </summary>
-    public event EventHandler<KeyPressedArgs>? KeyPressed;
-
-    public event Action<Key>? KeyPrevented;
-    public event Action<Key>? KeyReleased;
+    public event Func<KeyPressedArgs, PipelineInterceptorOperation>? KeyProcessing;
 
     private WindowsKeyboardInterceptor()
         : base(InputMessages.WhKeyboardLl)
     {
-        _lockedKeys = new HashSet<Key>();
     }
-
-    public void Prevent(Key key)
-    {
-        if (_lockedKeys.Any(k => k == key))
-            return;
-
-        _lockedKeys.Add(key);
-        KeyPrevented?.Invoke(key);
-    }
-
-    public void Release(Key key)
-    {
-        if (_lockedKeys.All(k => k != key))
-            return;
-
-        _lockedKeys.Remove(key);
-        KeyReleased?.Invoke(key);
-    }
-
-    public void ReleaseAll()
-    {
-        var keys = _lockedKeys.ToArray();
-
-        foreach (var key in keys)
-            Release(key);
-    }
-
-    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-    public void Dispose()
-    {
-        ReleaseAll();
-        Unhook();
-    }
+    
+    public void Press(Key key) => KeyboardAPI.PressButton(key);
 
     /// <summary>
     /// Callback method for the keyboard hook.
@@ -87,16 +43,33 @@ public sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboardIn
         var virtualKeyCode = Marshal.ReadInt32(lParam);
         var key = KeyInterop.KeyFromVirtualKey(virtualKeyCode);
         var keyEvent = (KeyboardEvent)wParam;
-
-        if (IsKeyLocked(key))
-            return 1;
-
         var keyPressedArgs = new KeyPressedArgs(key, keyEvent);
-
-        KeyPressed?.Invoke(this, keyPressedArgs);
-
-        return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
+        
+        return CanBeProcessed(keyPressedArgs) 
+            ? WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam) 
+            : 1;
     }
 
-    private bool IsKeyLocked(Key key) => _lockedKeys.Any(k => k == key);
+    private bool CanBeProcessed(KeyPressedArgs args)
+    {
+        if (KeyProcessing is null) 
+            return true;
+
+        var actions = new List<Action>();
+        
+        foreach (var nextInterceptor in KeyProcessing.GetInvocationList())
+        {
+            var interceptor = ((Func<KeyPressedArgs, PipelineInterceptorOperation>)nextInterceptor).Invoke(args);
+            
+            if (!interceptor.IsSuccess)
+                return false;
+          
+            actions.Add(interceptor.Callback!);
+        }
+        
+        foreach (var action in actions)
+            action.Invoke();
+
+        return true;
+    }
 }

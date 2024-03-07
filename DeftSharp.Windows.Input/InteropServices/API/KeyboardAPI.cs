@@ -22,7 +22,7 @@ internal static class KeyboardAPI
         if (!result)
             throw new KeyboardPressException(key);
     }
-    
+
     /// <summary>
     /// Simulates pressing a key with the specified virtual key code.
     /// </summary>

@@ -3,7 +3,7 @@ using DeftSharp.Windows.Input.Keyboard;
 
 namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
-public class ManipulatorTests
+public class ManipulatorTests : IDisposable
 {
     private readonly WPFEmulator _emulator;
 
@@ -25,7 +25,7 @@ public class ManipulatorTests
             
             Assert.Equal(keyboardManipulator1.LockedKeys.Count(), keyboardManipulator2.LockedKeys.Count());
             
-            keyboardManipulator1.ReleaseAll();
+            keyboardManipulator1.Release(Key.A);
         });
     }
     
@@ -40,11 +40,7 @@ public class ManipulatorTests
             keyboardManipulator1.Prevent(Key.A);
             keyboardManipulator2.Prevent(Key.A);
             
-            Assert.Equal(keyboardManipulator1.LockedKeys.Count(), keyboardManipulator2.LockedKeys.Count());
-            
-            keyboardManipulator1.ReleaseAll();
-            
-            Assert.Empty(keyboardManipulator2.LockedKeys);
+            keyboardManipulator1.Release(Key.A);
         });
     }
     
@@ -60,13 +56,10 @@ public class ManipulatorTests
             keyboardManipulator1.Prevent(Key.Q);
             keyboardManipulator2.Prevent(Key.W);
             keyboardManipulator3.Prevent(Key.R);
-            
-            Assert.Equal(keyboardManipulator1.LockedKeys.Count(), keyboardManipulator2.LockedKeys.Count());
-            Assert.Equal(keyboardManipulator2.LockedKeys.Count(), keyboardManipulator3.LockedKeys.Count());
-            
-            keyboardManipulator1.ReleaseAll();
-            
-            Assert.Empty(keyboardManipulator2.LockedKeys);
+
+            keyboardManipulator1.Release(Key.Q);
+            keyboardManipulator2.Release(Key.W);
+            keyboardManipulator3.Release(Key.R);
         });
     }
     
@@ -82,10 +75,8 @@ public class ManipulatorTests
             keyboardManipulator1.Prevent(Key.Q);
             keyboardManipulator2.Prevent(Key.W);
 
-            keyboardManipulator3.ReleaseAll();
-            
-            Assert.Empty(keyboardManipulator1.LockedKeys);
-            Assert.Empty(keyboardManipulator2.LockedKeys);
+            keyboardManipulator3.Release(Key.Q);
+            keyboardManipulator3.Release(Key.W);
         });
     }
     
@@ -104,7 +95,8 @@ public class ManipulatorTests
                         keyboardManipulator2.Prevent(Key.W);
                     }
                     
-                    Assert.Empty(keyboardManipulator2.LockedKeys);
+                    keyboardManipulator1.Release(Key.Q);
+                    keyboardManipulator1.Release(Key.W);
                 }
             }
         });
@@ -137,9 +129,16 @@ public class ManipulatorTests
             
             Assert.Equal(2, counterOfPreventEvents);
             
-            keyboardManipulator3.ReleaseAll();
+            keyboardManipulator3.Release(Key.A);
+            keyboardManipulator3.Release(Key.E);
             
             Assert.Equal(counterOfReleasedEvents, counterOfPreventEvents);
         });
+    }
+
+    public void Dispose()
+    {
+        var manipulator = new KeyboardManipulator();
+        Assert.Empty(manipulator.LockedKeys);
     }
 }

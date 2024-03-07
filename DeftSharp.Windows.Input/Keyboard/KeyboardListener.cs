@@ -2,106 +2,46 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using DeftSharp.Windows.Input.InteropServices.Keyboard;
-using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Listeners;
+using DeftSharp.Windows.Input.Keyboard.Interceptors;
+using DeftSharp.Windows.Input.Shared.Interceptors.Keyboard;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-public sealed class KeyboardListener : InputListener<KeyboardSubscription>, IDisposable
+public sealed class KeyboardListener : IDisposable
 {
-    private readonly IKeyboardInterceptor _keyboardInterceptor;
+    private readonly IKeyboardListenerInterceptor _keyboardInterceptor;
+    public bool IsListening => _keyboardInterceptor.Subscriptions.Any();
+    public IEnumerable<KeyboardSubscription> Subscriptions => _keyboardInterceptor.Subscriptions;
 
     public KeyboardListener()
     {
-        _keyboardInterceptor = WindowsKeyboardInterceptor.Instance;
-        _keyboardInterceptor.KeyPressed += OnKeyPressed;
-        _keyboardInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
+        _keyboardInterceptor = new KeyboardListenerInterceptor();
+    }
+
+    ~KeyboardListener()
+    {
+        Dispose();
     }
 
     public void Subscribe(Key key, Action<Key> onClick,
-        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
-    {
-        var keyboardSubscription =
-            new KeyboardSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
-
-        InputSubscriptions.Add(keyboardSubscription);
-    }
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+        _keyboardInterceptor.Subscribe(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
 
     public void Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
-        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
-    {
-        foreach (var key in keys)
-            Subscribe(key, onClick, intervalOfClick, keyboardEvent);
-    }
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+        _keyboardInterceptor.Subscribe(keys, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
 
     public void SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        InputSubscriptions.Add(new KeyboardSubscription(key, onClick, keyboardEvent, true));
+        _keyboardInterceptor.SubscribeOnce(key, onClick, keyboardEvent);
 
-    public void Unsubscribe(Key key)
-    {
-        var subscriptions = InputSubscriptions.Where(e => e.Key.Equals(key)).ToArray();
+    public void Unsubscribe(Key key) => _keyboardInterceptor.Unsubscribe(key);
 
-        foreach (var buttonSubscription in subscriptions)
-            InputSubscriptions.Remove(buttonSubscription);
-    }
+    public void Unsubscribe(IEnumerable<Key> keys) => _keyboardInterceptor.Unsubscribe(keys);
 
-    public void UnsubscribeAll(IEnumerable<Key> keys)
-    {
-        foreach (var key in keys)
-            Unsubscribe(key);
-    }
+    public void Unsubscribe(Guid id) => _keyboardInterceptor.Unsubscribe(id);
 
-    public void Unsubscribe(Guid id)
-    {
-        var keyboardSubscribe = InputSubscriptions.FirstOrDefault(s => s.Id == id);
+    public void UnsubscribeAll() => _keyboardInterceptor.UnsubscribeAll();
 
-        if (keyboardSubscribe is null)
-            return;
-
-        InputSubscriptions.Remove(keyboardSubscribe);
-    }
-
-    public void Dispose()
-    {
-        Unregister();
-
-        _keyboardInterceptor.KeyPressed -= OnKeyPressed;
-        _keyboardInterceptor.UnhookRequested -= OnInterceptorUnhookRequested;
-    }
-
-    private bool OnInterceptorUnhookRequested() => !InputSubscriptions.Any();
-
-    protected override void Register()
-    {
-        if (IsListening)
-            return;
-
-        _keyboardInterceptor.Hook();
-        base.Register();
-    }
-
-    protected override void Unregister()
-    {
-        if (!IsListening)
-            return;
-
-        UnsubscribeAll();
-        _keyboardInterceptor.Unhook();
-        base.Unregister();
-    }
-
-    private void OnKeyPressed(object? sender, KeyPressedArgs e)
-    {
-        var keyboardEvents =
-            InputSubscriptions.Where(s => s.Key.Equals(e.KeyPressed) && s.Event == e.Event).ToArray();
-        foreach (var keyboardEvent in keyboardEvents)
-        {
-            if (keyboardEvent.SingleUse)
-                Unsubscribe(keyboardEvent.Id);
-
-            keyboardEvent.Invoke();
-        }
-    }
+    public void Dispose() => _keyboardInterceptor.Dispose();
 }

@@ -1,6 +1,6 @@
 ﻿namespace DeftSharp.Windows.Input.Mouse;
 
-public enum MouseEvent : short
+public enum MouseEvent : ushort
 {
     Move = 512,
     LeftButtonDown = 513,

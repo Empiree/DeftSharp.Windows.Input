@@ -2,7 +2,7 @@
 
 namespace DeftSharp.Windows.Input.Shared.Interceptors;
 
-public interface IRequestedInterceptor : IInterceptor
+internal interface IRequestedInterceptor : IInterceptor
 {
-    event Func<bool>? UnhookRequested;
+   event Func<bool>? UnhookRequested;
 }
