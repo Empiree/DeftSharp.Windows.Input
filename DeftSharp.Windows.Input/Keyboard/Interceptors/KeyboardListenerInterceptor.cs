@@ -25,7 +25,7 @@ internal sealed class KeyboardListenerInterceptor : IKeyboardListenerInterceptor
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
 
         _keyboardInterceptor = WindowsKeyboardInterceptor.Instance;
-        _keyboardInterceptor.KeyProcessing += OnKeyProcessing;
+        _keyboardInterceptor.InterceptorRequest += OnInterceptorRequest;
         _keyboardInterceptor.UnhookRequested += OnUnhookRequested;
     }
 
@@ -87,13 +87,13 @@ internal sealed class KeyboardListenerInterceptor : IKeyboardListenerInterceptor
     public void Dispose()
     {
         UnsubscribeAll();
-        _keyboardInterceptor.KeyProcessing -= OnKeyProcessing;
+        _keyboardInterceptor.InterceptorRequest -= OnInterceptorRequest;
         _keyboardInterceptor.UnhookRequested -= OnUnhookRequested;
     }
 
     private bool OnUnhookRequested() => (UnhookRequested?.Invoke() ?? true) && !Subscriptions.Any();
 
-    private PipelineInterceptorOperation OnKeyProcessing(KeyPressedArgs args) =>
+    private InterceptorResponse OnInterceptorRequest(KeyPressedArgs args) =>
         new(true, () => HandleKeyPressed(this, args));
 
     private void HandleKeyPressed(object? sender, KeyPressedArgs e)

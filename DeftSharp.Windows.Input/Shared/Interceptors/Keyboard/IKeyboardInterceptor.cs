@@ -6,6 +6,6 @@ namespace DeftSharp.Windows.Input.Shared.Interceptors.Keyboard;
 
 internal interface IKeyboardInterceptor: IRequestedInterceptor
 {
-    event Func<KeyPressedArgs, PipelineInterceptorOperation>? KeyProcessing;
+    event Func<KeyPressedArgs, InterceptorResponse>? InterceptorRequest;
     void Press(Key key);
 }

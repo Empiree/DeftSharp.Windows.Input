@@ -95,7 +95,7 @@ internal class MouseListenerInterceptor : IMouseListenerInterceptor
     }
 
     private bool OnUnhookRequested() => (UnhookRequested?.Invoke() ?? true) && !Subscriptions.Any();
-    private PipelineInterceptorOperation OnKeyProcessing(MouseInputArgs args) =>
+    private InterceptorResponse OnKeyProcessing(MouseInputArgs args) =>
         new(true, () => HandleMouseInput(this, args));
 
     private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

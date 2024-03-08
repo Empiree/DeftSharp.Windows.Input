@@ -92,6 +92,6 @@ internal class MouseManipulatorInterceptor : IMouseManipulatorInterceptor
 
     private bool OnInterceptorUnhookRequested() => (UnhookRequested?.Invoke() ?? true) && !_lockedKeys.Any();
 
-    private PipelineInterceptorOperation OnKeyProcessing(MouseInputArgs args) =>
+    private InterceptorResponse OnKeyProcessing(MouseInputArgs args) =>
         new(!IsKeyLocked(args.Event), () => { });
 }

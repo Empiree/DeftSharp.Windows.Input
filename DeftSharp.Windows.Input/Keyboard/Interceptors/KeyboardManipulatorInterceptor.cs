@@ -33,7 +33,7 @@ internal sealed class KeyboardManipulatorInterceptor : IKeyboardManipulatorInter
     {
         _lockedKeys = new HashSet<Key>();
         _keyboardInterceptor = WindowsKeyboardInterceptor.Instance;
-        _keyboardInterceptor.KeyProcessing += OnKeyProcessing;
+        _keyboardInterceptor.InterceptorRequest += OnInterceptorRequest;
         _keyboardInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
@@ -87,12 +87,12 @@ internal sealed class KeyboardManipulatorInterceptor : IKeyboardManipulatorInter
     public void Dispose()
     {
         ReleaseAll();
-        _keyboardInterceptor.KeyProcessing -= OnKeyProcessing;
+        _keyboardInterceptor.InterceptorRequest -= OnInterceptorRequest;
         _keyboardInterceptor.UnhookRequested -= OnInterceptorUnhookRequested;
     }
 
     private bool OnInterceptorUnhookRequested() => (UnhookRequested?.Invoke() ?? true) && !_lockedKeys.Any();
 
-    private PipelineInterceptorOperation OnKeyProcessing(KeyPressedArgs args) =>
-        new(!IsKeyLocked(args.KeyPressed), () => { });
+    private InterceptorResponse OnInterceptorRequest(KeyPressedArgs args) =>
+        new(!IsKeyLocked(args.KeyPressed));
 }

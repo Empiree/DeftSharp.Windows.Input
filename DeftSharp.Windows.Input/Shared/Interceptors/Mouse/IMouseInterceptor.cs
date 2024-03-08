@@ -6,7 +6,7 @@ namespace DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
 
 internal interface IMouseInterceptor : IRequestedInterceptor
 {
-    event Func<MouseInputArgs, PipelineInterceptorOperation>? MouseProcessing;
+    event Func<MouseInputArgs, InterceptorResponse>? MouseProcessing;
 
     Coordinates GetPosition();
     void SetPosition(int x, int y);

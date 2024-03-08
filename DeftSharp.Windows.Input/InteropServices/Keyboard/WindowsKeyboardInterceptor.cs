@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.API;
@@ -19,7 +20,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
     public static WindowsKeyboardInterceptor Instance => LazyInstance.Value;
     #endregion
     
-    public event Func<KeyPressedArgs, PipelineInterceptorOperation>? KeyProcessing;
+    public event Func<KeyPressedArgs, InterceptorResponse>? InterceptorRequest;
 
     private WindowsKeyboardInterceptor()
         : base(InputMessages.WhKeyboardLl)
@@ -57,24 +58,26 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
     /// <returns>True if the event can be processed; otherwise, false.</returns>
     private bool CanBeProcessed(KeyPressedArgs args)
     {
-        if (KeyProcessing is null) 
-            return true;
+        if (InterceptorRequest is null) 
+            return true;    
 
-        var actions = new List<Action>();
+        var interceptors = new List<InterceptorResponse>();
         
-        foreach (var nextInterceptor in KeyProcessing.GetInvocationList())
+        foreach (var nextInterceptor in InterceptorRequest.GetInvocationList())
         {
-            var interceptor = ((Func<KeyPressedArgs, PipelineInterceptorOperation>)nextInterceptor).Invoke(args);
-            
-            if (!interceptor.IsSuccess)
-                return false;
-          
-            actions.Add(interceptor.Callback!);
+            var interceptor = ((Func<KeyPressedArgs, InterceptorResponse>)nextInterceptor).Invoke(args);
+            interceptors.Add(interceptor);
         }
-        
-        foreach (var action in actions)
-            action.Invoke();
 
-        return true;
+        var canBeProcessed = interceptors.All(i => i.IsSuccess);
+
+        var callBacks = canBeProcessed
+            ? interceptors.Select(i => i.OnPipelineSuccess).ToArray()
+            : interceptors.Select(i => i.OnPipelineFailed).ToArray();
+        
+        foreach (var callBack in callBacks)
+            callBack?.Invoke();
+
+        return canBeProcessed;
     }
 }

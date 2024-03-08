@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Shared.Interceptors;
@@ -16,7 +17,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
 
     #endregion
 
-    public event Func<MouseInputArgs, PipelineInterceptorOperation>? MouseProcessing;
+    public event Func<MouseInputArgs, InterceptorResponse>? MouseProcessing;
 
     private WindowsMouseInterceptor()
         : base(InputMessages.WhMouseLl)
@@ -55,24 +56,26 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
     /// <returns>True if the event can be processed; otherwise, false.</returns>
     private bool CanBeProcessed(MouseInputArgs args)
     {
-        if (MouseProcessing is null)
+        if (MouseProcessing is null) 
             return true;
 
-        var actions = new List<Action>();
-
+        var interceptors = new List<InterceptorResponse>();
+        
         foreach (var nextInterceptor in MouseProcessing.GetInvocationList())
         {
-            var interceptor = ((Func<MouseInputArgs, PipelineInterceptorOperation>)nextInterceptor).Invoke(args);
-
-            if (!interceptor.IsSuccess)
-                return false;
-
-            actions.Add(interceptor.Callback!);
+            var interceptor = ((Func<MouseInputArgs, InterceptorResponse>)nextInterceptor).Invoke(args);
+            interceptors.Add(interceptor);
         }
 
-        foreach (var action in actions)
-            action.Invoke();
+        var canBeProcessed = interceptors.All(i => i.IsSuccess);
 
-        return true;
+        var callBacks = canBeProcessed
+            ? interceptors.Select(i => i.OnPipelineSuccess).ToArray()
+            : interceptors.Select(i => i.OnPipelineFailed).ToArray();
+        
+        foreach (var callBack in callBacks)
+            callBack?.Invoke();
+
+        return canBeProcessed;
     }
 }
