@@ -86,5 +86,5 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor, IMouseMani
     protected override bool OnInterceptorUnhookRequested() => !_lockedKeys.Any();
 
     protected override InterceptorResponse OnInterceptorPipelineRequested(MouseInputArgs args) =>
-        new(!IsKeyLocked(args.Event), () => { });
+        new(!IsKeyLocked(args.Event), PipelineInterceptor.Manipulator,() => { });
 }

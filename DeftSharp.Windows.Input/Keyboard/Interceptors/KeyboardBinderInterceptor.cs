@@ -22,6 +22,8 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
     #endregion
 
     private readonly ConcurrentDictionary<Key, Key> _boundedKeys;
+    
+    private Key? _lastProcessedBoundedKey;
 
     public IReadOnlyDictionary<Key, Key> BoundedKeys => _boundedKeys;
 
@@ -38,6 +40,9 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
 
     public void Bind(Key oldKey, Key newKey)
     {
+        if (oldKey == newKey)
+            return;
+        
         if (_boundedKeys.ContainsKey(oldKey))
             _boundedKeys[oldKey] = newKey;
 
@@ -78,14 +83,31 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
     protected override InterceptorResponse OnInterceptorPipelineRequested(KeyPressedArgs args)
     {
         return new InterceptorResponse(
-            !IsKeyBounded(args.KeyPressed),
-            null, () =>
+            CanBeProcessed(args.KeyPressed),
+            PipelineInterceptor.Binder,
+            null, failedInterceptors =>
             {
                 if (args.Event == KeyboardEvent.KeyUp)
                     return;
 
+                if (!failedInterceptors.Contains(PipelineInterceptor.Binder))
+                    return;
+                
+                if (!IsKeyBounded(args.KeyPressed))
+                    return;
+                
                 var key = _boundedKeys[args.KeyPressed];
+                _lastProcessedBoundedKey = key;
                 KeyboardAPI.PressButton(key);
             });
+    }
+
+    private bool CanBeProcessed(Key pressedKey)
+    {
+        if (IsKeyBounded(pressedKey) && _lastProcessedBoundedKey != pressedKey) 
+            return false;
+        
+        _lastProcessedBoundedKey = null;
+        return true;
     }
 }

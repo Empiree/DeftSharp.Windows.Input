@@ -75,7 +75,7 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor, IMouseListene
     protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
 
     protected override InterceptorResponse OnInterceptorPipelineRequested(MouseInputArgs args) =>
-        new(true, () => HandleMouseInput(this, args));
+        new(true, PipelineInterceptor.Listener,() => HandleMouseInput(this, args));
 
     private void HandleMouseInput(object? sender, MouseInputArgs e)
     {

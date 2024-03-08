@@ -86,5 +86,5 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKey
     protected override bool OnInterceptorUnhookRequested() => !_lockedKeys.Any();
 
     protected override InterceptorResponse OnInterceptorPipelineRequested(KeyPressedArgs args) =>
-        new(!IsKeyLocked(args.KeyPressed));
+        new(!IsKeyLocked(args.KeyPressed), PipelineInterceptor.Manipulator);
 }

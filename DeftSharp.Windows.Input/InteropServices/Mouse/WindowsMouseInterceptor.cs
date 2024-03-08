@@ -28,7 +28,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
     public Coordinates GetPosition() => MouseAPI.GetPosition();
     public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);
     public void Click(int x, int y, MouseButton button) => MouseAPI.Click(button, x, y);
-    
+
 
     /// <summary>
     /// Callback method for the mouse hook.
@@ -57,11 +57,11 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
     /// <returns>True if the event can be processed; otherwise, false.</returns>
     private bool CanBeProcessed(MouseInputArgs args)
     {
-        if (InterceptorPipelineRequested is null) 
+        if (InterceptorPipelineRequested is null)
             return true;
 
         var interceptors = new List<InterceptorResponse>();
-        
+
         foreach (var nextInterceptor in InterceptorPipelineRequested.GetInvocationList())
         {
             var interceptor = ((MousePipelineDelegate)nextInterceptor).Invoke(args);
@@ -70,13 +70,21 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
 
         var canBeProcessed = interceptors.All(i => i.IsAllowed);
 
-        var callBacks = canBeProcessed
-            ? interceptors.Select(i => i.OnPipelineSuccess).ToArray()
-            : interceptors.Select(i => i.OnPipelineFailed).ToArray();
-        
-        foreach (var callBack in callBacks)
-            callBack?.Invoke();
+        if (canBeProcessed)
+        {
+            foreach (var action in interceptors.Select(i => i.OnPipelineSuccess))
+                action?.Invoke();
+            return true;
+        }
 
-        return canBeProcessed;
+        var failedInterceptors = interceptors
+            .Where(i => !i.IsAllowed)
+            .Select(i => i.Interceptor)
+            .ToArray();
+        
+        foreach (var action in interceptors.Select(i => i.OnPipelineFailed))
+            action?.Invoke(failedInterceptors);
+
+        return false;
     }
 }
