@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using DeftSharp.Windows.Input.Mouse.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
+using DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
 
 namespace DeftSharp.Windows.Input.Mouse;
 
 public sealed class MouseManipulator : IDisposable
 {
-    private readonly IMouseManipulatorInterceptor _mouseInterceptor;
+    private readonly IMouseManipulator _mouseInterceptor;
     public IEnumerable<MouseEvent> LockedKeys => _mouseInterceptor.LockedKeys;
 
     public event Action<MouseEvent>? ClickPrevented;

@@ -5,28 +5,22 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
-using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Keyboard;
+using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
+using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
-internal sealed class KeyboardListenerInterceptor : IKeyboardListenerInterceptor
+internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboardListener
 {
     private readonly ObservableCollection<KeyboardSubscription> _subscriptions;
-    private readonly IKeyboardInterceptor _keyboardInterceptor;
-
-    public event Func<bool>? UnhookRequested;
     public IEnumerable<KeyboardSubscription> Subscriptions => _subscriptions;
 
     public KeyboardListenerInterceptor()
+        : base(WindowsKeyboardInterceptor.Instance)
     {
         _subscriptions = new ObservableCollection<KeyboardSubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
-
-        _keyboardInterceptor = WindowsKeyboardInterceptor.Instance;
-        _keyboardInterceptor.InterceptorRequest += OnInterceptorRequest;
-        _keyboardInterceptor.UnhookRequested += OnUnhookRequested;
     }
 
     ~KeyboardListenerInterceptor()
@@ -81,19 +75,15 @@ internal sealed class KeyboardListenerInterceptor : IKeyboardListenerInterceptor
             _subscriptions.Clear();
     }
 
-    public void Hook() => _keyboardInterceptor.Hook();
-    public void Unhook() => _keyboardInterceptor.Unhook();
-
-    public void Dispose()
+    public override void Dispose()
     {
         UnsubscribeAll();
-        _keyboardInterceptor.InterceptorRequest -= OnInterceptorRequest;
-        _keyboardInterceptor.UnhookRequested -= OnUnhookRequested;
+        base.Dispose();
     }
 
-    private bool OnUnhookRequested() => (UnhookRequested?.Invoke() ?? true) && !Subscriptions.Any();
+    protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
 
-    private InterceptorResponse OnInterceptorRequest(KeyPressedArgs args) =>
+    protected override InterceptorResponse OnInterceptorPipelineRequested(KeyPressedArgs args) =>
         new(true, () => HandleKeyPressed(this, args));
 
     private void HandleKeyPressed(object? sender, KeyPressedArgs e)

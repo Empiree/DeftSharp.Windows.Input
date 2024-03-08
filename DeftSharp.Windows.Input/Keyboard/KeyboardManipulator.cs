@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Keyboard;
+using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
 public sealed class KeyboardManipulator : IDisposable
 {
-    private readonly IKeyboardManipulatorInterceptor _keyboardInterceptor;
+    private readonly IKeyboardManipulator _keyboardInterceptor;
     public IEnumerable<Key> LockedKeys => _keyboardInterceptor.LockedKeys;
 
     public event Action<Key>? KeyPrevented;

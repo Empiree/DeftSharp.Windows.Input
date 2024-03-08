@@ -4,36 +4,30 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
-using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
+using DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
+using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
-internal class MouseListenerInterceptor : IMouseListenerInterceptor
+internal sealed class MouseListenerInterceptor : MouseInterceptor, IMouseListener
 {
-    public event Func<bool>? UnhookRequested;
-
     private readonly ObservableCollection<MouseSubscription> _subscriptions;
-    private readonly IMouseInterceptor _mouseInterceptor;
 
     public IEnumerable<MouseSubscription> Subscriptions => _subscriptions;
 
     public MouseListenerInterceptor()
+        : base(WindowsMouseInterceptor.Instance)
     {
         _subscriptions = new ObservableCollection<MouseSubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
-
-        _mouseInterceptor = WindowsMouseInterceptor.Instance;
-        _mouseInterceptor.MouseProcessing += OnKeyProcessing;
-        _mouseInterceptor.UnhookRequested += OnUnhookRequested;
     }
 
     ~MouseListenerInterceptor()
     {
         Dispose();
     }
-    
+
     public void Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan intervalOfClick)
     {
         var subscription = new MouseSubscription(mouseEvent, onAction, intervalOfClick);
@@ -70,16 +64,18 @@ internal class MouseListenerInterceptor : IMouseListenerInterceptor
             _subscriptions.Clear();
     }
 
-    public void Hook() => _mouseInterceptor.Hook();
-    public void Unhook() => _mouseInterceptor.Unhook();
-    public Coordinates GetPosition() => _mouseInterceptor.GetPosition();
+    public Coordinates GetPosition() => Mouse.GetPosition();
 
-    public void Dispose()
+    public override void Dispose()
     {
         UnsubscribeAll();
-        _mouseInterceptor.MouseProcessing -= OnKeyProcessing;
-        _mouseInterceptor.UnhookRequested -= OnUnhookRequested;
+        base.Dispose();
     }
+
+    protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
+
+    protected override InterceptorResponse OnInterceptorPipelineRequested(MouseInputArgs args) =>
+        new(true, () => HandleMouseInput(this, args));
 
     private void HandleMouseInput(object? sender, MouseInputArgs e)
     {
@@ -93,10 +89,6 @@ internal class MouseListenerInterceptor : IMouseListenerInterceptor
             mouseEvent.Invoke();
         }
     }
-
-    private bool OnUnhookRequested() => (UnhookRequested?.Invoke() ?? true) && !Subscriptions.Any();
-    private InterceptorResponse OnKeyProcessing(MouseInputArgs args) =>
-        new(true, () => HandleMouseInput(this, args));
 
     private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using DeftSharp.Windows.Input.Mouse;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
+namespace DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
 
-internal interface IMouseManipulatorInterceptor : IRequestedInterceptor
+internal interface IMouseManipulator : IDisposable
 {
     IEnumerable<MouseEvent> LockedKeys { get;}
     

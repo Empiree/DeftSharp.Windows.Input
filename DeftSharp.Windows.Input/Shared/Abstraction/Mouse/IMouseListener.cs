@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
+namespace DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
 
-internal interface IMouseListenerInterceptor : IRequestedInterceptor
+internal interface IMouseListener : IDisposable
 {
     IEnumerable<MouseSubscription> Subscriptions { get; }
     

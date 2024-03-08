@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using DeftSharp.Windows.Input.Mouse.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
+using DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Mouse;
 
 public sealed class MouseListener: IDisposable
 {
-    private readonly IMouseListenerInterceptor _mouseInterceptor;
+    private readonly IMouseListener _mouseInterceptor;
     public bool IsListening => _mouseInterceptor.Subscriptions.Any();
     public IEnumerable<MouseSubscription> Subscriptions => _mouseInterceptor.Subscriptions;
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors.Keyboard;
+namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
-internal interface IKeyboardManipulatorInterceptor : IRequestedInterceptor
+internal interface IKeyboardManipulator : IDisposable
 {
     IEnumerable<Key> LockedKeys { get; }
 

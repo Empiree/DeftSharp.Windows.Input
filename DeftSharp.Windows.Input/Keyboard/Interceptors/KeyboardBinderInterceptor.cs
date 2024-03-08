@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
-using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Keyboard;
+using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
+using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
-internal class KeyboardBinderInterceptor : IKeyboardBinderInterceptor
+internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboardBinder
 {
     #region Singleton
 
@@ -20,27 +21,21 @@ internal class KeyboardBinderInterceptor : IKeyboardBinderInterceptor
 
     #endregion
 
-    private readonly IKeyboardInterceptor _keyboardInterceptor;
     private readonly ConcurrentDictionary<Key, Key> _boundedKeys;
 
-    public ConcurrentDictionary<Key, Key> BoundedKeys => _boundedKeys;
-    
-    public event Func<bool>? UnhookRequested;
+    public IReadOnlyDictionary<Key, Key> BoundedKeys => _boundedKeys;
 
     private KeyboardBinderInterceptor()
+        : base(WindowsKeyboardInterceptor.Instance)
     {
         _boundedKeys = new ConcurrentDictionary<Key, Key>();
-        _keyboardInterceptor = WindowsKeyboardInterceptor.Instance;
-        _keyboardInterceptor.InterceptorRequest += OnInterceptorRequest;
-        _keyboardInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
-        
     }
 
     ~KeyboardBinderInterceptor()
     {
         Dispose();
     }
-    
+
     public void Bind(Key oldKey, Key newKey)
     {
         if (_boundedKeys.ContainsKey(oldKey))
@@ -56,10 +51,10 @@ internal class KeyboardBinderInterceptor : IKeyboardBinderInterceptor
             return;
 
         var boundedKey = _boundedKeys.FirstOrDefault();
-        
+
         _boundedKeys.TryRemove(boundedKey);
-        
-        if(!_boundedKeys.Any())
+
+        if (!_boundedKeys.Any())
             Unhook();
     }
 
@@ -70,20 +65,17 @@ internal class KeyboardBinderInterceptor : IKeyboardBinderInterceptor
             Unbind(boundedKey);
     }
 
-    public void Dispose()
+    public bool IsKeyBounded(Key key) => _boundedKeys.ContainsKey(key);
+
+    public override void Dispose()
     {
         UnbindAll();
-        _keyboardInterceptor.InterceptorRequest -= OnInterceptorRequest;
-        _keyboardInterceptor.UnhookRequested -= OnInterceptorUnhookRequested;
+        base.Dispose();
     }
 
-    public void Hook() => _keyboardInterceptor.Hook();
+    protected override bool OnInterceptorUnhookRequested() => !_boundedKeys.Any();
 
-    public void Unhook() => _keyboardInterceptor.Unhook();
-    
-    private bool OnInterceptorUnhookRequested() => (UnhookRequested?.Invoke() ?? true) && !_boundedKeys.Any();
-
-    private InterceptorResponse OnInterceptorRequest(KeyPressedArgs args)
+    protected override InterceptorResponse OnInterceptorPipelineRequested(KeyPressedArgs args)
     {
         return new InterceptorResponse(
             !IsKeyBounded(args.KeyPressed),
@@ -91,11 +83,9 @@ internal class KeyboardBinderInterceptor : IKeyboardBinderInterceptor
             {
                 if (args.Event == KeyboardEvent.KeyUp)
                     return;
-                
+
                 var key = _boundedKeys[args.KeyPressed];
                 KeyboardAPI.PressButton(key);
             });
     }
-
-    public bool IsKeyBounded(Key key) => _boundedKeys.ContainsKey(key);
 }

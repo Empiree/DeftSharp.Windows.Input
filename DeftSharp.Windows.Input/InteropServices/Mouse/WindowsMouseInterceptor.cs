@@ -4,7 +4,7 @@ using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
+using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 namespace DeftSharp.Windows.Input.InteropServices.Mouse;
 
@@ -17,7 +17,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
 
     #endregion
 
-    public event Func<MouseInputArgs, InterceptorResponse>? MouseProcessing;
+    public event Func<MouseInputArgs, InterceptorResponse>? InterceptorPipelineRequested;
 
     private WindowsMouseInterceptor()
         : base(InputMessages.WhMouseLl)
@@ -56,12 +56,12 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
     /// <returns>True if the event can be processed; otherwise, false.</returns>
     private bool CanBeProcessed(MouseInputArgs args)
     {
-        if (MouseProcessing is null) 
+        if (InterceptorPipelineRequested is null) 
             return true;
 
         var interceptors = new List<InterceptorResponse>();
         
-        foreach (var nextInterceptor in MouseProcessing.GetInvocationList())
+        foreach (var nextInterceptor in InterceptorPipelineRequested.GetInvocationList())
         {
             var interceptor = ((Func<MouseInputArgs, InterceptorResponse>)nextInterceptor).Invoke(args);
             interceptors.Add(interceptor);

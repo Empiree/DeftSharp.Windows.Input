@@ -6,7 +6,7 @@ using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Keyboard;
+using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 namespace DeftSharp.Windows.Input.InteropServices.Keyboard;
 
@@ -20,7 +20,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
     public static WindowsKeyboardInterceptor Instance => LazyInstance.Value;
     #endregion
     
-    public event Func<KeyPressedArgs, InterceptorResponse>? InterceptorRequest;
+    public event Func<KeyPressedArgs, InterceptorResponse>? InterceptorPipelineRequested;
 
     private WindowsKeyboardInterceptor()
         : base(InputMessages.WhKeyboardLl)
@@ -58,12 +58,12 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
     /// <returns>True if the event can be processed; otherwise, false.</returns>
     private bool CanBeProcessed(KeyPressedArgs args)
     {
-        if (InterceptorRequest is null) 
+        if (InterceptorPipelineRequested is null) 
             return true;    
 
         var interceptors = new List<InterceptorResponse>();
         
-        foreach (var nextInterceptor in InterceptorRequest.GetInvocationList())
+        foreach (var nextInterceptor in InterceptorPipelineRequested.GetInvocationList())
         {
             var interceptor = ((Func<KeyPressedArgs, InterceptorResponse>)nextInterceptor).Invoke(args);
             interceptors.Add(interceptor);

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
-using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Keyboard;
+using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
+using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
-internal sealed class KeyboardManipulatorInterceptor : IKeyboardManipulatorInterceptor
+internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKeyboardManipulator
 {
     #region Singleton
 
@@ -19,22 +19,17 @@ internal sealed class KeyboardManipulatorInterceptor : IKeyboardManipulatorInter
 
     #endregion
 
-    private readonly IKeyboardInterceptor _keyboardInterceptor;
     private readonly HashSet<Key> _lockedKeys;
     private readonly object _lock = new();
-
-    public event Func<bool>? UnhookRequested;
     public event Action<Key>? KeyPrevented;
     public event Action<Key>? KeyReleased;
 
     public IEnumerable<Key> LockedKeys => _lockedKeys;
 
     private KeyboardManipulatorInterceptor()
+        : base(WindowsKeyboardInterceptor.Instance)
     {
         _lockedKeys = new HashSet<Key>();
-        _keyboardInterceptor = WindowsKeyboardInterceptor.Instance;
-        _keyboardInterceptor.InterceptorRequest += OnInterceptorRequest;
-        _keyboardInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
     ~KeyboardManipulatorInterceptor()
@@ -42,7 +37,7 @@ internal sealed class KeyboardManipulatorInterceptor : IKeyboardManipulatorInter
         Dispose();
     }
 
-    public void Press(Key key) => _keyboardInterceptor.Press(key);
+    public void Press(Key key) => Keyboard.Press(key);
 
     public void Prevent(Key key)
     {
@@ -80,19 +75,16 @@ internal sealed class KeyboardManipulatorInterceptor : IKeyboardManipulatorInter
             Release(key);
     }
 
-    public void Hook() => _keyboardInterceptor.Hook();
-    public void Unhook() => _keyboardInterceptor.Unhook();
     public bool IsKeyLocked(Key key) => _lockedKeys.Any(k => k == key);
 
-    public void Dispose()
+    public override void Dispose()
     {
         ReleaseAll();
-        _keyboardInterceptor.InterceptorRequest -= OnInterceptorRequest;
-        _keyboardInterceptor.UnhookRequested -= OnInterceptorUnhookRequested;
+        base.Dispose();
     }
 
-    private bool OnInterceptorUnhookRequested() => (UnhookRequested?.Invoke() ?? true) && !_lockedKeys.Any();
+    protected override bool OnInterceptorUnhookRequested() => !_lockedKeys.Any();
 
-    private InterceptorResponse OnInterceptorRequest(KeyPressedArgs args) =>
+    protected override InterceptorResponse OnInterceptorPipelineRequested(KeyPressedArgs args) =>
         new(!IsKeyLocked(args.KeyPressed));
 }

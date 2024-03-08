@@ -4,9 +4,9 @@ using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors.Keyboard;
+namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
-internal interface IKeyboardListenerInterceptor : IRequestedInterceptor
+internal interface IKeyboardListener : IDisposable
 {
     IEnumerable<KeyboardSubscription> Subscriptions { get; }
 

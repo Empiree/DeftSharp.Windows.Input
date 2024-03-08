@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors;
+namespace DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 internal sealed class InterceptorResponse
 {

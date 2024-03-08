@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
-using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
+using DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
+using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
-internal class MouseManipulatorInterceptor : IMouseManipulatorInterceptor
+internal sealed class MouseManipulatorInterceptor : MouseInterceptor, IMouseManipulator
 {
     #region Singleton
 
@@ -18,22 +18,18 @@ internal class MouseManipulatorInterceptor : IMouseManipulatorInterceptor
 
     #endregion
 
-    private readonly IMouseInterceptor _mouseInterceptor;
     private readonly HashSet<MouseEvent> _lockedKeys;
     private readonly object _lock = new();
 
     public event Action<MouseEvent>? ClickPrevented;
     public event Action<MouseEvent>? ClickReleased;
-    public event Func<bool>? UnhookRequested;
 
     public IEnumerable<MouseEvent> LockedKeys => _lockedKeys;
 
     public MouseManipulatorInterceptor()
+        : base(WindowsMouseInterceptor.Instance)
     {
         _lockedKeys = new HashSet<MouseEvent>();
-        _mouseInterceptor = WindowsMouseInterceptor.Instance;
-        _mouseInterceptor.MouseProcessing += OnKeyProcessing;
-        _mouseInterceptor.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
     ~MouseManipulatorInterceptor()
@@ -42,10 +38,8 @@ internal class MouseManipulatorInterceptor : IMouseManipulatorInterceptor
     }
 
     public bool IsKeyLocked(MouseEvent mouseEvent) => _lockedKeys.Any(e => e == mouseEvent);
-    public void SetPosition(int x, int y) => _mouseInterceptor.SetPosition(x, y);
-    public void Click(int x, int y, MouseButton button) => _mouseInterceptor.Click(x, y, button);
-    public void Hook() => _mouseInterceptor.Hook();
-    public void Unhook() => _mouseInterceptor.Unhook();
+    public void SetPosition(int x, int y) => Mouse.SetPosition(x, y);
+    public void Click(int x, int y, MouseButton button) => Mouse.Click(x, y, button);
 
     public void Prevent(MouseEvent mouseEvent)
     {
@@ -83,15 +77,14 @@ internal class MouseManipulatorInterceptor : IMouseManipulatorInterceptor
             Release(mouseEvent);
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         ReleaseAll();
-        _mouseInterceptor.MouseProcessing -= OnKeyProcessing;
-        _mouseInterceptor.UnhookRequested -= OnInterceptorUnhookRequested;
+        base.Dispose();
     }
 
-    private bool OnInterceptorUnhookRequested() => (UnhookRequested?.Invoke() ?? true) && !_lockedKeys.Any();
+    protected override bool OnInterceptorUnhookRequested() => !_lockedKeys.Any();
 
-    private InterceptorResponse OnKeyProcessing(MouseInputArgs args) =>
+    protected override InterceptorResponse OnInterceptorPipelineRequested(MouseInputArgs args) =>
         new(!IsKeyLocked(args.Event), () => { });
 }

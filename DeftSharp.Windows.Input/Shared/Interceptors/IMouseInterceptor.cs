@@ -1,12 +1,13 @@
 ﻿using System;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Mouse;
+using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors.Mouse;
+namespace DeftSharp.Windows.Input.Shared.Interceptors;
 
 internal interface IMouseInterceptor : IRequestedInterceptor
 {
-    event Func<MouseInputArgs, InterceptorResponse>? MouseProcessing;
+    event Func<MouseInputArgs, InterceptorResponse>? InterceptorPipelineRequested;
 
     Coordinates GetPosition();
     void SetPosition(int x, int y);
