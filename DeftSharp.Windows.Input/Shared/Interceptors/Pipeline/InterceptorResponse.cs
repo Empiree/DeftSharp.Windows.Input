@@ -4,14 +4,13 @@ namespace DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 internal sealed class InterceptorResponse
 {
-    public bool IsSuccess { get; }
+    public bool IsAllowed { get; }
     public Action? OnPipelineSuccess { get; }
     public Action? OnPipelineFailed { get; }
 
-    public InterceptorResponse(bool isSuccess, Action? onPipelineSuccess = null, Action? onPipelineFailed = null)
+    public InterceptorResponse(bool isAllowed, Action? onPipelineSuccess = null, Action? onPipelineFailed = null)
     {
-        IsSuccess = isSuccess;
-
+        IsAllowed = isAllowed;
         OnPipelineSuccess = onPipelineSuccess;
         OnPipelineFailed = onPipelineFailed;
     }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Windows.Input;
-using DeftSharp.Windows.Input.InteropServices.Keyboard;
-using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
+﻿using System.Windows.Input;
+using DeftSharp.Windows.Input.Shared.Delegates;
 
 namespace DeftSharp.Windows.Input.Shared.Interceptors;
 
 internal interface IKeyboardInterceptor: IRequestedInterceptor
 {
-    event Func<KeyPressedArgs, InterceptorResponse>? InterceptorPipelineRequested;
+    event KeyboardPipelineDelegate? InterceptorPipelineRequested;
     void Press(Key key);
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Mouse;
+using DeftSharp.Windows.Input.Shared.Delegates;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
@@ -17,7 +18,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
 
     #endregion
 
-    public event Func<MouseInputArgs, InterceptorResponse>? InterceptorPipelineRequested;
+    public event MousePipelineDelegate? InterceptorPipelineRequested;
 
     private WindowsMouseInterceptor()
         : base(InputMessages.WhMouseLl)
@@ -63,11 +64,11 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
         
         foreach (var nextInterceptor in InterceptorPipelineRequested.GetInvocationList())
         {
-            var interceptor = ((Func<MouseInputArgs, InterceptorResponse>)nextInterceptor).Invoke(args);
+            var interceptor = ((MousePipelineDelegate)nextInterceptor).Invoke(args);
             interceptors.Add(interceptor);
         }
 
-        var canBeProcessed = interceptors.All(i => i.IsSuccess);
+        var canBeProcessed = interceptors.All(i => i.IsAllowed);
 
         var callBacks = canBeProcessed
             ? interceptors.Select(i => i.OnPipelineSuccess).ToArray()
