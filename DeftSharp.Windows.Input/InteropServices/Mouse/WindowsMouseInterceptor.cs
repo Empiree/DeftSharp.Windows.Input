@@ -48,6 +48,11 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
             : 1;
     }
 
+    /// <summary>
+    /// Checks whether the provided key press event can be processed by the registered event handlers.
+    /// </summary>
+    /// <param name="args">The <see cref="MouseInputArgs"/> representing the mouse press event.</param>
+    /// <returns>True if the event can be processed; otherwise, false.</returns>
     private bool CanBeProcessed(MouseInputArgs args)
     {
         if (MouseProcessing is null)

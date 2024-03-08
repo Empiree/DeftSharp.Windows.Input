@@ -21,6 +21,11 @@ public sealed class KeyboardManipulator : IDisposable
         _keyboardInterceptor.KeyReleased += OnInterceptorKeyReleased;
     }
 
+    ~KeyboardManipulator()
+    {
+        Dispose();
+    }
+
     public void Press(Key key) => _keyboardInterceptor.Press(key);
 
     public void Prevent(Key key) => _keyboardInterceptor.Prevent(key);

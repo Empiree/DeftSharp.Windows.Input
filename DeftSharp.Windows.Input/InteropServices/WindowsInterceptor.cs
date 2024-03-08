@@ -16,6 +16,10 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
     /// </summary>
     private readonly WinAPI.WindowsProcedure _windowsProcedure;
 
+    /// <summary>
+    /// Event that is raised when a request to unhook the windows hook is received.
+    /// Handlers of this event can perform additional checks to determine if unhooking should proceed.
+    /// </summary>
     public event Func<bool>? UnhookRequested;
 
     /// <summary>
@@ -32,6 +36,9 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
         _windowsProcedure = HookCallback;
     }
     
+    /// <summary>
+    /// Sets up the windows hook by installing the hook procedure.
+    /// </summary>
     public void Hook()
     {
         if (_handled)
@@ -41,6 +48,9 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
         _handled = true;
     }
 
+    /// <summary>
+    /// Removes the windows hook by uninstalling the hook procedure.
+    /// </summary>
     public void Unhook()
     {
         if (!_handled)
@@ -63,6 +73,10 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
     /// <returns>The return value of the next hook procedure in the chain.</returns>
     protected abstract nint HookCallback(int nCode, nint wParam, nint lParam);
 
+    /// <summary>
+    /// Checks whether the keyboard hook can be unhooked based on the registered unhook request handlers.
+    /// </summary>
+    /// <returns>True if the keyboard hook can be unhooked; otherwise, false.</returns>
     private bool CanBeUnhooked()
     {
         if (UnhookRequested is null) 
@@ -95,5 +109,8 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
         return WinAPI.SetWindowsHookEx(idHook, procedure, WinAPI.GetModuleHandle(currentModule.ModuleName), 0);
     }
 
+    /// <summary>
+    /// Disposes of the keyboard listener by unhooking the keyboard hook.
+    /// </summary>
     public void Dispose() => Unhook();
 }

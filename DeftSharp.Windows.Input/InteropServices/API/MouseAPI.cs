@@ -9,6 +9,10 @@ namespace DeftSharp.Windows.Input.InteropServices.API;
 /// </summary>
 internal static class MouseAPI
 {
+    /// <summary>
+    /// Retrieves the current position of the cursor on the screen.
+    /// </summary>
+    /// <returns>The current position of the cursor as a <see cref="Coordinates"/> structure.</returns>
     internal static Coordinates GetPosition()
     {
         GetCursorPos(out var position);

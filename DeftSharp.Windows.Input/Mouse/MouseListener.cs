@@ -39,5 +39,5 @@ public sealed class MouseListener: IDisposable
 
     public void UnsubscribeAll() => _mouseInterceptor.UnsubscribeAll();
     
-    public void Dispose() => UnsubscribeAll();
+    public void Dispose() => _mouseInterceptor.Dispose();
 }

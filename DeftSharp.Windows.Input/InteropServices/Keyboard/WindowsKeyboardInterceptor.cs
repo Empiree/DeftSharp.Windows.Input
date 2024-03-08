@@ -25,7 +25,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
         : base(InputMessages.WhKeyboardLl)
     {
     }
-    
+
     public void Press(Key key) => KeyboardAPI.PressButton(key);
 
     /// <summary>
@@ -50,6 +50,11 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
             : 1;
     }
 
+    /// <summary>
+    /// Checks whether the provided key press event can be processed by the registered event handlers.
+    /// </summary>
+    /// <param name="args">The <see cref="KeyPressedArgs"/> representing the key press event.</param>
+    /// <returns>True if the event can be processed; otherwise, false.</returns>
     private bool CanBeProcessed(KeyPressedArgs args)
     {
         if (KeyProcessing is null) 
