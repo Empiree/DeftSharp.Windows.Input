@@ -11,8 +11,8 @@ internal interface IMouseListener : IDisposable
     
     Coordinates GetPosition();
 
-    void Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan intervalOfClick);
-    void SubscribeOnce(MouseEvent mouseEvent, Action onAction);
+    MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan intervalOfClick);
+    MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction);
 
     void Unsubscribe(MouseEvent mouseEvent);
     void Unsubscribe(Guid id);

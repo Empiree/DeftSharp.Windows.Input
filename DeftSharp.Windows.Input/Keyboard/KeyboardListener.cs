@@ -24,15 +24,15 @@ public sealed class KeyboardListener : IDisposable
         Dispose();
     }
 
-    public void Subscribe(Key key, Action<Key> onClick,
+    public KeyboardSubscription Subscribe(Key key, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
         _keyboardInterceptor.Subscribe(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
 
-    public void Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
+    public IEnumerable<KeyboardSubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
         _keyboardInterceptor.Subscribe(keys, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
 
-    public void SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+    public KeyboardSubscription SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
         _keyboardInterceptor.SubscribeOnce(key, onClick, keyboardEvent);
 
     public void Unsubscribe(Key key) => _keyboardInterceptor.Unsubscribe(key);

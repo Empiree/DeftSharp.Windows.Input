@@ -25,10 +25,10 @@ public sealed class MouseListener: IDisposable
     
     public Coordinates GetPosition() => _mouseInterceptor.GetPosition();
 
-    public void Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null) =>
+    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null) =>
         _mouseInterceptor.Subscribe(mouseEvent, onAction, intervalOfClick ?? TimeSpan.Zero);
 
-    public void SubscribeOnce(MouseEvent mouseEvent, Action onAction) =>
+    public MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction) =>
         _mouseInterceptor.SubscribeOnce(mouseEvent, onAction);
 
     public void Unsubscribe(MouseEvent mouseEvent) =>

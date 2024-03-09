@@ -10,9 +10,9 @@ internal interface IKeyboardListener : IDisposable
 {
     IEnumerable<KeyboardSubscription> Subscriptions { get; }
 
-    void Subscribe(Key key, Action<Key> onClick, TimeSpan intervalOfClick, KeyboardEvent keyboardEvent);
-    void Subscribe(IEnumerable<Key> keys, Action<Key> onClick, TimeSpan intervalOfClick, KeyboardEvent keyboardEvent);
-    void SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent);
+    KeyboardSubscription Subscribe(Key key, Action<Key> onClick, TimeSpan intervalOfClick, KeyboardEvent keyboardEvent);
+    IEnumerable<KeyboardSubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick, TimeSpan intervalOfClick, KeyboardEvent keyboardEvent);
+    KeyboardSubscription SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent);
 
     void Unsubscribe(Key key);
     void Unsubscribe(IEnumerable<Key> keys);
