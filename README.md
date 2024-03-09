@@ -63,7 +63,6 @@ numpadListener.Subscribe(number =>
 ## Requirements
 
 - .NET 7.0 for Windows
-- C# 11 language version
 
 ## License
 
