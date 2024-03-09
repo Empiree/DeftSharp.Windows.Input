@@ -7,17 +7,23 @@ namespace DeftSharp.Windows.Input.Keyboard;
 
 public sealed class KeyboardBinder
 {
-    private readonly IKeyboardBinder _keyboardBinderInterceptor;
+    private readonly IKeyboardBinder _keyboardBinder;
 
-    public IReadOnlyDictionary<Key, Key> BoundedKeys => _keyboardBinderInterceptor.BoundedKeys;
+    public IReadOnlyDictionary<Key, Key> BoundedKeys => _keyboardBinder.BoundedKeys;
 
     public KeyboardBinder()
     {
-        _keyboardBinderInterceptor = KeyboardBinderInterceptor.Instance;
+        _keyboardBinder = KeyboardBinderInterceptor.Instance;
     }
     
-    public bool IsKeyBounded(Key key) => _keyboardBinderInterceptor.IsKeyBounded(key);
-    public void Bind(Key oldKey, Key newKey) => _keyboardBinderInterceptor.Bind(oldKey, newKey);
-    public void Unbind(Key key) => _keyboardBinderInterceptor.Unbind(key);
-    public void UnbindAll() => _keyboardBinderInterceptor.UnbindAll();
+    public bool IsKeyBounded(Key key) => _keyboardBinder.IsKeyBounded(key);
+    public void Bind(Key oldKey, Key newKey) => _keyboardBinder.Bind(oldKey, newKey);
+
+    public void BindMany(IEnumerable<Key> keys, Key newKey)
+    {
+        foreach (var oldKey in keys)
+            Bind(oldKey, newKey);
+    }
+    public void Unbind(Key key) => _keyboardBinder.Unbind(key);
+    public void UnbindAll() => _keyboardBinder.UnbindAll();
 }
