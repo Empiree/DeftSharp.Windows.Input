@@ -12,14 +12,14 @@
         <AssemblyName>DeftSharp.Windows.Input</AssemblyName>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>DeftSharp.Windows.Input</Title>
-        <Description>A simple keyboard/mouse event listener for WPF applications. </Description>
+        <Description>A simple keyboard/mouse event handler for Windows UI applications (WPF, MAUI, Avalonia) </Description>
         <Copyright>(c) DeftSharp 2024</Copyright>
         <PackageProjectUrl>https://github.com/Empiree/DeftSharp.Windows.Input</PackageProjectUrl>
         <PackageLicenseUrl></PackageLicenseUrl>
         <RepositoryUrl>https://github.com/Empiree/DeftSharp.Windows.Input</RepositoryUrl>
         <RepositoryType>Open-Source</RepositoryType>
-        <PackageTags>#WPF #Input #Keyboard-Listener #Mouse-Listener #WinAPI #listener</PackageTags>
-        <Version>0.2</Version>
+        <PackageTags>#WPF #Input #Keyboard-Listener #Mouse-Listener #WinAPI #listener #MAUI #Avalonia #Windows #Input</PackageTags>
+        <Version>0.3</Version>
         <PackageIcon>DeftSharp-icon.png</PackageIcon>
         <PackageReleaseNotes>What's new:
 
