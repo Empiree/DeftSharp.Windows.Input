@@ -12,17 +12,13 @@ namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
 internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboardBinder
 {
-    #region Singleton
-
     private static readonly Lazy<KeyboardBinderInterceptor> LazyInstance =
         new(() => new KeyboardBinderInterceptor());
 
     public static KeyboardBinderInterceptor Instance => LazyInstance.Value;
 
-    #endregion
-
     private readonly ConcurrentDictionary<Key, Key> _boundedKeys;
-    
+
     private Key? _lastProcessedBoundedKey;
 
     public IReadOnlyDictionary<Key, Key> BoundedKeys => _boundedKeys;
@@ -42,7 +38,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
     {
         if (oldKey == newKey)
             return;
-        
+
         if (_boundedKeys.ContainsKey(oldKey))
             _boundedKeys[oldKey] = newKey;
 
@@ -80,22 +76,22 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
 
     protected override bool OnInterceptorUnhookRequested() => !_boundedKeys.Any();
 
-    protected override InterceptorResponse OnInterceptorPipelineRequested(KeyPressedArgs args)
+    protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args)
     {
         return new InterceptorResponse(
             CanBeProcessed(args.KeyPressed),
-            PipelineInterceptor.Binder,
+            MiddlewareInterceptor.Binder,
             null, failedInterceptors =>
             {
                 if (args.Event == KeyboardEvent.KeyUp)
                     return;
 
-                if (!failedInterceptors.Contains(PipelineInterceptor.Binder))
+                if (!failedInterceptors.Contains(MiddlewareInterceptor.Binder))
                     return;
-                
+
                 if (!IsKeyBounded(args.KeyPressed))
                     return;
-                
+
                 var key = _boundedKeys[args.KeyPressed];
                 _lastProcessedBoundedKey = key;
                 KeyboardAPI.PressButton(key);
@@ -104,9 +100,9 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
 
     private bool CanBeProcessed(Key pressedKey)
     {
-        if (IsKeyBounded(pressedKey) && _lastProcessedBoundedKey != pressedKey) 
+        if (IsKeyBounded(pressedKey) && _lastProcessedBoundedKey != pressedKey)
             return false;
-        
+
         _lastProcessedBoundedKey = null;
         return true;
     }

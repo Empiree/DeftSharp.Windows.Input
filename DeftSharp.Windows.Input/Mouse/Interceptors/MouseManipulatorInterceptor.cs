@@ -9,15 +9,10 @@ namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
 internal sealed class MouseManipulatorInterceptor : MouseInterceptor, IMouseManipulator
 {
-    #region Singleton
-
     private static readonly Lazy<MouseManipulatorInterceptor> LazyInstance =
         new(() => new MouseManipulatorInterceptor());
-
     public static MouseManipulatorInterceptor Instance => LazyInstance.Value;
-
-    #endregion
-
+    
     private readonly HashSet<MouseEvent> _lockedKeys;
     private readonly object _lock = new();
 
@@ -85,6 +80,6 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor, IMouseMani
 
     protected override bool OnInterceptorUnhookRequested() => !_lockedKeys.Any();
 
-    protected override InterceptorResponse OnInterceptorPipelineRequested(MouseInputArgs args) =>
-        new(!IsKeyLocked(args.Event), PipelineInterceptor.Manipulator,() => { });
+    protected override InterceptorResponse OnMouseInput(MouseInputArgs args) =>
+        new(!IsKeyLocked(args.Event), MiddlewareInterceptor.Manipulator,() => { });
 }

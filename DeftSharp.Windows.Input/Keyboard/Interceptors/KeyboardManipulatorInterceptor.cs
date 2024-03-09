@@ -10,14 +10,10 @@ namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
 internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKeyboardManipulator
 {
-    #region Singleton
-
     private static readonly Lazy<KeyboardManipulatorInterceptor> LazyInstance =
         new(() => new KeyboardManipulatorInterceptor());
 
     public static KeyboardManipulatorInterceptor Instance => LazyInstance.Value;
-
-    #endregion
 
     private readonly HashSet<Key> _lockedKeys;
     private readonly object _lock = new();
@@ -85,6 +81,6 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKey
 
     protected override bool OnInterceptorUnhookRequested() => !_lockedKeys.Any();
 
-    protected override InterceptorResponse OnInterceptorPipelineRequested(KeyPressedArgs args) =>
-        new(!IsKeyLocked(args.KeyPressed), PipelineInterceptor.Manipulator);
+    protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
+        new(!IsKeyLocked(args.KeyPressed), MiddlewareInterceptor.Manipulator);
 }

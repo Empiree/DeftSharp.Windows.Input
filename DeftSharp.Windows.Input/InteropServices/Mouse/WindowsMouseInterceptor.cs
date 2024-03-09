@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Shared.Delegates;
@@ -11,14 +10,10 @@ namespace DeftSharp.Windows.Input.InteropServices.Mouse;
 
 internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterceptor
 {
-    #region Singleton
-
     private static readonly Lazy<WindowsMouseInterceptor> LazyInstance = new(() => new WindowsMouseInterceptor());
     public static WindowsMouseInterceptor Instance => LazyInstance.Value;
 
-    #endregion
-
-    public event MousePipelineDelegate? InterceptorPipelineRequested;
+    public event MouseInputDelegate? MouseInputMiddleware;
 
     private WindowsMouseInterceptor()
         : base(InputMessages.WhMouseLl)
@@ -28,7 +23,6 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
     public Coordinates GetPosition() => MouseAPI.GetPosition();
     public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);
     public void Click(int x, int y, MouseButton button) => MouseAPI.Click(button, x, y);
-
 
     /// <summary>
     /// Callback method for the mouse hook.
@@ -45,46 +39,32 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
         var mouseEvent = (MouseEvent)wParam;
         var args = new MouseInputArgs(mouseEvent);
 
-        return CanBeProcessed(args)
+        return StartMiddleware(args)
             ? WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam)
             : 1;
     }
 
     /// <summary>
-    /// Checks whether the provided key press event can be processed by the registered event handlers.
+    /// Checks whether the provided key press event can be processed by the registered middleware.
     /// </summary>
     /// <param name="args">The <see cref="MouseInputArgs"/> representing the mouse press event.</param>
     /// <returns>True if the event can be processed; otherwise, false.</returns>
-    private bool CanBeProcessed(MouseInputArgs args)
+    private bool StartMiddleware(MouseInputArgs args)
     {
-        if (InterceptorPipelineRequested is null)
+        if (MouseInputMiddleware is null)
+        {
+            Unhook();
             return true;
+        }
 
         var interceptors = new List<InterceptorResponse>();
 
-        foreach (var nextInterceptor in InterceptorPipelineRequested.GetInvocationList())
+        foreach (var next in MouseInputMiddleware.GetInvocationList())
         {
-            var interceptor = ((MousePipelineDelegate)nextInterceptor).Invoke(args);
+            var interceptor = ((MouseInputDelegate)next).Invoke(args);
             interceptors.Add(interceptor);
         }
 
-        var canBeProcessed = interceptors.All(i => i.IsAllowed);
-
-        if (canBeProcessed)
-        {
-            foreach (var action in interceptors.Select(i => i.OnPipelineSuccess))
-                action?.Invoke();
-            return true;
-        }
-
-        var failedInterceptors = interceptors
-            .Where(i => !i.IsAllowed)
-            .Select(i => i.Interceptor)
-            .ToArray();
-        
-        foreach (var action in interceptors.Select(i => i.OnPipelineFailed))
-            action?.Invoke(failedInterceptors);
-
-        return false;
+        return InterceptorMiddleware.Run(interceptors);
     }
 }

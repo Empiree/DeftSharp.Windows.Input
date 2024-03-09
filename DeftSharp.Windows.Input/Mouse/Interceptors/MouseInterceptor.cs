@@ -12,17 +12,17 @@ internal abstract class MouseInterceptor : IRequestedInterceptor
     protected MouseInterceptor(IMouseInterceptor mouseInterceptor)
     {
         Mouse = mouseInterceptor;
-        Mouse.InterceptorPipelineRequested += OnInterceptorPipelineRequested;
+        Mouse.MouseInputMiddleware += OnMouseInput;
         Mouse.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
     public virtual void Dispose()
     {
-        Mouse.InterceptorPipelineRequested -= OnInterceptorPipelineRequested;
+        Mouse.MouseInputMiddleware -= OnMouseInput;
         Mouse.UnhookRequested -= OnInterceptorUnhookRequested;
     }
 
-    protected abstract InterceptorResponse OnInterceptorPipelineRequested(MouseInputArgs args);
+    protected abstract InterceptorResponse OnMouseInput(MouseInputArgs args);
     protected abstract bool OnInterceptorUnhookRequested();
 
     public void Hook() => Mouse.Hook();

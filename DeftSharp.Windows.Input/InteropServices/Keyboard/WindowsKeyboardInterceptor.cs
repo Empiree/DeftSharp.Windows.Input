@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.API;
@@ -16,14 +15,10 @@ namespace DeftSharp.Windows.Input.InteropServices.Keyboard;
 /// </summary>
 internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboardInterceptor
 {
-    #region Singleton
-
     private static readonly Lazy<WindowsKeyboardInterceptor> LazyInstance = new(() => new WindowsKeyboardInterceptor());
     public static WindowsKeyboardInterceptor Instance => LazyInstance.Value;
 
-    #endregion
-
-    public event KeyboardPipelineDelegate? InterceptorPipelineRequested;
+    public event KeyboardInputDelegate? KeyboardInputMiddleware;
 
     private WindowsKeyboardInterceptor()
         : base(InputMessages.WhKeyboardLl)
@@ -49,46 +44,32 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
         var keyEvent = (KeyboardEvent)wParam;
         var keyPressedArgs = new KeyPressedArgs(key, keyEvent);
 
-        return CanBeProcessed(keyPressedArgs)
+        return StartMiddleware(keyPressedArgs)
             ? WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam)
             : 1;
     }
 
     /// <summary>
-    /// Checks whether the provided key press event can be processed by the registered event handlers.
+    /// Checks whether the provided key press event can be processed by the registered middleware.
     /// </summary>
     /// <param name="args">The <see cref="KeyPressedArgs"/> representing the key press event.</param>
     /// <returns>True if the event can be processed; otherwise, false.</returns>
-    private bool CanBeProcessed(KeyPressedArgs args)
+    private bool StartMiddleware(KeyPressedArgs args)
     {
-        if (InterceptorPipelineRequested is null)
+        if (KeyboardInputMiddleware is null)
+        {
+            Unhook();
             return true;
+        }
 
         var interceptors = new List<InterceptorResponse>();
 
-        foreach (var nextInterceptor in InterceptorPipelineRequested.GetInvocationList())
+        foreach (var next in KeyboardInputMiddleware.GetInvocationList())
         {
-            var interceptor = ((KeyboardPipelineDelegate)nextInterceptor).Invoke(args);
+            var interceptor = ((KeyboardInputDelegate)next).Invoke(args);
             interceptors.Add(interceptor);
         }
 
-        var canBeProcessed = interceptors.All(i => i.IsAllowed);
-
-        if (canBeProcessed)
-        {
-            foreach (var action in interceptors.Select(i => i.OnPipelineSuccess))
-                action?.Invoke();
-            return true;
-        }
-
-        var failedInterceptors = interceptors
-            .Where(i => !i.IsAllowed)
-            .Select(i => i.Interceptor)
-            .ToArray();
-        
-        foreach (var action in interceptors.Select(i => i.OnPipelineFailed))
-            action?.Invoke(failedInterceptors);
-
-        return false;
+        return InterceptorMiddleware.Run(interceptors);
     }
 }

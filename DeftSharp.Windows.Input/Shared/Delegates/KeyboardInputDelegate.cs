@@ -3,4 +3,4 @@ using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 namespace DeftSharp.Windows.Input.Shared.Delegates;
 
-internal delegate InterceptorResponse KeyboardPipelineDelegate(KeyPressedArgs args);
+internal delegate InterceptorResponse KeyboardInputDelegate(KeyPressedArgs args);

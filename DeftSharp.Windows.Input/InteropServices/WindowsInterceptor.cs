@@ -6,7 +6,7 @@ using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.InteropServices;
 
-public abstract class WindowsInterceptor : IRequestedInterceptor
+internal abstract class WindowsInterceptor : IRequestedInterceptor
 {
     private readonly int _interceptorHook;
     private bool _handled;
@@ -28,14 +28,20 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
     protected nint HookId = nint.Zero;
 
     /// <summary>
+    /// Middleware responsible for handling interceptors and pipeline execution.
+    /// </summary>
+    protected readonly InterceptorMiddleware InterceptorMiddleware;
+
+    /// <summary>
     /// Initializes a new instance of the WindowsListener class.
     /// </summary>
     protected WindowsInterceptor(int interceptorHook)
     {
         _interceptorHook = interceptorHook;
         _windowsProcedure = HookCallback;
+        InterceptorMiddleware = new InterceptorMiddleware();
     }
-    
+
     /// <summary>
     /// Sets up the windows hook by installing the hook procedure.
     /// </summary>
@@ -63,7 +69,7 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
         HookId = nint.Zero;
         _handled = false;
     }
-    
+
     /// <summary>
     /// Callback method for the Windows hook.
     /// </summary>
@@ -79,9 +85,9 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
     /// <returns>True if the keyboard hook can be unhooked; otherwise, false.</returns>
     private bool CanBeUnhooked()
     {
-        if (UnhookRequested is null) 
+        if (UnhookRequested is null)
             return true;
-        
+
         foreach (var handler in UnhookRequested.GetInvocationList())
         {
             var canBeUnhooked = (Func<bool>)handler;
@@ -91,7 +97,7 @@ public abstract class WindowsInterceptor : IRequestedInterceptor
 
         return true;
     }
-    
+
     /// <summary>
     /// Installs the WinAPI hook procedure.
     /// </summary>

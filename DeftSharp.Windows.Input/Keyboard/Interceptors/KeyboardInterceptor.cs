@@ -12,17 +12,17 @@ internal abstract class KeyboardInterceptor : IRequestedInterceptor
     protected KeyboardInterceptor(IKeyboardInterceptor keyboardInterceptor)
     {
         Keyboard = keyboardInterceptor;
-        Keyboard.InterceptorPipelineRequested += OnInterceptorPipelineRequested;
+        Keyboard.KeyboardInputMiddleware += OnKeyboardInput;
         Keyboard.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
     public virtual void Dispose()
     {
-        Keyboard.InterceptorPipelineRequested -= OnInterceptorPipelineRequested;
+        Keyboard.KeyboardInputMiddleware -= OnKeyboardInput;
         Keyboard.UnhookRequested -= OnInterceptorUnhookRequested;
     }
 
-    protected abstract InterceptorResponse OnInterceptorPipelineRequested(KeyPressedArgs args);
+    protected abstract InterceptorResponse OnKeyboardInput(KeyPressedArgs args);
     protected abstract bool OnInterceptorUnhookRequested();
 
     public void Hook() => Keyboard.Hook();

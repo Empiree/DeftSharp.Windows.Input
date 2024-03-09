@@ -5,6 +5,6 @@ namespace DeftSharp.Windows.Input.Shared.Interceptors;
 
 internal interface IKeyboardInterceptor: IRequestedInterceptor
 {
-    event KeyboardPipelineDelegate? InterceptorPipelineRequested;
+    event KeyboardInputDelegate? KeyboardInputMiddleware;
     void Press(Key key);
 }
