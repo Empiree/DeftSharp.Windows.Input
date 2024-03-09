@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using DeftSharp.Windows.Input.Shared.Interceptors;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
+namespace DeftSharp.Windows.Input.Pipeline;
 
 /// <summary>
 /// Represents the response of an interceptor in the middleware.
@@ -16,7 +17,7 @@ internal sealed class InterceptorResponse
     /// <summary>
     /// The middleware interceptor associated with this response.
     /// </summary>
-    public MiddlewareInterceptor Interceptor { get; }
+    public InterceptorType Interceptor { get; }
 
     /// <summary>
     /// Action to be invoked upon successful execution of the pipeline.
@@ -26,7 +27,7 @@ internal sealed class InterceptorResponse
     /// <summary>
     /// Action to be invoked upon failure of the pipeline, providing failed interceptors.
     /// </summary>
-    public Action<IEnumerable<MiddlewareInterceptor>>? OnPipelineFailed { get; }
+    public Action<IEnumerable<InterceptorType>>? OnPipelineFailed { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InterceptorResponse"/> class.
@@ -37,9 +38,9 @@ internal sealed class InterceptorResponse
     /// <param name="onPipelineFailed">Action to be invoked upon failure of the pipeline, providing failed interceptors.</param>
     public InterceptorResponse(
         bool isAllowed,
-        MiddlewareInterceptor interceptor,
+        InterceptorType interceptor,
         Action? onPipelineSuccess = null,
-        Action<IEnumerable<MiddlewareInterceptor>>? onPipelineFailed = null)
+        Action<IEnumerable<InterceptorType>>? onPipelineFailed = null)
     {
         IsAllowed = isAllowed;
         Interceptor = interceptor;

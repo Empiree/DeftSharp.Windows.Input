@@ -4,9 +4,9 @@ using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Keyboard;
+using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Delegates;
 using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 namespace DeftSharp.Windows.Input.InteropServices.Keyboard;
 
@@ -18,7 +18,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
     private static readonly Lazy<WindowsKeyboardInterceptor> LazyInstance = new(() => new WindowsKeyboardInterceptor());
     public static WindowsKeyboardInterceptor Instance => LazyInstance.Value;
 
-    public event KeyboardInputDelegate? KeyboardInputMiddleware;
+    public event KeyboardInputDelegate? KeyboardInput;
 
     private WindowsKeyboardInterceptor()
         : base(InputMessages.WhKeyboardLl)
@@ -44,7 +44,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
         var keyEvent = (KeyboardEvent)wParam;
         var keyPressedArgs = new KeyPressedArgs(key, keyEvent);
 
-        return StartMiddleware(keyPressedArgs)
+        return StartInterceptorPipeline(keyPressedArgs)
             ? WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam)
             : 1;
     }
@@ -54,9 +54,9 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
     /// </summary>
     /// <param name="args">The <see cref="KeyPressedArgs"/> representing the key press event.</param>
     /// <returns>True if the event can be processed; otherwise, false.</returns>
-    private bool StartMiddleware(KeyPressedArgs args)
+    private bool StartInterceptorPipeline(KeyPressedArgs args)
     {
-        if (KeyboardInputMiddleware is null)
+        if (KeyboardInput is null)
         {
             Unhook();
             return true;
@@ -64,12 +64,12 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
 
         var interceptors = new List<InterceptorResponse>();
 
-        foreach (var next in KeyboardInputMiddleware.GetInvocationList())
+        foreach (var next in KeyboardInput.GetInvocationList())
         {
             var interceptor = ((KeyboardInputDelegate)next).Invoke(args);
             interceptors.Add(interceptor);
         }
 
-        return InterceptorMiddleware.Run(interceptors);
+        return InterceptorPipeline.Run(interceptors);
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.Mouse;
+using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Delegates;
 using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 namespace DeftSharp.Windows.Input.InteropServices.Mouse;
 
@@ -13,7 +13,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
     private static readonly Lazy<WindowsMouseInterceptor> LazyInstance = new(() => new WindowsMouseInterceptor());
     public static WindowsMouseInterceptor Instance => LazyInstance.Value;
 
-    public event MouseInputDelegate? MouseInputMiddleware;
+    public event MouseInputDelegate? MouseInput;
 
     private WindowsMouseInterceptor()
         : base(InputMessages.WhMouseLl)
@@ -39,7 +39,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
         var mouseEvent = (MouseEvent)wParam;
         var args = new MouseInputArgs(mouseEvent);
 
-        return StartMiddleware(args)
+        return StartInterceptorPipeline(args)
             ? WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam)
             : 1;
     }
@@ -49,9 +49,9 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
     /// </summary>
     /// <param name="args">The <see cref="MouseInputArgs"/> representing the mouse press event.</param>
     /// <returns>True if the event can be processed; otherwise, false.</returns>
-    private bool StartMiddleware(MouseInputArgs args)
+    private bool StartInterceptorPipeline(MouseInputArgs args)
     {
-        if (MouseInputMiddleware is null)
+        if (MouseInput is null)
         {
             Unhook();
             return true;
@@ -59,12 +59,12 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
 
         var interceptors = new List<InterceptorResponse>();
 
-        foreach (var next in MouseInputMiddleware.GetInvocationList())
+        foreach (var next in MouseInput.GetInvocationList())
         {
             var interceptor = ((MouseInputDelegate)next).Invoke(args);
             interceptors.Add(interceptor);
         }
 
-        return InterceptorMiddleware.Run(interceptors);
+        return InterceptorPipeline.Run(interceptors);
     }
 }

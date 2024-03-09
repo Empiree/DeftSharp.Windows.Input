@@ -5,8 +5,9 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
+using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
-using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
+using DeftSharp.Windows.Input.Shared.Interceptors;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
@@ -39,7 +40,7 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
     public IEnumerable<KeyboardSubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
         TimeSpan intervalOfClick,
         KeyboardEvent keyboardEvent) =>
-        keys.Select(key => Subscribe(key, onClick, intervalOfClick, keyboardEvent));
+        keys.Select(key => Subscribe(key, onClick, intervalOfClick, keyboardEvent)).ToList();
 
     public KeyboardSubscription SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent)
     {
@@ -87,7 +88,7 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
     protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
 
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
-        new(true, MiddlewareInterceptor.Listener, () => HandleKeyPressed(this, args));
+        new(true, InterceptorType.Listener, () => HandleKeyPressed(this, args));
 
     private void HandleKeyPressed(object? sender, KeyPressedArgs e)
     {

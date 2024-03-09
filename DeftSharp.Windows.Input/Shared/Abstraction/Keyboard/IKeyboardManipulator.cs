@@ -8,6 +8,8 @@ internal interface IKeyboardManipulator : IDisposable
 {
     IEnumerable<Key> LockedKeys { get; }
 
+    bool IsKeyLocked(Key key);
+    
     void Press(Key key);
     void Prevent(Key key);
     void Release(Key key);

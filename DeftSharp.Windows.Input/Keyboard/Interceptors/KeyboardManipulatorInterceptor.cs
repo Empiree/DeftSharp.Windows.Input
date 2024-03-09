@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
+using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
-using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
+using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -82,5 +83,5 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKey
     protected override bool OnInterceptorUnhookRequested() => !_lockedKeys.Any();
 
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
-        new(!IsKeyLocked(args.KeyPressed), MiddlewareInterceptor.Manipulator);
+        new(!IsKeyLocked(args.KeyPressed), InterceptorType.Manipulator);
 }

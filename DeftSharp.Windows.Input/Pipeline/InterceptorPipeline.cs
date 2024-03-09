@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
-namespace DeftSharp.Windows.Input.InteropServices;
+namespace DeftSharp.Windows.Input.Pipeline;
 
 /// <summary>
-/// Middleware responsible for running a list of interceptors and handling the pipeline accordingly.
+/// Pipeline responsible for running a list of interceptors and handling the interceptor responses accordingly.
 /// </summary>
-internal sealed class InterceptorMiddleware
+internal sealed class InterceptorPipeline
 {
     /// <summary>
     /// Runs the interceptors and determines if the pipeline can be processed based on interceptor responses.

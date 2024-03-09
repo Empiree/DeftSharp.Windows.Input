@@ -5,8 +5,9 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.API;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
+using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
-using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
+using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -80,13 +81,13 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
     {
         return new InterceptorResponse(
             CanBeProcessed(args.KeyPressed),
-            MiddlewareInterceptor.Binder,
+            InterceptorType.Binder,
             null, failedInterceptors =>
             {
                 if (args.Event == KeyboardEvent.KeyUp)
                     return;
 
-                if (!failedInterceptors.Contains(MiddlewareInterceptor.Binder))
+                if (!failedInterceptors.Contains(InterceptorType.Binder))
                     return;
 
                 if (!IsKeyBounded(args.KeyPressed))

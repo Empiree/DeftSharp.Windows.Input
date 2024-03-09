@@ -1,7 +1,7 @@
 ﻿using System;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
+using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -12,13 +12,13 @@ internal abstract class KeyboardInterceptor : IRequestedInterceptor
     protected KeyboardInterceptor(IKeyboardInterceptor keyboardInterceptor)
     {
         Keyboard = keyboardInterceptor;
-        Keyboard.KeyboardInputMiddleware += OnKeyboardInput;
+        Keyboard.KeyboardInput += OnKeyboardInput;
         Keyboard.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
     public virtual void Dispose()
     {
-        Keyboard.KeyboardInputMiddleware -= OnKeyboardInput;
+        Keyboard.KeyboardInput -= OnKeyboardInput;
         Keyboard.UnhookRequested -= OnInterceptorUnhookRequested;
     }
 

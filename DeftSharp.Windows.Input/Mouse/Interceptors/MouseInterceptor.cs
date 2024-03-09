@@ -1,7 +1,7 @@
 ﻿using System;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
+using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Interceptors;
-using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
@@ -12,13 +12,13 @@ internal abstract class MouseInterceptor : IRequestedInterceptor
     protected MouseInterceptor(IMouseInterceptor mouseInterceptor)
     {
         Mouse = mouseInterceptor;
-        Mouse.MouseInputMiddleware += OnMouseInput;
+        Mouse.MouseInput += OnMouseInput;
         Mouse.UnhookRequested += OnInterceptorUnhookRequested;
     }
 
     public virtual void Dispose()
     {
-        Mouse.MouseInputMiddleware -= OnMouseInput;
+        Mouse.MouseInput -= OnMouseInput;
         Mouse.UnhookRequested -= OnInterceptorUnhookRequested;
     }
 

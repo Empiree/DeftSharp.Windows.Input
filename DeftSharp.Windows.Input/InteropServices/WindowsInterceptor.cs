@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using DeftSharp.Windows.Input.InteropServices.API;
+using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Exceptions;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 
@@ -30,7 +31,7 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
     /// <summary>
     /// Middleware responsible for handling interceptors and pipeline execution.
     /// </summary>
-    protected readonly InterceptorMiddleware InterceptorMiddleware;
+    protected readonly InterceptorPipeline InterceptorPipeline;
 
     /// <summary>
     /// Initializes a new instance of the WindowsListener class.
@@ -39,7 +40,7 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
     {
         _interceptorHook = interceptorHook;
         _windowsProcedure = HookCallback;
-        InterceptorMiddleware = new InterceptorMiddleware();
+        InterceptorPipeline = new InterceptorPipeline();
     }
 
     /// <summary>

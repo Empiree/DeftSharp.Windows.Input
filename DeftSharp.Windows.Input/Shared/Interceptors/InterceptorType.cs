@@ -1,9 +1,9 @@
-﻿namespace DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
+﻿namespace DeftSharp.Windows.Input.Shared.Interceptors;
 
 /// <summary>
 /// Enum representing types of middleware interceptors.
 /// </summary>
-public enum MiddlewareInterceptor : byte
+internal enum InterceptorType : byte
 {
     Listener = 0,
     Manipulator = 1,

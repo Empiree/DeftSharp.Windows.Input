@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
+using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
-using DeftSharp.Windows.Input.Shared.Interceptors.Pipeline;
+using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
@@ -81,5 +82,5 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor, IMouseMani
     protected override bool OnInterceptorUnhookRequested() => !_lockedKeys.Any();
 
     protected override InterceptorResponse OnMouseInput(MouseInputArgs args) =>
-        new(!IsKeyLocked(args.Event), MiddlewareInterceptor.Manipulator,() => { });
+        new(!IsKeyLocked(args.Event), InterceptorType.Manipulator,() => { });
 }
