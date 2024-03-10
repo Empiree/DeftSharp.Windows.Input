@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DeftSharp.Windows.Input.Mouse.Interceptors;
 using DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
+using DeftSharp.Windows.Input.Shared.Attributes;
 
 namespace DeftSharp.Windows.Input.Mouse;
 
@@ -20,6 +21,7 @@ public sealed class MouseManipulator : IDisposable
         _mouseInterceptor.ClickReleased += OnInterceptorClickReleased;
     }
 
+    [DangerousBehavior("Be careful with the use of this method. You can completely lock your mouse")]
     public void Prevent(MouseEvent mouseEvent) => _mouseInterceptor.Prevent(mouseEvent);
     public void Release(MouseEvent mouseEvent) => _mouseInterceptor.Release(mouseEvent);
     public void ReleaseAll() => _mouseInterceptor.ReleaseAll();
