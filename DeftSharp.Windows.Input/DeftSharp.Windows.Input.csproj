@@ -23,9 +23,9 @@
         <PackageIcon>DeftSharp-icon.png</PackageIcon>
         <PackageReleaseNotes>What's new:
 
-- Mouse Manipulator - a mouse control class.
-- Keyboard Manipulator - a keyboard control class.
-- Fixed minor bugs</PackageReleaseNotes>
+- Keyboard Binder - a class for rebinding buttons
+- Small improvements (new methods)
+- Fixed bugs</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
