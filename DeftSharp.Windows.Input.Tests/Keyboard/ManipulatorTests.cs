@@ -112,35 +112,7 @@ public class ManipulatorTests : IDisposable
             }
         });
     }
-
-    [Fact]
-    public void Manipulator_Test6()
-    {
-        var counterOfPreventEvents = 0;
-        var counterOfReleasedEvents = 0;
-        var keyboardManipulator1 = new KeyboardManipulator();
-        _emulator.Run(() =>
-        {
-            var keyboardManipulator2 = new KeyboardManipulator();
-            keyboardManipulator2.KeyPrevented += key => { counterOfPreventEvents++; };
-
-            keyboardManipulator1.Prevent(Key.A);
-            keyboardManipulator1.Prevent(Key.A);
-
-            var keyboardManipulator3 = new KeyboardManipulator();
-            keyboardManipulator3.Prevent(Key.E);
-
-            keyboardManipulator3.KeyReleased += key => { counterOfReleasedEvents++; };
-
-            Assert.Equal(2, counterOfPreventEvents);
-
-            keyboardManipulator3.Release(Key.A);
-            keyboardManipulator3.Release(Key.E);
-
-            Assert.Equal(counterOfReleasedEvents, counterOfPreventEvents);
-        });
-    }
-
+    
     public void Dispose()
     {
         var manipulator = new KeyboardManipulator();

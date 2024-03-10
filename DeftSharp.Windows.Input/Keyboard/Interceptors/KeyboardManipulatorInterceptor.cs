@@ -18,8 +18,7 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKey
 
     private readonly HashSet<Key> _lockedKeys;
     private readonly object _lock = new();
-    public event Action<Key>? KeyPrevented;
-    public event Action<Key>? KeyReleased;
+    public event Action<KeyPressedArgs>? KeyPrevented;
 
     public IEnumerable<Key> LockedKeys => _lockedKeys;
 
@@ -45,7 +44,6 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKey
 
             Hook();
             _lockedKeys.Add(key);
-            KeyPrevented?.Invoke(key);
         }
     }
 
@@ -57,7 +55,6 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKey
                 return;
 
             _lockedKeys.Remove(key);
-            KeyReleased?.Invoke(key);
 
             if (!_lockedKeys.Any())
                 Unhook();
@@ -66,10 +63,11 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKey
 
     public void ReleaseAll()
     {
-        var keys = _lockedKeys.ToArray();
-
-        foreach (var key in keys)
-            Release(key);
+        if (!_lockedKeys.Any()) 
+            return;
+        
+        _lockedKeys.Clear();
+        Unhook();
     }
 
     public bool IsKeyLocked(Key key) => _lockedKeys.Any(k => k == key);
@@ -83,5 +81,11 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKey
     protected override bool OnInterceptorUnhookRequested() => !_lockedKeys.Any();
 
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
-        new(!IsKeyLocked(args.KeyPressed), InterceptorType.Manipulator);
+        new(!IsKeyLocked(args.KeyPressed),
+            InterceptorType.Manipulator,
+            onPipelineFailed: failedInterceptors =>
+            {
+                if (failedInterceptors.Contains(InterceptorType.Manipulator))
+                    KeyPrevented?.Invoke(args);
+            });
 }

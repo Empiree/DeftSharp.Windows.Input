@@ -12,28 +12,23 @@ public sealed class MouseManipulator : IDisposable
     public IEnumerable<MouseEvent> LockedKeys => _mouseInterceptor.LockedKeys;
 
     public event Action<MouseEvent>? ClickPrevented;
-    public event Action<MouseEvent>? ClickReleased;
 
     public MouseManipulator()
     {
         _mouseInterceptor = MouseManipulatorInterceptor.Instance;
         _mouseInterceptor.ClickPrevented += OnInterceptorClickPrevented;
-        _mouseInterceptor.ClickReleased += OnInterceptorClickReleased;
     }
+    
+    public bool IsKeyLocked(MouseEvent mouseEvent) => _mouseInterceptor.IsKeyLocked(mouseEvent);
 
     [DangerousBehavior("Be careful with the use of this method. You can completely lock your mouse")]
-    public void Prevent(MouseEvent mouseEvent) => _mouseInterceptor.Prevent(mouseEvent);
-    public void Release(MouseEvent mouseEvent) => _mouseInterceptor.Release(mouseEvent);
+    public void Prevent(PreventMouseOption mouseEvent) => _mouseInterceptor.Prevent(mouseEvent);
+    public void Release(PreventMouseOption mouseEvent) => _mouseInterceptor.Release(mouseEvent);
     public void ReleaseAll() => _mouseInterceptor.ReleaseAll();
     public void SetPosition(int x, int y) => _mouseInterceptor.SetPosition(x, y);
     public void Click(int x, int y, MouseButton button = MouseButton.Left) => _mouseInterceptor.Click(x, y, button);
 
-    public void Dispose()
-    {
-        _mouseInterceptor.ClickPrevented -= OnInterceptorClickPrevented;
-        _mouseInterceptor.ClickReleased -= OnInterceptorClickReleased;
-    }
-    
+    public void Dispose() => _mouseInterceptor.ClickPrevented -= OnInterceptorClickPrevented;
+
     private void OnInterceptorClickPrevented(MouseEvent mouseEvent) => ClickPrevented?.Invoke(mouseEvent);
-    private void OnInterceptorClickReleased(MouseEvent mouseEvent) => ClickReleased?.Invoke(mouseEvent);
 }

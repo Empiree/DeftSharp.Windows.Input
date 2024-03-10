@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using DeftSharp.Windows.Input.InteropServices.Keyboard;
 
 namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
@@ -15,6 +16,5 @@ internal interface IKeyboardManipulator : IDisposable
     void Release(Key key);
     void ReleaseAll();
     
-    event Action<Key>? KeyPrevented;
-    event Action<Key>? KeyReleased;
+    event Action<KeyPressedArgs>? KeyPrevented;
 }

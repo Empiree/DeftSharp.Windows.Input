@@ -8,12 +8,13 @@ internal interface IMouseManipulator : IDisposable
 {
     IEnumerable<MouseEvent> LockedKeys { get;}
     
+    bool IsKeyLocked(MouseEvent mouseEvent);
+    
     void SetPosition(int x, int y);
     void Click(int x, int y, MouseButton button);
-    void Prevent(MouseEvent mouseEvent);
-    void Release(MouseEvent mouseEvent);
+    void Prevent(PreventMouseOption mouseEvent);
+    void Release(PreventMouseOption mouseEvent);
     void ReleaseAll();
     
-    event Action<MouseEvent> ClickPrevented; 
-    event Action<MouseEvent> ClickReleased;
+    event Action<MouseEvent> ClickPrevented;
 }

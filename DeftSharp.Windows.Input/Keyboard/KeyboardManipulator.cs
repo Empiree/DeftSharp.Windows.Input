@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using DeftSharp.Windows.Input.InteropServices.Keyboard;
 using DeftSharp.Windows.Input.Keyboard.Interceptors;
 using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
@@ -11,14 +12,12 @@ public sealed class KeyboardManipulator : IDisposable
     private readonly IKeyboardManipulator _keyboardInterceptor;
     public IEnumerable<Key> LockedKeys => _keyboardInterceptor.LockedKeys;
 
-    public event Action<Key>? KeyPrevented;
-    public event Action<Key>? KeyReleased;
+    public event Action<KeyPressedArgs>? KeyPrevented;
 
     public KeyboardManipulator()
     {
         _keyboardInterceptor = KeyboardManipulatorInterceptor.Instance;
         _keyboardInterceptor.KeyPrevented += OnInterceptorKeyPrevented;
-        _keyboardInterceptor.KeyReleased += OnInterceptorKeyReleased;
     }
 
     ~KeyboardManipulator()
@@ -32,16 +31,17 @@ public sealed class KeyboardManipulator : IDisposable
 
     public void Prevent(Key key) => _keyboardInterceptor.Prevent(key);
 
+    public void PreventMany(IEnumerable<Key> keys)
+    {
+        foreach (var key in keys)
+            Prevent(key);
+    }
+
     public void Release(Key key) => _keyboardInterceptor.Release(key);
 
     public void ReleaseAll() => _keyboardInterceptor.ReleaseAll();
     
-    public void Dispose()
-    {
-        _keyboardInterceptor.KeyPrevented -= OnInterceptorKeyPrevented;
-        _keyboardInterceptor.KeyReleased -= OnInterceptorKeyReleased;
-    }
-    
-    private void OnInterceptorKeyPrevented(Key key) => KeyPrevented?.Invoke(key);
-    private void OnInterceptorKeyReleased(Key key) => KeyReleased?.Invoke(key);
+    public void Dispose() => _keyboardInterceptor.KeyPrevented -= OnInterceptorKeyPrevented;
+
+    private void OnInterceptorKeyPrevented(KeyPressedArgs args) => KeyPrevented?.Invoke(args);
 }
