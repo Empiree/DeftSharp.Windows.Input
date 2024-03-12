@@ -5,6 +5,9 @@ using DeftSharp.Windows.Input.Shared.Buttons;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
+/// <summary>
+/// Provides functionality to listen for numpad key presses and trigger corresponding actions.
+/// </summary>
 public sealed class NumpadListener
 {
     private readonly KeyboardListener _keyboardListener;
@@ -17,11 +20,19 @@ public sealed class NumpadListener
         new(Key.NumPad0, 0)
     };
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="NumpadListener"/> class.
+    /// </summary>
+    /// <param name="keyboardListener">The keyboard listener instance to use for listening to key presses.</param>
     public NumpadListener(KeyboardListener keyboardListener)
     {
         _keyboardListener = keyboardListener;
     }
 
+    /// <summary>
+    /// Subscribes to numpad key presses and triggers the specified action when a numpad key is pressed.
+    /// </summary>
+    /// <param name="onNumClick">The action to execute when a numpad key is pressed. It takes an integer argument representing the pressed number.</param>
     public void Subscribe(Action<int> onNumClick)
     {
         var keys = _numKeys.Select(n => n.Key);
@@ -37,5 +48,8 @@ public sealed class NumpadListener
         });
     }
 
+    /// <summary>
+    /// Unsubscribes from listening to numpad key presses.
+    /// </summary>
     public void Unsubscribe() => _keyboardListener.Unsubscribe(_numKeys.Select(n => n.Key));
 }
