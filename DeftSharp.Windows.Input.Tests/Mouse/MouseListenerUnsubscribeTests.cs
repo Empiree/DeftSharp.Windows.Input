@@ -1,29 +1,27 @@
-﻿using DeftSharp.Windows.Input.Mouse;
+﻿namespace DeftSharp.Windows.Input.Tests.Mouse;
 
-namespace DeftSharp.Windows.Input.Tests.Mouse;
-
-public sealed class UnregisterTests
+public sealed class MouseListenerUnsubscribeTests
 {
-    private readonly WPFEmulator _emulator;
+    private readonly ThreadRunner _threadRunner;
 
-    public UnregisterTests()
+    public MouseListenerUnsubscribeTests()
     {
-        _emulator = new WPFEmulator();
+        _threadRunner = new ThreadRunner();
     }
 
-    private void RunTest(Action<MouseListener> onTest)
+    private void RunListenerTest(Action<MouseListener> onTest)
     {
         var mouseListener = new MouseListener();
-        _emulator.Run(() => onTest(mouseListener));
+        _threadRunner.Run(() => onTest(mouseListener));
 
         Assert.False(mouseListener.IsListening,
             "The Unregister function is not called after unsubscribing from all events.");
     }
 
     [Fact]
-    public void Unregister_Test()
+    public void MouseListener_SubscribeUnsubscribe()
     {
-        RunTest(listener =>
+        RunListenerTest(listener =>
         {
             listener.Subscribe(MouseEvent.LeftButtonDown, () => { });
             listener.Unsubscribe(MouseEvent.LeftButtonDown);
@@ -31,9 +29,9 @@ public sealed class UnregisterTests
     }
 
     [Fact]
-    public void Unregister_Test2()
+    public void MouseListener_SubscribeUnsubscribeAll()
     {
-        RunTest(listener =>
+        RunListenerTest(listener =>
         {
             listener.Subscribe(MouseEvent.LeftButtonDown, () => { });
             listener.UnsubscribeAll();
@@ -41,9 +39,9 @@ public sealed class UnregisterTests
     }
 
     [Fact]
-    public void Unregister_Test3()
+    public void MouseListener_SubscribeManyUnsubscribeAll()
     {
-        RunTest(listener =>
+        RunListenerTest(listener =>
         {
             listener.Subscribe(MouseEvent.LeftButtonDown, () => { });
             listener.Subscribe(MouseEvent.RightButtonUp, () => { });
@@ -54,9 +52,9 @@ public sealed class UnregisterTests
     }
 
     [Fact]
-    public void Unregister_Test4()
+    public void MouseListener_SubscribeManyUnsubscribeMany()
     {
-        RunTest(listener =>
+        RunListenerTest(listener =>
         {
             listener.Subscribe(MouseEvent.LeftButtonDown, () => { });
             listener.Subscribe(MouseEvent.RightButtonUp, () => { });
@@ -71,14 +69,14 @@ public sealed class UnregisterTests
     }
 
     [Fact]
-    public void Unregister_Test5()
+    public void MouseListener_UnsubscribeAll()
     {
-        RunTest(listener => listener.UnsubscribeAll());
+        RunListenerTest(listener => listener.UnsubscribeAll());
     }
 
     [Fact]
-    public void Unregister_Test6()
+    public void MouseListener_Empty()
     {
-        RunTest(_ => { });
+        RunListenerTest(_ => { });
     }
 }

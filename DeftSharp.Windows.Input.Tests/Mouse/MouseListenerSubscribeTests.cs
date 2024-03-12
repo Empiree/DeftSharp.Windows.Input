@@ -1,22 +1,20 @@
-﻿using DeftSharp.Windows.Input.Mouse;
+﻿namespace DeftSharp.Windows.Input.Tests.Mouse;
 
-namespace DeftSharp.Windows.Input.Tests.Mouse;
-
-public sealed class SubscriptionTests
+public sealed class MouseListenerSubscribeTests
 {
-    private readonly WPFEmulator _emulator;
+    private readonly ThreadRunner _threadRunner;
 
-    public SubscriptionTests()
+    public MouseListenerSubscribeTests()
     {
-        _emulator = new WPFEmulator();
+        _threadRunner = new ThreadRunner();
     }
 
     [Fact]
-    public void Subscribe_Test1()
+    public void MouseListener_SingleSubscribe()
     {
         var listener = new MouseListener();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             listener.Subscribe(MouseEvent.Move, () => { });
 
@@ -28,11 +26,11 @@ public sealed class SubscriptionTests
     }
 
     [Fact]
-    public void Subscribe_Test2()
+    public void MouseListener_Identical3Subscriptions()
     {
         var listener = new MouseListener();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             listener.Subscribe(MouseEvent.Move, () => { });
             listener.Subscribe(MouseEvent.Move, () => { });
@@ -46,11 +44,11 @@ public sealed class SubscriptionTests
     }
 
     [Fact]
-    public void Subscribe_Test3()
+    public void MouseListener_SubscribeOnce()
     {
         var listener = new MouseListener();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             listener.SubscribeOnce(MouseEvent.LeftButtonDown, () => { });
 

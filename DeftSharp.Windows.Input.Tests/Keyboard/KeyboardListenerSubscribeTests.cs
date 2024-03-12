@@ -1,23 +1,20 @@
-﻿using System.Windows.Input;
-using DeftSharp.Windows.Input.Keyboard;
+﻿namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
-namespace DeftSharp.Windows.Input.Tests.Keyboard;
-
-public sealed class SubscriptionTests
+public sealed class KeyboardListenerSubscribeTests
 {
-    private readonly WPFEmulator _emulator;
+    private readonly ThreadRunner _threadRunner;
 
-    public SubscriptionTests()
+    public KeyboardListenerSubscribeTests()
     {
-        _emulator = new WPFEmulator();
+        _threadRunner = new ThreadRunner();
     }
 
     [Fact]
-    public void Subscribe_Test1()
+    public void KeyboardListener_Subscribe()
     {
         var listener = new KeyboardListener();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             listener.Subscribe(Key.A, key => { });
 
@@ -29,11 +26,11 @@ public sealed class SubscriptionTests
     }
 
     [Fact]
-    public void Subscribe_Test2()
+    public void KeyboardListener_Subscribe3()
     {
         var listener = new KeyboardListener();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             listener.Subscribe(Key.A, key => { });
             listener.Subscribe(Key.A, key => { });
@@ -47,11 +44,11 @@ public sealed class SubscriptionTests
     }
 
     [Fact]
-    public void Subscribe_Test3()
+    public void KeyboardListener_SubscribeMany()
     {
         var listener = new KeyboardListener();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             Key[] keys = { Key.A, Key.K, Key.A, Key.B };
             listener.Subscribe(keys, key => { });
@@ -66,11 +63,11 @@ public sealed class SubscriptionTests
     }
 
     [Fact]
-    public void Subscribe_Test4()
+    public void KeyboardListener_Subscribe12()
     {
         var listener = new KeyboardListener();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             Key[] keys = { Key.A, Key.K, Key.A, Key.B };
             listener.Subscribe(keys, key => { });
@@ -85,11 +82,11 @@ public sealed class SubscriptionTests
     }
 
     [Fact]
-    public void Subscribe_Test5()
+    public void KeyboardListener_SubscribeOnce()
     {
         var listener = new KeyboardListener();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             Key[] keys = { Key.A, Key.K, Key.A, Key.B };
             listener.SubscribeOnce(Key.C, key => { });
@@ -104,11 +101,11 @@ public sealed class SubscriptionTests
     }
 
     [Fact]
-    public void Subscribe_Test6()
+    public void KeyboardListener_SubscribeBack()
     {
         var listener = new KeyboardListener();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             listener.Subscribe(Key.Back, key => { });
             listener.Subscribe(Key.Back, key => { });
@@ -124,11 +121,11 @@ public sealed class SubscriptionTests
     }
 
     [Fact]
-    public void Subscribe_Test7()
+    public void KeyboardListener_SubscribeWithDispose()
     {
         var listener = new KeyboardListener();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             listener.Subscribe(Key.J, key => {});
             listener.Dispose();

@@ -1,15 +1,12 @@
-﻿using System.Windows.Input;
-using DeftSharp.Windows.Input.Keyboard;
-
-namespace DeftSharp.Windows.Input.Tests.Keyboard;
+﻿namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
 public class KeyboardBinderTests
 {
-    private readonly WPFEmulator _emulator;
+    private readonly ThreadRunner _threadRunner;
 
     public KeyboardBinderTests()
     {
-        _emulator = new WPFEmulator();
+        _threadRunner = new ThreadRunner();
     }
    
     [Fact]
@@ -17,7 +14,7 @@ public class KeyboardBinderTests
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             keyboardBinder.Bind(Key.A, Key.B);
 
@@ -31,7 +28,7 @@ public class KeyboardBinderTests
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             keyboardBinder.Bind(Key.C, Key.C);
 
@@ -44,7 +41,7 @@ public class KeyboardBinderTests
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             var keys = new List<Key>
             {
@@ -69,7 +66,7 @@ public class KeyboardBinderTests
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             var keys = new List<Key>();
 
@@ -84,7 +81,7 @@ public class KeyboardBinderTests
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             keyboardBinder.Bind(Key.A, Key.B);
             Assert.True(keyboardBinder.IsKeyBounded(Key.A));
@@ -100,7 +97,7 @@ public class KeyboardBinderTests
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             var keys = new List<Key>
             {
@@ -124,7 +121,7 @@ public class KeyboardBinderTests
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             Assert.Empty(keyboardBinder.BoundedKeys);
                 

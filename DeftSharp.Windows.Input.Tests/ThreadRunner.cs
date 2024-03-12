@@ -1,7 +1,9 @@
 ﻿namespace DeftSharp.Windows.Input.Tests;
 
-// ReSharper disable once InconsistentNaming
-internal sealed class WPFEmulator
+/// <summary>
+/// A class to start a new thread. It is needed because if you run WinAPI hooks in the main thread, the system may hang a lot.
+/// </summary>
+internal sealed class ThreadRunner
 {
     public bool Run(Action onAction)
     {

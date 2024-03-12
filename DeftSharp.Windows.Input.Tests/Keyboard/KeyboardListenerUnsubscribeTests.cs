@@ -1,30 +1,27 @@
-using System.Windows.Input;
-using DeftSharp.Windows.Input.Keyboard;
-
 namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
-public sealed class UnregisterTests
+public sealed class KeyboardListenerUnsubscribeTests
 {
-    private readonly WPFEmulator _emulator;
+    private readonly ThreadRunner _threadRunner;
 
-    public UnregisterTests()
+    public KeyboardListenerUnsubscribeTests()
     {
-        _emulator = new WPFEmulator();
+        _threadRunner = new ThreadRunner();
     }
 
-    private void RunTest(Action<KeyboardListener> onTest)
+    private void RunListenerTest(Action<KeyboardListener> onTest)
     {
         var keyboardListener = new KeyboardListener();
-        _emulator.Run(() => onTest(keyboardListener));
+        _threadRunner.Run(() => onTest(keyboardListener));
 
         Assert.False(keyboardListener.IsListening,
             "The Unregister function is not called after unsubscribing from all events.");
     }
 
     [Fact]
-    public void Unregister_Test()
+    public void KeyboardListener_SubscribeUnsubscribe()
     {
-        RunTest(listener =>
+        RunListenerTest(listener =>
         {
             listener.Subscribe(Key.A, key => { });
             listener.Unsubscribe(Key.A);
@@ -32,9 +29,9 @@ public sealed class UnregisterTests
     }
 
     [Fact]
-    public void Unregister_Test2()
+    public void KeyboardListener_SubscribeUnsubscribeAll()
     {
-        RunTest(listener =>
+        RunListenerTest(listener =>
         {
             listener.Subscribe(Key.A, key => { });
             listener.UnsubscribeAll();
@@ -42,9 +39,9 @@ public sealed class UnregisterTests
     }
 
     [Fact]
-    public void Unregister_Test3()
+    public void KeyboardListener_SubscribeUnsubscribeMany()
     {
-        RunTest(listener =>
+        RunListenerTest(listener =>
         {
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
             listener.Subscribe(keys, key => { });
@@ -53,9 +50,9 @@ public sealed class UnregisterTests
     }
 
     [Fact]
-    public void Unregister_Test4()
+    public void KeyboardListener_SubscribeManyUnsubscribe()
     {
-        RunTest(listener =>
+        RunListenerTest(listener =>
         {
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
             listener.Subscribe(keys, key => { });
@@ -67,9 +64,9 @@ public sealed class UnregisterTests
     }
 
     [Fact]
-    public void Unregister_Test5()
+    public void KeyboardListener_SubscribeCoupleUnsubscribeAll()
     {
-        RunTest(listener =>
+        RunListenerTest(listener =>
         {
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
             listener.Subscribe(keys, key => { });
@@ -79,14 +76,14 @@ public sealed class UnregisterTests
     }
 
     [Fact]
-    public void Unregister_Test6()
+    public void KeyboardListener_UnsubscribeAll()
     {
-        RunTest(listener => listener.UnsubscribeAll());
+        RunListenerTest(listener => listener.UnsubscribeAll());
     }
 
     [Fact]
-    public void Unregister_Test7()
+    public void KeyboardListener_Empty()
     {
-        RunTest(_ => { });
+        RunListenerTest(_ => { });
     }
 }

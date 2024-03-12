@@ -1,24 +1,21 @@
-using System.Windows.Input;
-using DeftSharp.Windows.Input.Keyboard;
-
 namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
-public class ManipulatorTests : IDisposable
+public class KeyboardManipulatorTests : IDisposable
 {
-    private readonly WPFEmulator _emulator;
+    private readonly ThreadRunner _threadRunner;
 
-    public ManipulatorTests()
+    public KeyboardManipulatorTests()
     {
-        _emulator = new WPFEmulator();
+        _threadRunner = new ThreadRunner();
     }
 
     [Fact]
-    public void Manipulator_Test1()
+    public void KeyboardManipulator_PreventBy2()
     {
         var keyboardManipulator1 = new KeyboardManipulator();
         var keyboardManipulator2 = new KeyboardManipulator();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.A);
             keyboardManipulator2.Prevent(Key.A);
@@ -30,12 +27,12 @@ public class ManipulatorTests : IDisposable
     }
 
     [Fact]
-    public void Manipulator_Test2()
+    public void KeyboardManipulator_PreventReleaseAll()
     {
         var keyboardManipulator1 = new KeyboardManipulator();
         var keyboardManipulator2 = new KeyboardManipulator();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.A);
             keyboardManipulator2.Prevent(Key.A);
@@ -49,13 +46,13 @@ public class ManipulatorTests : IDisposable
     }
 
     [Fact]
-    public void Manipulator_Test3()
+    public void KeyboardManipulator_PreventBy3()
     {
         var keyboardManipulator1 = new KeyboardManipulator();
         var keyboardManipulator2 = new KeyboardManipulator();
         var keyboardManipulator3 = new KeyboardManipulator();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.Q);
             keyboardManipulator2.Prevent(Key.W);
@@ -71,13 +68,13 @@ public class ManipulatorTests : IDisposable
     }
 
     [Fact]
-    public void Manipulator_Test4()
+    public void KeyboardManipulator_PreventBy2ReleaseAll()
     {
         var keyboardManipulator1 = new KeyboardManipulator();
         var keyboardManipulator2 = new KeyboardManipulator();
         var keyboardManipulator3 = new KeyboardManipulator();
 
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.Q);
             keyboardManipulator2.Prevent(Key.W);
@@ -90,9 +87,9 @@ public class ManipulatorTests : IDisposable
     }
 
     [Fact]
-    public void Manipulator_Test5()
+    public void KeyboardManipulator_DisposeTest()
     {
-        _emulator.Run(() =>
+        _threadRunner.Run(() =>
         {
             using (var keyboardManipulator1 = new KeyboardManipulator())
             {
