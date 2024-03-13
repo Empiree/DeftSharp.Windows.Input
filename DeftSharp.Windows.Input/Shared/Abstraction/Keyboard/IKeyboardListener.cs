@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard;
+using DeftSharp.Windows.Input.Shared.Buttons;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
@@ -13,6 +14,8 @@ internal interface IKeyboardListener : IDisposable
     KeyboardSubscription Subscribe(Key key, Action<Key> onClick, TimeSpan intervalOfClick, KeyboardEvent keyboardEvent);
     IEnumerable<KeyboardSubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick, TimeSpan intervalOfClick, KeyboardEvent keyboardEvent);
     KeyboardSubscription SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent);
+
+    void SubscribeSequence(ButtonSequence sequence);
 
     void Unsubscribe(Key key);
     void Unsubscribe(IEnumerable<Key> keys);

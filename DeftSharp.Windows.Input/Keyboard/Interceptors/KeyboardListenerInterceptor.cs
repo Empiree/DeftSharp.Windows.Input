@@ -7,6 +7,7 @@ using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
 using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
+using DeftSharp.Windows.Input.Shared.Buttons;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
@@ -47,6 +48,11 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
         var subscription = new KeyboardSubscription(key, onClick, keyboardEvent, true);
         _subscriptions.Add(subscription);
         return subscription;
+    }
+
+    public void SubscribeSequence(ButtonSequence sequence)
+    {
+        throw new NotImplementedException();
     }
 
     public void Unsubscribe(Key key)

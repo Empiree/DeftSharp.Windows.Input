@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard.Interceptors;
 using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
+using DeftSharp.Windows.Input.Shared.Buttons;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard;
@@ -42,6 +43,8 @@ public sealed class KeyboardListener : IDisposable
     public void Unsubscribe(Guid id) => _keyboardInterceptor.Unsubscribe(id);
 
     public void UnsubscribeAll() => _keyboardInterceptor.UnsubscribeAll();
+
+    public void SubscribeSequence(ButtonSequence sequence) => _keyboardInterceptor.SubscribeSequence(sequence);
 
     public void Dispose() => _keyboardInterceptor.Dispose();
 }
