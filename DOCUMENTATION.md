@@ -9,7 +9,7 @@ Please structure your documentation so that it goes from the most common user ca
 Any help in creating documentation is welcome! 
 
 - [Create KeyboardListener documentation](https://github.com/Empiree/DeftSharp.Windows.Input/issues/21)
-
+- [Create MouseListener documentation](https://github.com/Empiree/DeftSharp.Windows.Input/issues/23)
 
 ## KeyboardListener
 
