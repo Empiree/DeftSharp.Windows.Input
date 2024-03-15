@@ -4,26 +4,17 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard.Interceptors;
 using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
-using DeftSharp.Windows.Input.Shared.Buttons;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
 public sealed class KeyboardListener : IDisposable
 {
-    private readonly IKeyboardListener _keyboardInterceptor;
+    private readonly IKeyboardListener _keyboardInterceptor = new KeyboardListenerInterceptor();
     public bool IsListening => _keyboardInterceptor.Subscriptions.Any();
     public IEnumerable<KeyboardSubscription> Subscriptions => _keyboardInterceptor.Subscriptions;
-
-    public KeyboardListener()
-    {
-        _keyboardInterceptor = new KeyboardListenerInterceptor();
-    }
-
-    ~KeyboardListener()
-    {
-        Dispose();
-    }
+    
+    ~KeyboardListener() => Dispose();
 
     public KeyboardSubscription Subscribe(Key key, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
@@ -33,7 +24,8 @@ public sealed class KeyboardListener : IDisposable
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
         _keyboardInterceptor.Subscribe(keys, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
 
-    public KeyboardSubscription SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+    public KeyboardSubscription SubscribeOnce(Key key, Action<Key> onClick,
+        KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
         _keyboardInterceptor.SubscribeOnce(key, onClick, keyboardEvent);
 
     public void Unsubscribe(Key key) => _keyboardInterceptor.Unsubscribe(key);
@@ -43,8 +35,6 @@ public sealed class KeyboardListener : IDisposable
     public void Unsubscribe(Guid id) => _keyboardInterceptor.Unsubscribe(id);
 
     public void UnsubscribeAll() => _keyboardInterceptor.UnsubscribeAll();
-
-    public void SubscribeSequence(ButtonSequence sequence) => _keyboardInterceptor.SubscribeSequence(sequence);
 
     public void Dispose() => _keyboardInterceptor.Dispose();
 }
