@@ -25,27 +25,9 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
     }
 
     ~KeyboardListenerInterceptor() => Dispose();
-
-    public KeyboardSubscription Subscribe(Key key, Action<Key> onClick, TimeSpan intervalOfClick,
-        KeyboardEvent keyboardEvent)
-    {
-        var subscription = new KeyboardSubscription(key, onClick, intervalOfClick, keyboardEvent);
-        _subscriptions.Add(subscription);
-        return subscription;
-    }
-
-    public IEnumerable<KeyboardSubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
-        TimeSpan intervalOfClick,
-        KeyboardEvent keyboardEvent) =>
-        keys.Select(key => Subscribe(key, onClick, intervalOfClick, keyboardEvent)).ToList();
-
-    public KeyboardSubscription SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent)
-    {
-        var subscription = new KeyboardSubscription(key, onClick, keyboardEvent, true);
-        _subscriptions.Add(subscription);
-        return subscription;
-    }
-
+    
+    public void Subscribe(KeyboardSubscription subscription) => _subscriptions.Add(subscription);
+    
     public void Unsubscribe(Key key)
     {
         var subscriptions = _subscriptions.Where(e => e.Key.Equals(key)).ToArray();

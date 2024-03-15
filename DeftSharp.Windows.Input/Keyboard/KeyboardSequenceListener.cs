@@ -17,11 +17,20 @@ public sealed class KeyboardSequenceListener: IDisposable
     
     ~KeyboardSequenceListener() => Dispose();
 
-    public KeyboardSequenceSubscription Subscribe(IEnumerable<Key> sequence, Action onClick, TimeSpan? intervalOfClick = null) 
-        => _sequenceListener.Subscribe(sequence, onClick, intervalOfClick ?? TimeSpan.Zero);
-    
-    public KeyboardSequenceSubscription SubscribeOnce(IEnumerable<Key> sequence, Action onClick) 
-        => _sequenceListener.SubscribeOnce(sequence, onClick);
+    public KeyboardSequenceSubscription Subscribe(IEnumerable<Key> sequence, Action onClick,
+        TimeSpan? intervalOfClick = null)
+    {
+        var subscription = new KeyboardSequenceSubscription(sequence, onClick, intervalOfClick ?? TimeSpan.Zero);
+        _sequenceListener.Subscribe(subscription);
+        return subscription;
+    }
+
+    public KeyboardSequenceSubscription SubscribeOnce(IEnumerable<Key> sequence, Action onClick)
+    {
+        var subscription = new KeyboardSequenceSubscription(sequence, onClick, true);
+        _sequenceListener.Subscribe(subscription);
+        return subscription;
+    } 
     
     public void UnsubscribeAll() => _sequenceListener.UnsubscribeAll();
 

@@ -26,19 +26,21 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor, IMouseListene
 
     ~MouseListenerInterceptor() => Dispose();
 
-    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan intervalOfClick)
-    {
-        var subscription = new MouseSubscription(mouseEvent, onAction, intervalOfClick);
-        _subscriptions.Add(subscription);
-        return subscription;
-    }
+    public void Subscribe(MouseSubscription subscription) => _subscriptions.Add(subscription);
 
-    public MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction)
-    {
-        var subscription = new MouseSubscription(mouseEvent, onAction, true);
-        _subscriptions.Add(subscription);
-        return subscription;
-    }
+    // public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan intervalOfClick)
+    // {
+    //     var subscription = new MouseSubscription(mouseEvent, onAction, intervalOfClick);
+    //     _subscriptions.Add(subscription);
+    //     return subscription;
+    // }
+    //
+    // public MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction)
+    // {
+    //     var subscription = new MouseSubscription(mouseEvent, onAction, true);
+    //     _subscriptions.Add(subscription);
+    //     return subscription;
+    // }
 
     public void Unsubscribe(MouseEvent mouseEvent)
     {

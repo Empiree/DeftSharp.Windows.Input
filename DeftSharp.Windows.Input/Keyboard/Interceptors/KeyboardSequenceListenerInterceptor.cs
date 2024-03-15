@@ -38,26 +38,11 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor,
         base.Dispose();
     }
 
-    public KeyboardSequenceSubscription Subscribe(IEnumerable<Key> sequence, Action onClick, TimeSpan intervalOfClick)
+    public void Subscribe(KeyboardSequenceSubscription subscription)
     {
-        var keySequence = sequence.ToArray();
-
-        CheckSequenceLength(keySequence);
+        CheckSequenceLength(subscription.Sequence);
         
-        var subscription = new KeyboardSequenceSubscription(keySequence, onClick, intervalOfClick);
         _subscriptions.Add(subscription);
-        return subscription;
-    }
-
-    public KeyboardSequenceSubscription SubscribeOnce(IEnumerable<Key> sequence, Action onClick)
-    {
-        var keySequence = sequence.ToArray();
-
-        CheckSequenceLength(keySequence);
-        
-        var subscription = new KeyboardSequenceSubscription(keySequence, onClick, true);
-        _subscriptions.Add(subscription);
-        return subscription;
     }
 
     public void Unsubscribe(Guid id)

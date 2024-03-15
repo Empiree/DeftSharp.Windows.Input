@@ -20,10 +20,7 @@ public sealed class KeyboardManipulator : IDisposable
         _keyboardInterceptor.KeyPrevented += OnInterceptorKeyPrevented;
     }
 
-    ~KeyboardManipulator()
-    {
-        Dispose();
-    }
+    ~KeyboardManipulator() => Dispose();
 
     public bool IsKeyLocked(Key key) => _keyboardInterceptor.IsKeyLocked(key);
 

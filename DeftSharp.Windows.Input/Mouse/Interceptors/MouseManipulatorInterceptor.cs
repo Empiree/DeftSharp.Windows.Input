@@ -52,9 +52,10 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor, IMouseMani
             }
         }
     }
+
     public void Release(PreventMouseOption preventOption)
     {
-        var preventEvents =  preventOption.ToMouseEvents();
+        var preventEvents = preventOption.ToMouseEvents();
 
         lock (_lock)
         {
@@ -73,9 +74,9 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor, IMouseMani
 
     public void ReleaseAll()
     {
-        if (!_lockedKeys.Any()) 
+        if (!_lockedKeys.Any())
             return;
-        
+
         _lockedKeys.Clear();
         Unhook();
     }
