@@ -29,10 +29,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor, IMouseMani
         _lockedKeys = new HashSet<MouseEvent>();
     }
 
-    ~MouseManipulatorInterceptor()
-    {
-        Dispose();
-    }
+    ~MouseManipulatorInterceptor() => Dispose();
 
     public bool IsKeyLocked(MouseEvent mouseEvent) => _lockedKeys.Any(e => e == mouseEvent);
     public void SetPosition(int x, int y) => Mouse.SetPosition(x, y);

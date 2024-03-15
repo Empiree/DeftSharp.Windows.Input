@@ -24,10 +24,7 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
-    ~KeyboardListenerInterceptor()
-    {
-        Dispose();
-    }
+    ~KeyboardListenerInterceptor() => Dispose();
 
     public KeyboardSubscription Subscribe(Key key, Action<Key> onClick, TimeSpan intervalOfClick,
         KeyboardEvent keyboardEvent)
@@ -88,12 +85,15 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
     protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
 
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
-        new(true, InterceptorType.Listener, () => HandleKeyPressed(this, args));
+        new(true, InterceptorType.Listener, () => HandleKeyPressed(args));
 
-    private void HandleKeyPressed(object? sender, KeyPressedArgs e)
+    private void HandleKeyPressed(KeyPressedArgs args)
     {
         var keyboardEvents =
-            _subscriptions.Where(s => s.Key.Equals(e.KeyPressed) && s.Event == e.Event).ToArray();
+            _subscriptions
+                .Where(s => s.Key.Equals(args.KeyPressed) && s.Event == args.Event)
+                .ToArray();
+
         foreach (var keyboardEvent in keyboardEvents)
         {
             if (keyboardEvent.SingleUse)

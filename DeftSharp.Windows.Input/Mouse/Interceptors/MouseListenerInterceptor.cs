@@ -24,10 +24,7 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor, IMouseListene
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
-    ~MouseListenerInterceptor()
-    {
-        Dispose();
-    }
+    ~MouseListenerInterceptor() => Dispose();
 
     public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan intervalOfClick)
     {
@@ -78,11 +75,13 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor, IMouseListene
     protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
 
     protected override InterceptorResponse OnMouseInput(MouseInputArgs args) =>
-        new(true, InterceptorType.Listener,() => HandleMouseInput(this, args));
+        new(true, InterceptorType.Listener, () => HandleMouseInput(args));
 
-    private void HandleMouseInput(object? sender, MouseInputArgs e)
+    private void HandleMouseInput(MouseInputArgs args)
     {
-        var mouseEvents = _subscriptions.Where(s => s.Event.Equals(e.Event)).ToArray();
+        var mouseEvents = _subscriptions
+            .Where(s => s.Event.Equals(args.Event))
+            .ToArray();
 
         foreach (var mouseEvent in mouseEvents)
         {

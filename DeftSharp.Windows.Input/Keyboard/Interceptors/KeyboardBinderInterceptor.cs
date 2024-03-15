@@ -30,10 +30,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
         _boundedKeys = new ConcurrentDictionary<Key, Key>();
     }
 
-    ~KeyboardBinderInterceptor()
-    {
-        Dispose();
-    }
+    ~KeyboardBinderInterceptor() => Dispose();
 
     public void Bind(Key oldKey, Key newKey)
     {
@@ -44,7 +41,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
             _boundedKeys[oldKey] = newKey;
 
         Hook();
-        var isAdded = _boundedKeys.TryAdd(oldKey, newKey);
+        _boundedKeys.TryAdd(oldKey, newKey);
     }
 
     public void Unbind(Key key)
