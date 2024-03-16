@@ -7,29 +7,29 @@ using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Mouse;
 
-public sealed class MouseListener: IDisposable
+public sealed class MouseListener : IDisposable
 {
-    private readonly IMouseListener _mouseInterceptor;
+    private readonly IMouseListener _mouseInterceptor = new MouseListenerInterceptor();
     public bool IsListening => _mouseInterceptor.Subscriptions.Any();
     public IEnumerable<MouseSubscription> Subscriptions => _mouseInterceptor.Subscriptions;
 
-    public MouseListener()
-    {
-        _mouseInterceptor = new MouseListenerInterceptor();
-    }
+    ~MouseListener() => Dispose();
 
-    ~MouseListener()
-    {
-        Dispose();
-    }
-    
     public Coordinates GetPosition() => _mouseInterceptor.GetPosition();
 
-    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null) =>
-        _mouseInterceptor.Subscribe(mouseEvent, onAction, intervalOfClick ?? TimeSpan.Zero);
+    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null)
+    {
+        var subscription = new MouseSubscription(mouseEvent, onAction, intervalOfClick ?? TimeSpan.Zero);
+        _mouseInterceptor.Subscribe(subscription);
+        return subscription;
+    }
 
-    public MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction) =>
-        _mouseInterceptor.SubscribeOnce(mouseEvent, onAction);
+    public MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction)
+    {
+        var subscription = new MouseSubscription(mouseEvent, onAction, true);
+        _mouseInterceptor.Subscribe(subscription);
+        return subscription;
+    }
 
     public void Unsubscribe(MouseEvent mouseEvent) =>
         _mouseInterceptor.Unsubscribe(mouseEvent);
@@ -38,6 +38,6 @@ public sealed class MouseListener: IDisposable
         _mouseInterceptor.Unsubscribe(id);
 
     public void UnsubscribeAll() => _mouseInterceptor.UnsubscribeAll();
-    
+
     public void Dispose() => _mouseInterceptor.Dispose();
 }

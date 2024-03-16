@@ -18,11 +18,14 @@ public sealed class MouseManipulator : IDisposable
         _mouseInterceptor = MouseManipulatorInterceptor.Instance;
         _mouseInterceptor.ClickPrevented += OnInterceptorClickPrevented;
     }
-    
+
+    ~MouseManipulator() => Dispose();
+
     public bool IsKeyLocked(MouseEvent mouseEvent) => _mouseInterceptor.IsKeyLocked(mouseEvent);
 
     [DangerousBehavior("Be careful with the use of this method. You can completely lock your mouse")]
     public void Prevent(PreventMouseOption mouseEvent) => _mouseInterceptor.Prevent(mouseEvent);
+
     public void Release(PreventMouseOption mouseEvent) => _mouseInterceptor.Release(mouseEvent);
     public void ReleaseAll() => _mouseInterceptor.ReleaseAll();
     public void SetPosition(int x, int y) => _mouseInterceptor.SetPosition(x, y);

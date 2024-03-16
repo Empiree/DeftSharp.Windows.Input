@@ -8,11 +8,10 @@ namespace DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
 internal interface IMouseListener : IDisposable
 {
     IEnumerable<MouseSubscription> Subscriptions { get; }
-    
+
     Coordinates GetPosition();
 
-    MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan intervalOfClick);
-    MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction);
+    void Subscribe(MouseSubscription subscription);
 
     void Unsubscribe(MouseEvent mouseEvent);
     void Unsubscribe(Guid id);

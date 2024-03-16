@@ -24,31 +24,10 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
-    ~KeyboardListenerInterceptor()
-    {
-        Dispose();
-    }
-
-    public KeyboardSubscription Subscribe(Key key, Action<Key> onClick, TimeSpan intervalOfClick,
-        KeyboardEvent keyboardEvent)
-    {
-        var subscription = new KeyboardSubscription(key, onClick, intervalOfClick, keyboardEvent);
-        _subscriptions.Add(subscription);
-        return subscription;
-    }
-
-    public IEnumerable<KeyboardSubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
-        TimeSpan intervalOfClick,
-        KeyboardEvent keyboardEvent) =>
-        keys.Select(key => Subscribe(key, onClick, intervalOfClick, keyboardEvent)).ToList();
-
-    public KeyboardSubscription SubscribeOnce(Key key, Action<Key> onClick, KeyboardEvent keyboardEvent)
-    {
-        var subscription = new KeyboardSubscription(key, onClick, keyboardEvent, true);
-        _subscriptions.Add(subscription);
-        return subscription;
-    }
-
+    ~KeyboardListenerInterceptor() => Dispose();
+    
+    public void Subscribe(KeyboardSubscription subscription) => _subscriptions.Add(subscription);
+    
     public void Unsubscribe(Key key)
     {
         var subscriptions = _subscriptions.Where(e => e.Key.Equals(key)).ToArray();
@@ -88,12 +67,15 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
     protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
 
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
-        new(true, InterceptorType.Listener, () => HandleKeyPressed(this, args));
+        new(true, InterceptorType.Listener, () => HandleKeyPressed(args));
 
-    private void HandleKeyPressed(object? sender, KeyPressedArgs e)
+    private void HandleKeyPressed(KeyPressedArgs args)
     {
         var keyboardEvents =
-            _subscriptions.Where(s => s.Key.Equals(e.KeyPressed) && s.Event == e.Event).ToArray();
+            _subscriptions
+                .Where(s => s.Key.Equals(args.KeyPressed) && s.Event == args.Event)
+                .ToArray();
+
         foreach (var keyboardEvent in keyboardEvents)
         {
             if (keyboardEvent.SingleUse)
