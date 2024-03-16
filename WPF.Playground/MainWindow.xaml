@@ -1,0 +1,48 @@
+﻿<Window x:Class="WPF.Playground.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Loaded="OnLoaded"
+        Closing="OnClosing"
+        Title="MainWindow" Height="450" Width="800">
+    <StackPanel>
+        <TextBlock x:Name="PressedButtons"></TextBlock>
+        <Button 
+            Click="OnClickButton1"
+            Width="120" 
+            Height="30" 
+            Background="Teal" 
+            Foreground="White">Button #1</Button>
+        
+        <Button 
+            Margin="0 5 0 0"
+            Click="OnClickButton2"
+            Width="120" 
+            Height="30" 
+            Background="Teal" 
+            Foreground="White">Button #2</Button>
+        
+        <Button 
+            Margin="0 5 0 0"
+            Click="OnClickButton3"
+            Width="120" 
+            Height="30" 
+            Background="Teal" 
+            Foreground="White">Button #3</Button>
+        
+        <Button 
+            Margin="0 5 0 0"
+            Click="OnClickButton4"
+            Width="120" 
+            Height="30" 
+            Background="Teal" 
+            Foreground="White">Button #4</Button>
+        
+        <Button 
+            Margin="0 5 0 0"
+            Click="OnClickButton5"
+            Width="120" 
+            Height="30" 
+            Background="Teal" 
+            Foreground="White">Button #5</Button>
+    </StackPanel>
+</Window>

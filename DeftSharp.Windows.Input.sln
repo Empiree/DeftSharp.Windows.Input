@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeftSharp.Windows.Input", "DeftSharp.Windows.Input\DeftSharp.Windows.Input.csproj", "{3D91851D-784F-4C38-B1F9-CD1D08AA364E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFTestApplication", "WPFTestApplication\WPFTestApplication.csproj", "{629A70FA-AB10-42AC-917A-0E86A3EA13D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.Playground", "WPF.Playground\WPF.Playground.csproj", "{629A70FA-AB10-42AC-917A-0E86A3EA13D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeftSharp.Windows.Input.Tests", "DeftSharp.Windows.Input.Tests\DeftSharp.Windows.Input.Tests.csproj", "{841090A8-C012-4E7F-86BB-053285D3CD7C}"
 EndProject

@@ -1,7 +1,8 @@
 ﻿.idea
-WPFTestApplication
 DeftSharp.Windows.Input/bin
 DeftSharp.Windows.Input/obj
 DeftSharp.Windows.Input.Tests/bin
 DeftSharp.Windows.Input.Tests/obj
 DeftSharp.Windows.Input.sln.DotSettings.user
+WPF.Playground/bin
+WPF.Playground/obj
