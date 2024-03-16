@@ -26,7 +26,13 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor, IMouseListene
 
     ~MouseListenerInterceptor() => Dispose();
 
-    public void Subscribe(MouseSubscription subscription) => _subscriptions.Add(subscription);
+    public void Subscribe(MouseSubscription subscription)
+    {
+        if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))
+            return;
+
+        _subscriptions.Add(subscription);
+    }
 
     public void Unsubscribe(MouseEvent mouseEvent)
     {
@@ -38,7 +44,8 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor, IMouseListene
 
     public void Unsubscribe(Guid id)
     {
-        var mouseEvent = _subscriptions.FirstOrDefault(s => s.Id == id);
+        var mouseEvent =
+            _subscriptions.FirstOrDefault(sub => sub.Id.Equals(id));
 
         if (mouseEvent is null)
             return;

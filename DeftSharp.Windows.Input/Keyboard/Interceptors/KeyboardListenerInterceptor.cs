@@ -25,9 +25,15 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
     }
 
     ~KeyboardListenerInterceptor() => Dispose();
-    
-    public void Subscribe(KeyboardSubscription subscription) => _subscriptions.Add(subscription);
-    
+
+    public void Subscribe(KeyboardSubscription subscription)
+    {
+        if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))
+            return;
+
+        _subscriptions.Add(subscription);
+    }
+
     public void Unsubscribe(Key key)
     {
         var subscriptions = _subscriptions.Where(e => e.Key.Equals(key)).ToArray();
@@ -44,7 +50,8 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
 
     public void Unsubscribe(Guid id)
     {
-        var keyboardSubscribe = _subscriptions.FirstOrDefault(s => s.Id == id);
+        var keyboardSubscribe =
+            _subscriptions.FirstOrDefault(sub => sub.Id.Equals(id));
 
         if (keyboardSubscribe is null)
             return;

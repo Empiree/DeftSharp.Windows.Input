@@ -17,7 +17,7 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor,
 {
     private const int MinimumSequenceLength = 2;
     private const int MaximumSequenceLength = 10;
-    
+
     private readonly ObservableCollection<KeyboardSequenceSubscription> _subscriptions;
     private readonly Queue<Key> _pressedKeys;
     public IEnumerable<KeyboardSequenceSubscription> Subscriptions => _subscriptions;
@@ -40,14 +40,18 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor,
 
     public void Subscribe(KeyboardSequenceSubscription subscription)
     {
+        if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))
+            return;
+
         CheckSequenceLength(subscription.Sequence);
-        
+
         _subscriptions.Add(subscription);
     }
 
     public void Unsubscribe(Guid id)
     {
-        var keyboardSubscribe = _subscriptions.FirstOrDefault(s => s.Id == id);
+        var keyboardSubscribe =
+            _subscriptions.FirstOrDefault(sub => sub.Id.Equals(id));
 
         if (keyboardSubscribe is null)
             return;
@@ -63,14 +67,14 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor,
 
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
         new(true, InterceptorType.Listener, () => HandleKeyPressed(args));
-    
+
     protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
 
     private void HandleKeyPressed(KeyPressedArgs args)
     {
         if (args.Event == KeyboardEvent.KeyUp)
             return;
-        
+
         Enqueue(args.KeyPressed);
 
         var matched = GetMatchedSequences().ToArray();
@@ -88,13 +92,13 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor,
     {
         if (_pressedKeys.Count == MaximumSequenceLength)
             _pressedKeys.Dequeue();
-        
+
         _pressedKeys.Enqueue(key);
     }
 
-    private IEnumerable<KeyboardSequenceSubscription> GetMatchedSequences() => 
+    private IEnumerable<KeyboardSequenceSubscription> GetMatchedSequences() =>
         _subscriptions.Where(subscription => IsSequenceMatch(subscription.Sequence.ToArray()));
-    
+
     private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (e.Action == NotifyCollectionChangedAction.Add)
@@ -111,10 +115,12 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor,
         switch (keySequence.Length)
         {
             case < MinimumSequenceLength:
-                throw new KeySequenceLengthException($"A sequence cannot be the size of {keySequence.Length} elements. " +
-                                                     $"The minimum size is {MinimumSequenceLength} elements.");
+                throw new KeySequenceLengthException(
+                    $"A sequence cannot be the size of {keySequence.Length} elements. " +
+                    $"The minimum size is {MinimumSequenceLength} elements.");
             case > MaximumSequenceLength:
-                throw new KeySequenceLengthException($"The sequence cannot be larger than {MaximumSequenceLength} elements.");
+                throw new KeySequenceLengthException(
+                    $"The sequence cannot be larger than {MaximumSequenceLength} elements.");
         }
     }
 
