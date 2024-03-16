@@ -2,12 +2,7 @@ namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
 public class KeyboardManipulatorTests : IDisposable
 {
-    private readonly ThreadRunner _threadRunner;
-
-    public KeyboardManipulatorTests()
-    {
-        _threadRunner = new ThreadRunner();
-    }
+    private readonly ThreadRunner _threadRunner = new();
 
     [Fact]
     public void KeyboardManipulator_PreventBy2()

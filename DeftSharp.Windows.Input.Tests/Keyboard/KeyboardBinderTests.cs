@@ -2,13 +2,8 @@
 
 public class KeyboardBinderTests
 {
-    private readonly ThreadRunner _threadRunner;
+    private readonly ThreadRunner _threadRunner = new();
 
-    public KeyboardBinderTests()
-    {
-        _threadRunner = new ThreadRunner();
-    }
-   
     [Fact]
     public void KeyboardBinder_IsKeyBound()
     {

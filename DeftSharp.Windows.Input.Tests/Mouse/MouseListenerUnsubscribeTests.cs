@@ -2,12 +2,7 @@
 
 public sealed class MouseListenerUnsubscribeTests
 {
-    private readonly ThreadRunner _threadRunner;
-
-    public MouseListenerUnsubscribeTests()
-    {
-        _threadRunner = new ThreadRunner();
-    }
+    private readonly ThreadRunner _threadRunner = new();
 
     private void RunListenerTest(Action<MouseListener> onTest)
     {

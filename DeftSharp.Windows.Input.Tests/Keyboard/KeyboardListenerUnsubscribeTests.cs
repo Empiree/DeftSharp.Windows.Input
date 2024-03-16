@@ -2,12 +2,7 @@ namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
 public sealed class KeyboardListenerUnsubscribeTests
 {
-    private readonly ThreadRunner _threadRunner;
-
-    public KeyboardListenerUnsubscribeTests()
-    {
-        _threadRunner = new ThreadRunner();
-    }
+    private readonly ThreadRunner _threadRunner = new();
 
     private void RunListenerTest(Action<KeyboardListener> onTest)
     {

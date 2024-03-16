@@ -2,12 +2,7 @@
 
 public sealed class MouseListenerSubscribeTests
 {
-    private readonly ThreadRunner _threadRunner;
-
-    public MouseListenerSubscribeTests()
-    {
-        _threadRunner = new ThreadRunner();
-    }
+    private readonly ThreadRunner _threadRunner = new();
 
     [Fact]
     public void MouseListener_SingleSubscribe()

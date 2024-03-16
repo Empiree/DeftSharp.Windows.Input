@@ -2,12 +2,7 @@
 
 public sealed class KeyboardListenerSubscribeTests
 {
-    private readonly ThreadRunner _threadRunner;
-
-    public KeyboardListenerSubscribeTests()
-    {
-        _threadRunner = new ThreadRunner();
-    }
+    private readonly ThreadRunner _threadRunner = new();
 
     [Fact]
     public void KeyboardListener_Subscribe()
