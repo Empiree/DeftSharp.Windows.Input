@@ -26,4 +26,16 @@ public sealed class KeyboardCombinationSubscription : InputSubscription<Action>
     {
         Combination = combination.Distinct();
     }
+    
+    internal void Invoke()
+    {
+        if (LastInvoked.HasValue && SingleUse)
+            return;
+
+        if (LastInvoked?.Add(IntervalOfClick) >= DateTime.Now)
+            return;
+
+        LastInvoked = DateTime.Now;
+        OnClick();
+    }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
 using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
@@ -13,12 +14,14 @@ namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
 internal sealed class KeyboardCombinationListenerInterceptor : KeyboardInterceptor, IKeyboardCombinationListener
 {
+    private readonly List<Key> _heldKeys;
     private readonly ObservableCollection<KeyboardCombinationSubscription> _subscriptions;
     public IEnumerable<KeyboardCombinationSubscription> Subscriptions => _subscriptions;
-
+    
     public KeyboardCombinationListenerInterceptor()
         : base(WindowsKeyboardInterceptor.Instance)
     {
+        _heldKeys = new List<Key>();
         _subscriptions = new ObservableCollection<KeyboardCombinationSubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
@@ -60,10 +63,34 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
         new(true, InterceptorType.Listener, () => HandleKeyPressed(args));
 
     protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
+    
+    private IEnumerable<KeyboardCombinationSubscription> GetMatchedCombinations() =>
+        _subscriptions.Where(subscription => subscription.Combination.All(key => _heldKeys.Contains(key)));
 
     private void HandleKeyPressed(KeyPressedArgs args)
     {
-        // implement logic
+        if (args.Event is KeyboardEvent.KeyUp)
+        {
+            _heldKeys.Remove(args.KeyPressed);
+            return;
+        }
+        
+        _heldKeys.Add(args.KeyPressed);
+
+        var matched = GetMatchedCombinations().ToArray();
+
+        if (matched.Length == 0)
+            return;
+        
+        foreach (var subscription in matched)
+        {
+            if (subscription.SingleUse)
+                Unsubscribe(subscription.Id);
+            
+            subscription.Invoke();
+        }
+        
+        _heldKeys.Clear();
     }
 
     private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
