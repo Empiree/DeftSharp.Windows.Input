@@ -7,6 +7,7 @@ using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
 using DeftSharp.Windows.Input.Pipeline;
 using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
+using DeftSharp.Windows.Input.Shared.Exceptions;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
@@ -14,6 +15,9 @@ namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
 internal sealed class KeyboardCombinationListenerInterceptor : KeyboardInterceptor, IKeyboardCombinationListener
 {
+    private const int MinimumCombinationLength = 2;
+    private const int MaximumCombinationLength = 10;
+    
     private readonly List<Key> _heldKeys;
     private readonly ObservableCollection<KeyboardCombinationSubscription> _subscriptions;
     public IEnumerable<KeyboardCombinationSubscription> Subscriptions => _subscriptions;
@@ -32,6 +36,8 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
     {
         if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))
             return;
+
+        CheckCombinationLength(subscription.Combination);
 
         _subscriptions.Add(subscription);
     }
@@ -91,6 +97,22 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
         }
         
         _heldKeys.Clear();
+    }
+    
+    private void CheckCombinationLength(IEnumerable<Key> combination)
+    {
+        var keyCombination = combination.ToArray();
+
+        switch (keyCombination.Length)
+        {
+            case < MinimumCombinationLength:
+                throw new KeyCombinationLengthException(
+                    $"The combination cannot be the size of {keyCombination.Length} elements. " +
+                    $"The minimum size is {MinimumCombinationLength} elements.");
+            case > MaximumCombinationLength:
+                throw new KeyCombinationLengthException(
+                    $"The combination cannot be larger than {MaximumCombinationLength} elements.");
+        }
     }
 
     private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
