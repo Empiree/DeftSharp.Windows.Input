@@ -42,11 +42,7 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
         _subscriptions.Add(subscription);
     }
 
-    public void UnsubscribeAll()
-    {
-        if (_subscriptions.Any())
-            _subscriptions.Clear();
-    }
+    public void UnsubscribeAll() => _subscriptions.Clear();
 
     public void Unsubscribe(Guid id)
     {

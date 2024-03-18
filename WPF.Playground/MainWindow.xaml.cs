@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -21,6 +22,9 @@ namespace WPF.Playground
 
         private KeyboardSequenceListener _sequenceListener1;
         private KeyboardSequenceListener _sequenceListener2;
+
+        private KeyboardCombinationListener _combinationListener1;
+        private KeyboardCombinationListener _combinationListener2;
 
 
         public void TestBinder()
@@ -59,8 +63,26 @@ namespace WPF.Playground
 
         public MainWindow()
         {
-            _sequenceListener1 = new KeyboardSequenceListener();
-            _sequenceListener2 = new KeyboardSequenceListener();
+            _combinationListener1 = new KeyboardCombinationListener();
+            _combinationListener2 = new KeyboardCombinationListener();
+
+            Key[] combination = { Key.D1, Key.D2};
+            _combinationListener1.SubscribeOnce(combination, () =>
+            {
+                PressedButtons.Text += $"QWR |";
+            });
+            
+          
+            Key[] combination2 = { Key.Z, Key.X, Key.C };
+            _combinationListener2.SubscribeOnce(combination2, () =>
+            {
+                PressedButtons.Text += $"ZXC |";
+            });
+            
+            
+            
+           // _sequenceListener1 = new KeyboardSequenceListener();
+           // _sequenceListener2 = new KeyboardSequenceListener();
             // KeyboardBinder = new KeyboardBinder();
             // _keyboardManipulator1 = new KeyboardManipulator();
             // _keyboardListener1 = new KeyboardListener();
@@ -90,8 +112,8 @@ namespace WPF.Playground
             // KeyboardBinder.Bind(Key.X, Key.W);
 
 
-            _sequenceListener2.Subscribe(new[] { Key.R, Key.T }, () => { PressedButtons.Text += $"RT | "; });
-            _sequenceListener1.Subscribe(new[] { Key.Q, Key.W }, () => { PressedButtons.Text += $"QW | "; });
+            // _sequenceListener2.Subscribe(new[] { Key.R, Key.T }, () => { PressedButtons.Text += $"RT | "; });
+            // _sequenceListener1.Subscribe(new[] { Key.Q, Key.W }, () => { PressedButtons.Text += $"QW | "; });
 
             InitializeComponent();
         }
@@ -114,7 +136,9 @@ namespace WPF.Playground
 
         private void OnClickButton1(object sender, RoutedEventArgs e)
         {
-            _sequenceListener1.UnsubscribeAll();
+            _combinationListener1.UnsubscribeAll();
+            _combinationListener2.UnsubscribeAll();
+          //  _sequenceListener1.UnsubscribeAll();
         }
 
         private void OnClickButton2(object sender, RoutedEventArgs e)
