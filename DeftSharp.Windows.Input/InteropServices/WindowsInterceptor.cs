@@ -7,7 +7,7 @@ using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.InteropServices;
 
-internal abstract class WindowsInterceptor : IRequestedInterceptor
+internal abstract class WindowsInterceptor : IInterceptor
 {
     private readonly int _interceptorHook;
     private bool _handled;

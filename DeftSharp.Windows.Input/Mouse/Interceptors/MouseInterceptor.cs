@@ -5,7 +5,7 @@ using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
-internal abstract class MouseInterceptor : IRequestedInterceptor
+internal abstract class MouseInterceptor : IInterceptor
 {
     protected readonly IMouseInterceptor Mouse;
 

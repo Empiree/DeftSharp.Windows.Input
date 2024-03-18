@@ -27,12 +27,9 @@ public sealed class MouseSubscription : InputSubscription<Action>
 
     internal void Invoke()
     {
-        if (LastInvoked.HasValue && SingleUse)
+        if (!CanBeInvoked())
             return;
-
-        if (LastInvoked?.Add(IntervalOfClick) >= DateTime.Now)
-            return;
-
+        
         LastInvoked = DateTime.Now;
         OnClick();
     }

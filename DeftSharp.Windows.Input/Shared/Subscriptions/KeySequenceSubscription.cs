@@ -28,10 +28,7 @@ public sealed class KeySequenceSubscription: InputSubscription<Action>
     
     internal void Invoke()
     {
-        if (LastInvoked.HasValue && SingleUse)
-            return;
-
-        if (LastInvoked?.Add(IntervalOfClick) >= DateTime.Now)
+        if (!CanBeInvoked())
             return;
 
         LastInvoked = DateTime.Now;

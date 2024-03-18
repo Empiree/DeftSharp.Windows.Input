@@ -5,7 +5,7 @@ using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
-internal abstract class KeyboardInterceptor : IRequestedInterceptor
+internal abstract class KeyboardInterceptor : IInterceptor
 {
     protected readonly IKeyboardInterceptor Keyboard;
 

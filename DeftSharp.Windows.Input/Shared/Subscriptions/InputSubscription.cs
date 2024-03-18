@@ -23,4 +23,15 @@ public abstract class InputSubscription<TAction>
     {
         IntervalOfClick = intervalOfClick;
     }
+
+    internal virtual bool CanBeInvoked()
+    {
+        if (LastInvoked.HasValue && SingleUse)
+            return false;
+
+        if (LastInvoked?.Add(IntervalOfClick) >= DateTime.Now)
+            return false;
+
+        return true;
+    }
 }
