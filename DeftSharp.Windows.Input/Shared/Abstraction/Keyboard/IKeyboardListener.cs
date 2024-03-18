@@ -7,12 +7,11 @@ namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
 internal interface IKeyboardListener : IDisposable
 {
-    IEnumerable<KeyboardSubscription> Subscriptions { get; }
+    IEnumerable<KeySubscription> Subscriptions { get; }
     
-    void Subscribe(KeyboardSubscription subscription);
+    void Subscribe(KeySubscription subscription);
 
     void Unsubscribe(Key key);
-    void Unsubscribe(IEnumerable<Key> keys);
     void Unsubscribe(Guid id);
     void UnsubscribeAll();
 }

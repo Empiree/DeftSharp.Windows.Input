@@ -14,7 +14,7 @@ public sealed class KeyboardListenerSubscribeTests
             listener.Subscribe(Key.A, key => { });
 
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
-            Assert.Single(listener.Subscriptions);
+            Assert.Single(listener.Keys);
 
             listener.UnsubscribeAll();
         });
@@ -32,7 +32,7 @@ public sealed class KeyboardListenerSubscribeTests
             listener.Subscribe(Key.A, key => { });
 
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
-            Assert.Equal(3, listener.Subscriptions.Count(s => s.Key == Key.A));
+            Assert.Equal(3, listener.Keys.Count(s => s.Key == Key.A));
 
             listener.UnsubscribeAll();
         });
@@ -51,7 +51,7 @@ public sealed class KeyboardListenerSubscribeTests
             listener.Subscribe(keys, key => { });
 
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
-            Assert.Equal(6, listener.Subscriptions.Count(s => s.Key == Key.A));
+            Assert.Equal(6, listener.Keys.Count(s => s.Key == Key.A));
 
             listener.UnsubscribeAll();
         });
@@ -70,7 +70,7 @@ public sealed class KeyboardListenerSubscribeTests
             listener.Subscribe(keys, key => { });
 
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
-            Assert.Equal(12, listener.Subscriptions.Count());
+            Assert.Equal(12, listener.Keys.Count());
 
             listener.UnsubscribeAll();
         });
@@ -89,7 +89,7 @@ public sealed class KeyboardListenerSubscribeTests
             listener.Subscribe(keys, key => { });
 
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
-            Assert.Equal(9, listener.Subscriptions.Count());
+            Assert.Equal(9, listener.Keys.Count());
 
             listener.UnsubscribeAll();
         });
@@ -108,8 +108,8 @@ public sealed class KeyboardListenerSubscribeTests
             listener.Subscribe(Key.Back, key => { });
 
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
-            Assert.Equal(4, listener.Subscriptions.Count());
-            Assert.Equal(4, listener.Subscriptions.Count(s => s.Key == Key.Back));
+            Assert.Equal(4, listener.Keys.Count());
+            Assert.Equal(4, listener.Keys.Count(s => s.Key == Key.Back));
 
             listener.UnsubscribeAll();
         });

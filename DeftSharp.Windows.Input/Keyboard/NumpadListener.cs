@@ -51,5 +51,10 @@ public sealed class NumpadListener
     /// <summary>
     /// Unsubscribes from listening to numpad key presses.
     /// </summary>
-    public void Unsubscribe() => _keyboardListener.Unsubscribe(_numKeys.Select(n => n.Key));
+    public void Unsubscribe()
+    {
+        var keys = _numKeys.Select(n => n.Key);
+        foreach (var key in keys)
+            _keyboardListener.Unsubscribe(key);
+    }
 }

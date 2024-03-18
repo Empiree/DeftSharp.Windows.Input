@@ -14,19 +14,19 @@ namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
 internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboardListener
 {
-    private readonly ObservableCollection<KeyboardSubscription> _subscriptions;
-    public IEnumerable<KeyboardSubscription> Subscriptions => _subscriptions;
+    private readonly ObservableCollection<KeySubscription> _subscriptions;
+    public IEnumerable<KeySubscription> Subscriptions => _subscriptions;
 
     public KeyboardListenerInterceptor()
         : base(WindowsKeyboardInterceptor.Instance)
     {
-        _subscriptions = new ObservableCollection<KeyboardSubscription>();
+        _subscriptions = new ObservableCollection<KeySubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
     ~KeyboardListenerInterceptor() => Dispose();
 
-    public void Subscribe(KeyboardSubscription subscription)
+    public void Subscribe(KeySubscription subscription)
     {
         if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))
             return;
@@ -40,12 +40,6 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
 
         foreach (var buttonSubscription in subscriptions)
             _subscriptions.Remove(buttonSubscription);
-    }
-
-    public void Unsubscribe(IEnumerable<Key> keys)
-    {
-        foreach (var key in keys)
-            Unsubscribe(key);
     }
 
     public void Unsubscribe(Guid id)

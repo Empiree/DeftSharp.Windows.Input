@@ -4,11 +4,11 @@ using System.Windows.Input;
 
 namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
-public sealed class KeyboardSequenceSubscription: InputSubscription<Action>
+public sealed class KeySequenceSubscription: InputSubscription<Action>
 {
     public IEnumerable<Key> Sequence { get; }
     
-    internal KeyboardSequenceSubscription(
+    internal KeySequenceSubscription(
         IEnumerable<Key> sequence,
         Action onClick,
         bool singleUse = false)
@@ -17,7 +17,7 @@ public sealed class KeyboardSequenceSubscription: InputSubscription<Action>
         Sequence = sequence;
     }
 
-    internal KeyboardSequenceSubscription(
+    internal KeySequenceSubscription(
         IEnumerable<Key> sequence,
         Action onClick,
         TimeSpan interval)

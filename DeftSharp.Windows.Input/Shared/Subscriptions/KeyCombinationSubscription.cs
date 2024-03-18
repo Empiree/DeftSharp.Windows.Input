@@ -5,11 +5,11 @@ using System.Windows.Input;
 
 namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
-public sealed class KeyboardCombinationSubscription : InputSubscription<Action>
+public sealed class KeyCombinationSubscription : InputSubscription<Action>
 {
     public IEnumerable<Key> Combination { get; }
     
-    public KeyboardCombinationSubscription(
+    public KeyCombinationSubscription(
         IEnumerable<Key> combination,
         Action onClick, 
         bool singleUse = false) 
@@ -18,7 +18,7 @@ public sealed class KeyboardCombinationSubscription : InputSubscription<Action>
         Combination = combination.Distinct();
     }
 
-    public KeyboardCombinationSubscription(
+    public KeyCombinationSubscription(
         IEnumerable<Key> combination,
         Action onClick, 
         TimeSpan intervalOfClick) 

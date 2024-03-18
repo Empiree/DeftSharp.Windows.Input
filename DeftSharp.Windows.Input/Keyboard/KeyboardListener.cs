@@ -10,39 +10,91 @@ namespace DeftSharp.Windows.Input.Keyboard;
 
 public sealed class KeyboardListener : IDisposable
 {
-    private readonly IKeyboardListener _keyboardInterceptor = new KeyboardListenerInterceptor();
-    public bool IsListening => _keyboardInterceptor.Subscriptions.Any();
-    public IEnumerable<KeyboardSubscription> Subscriptions => _keyboardInterceptor.Subscriptions;
+    private readonly IKeyboardListener _listener = new KeyboardListenerInterceptor();
+    private readonly IKeyboardSequenceListener _sequenceListener = new KeyboardSequenceListenerInterceptor();
+    private readonly IKeyboardCombinationListener _combinationListener = new KeyboardCombinationListenerInterceptor();
+    public IEnumerable<KeySubscription> Keys => _listener.Subscriptions;
+    public IEnumerable<KeySequenceSubscription> Sequences => _sequenceListener.Subscriptions;
+    public IEnumerable<KeyCombinationSubscription> Combinations => _combinationListener.Subscriptions;
+    
+    public bool IsListening => Keys.Any() || Sequences.Any() || Combinations.Any();
     
     ~KeyboardListener() => Dispose();
 
-    public KeyboardSubscription Subscribe(Key key, Action<Key> onClick,
+    public KeySubscription Subscribe(Key key, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) 
     {
-        var subscription = new KeyboardSubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
-        _keyboardInterceptor.Subscribe(subscription);
+        var subscription = new KeySubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
+        _listener.Subscribe(subscription);
         return subscription;
     }
 
-    public IEnumerable<KeyboardSubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
+    public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
         keys.Select(k => Subscribe(k, onClick, intervalOfClick, keyboardEvent)).ToList();
 
-    public KeyboardSubscription SubscribeOnce(Key key, Action<Key> onClick,
+    public KeySubscription SubscribeOnce(Key key, Action<Key> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
-        var subscription = new KeyboardSubscription(key, onClick, keyboardEvent, true);
-        _keyboardInterceptor.Subscribe(subscription);
+        var subscription = new KeySubscription(key, onClick, keyboardEvent, true);
+        _listener.Subscribe(subscription);
+        return subscription;
+    }
+    
+    public IEnumerable<KeySubscription> SubscribeOnce(IEnumerable<Key> keys, Action<Key> onClick,
+        KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+        keys.Select(k => SubscribeOnce(k, onClick, keyboardEvent)).ToList();
+
+    public KeySequenceSubscription SubscribeSequence(IEnumerable<Key> sequence, Action onClick,
+        TimeSpan? intervalOfClick = null)
+    {
+        var subscription = new KeySequenceSubscription(sequence, onClick, intervalOfClick ?? TimeSpan.Zero);
+        _sequenceListener.Subscribe(subscription);
         return subscription;
     }
 
-    public void Unsubscribe(Key key) => _keyboardInterceptor.Unsubscribe(key);
+    public KeySequenceSubscription SubscribeSequenceOnce(IEnumerable<Key> sequence, Action onClick)
+    {
+        var subscription = new KeySequenceSubscription(sequence, onClick, true);
+        _sequenceListener.Subscribe(subscription);
+        return subscription;
+    } 
+    
+    public KeyCombinationSubscription SubscribeCombination(IEnumerable<Key> combination, Action onClick,
+        TimeSpan? intervalOfClick = null)
+    {
+        var subscription = new KeyCombinationSubscription(combination, onClick, intervalOfClick ?? TimeSpan.Zero);
+        _combinationListener.Subscribe(subscription);
+        return subscription;
+    }
 
-    public void Unsubscribe(IEnumerable<Key> keys) => _keyboardInterceptor.Unsubscribe(keys);
+    public KeyCombinationSubscription SubscribeCombinationOnce(IEnumerable<Key> combination, Action onClick)
+    {
+        var subscription = new KeyCombinationSubscription(combination, onClick, true);
+        _combinationListener.Subscribe(subscription);
+        return subscription;
+    } 
 
-    public void Unsubscribe(Guid id) => _keyboardInterceptor.Unsubscribe(id);
+    public void Unsubscribe(Key key) => _listener.Unsubscribe(key);
 
-    public void UnsubscribeAll() => _keyboardInterceptor.UnsubscribeAll();
+    public void Unsubscribe(Guid id)
+    {
+        _listener.Unsubscribe(id);
+        _sequenceListener.Unsubscribe(id);
+        _combinationListener.Unsubscribe(id);
+    }
 
-    public void Dispose() => _keyboardInterceptor.Dispose();
+    public void UnsubscribeAll()
+    {
+        _listener.UnsubscribeAll();
+        _sequenceListener.UnsubscribeAll();
+        _combinationListener.UnsubscribeAll();
+    }
+
+    public void Dispose()
+    {
+      _listener.Dispose();
+      _sequenceListener.Dispose();
+      _combinationListener.Dispose();
+    } 
 }

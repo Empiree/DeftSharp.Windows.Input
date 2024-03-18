@@ -4,12 +4,12 @@ using DeftSharp.Windows.Input.Keyboard;
 
 namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
-public sealed class KeyboardSubscription : InputSubscription<Action<Key>>
+public sealed class KeySubscription : InputSubscription<Action<Key>>
 {
     public Key Key { get; }
     public KeyboardEvent Event { get; }
 
-    internal KeyboardSubscription(
+    internal KeySubscription(
         Key key,
         Action<Key> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown,
@@ -20,7 +20,7 @@ public sealed class KeyboardSubscription : InputSubscription<Action<Key>>
         Key = key;
     }
 
-    internal KeyboardSubscription(
+    internal KeySubscription(
         Key key,
         Action<Key> onClick,
         TimeSpan interval,

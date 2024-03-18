@@ -40,7 +40,9 @@ public sealed class KeyboardListenerUnsubscribeTests
         {
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
             listener.Subscribe(keys, key => { });
-            listener.Unsubscribe(keys);
+            
+            foreach (var key in keys)
+                listener.Unsubscribe(key);
         });
     }
 
