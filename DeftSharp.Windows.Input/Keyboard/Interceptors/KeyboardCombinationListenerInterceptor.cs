@@ -19,20 +19,20 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
     private const int MaximumCombinationLength = 10;
     
     private readonly List<Key> _heldKeys;
-    private readonly ObservableCollection<KeyboardCombinationSubscription> _subscriptions;
-    public IEnumerable<KeyboardCombinationSubscription> Subscriptions => _subscriptions;
+    private readonly ObservableCollection<KeyCombinationSubscription> _subscriptions;
+    public IEnumerable<KeyCombinationSubscription> Subscriptions => _subscriptions;
     
     public KeyboardCombinationListenerInterceptor()
         : base(WindowsKeyboardInterceptor.Instance)
     {
         _heldKeys = new List<Key>();
-        _subscriptions = new ObservableCollection<KeyboardCombinationSubscription>();
+        _subscriptions = new ObservableCollection<KeyCombinationSubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
     ~KeyboardCombinationListenerInterceptor() => Dispose();
     
-    public void Subscribe(KeyboardCombinationSubscription subscription)
+    public void Subscribe(KeyCombinationSubscription subscription)
     {
         if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))
             return;
@@ -66,7 +66,7 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
 
     protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
     
-    private IEnumerable<KeyboardCombinationSubscription> GetMatchedCombinations() =>
+    private IEnumerable<KeyCombinationSubscription> GetMatchedCombinations() =>
         _subscriptions.Where(subscription => subscription.Combination.All(key => _heldKeys.Contains(key)));
 
     private void HandleKeyPressed(KeyPressedArgs args)

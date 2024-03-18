@@ -18,15 +18,15 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor,
     private const int MinimumSequenceLength = 2;
     private const int MaximumSequenceLength = 10;
 
-    private readonly ObservableCollection<KeyboardSequenceSubscription> _subscriptions;
+    private readonly ObservableCollection<KeySequenceSubscription> _subscriptions;
     private readonly Queue<Key> _pressedKeys;
-    public IEnumerable<KeyboardSequenceSubscription> Subscriptions => _subscriptions;
+    public IEnumerable<KeySequenceSubscription> Subscriptions => _subscriptions;
 
     public KeyboardSequenceListenerInterceptor()
         : base(WindowsKeyboardInterceptor.Instance)
     {
         _pressedKeys = new Queue<Key>();
-        _subscriptions = new ObservableCollection<KeyboardSequenceSubscription>();
+        _subscriptions = new ObservableCollection<KeySequenceSubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
@@ -38,7 +38,7 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor,
         base.Dispose();
     }
 
-    public void Subscribe(KeyboardSequenceSubscription subscription)
+    public void Subscribe(KeySequenceSubscription subscription)
     {
         if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))
             return;
@@ -96,7 +96,7 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor,
         _pressedKeys.Enqueue(key);
     }
 
-    private IEnumerable<KeyboardSequenceSubscription> GetMatchedSequences() =>
+    private IEnumerable<KeySequenceSubscription> GetMatchedSequences() =>
         _subscriptions.Where(subscription => IsSequenceMatch(subscription.Sequence.ToArray()));
 
     private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

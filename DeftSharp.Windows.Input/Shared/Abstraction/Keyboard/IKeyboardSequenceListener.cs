@@ -6,9 +6,9 @@ namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
 public interface IKeyboardSequenceListener : IDisposable
 {
-    IEnumerable<KeyboardSequenceSubscription> Subscriptions { get; }
+    IEnumerable<KeySequenceSubscription> Subscriptions { get; }
 
-    void Subscribe(KeyboardSequenceSubscription subscription);
+    void Subscribe(KeySequenceSubscription subscription);
     void UnsubscribeAll();
     void Unsubscribe(Guid id);
 }
