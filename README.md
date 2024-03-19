@@ -2,62 +2,135 @@
 
 A lightweight library designed to handle and manage keyboard and mouse button events in Windows UI applications (WPF, MAUI, Avalonia). Using P/Invoke methods, this library provides an easy-to-use interface for event handling.
 
-## How to Install
+# How to Install
 
 The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.Windows.Input)
 
 `dotnet add package DeftSharp.Windows.Input`
 
-## Examples
+# Features
 
-Subscription to left mouse click:
+* Subscription to key presses, combinations and sequences on the keyboard
+* Subscription to mouse events and obtaining information on its coordinates
+* Prohibit pressing any button
+* Pressing buttons from code
+* Changing buttons binding
+* Various useful classes such as NumpadListener
 
-```c#
 
-var mouseListener = new MouseListener();
-            
-mouseListener.Subscribe(MouseEvent.LeftButtonDown, () =>
-{
-    // This code will be triggered after each left mouse button click
-});
+# Examples
 
-```
+## KeyboardListener
 
-One-time subscription for pressing a button on the keyboard:
+### Key subscription
 
 ```c#
 
 var keyboardListener = new KeyboardListener();
 
+keyboardListener.Subscribe(Key.A, key =>
+{
+    // This code will be triggered with each press of the 'A' button
+});
+```
+
+### One-time key subscription
+
+```c#
 keyboardListener.SubscribeOnce(Key.A, key =>
 {
-    // This code will only work once, after pressing button 'A'
+    // This code will be triggered only once, after the first press of the 'A' button
 });
 
 ```
 
-You can customize each subscription to suit your needs:
+### Sequence subscription
 
 ```c#
-Key[] keys = { Key.W, Key.A, Key.S, Key.D };
+Key[] sequence = { Key.A, Key.B };
             
-keyboardListener.Subscribe(keys, key =>
+keyboardListener.SubscribeSequence(sequence, () =>
 {
-    // WASD clicks
-}, 
- TimeSpan.FromSeconds(1), // Interval of click event
- KeyboardEvent.KeyUp); // Keyboard event type
-```
-Furthermore, you can take advantage of specialized classes for different usage scenarios. For example, for the NumPad:
-
-```c#
-var numpadListener = new NumpadListener(keyboardListener);
-            
-// 0-9 numpad buttons
-numpadListener.Subscribe(number =>
-{
-    // Your code here
+    // This code will trigger after successive presses of 'A B' buttons
 });
+```
+
+### Combination subscription
+
+```c#
+Key[] combination = { Key.Ctrl, Key.C };
+            
+keyboardListener.SubscribeCombination(combination, () =>
+{
+    // This code will be triggered by pressing the 'Ctrl+C' button combination
+});
+```
+
+### Subscription with interval and event type
+
+```c#
+keyboardListener.Subscribe(Key.A, key =>
+{
+    // Your code is here
+},
+TimeSpan.FromSeconds(5), // Interval of callback triggering
+KeyboardEvent.KeyUp); // Subscribe to KeyUp event
+```
+
+## KeyboardManipulator
+
+### Press button
+
+```c#
+var keyboardManipulator = new KeyboardManipulator();
+
+keyboardManipulator.Press(Key.A); // The 'A' button will be pressed
+```
+
+### Prohibit button pressing
+
+```c#
+keyboardManipulator.Prevent(Key.A); // Each press of this button will be ignored
+```
+
+## KeyboardBinder
+
+### Change the button bind
+
+```c#
+var keyboardBinder = new KeyboardBinder();
+            
+keyboardBinder.Bind(Key.Q, Key.W); // Now when you physically press the 'Q' button, it will behave like the 'W' button
+```
+
+## MouseListener
+
+### Subscribe to mouse move event and get current coordinates
+
+```c#
+var mouseListener = new MouseListener();
+
+mouseListener.Subscribe(MouseEvent.Move, () =>
+{
+  Coordinates coordinates = mouseListener.GetPosition();
+  Console.WriteLine($"Current mouse position: X: {coordinates.X} Y: {coordinates.Y}");
+});
+```
+
+## MouseManipulator
+
+### Set mouse position
+
+```c#
+var mouseManipulator = new MouseManipulator();
+            
+mouseManipulator.SetPosition(x:100,y:100);
+```
+
+### Set position and press the right mouse button
+
+```c#
+mouseManipulator.Click(x:100, y:100, MouseButton.Right);
 ```
 
 ## Requirements
