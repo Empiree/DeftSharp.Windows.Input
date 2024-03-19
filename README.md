@@ -76,6 +76,8 @@ keyboardListener.Subscribe(Key.A, key =>
 TimeSpan.FromSeconds(5), // Interval of callback triggering
 KeyboardEvent.KeyUp); // Subscribe to KeyUp event
 ```
+> [!NOTE]
+> Each object of the KeyboardListener class stores its own subscriptions. Keep this in mind when you use the `UnsubscribeAll()` method.
 
 ## KeyboardManipulator
 
@@ -100,8 +102,13 @@ keyboardManipulator.Prevent(Key.A); // Each press of this button will be ignored
 ```c#
 var keyboardBinder = new KeyboardBinder();
             
-keyboardBinder.Bind(Key.Q, Key.W); // Now when you physically press the 'Q' button, it will behave like the 'W' button
+keyboardBinder.Bind(Key.Q, Key.W); 
+
+// Now any time the 'Q' button is triggered, it will behave like the 'W' button
 ```
+
+> [!NOTE]
+> Prevented and bounded buttons are shared among all class objects. You don't have to worry that an object in this class has locked a particular button and you no longer have access to that object.
 
 ## MouseListener
 
@@ -127,11 +134,20 @@ var mouseManipulator = new MouseManipulator();
 mouseManipulator.SetPosition(x:100,y:100);
 ```
 
-### Set position and press the right mouse button
+### Click the right mouse button on the specified coordinates
 
 ```c#
 mouseManipulator.Click(x:100, y:100, MouseButton.Right);
 ```
+
+### Prohibit mouse button pressing
+
+```c#
+mouseManipulator.Prevent(PreventMouseOption.LeftButton);
+```
+> [!NOTE]
+> Be careful when using this method. You may completely block the operation of your mouse.
+
 
 ## Requirements
 
