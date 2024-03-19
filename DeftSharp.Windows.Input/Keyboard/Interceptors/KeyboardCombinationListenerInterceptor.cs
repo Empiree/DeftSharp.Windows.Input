@@ -17,21 +17,21 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
 {
     private const int MinimumCombinationLength = 2;
     private const int MaximumCombinationLength = 10;
-    
-    private readonly List<Key> _heldKeys;
+
+    private readonly HashSet<Key> _heldKeys;
     private readonly ObservableCollection<KeyCombinationSubscription> _subscriptions;
     public IEnumerable<KeyCombinationSubscription> Subscriptions => _subscriptions;
-    
+
     public KeyboardCombinationListenerInterceptor()
         : base(WindowsKeyboardInterceptor.Instance)
     {
-        _heldKeys = new List<Key>();
+        _heldKeys = new HashSet<Key>();
         _subscriptions = new ObservableCollection<KeyCombinationSubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
     ~KeyboardCombinationListenerInterceptor() => Dispose();
-    
+
     public void Subscribe(KeyCombinationSubscription subscription)
     {
         if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))
@@ -60,12 +60,12 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
         UnsubscribeAll();
         base.Dispose();
     }
-    
+
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
         new(true, InterceptorType.Listener, () => HandleKeyPressed(args));
 
     protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
-    
+
     private IEnumerable<KeyCombinationSubscription> GetMatchedCombinations() =>
         _subscriptions.Where(subscription => subscription.Combination.All(key => _heldKeys.Contains(key)));
 
@@ -76,25 +76,23 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
             _heldKeys.Remove(args.KeyPressed);
             return;
         }
-        
+
         _heldKeys.Add(args.KeyPressed);
 
         var matched = GetMatchedCombinations().ToArray();
 
         if (matched.Length == 0)
             return;
-        
+
         foreach (var subscription in matched)
         {
             if (subscription.SingleUse)
                 Unsubscribe(subscription.Id);
-            
+
             subscription.Invoke();
         }
-        
-        _heldKeys.Clear();
     }
-    
+
     private void CheckCombinationLength(IEnumerable<Key> combination)
     {
         var keyCombination = combination.ToArray();

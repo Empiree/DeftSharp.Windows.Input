@@ -1,9 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard;
+using DeftSharp.Windows.Input.Mouse;
+using MouseButton = DeftSharp.Windows.Input.Mouse.MouseButton;
 
 namespace WPF.Playground
 {
@@ -57,18 +60,40 @@ namespace WPF.Playground
 
         public MainWindow()
         {
+
+            
+            
+            
             _keyboardListener1 = new KeyboardListener();
             _keyboardListener2 = new KeyboardListener();
+            
+            
 
-            Key[] combination = { Key.D1, Key.D2};
+            _keyboardListener1.Subscribe(Key.B, key =>
+            {
+                var mouseManipulator = new MouseManipulator();
+                mouseManipulator.Click(MouseButton.Right);
+            });
+
+            Key[] combination = { Key.LeftCtrl, Key.C};
             _keyboardListener1.SubscribeCombination(combination, () =>
             {
-                PressedButtons.Text += $"QWR |";
+                PressedButtons.Text += $"CtrlC";
             });
             
-            _keyboardListener1.SubscribeCombination(combination, () =>
+            // _keyboardListener1.SubscribeCombination(combination, () =>
+            // {
+            //     PressedButtons.Text += $"QWR |";
+            // });
+
+            var keyboardListener = new KeyboardListener();
+
+            Key[] sequence = { Key.Q, Key.Q, Key.E };
+
+            keyboardListener.SubscribeSequence(sequence, () =>
             {
-                PressedButtons.Text += $"QWR |";
+                PressedButtons.Text += $"QQE | ";
+                // This code will trigger after successive presses of 'Q W E' buttons
             });
             
           

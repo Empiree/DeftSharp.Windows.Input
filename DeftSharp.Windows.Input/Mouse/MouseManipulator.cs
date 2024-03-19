@@ -29,7 +29,8 @@ public sealed class MouseManipulator : IDisposable
     public void Release(PreventMouseOption mouseEvent) => _mouseInterceptor.Release(mouseEvent);
     public void ReleaseAll() => _mouseInterceptor.ReleaseAll();
     public void SetPosition(int x, int y) => _mouseInterceptor.SetPosition(x, y);
-    public void Click(int x, int y, MouseButton button = MouseButton.Left) => _mouseInterceptor.Click(x, y, button);
+    public void Click(int x, int y, MouseButton button = MouseButton.Left) => _mouseInterceptor.Click(button, x, y);
+    public void Click(MouseButton button = MouseButton.Left) => _mouseInterceptor.Click(button);
 
     public void Dispose() => _mouseInterceptor.ClickPrevented -= OnInterceptorClickPrevented;
 

@@ -11,7 +11,8 @@ internal interface IMouseManipulator : IDisposable
     bool IsKeyLocked(MouseEvent mouseEvent);
     
     void SetPosition(int x, int y);
-    void Click(int x, int y, MouseButton button);
+    void Click(MouseButton button, int x, int y);
+    void Click(MouseButton button);
     void Prevent(PreventMouseOption mouseEvent);
     void Release(PreventMouseOption mouseEvent);
     void ReleaseAll();

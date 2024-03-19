@@ -9,5 +9,6 @@ internal interface IMouseInterceptor : IInterceptor
 
     Coordinates GetPosition();
     void SetPosition(int x, int y);
-    void Click(int x, int y, MouseButton button);
+    void Click(MouseButton button, int x, int y);
+    void Click(MouseButton button);
 }

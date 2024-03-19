@@ -33,7 +33,8 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor, IMouseMani
 
     public bool IsKeyLocked(MouseEvent mouseEvent) => _lockedKeys.Any(e => e == mouseEvent);
     public void SetPosition(int x, int y) => Mouse.SetPosition(x, y);
-    public void Click(int x, int y, MouseButton button) => Mouse.Click(x, y, button);
+    public void Click(MouseButton button, int x, int y) => Mouse.Click(button, x, y);
+    public void Click(MouseButton button) => Mouse.Click(button);
 
     public void Prevent(PreventMouseOption preventOption)
     {

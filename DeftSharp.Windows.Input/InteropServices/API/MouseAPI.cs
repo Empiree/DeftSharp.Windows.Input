@@ -25,6 +25,16 @@ internal static class MouseAPI
     /// <param name="x">The new x-coordinate of the mouse cursor.</param>
     /// <param name="y">The new y-coordinate of the mouse cursor.</param>
     internal static void SetPosition(int x, int y) => SetCursorPos(x, y);
+    
+    /// <summary>
+    /// Simulates a mouse click at the current position.
+    /// </summary>
+    /// <param name="button">The mouse button to click.</param>
+    internal static void Click(MouseButton button)
+    {
+        var currentPosition = GetPosition();
+        Click(button, currentPosition.X, currentPosition.Y);
+    }
 
     /// <summary>
     /// Simulates a mouse click at the specified position.

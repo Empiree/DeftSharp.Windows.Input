@@ -22,7 +22,8 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
 
     public Coordinates GetPosition() => MouseAPI.GetPosition();
     public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);
-    public void Click(int x, int y, MouseButton button) => MouseAPI.Click(button, x, y);
+    public void Click(MouseButton button, int x, int y) => MouseAPI.Click(button, x, y);
+    public void Click(MouseButton button) => MouseAPI.Click(button);
 
     /// <summary>
     /// Callback method for the mouse hook.
