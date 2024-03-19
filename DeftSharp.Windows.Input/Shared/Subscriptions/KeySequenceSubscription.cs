@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
+using DeftSharp.Windows.Input.Shared.Exceptions;
 
 namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
@@ -15,6 +17,9 @@ public sealed class KeySequenceSubscription: InputSubscription<Action>
         : base(onClick, singleUse)
     {
         Sequence = sequence;
+        
+        if (Sequence.Any(k => k is Key.None))
+            throw new KeyNoneException();
     }
 
     internal KeySequenceSubscription(
@@ -24,6 +29,9 @@ public sealed class KeySequenceSubscription: InputSubscription<Action>
         : base(onClick, interval)
     {
         Sequence = sequence;
+        
+        if (Sequence.Any(k => k is Key.None))
+            throw new KeyNoneException();
     }
     
     internal void Invoke()

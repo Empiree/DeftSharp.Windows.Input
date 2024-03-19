@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard;
+using DeftSharp.Windows.Input.Shared.Exceptions;
 
 namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
@@ -16,6 +17,9 @@ public sealed class KeySubscription : InputSubscription<Action<Key>>
         bool singleUse = false)
     : base(onClick, singleUse)
     {
+        if (key is Key.None)
+            throw new KeyNoneException();
+        
         Event = keyboardEvent;
         Key = key;
     }
@@ -27,6 +31,9 @@ public sealed class KeySubscription : InputSubscription<Action<Key>>
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
         : base(onClick, interval)
     {
+        if (key is Key.None)
+            throw new KeyNoneException();
+        
         Event = keyboardEvent;
         Key = key;
     }

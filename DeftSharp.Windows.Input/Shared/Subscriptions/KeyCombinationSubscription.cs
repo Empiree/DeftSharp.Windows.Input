@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using DeftSharp.Windows.Input.Shared.Exceptions;
 
 namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
@@ -16,6 +17,9 @@ public sealed class KeyCombinationSubscription : InputSubscription<Action>
         : base(onClick, singleUse)
     {
         Combination = combination.Distinct();
+        
+        if (Combination.Any(k => k is Key.None))
+            throw new KeyNoneException();
     }
 
     public KeyCombinationSubscription(
@@ -25,6 +29,9 @@ public sealed class KeyCombinationSubscription : InputSubscription<Action>
         : base(onClick, intervalOfClick)
     {
         Combination = combination.Distinct();
+        
+        if (Combination.Any(k => k is Key.None))
+            throw new KeyNoneException();
     }
     
     internal void Invoke()
