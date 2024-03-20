@@ -16,13 +16,13 @@ public sealed class KeyboardListener : IDisposable
     public IEnumerable<KeySubscription> Keys => _listener.Subscriptions;
     public IEnumerable<KeySequenceSubscription> Sequences => _sequenceListener.Subscriptions;
     public IEnumerable<KeyCombinationSubscription> Combinations => _combinationListener.Subscriptions;
-    
+
     public bool IsListening => Keys.Any() || Sequences.Any() || Combinations.Any();
-    
+
     ~KeyboardListener() => Dispose();
 
     public KeySubscription Subscribe(Key key, Action<Key> onClick,
-        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) 
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
         var subscription = new KeySubscription(key, onClick, intervalOfClick ?? TimeSpan.Zero, keyboardEvent);
         _listener.Subscribe(subscription);
@@ -40,7 +40,7 @@ public sealed class KeyboardListener : IDisposable
         _listener.Subscribe(subscription);
         return subscription;
     }
-    
+
     public IEnumerable<KeySubscription> SubscribeOnce(IEnumerable<Key> keys, Action<Key> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
         keys.Select(k => SubscribeOnce(k, onClick, keyboardEvent)).ToList();
@@ -58,8 +58,8 @@ public sealed class KeyboardListener : IDisposable
         var subscription = new KeySequenceSubscription(sequence, onClick, true);
         _sequenceListener.Subscribe(subscription);
         return subscription;
-    } 
-    
+    }
+
     public KeyCombinationSubscription SubscribeCombination(IEnumerable<Key> combination, Action onClick,
         TimeSpan? intervalOfClick = null)
     {
@@ -73,7 +73,23 @@ public sealed class KeyboardListener : IDisposable
         var subscription = new KeyCombinationSubscription(combination, onClick, true);
         _combinationListener.Subscribe(subscription);
         return subscription;
-    } 
+    }
+
+    /// <summary>
+    /// Subscribes to all possible enum values of type <see cref="Key"/>.
+    /// </summary>
+    /// <remarks>Except <b>Key.None</b></remarks>
+    public IEnumerable<KeySubscription> SubscribeAll(Action<Key> onClick, TimeSpan? intervalOfClick = null,
+        KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
+    {
+        var keys = Enum.GetValues(typeof(Key))
+            .OfType<Key>()
+            .ToList();
+
+        keys.Remove(Key.None);
+
+        return Subscribe(keys, onClick, intervalOfClick, keyboardEvent);
+    }
 
     public void Unsubscribe(Key key) => _listener.Unsubscribe(key);
 
@@ -93,8 +109,8 @@ public sealed class KeyboardListener : IDisposable
 
     public void Dispose()
     {
-      _listener.Dispose();
-      _sequenceListener.Dispose();
-      _combinationListener.Dispose();
-    } 
+        _listener.Dispose();
+        _sequenceListener.Dispose();
+        _combinationListener.Dispose();
+    }
 }
