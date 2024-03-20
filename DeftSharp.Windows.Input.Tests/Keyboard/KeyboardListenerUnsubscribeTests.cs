@@ -40,7 +40,7 @@ public sealed class KeyboardListenerUnsubscribeTests
         {
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
             listener.Subscribe(keys, key => { });
-            
+
             foreach (var key in keys)
                 listener.Unsubscribe(key);
         });
@@ -82,5 +82,45 @@ public sealed class KeyboardListenerUnsubscribeTests
     public void KeyboardListener_Empty()
     {
         RunListenerTest(_ => { });
+    }
+
+
+    [Fact]
+    public void KeyboardListener_SubscribeCombinationUnsubscribeById()
+    {
+        RunListenerTest(listener =>
+        {
+            Key[] combination = { Key.W, Key.A };
+            listener.SubscribeCombination(combination, () => { });
+            Guid combinationId = listener.Combinations.First().Id;
+            listener.Unsubscribe(combinationId);
+        });
+    }
+
+    [Fact]
+    public void KeyboardListener_SubscribeCombinationUnsubscribeAll()
+    {
+        RunListenerTest(listener =>
+        {
+            Key[] combination = { Key.W, Key.A };
+            for (int i = 0; i < 5; i++)
+            {
+                listener.SubscribeCombination(combination, () => { });
+            }
+            listener.UnsubscribeAll();
+        });
+    }
+
+    [Fact]
+    public void KeyboardListener_SubscribeCombinationUnsubscribeSingleKey()
+    {
+        var keyboardListener = new KeyboardListener();
+        Key[] combination = { Key.W, Key.A };
+        keyboardListener.SubscribeCombination(combination, () => { });
+        keyboardListener.Unsubscribe(Key.W);
+        keyboardListener.Unsubscribe(Key.A);
+
+        Assert.Single(keyboardListener.Combinations);
+        Assert.True(keyboardListener.Combinations.All(x => x.Combination.SequenceEqual(combination.AsEnumerable())));
     }
 }
