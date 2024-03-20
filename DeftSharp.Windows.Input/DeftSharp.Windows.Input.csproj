@@ -11,21 +11,24 @@
         <RootNamespace>DeftSharp.Windows.Input</RootNamespace>
         <AssemblyName>DeftSharp.Windows.Input</AssemblyName>
         <Title>DeftSharp.Windows.Input</Title>
-        <Description>A simple keyboard/mouse event handler for Windows UI applications (WPF, MAUI, Avalonia) </Description>
+        <Description>A simple keyboard/mouse event handler for Windows UI applications (WPF, MAUI, WinUI, Avalonia) </Description>
         <Copyright>@ DeftSharp. All rights reserved.</Copyright>
         <PackageProjectUrl>https://github.com/Empiree/DeftSharp.Windows.Input</PackageProjectUrl>
         <PackageLicenseUrl></PackageLicenseUrl>
         <RepositoryUrl>https://github.com/Empiree/DeftSharp.Windows.Input</RepositoryUrl>
         <RepositoryType>Open-Source</RepositoryType>
-        <PackageTags>#WPF #Input #Keyboard-Listener #Mouse-Listener #WinAPI #listener #MAUI #Avalonia #Windows #Input #Keyboard #Mouse</PackageTags>
-        <Version>0.4</Version>
+        <PackageTags>#WPF #Input #Keyboard-Listener #Mouse-Listener #WinAPI #listener #WinUI #WinUI3 #MAUI #Avalonia #Windows #Input #Keyboard #Mouse</PackageTags>
+        <Version>0.5</Version>
         <PackageIcon>DeftSharp-icon.png</PackageIcon>
         <PackageReleaseNotes>What's new:
 
-KeyboardListener:
-- Sequence subscriptions
-- Combination subscriptions
-- Small changes of use</PackageReleaseNotes>
+- New useful methods (SubscribeAll, PressCombination, etc.)
+- New subscription types for MouseListener
+- Small changes
+
+[Breaking change] : LeftButtonDoubleClick has been removed due to unstable operation.
+
+You can see all the changes in the release changelog of our GitHub repository!</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
