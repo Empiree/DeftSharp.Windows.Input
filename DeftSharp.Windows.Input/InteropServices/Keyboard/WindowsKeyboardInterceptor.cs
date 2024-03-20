@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.API;
@@ -25,7 +26,9 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
     {
     }
 
-    public void Press(Key key) => KeyboardAPI.PressButton(key);
+    public void Press(Key key) => KeyboardAPI.Press(key);
+    public void PressCombination(IEnumerable<Key> combination) => 
+        KeyboardAPI.PressSynchronously(combination.Distinct());
 
     /// <summary>
     /// Callback method for the keyboard hook.

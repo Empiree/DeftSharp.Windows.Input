@@ -92,7 +92,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
 
                 var key = _boundedKeys[args.KeyPressed];
                 _lastProcessedBoundedKey = key;
-                KeyboardAPI.PressButton(key);
+                KeyboardAPI.Press(key);
             });
     }
 

@@ -31,6 +31,7 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKey
     ~KeyboardManipulatorInterceptor() => Dispose();
 
     public void Press(Key key) => Keyboard.Press(key);
+    public void PressCombination(IEnumerable<Key> combination) => Keyboard.PressCombination(combination);
 
     public void Prevent(Key key)
     {

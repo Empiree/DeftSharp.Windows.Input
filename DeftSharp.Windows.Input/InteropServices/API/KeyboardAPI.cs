@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Shared.Exceptions;
 using static DeftSharp.Windows.Input.InteropServices.API.InputMessages;
@@ -15,12 +17,31 @@ internal static class KeyboardAPI
     /// </summary>
     /// <param name="key">The key to press.</param>
     /// <exception cref="KeyboardPressException">Thrown if the key press simulation fails.</exception>
-    internal static void PressButton(Key key)
+    internal static void Press(Key key)
     {
         var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
         var result = SimulateKeyPress(keyCode);
         if (!result)
             throw new KeyboardPressException(key);
+    }
+
+    /// <summary>
+    /// Presses the specified keys synchronously.
+    /// </summary>
+    /// <param name="keys">The keys to press.</param>
+    internal static void PressSynchronously(IEnumerable<Key> keys)
+    {
+        var inputs = keys
+            .Select(k => (byte)KeyInterop.VirtualKeyFromKey(k))
+            .Select(code => CreateInput(code))
+            .ToArray();
+        
+        SendInput(inputs);
+
+        for (var i = 0; i < inputs.Length; i++)
+            inputs[i].u.ki.dwFlags = InputKeyUp;
+        
+        SendInput(inputs);
     }
 
     /// <summary>
@@ -36,7 +57,7 @@ internal static class KeyboardAPI
         if (!result)
             return false;
 
-        input.u.ki.dwFlags = InputKeyup;
+        input.u.ki.dwFlags = InputKeyUp;
         result = SendInput(input);
         return result;
     }
@@ -47,7 +68,7 @@ internal static class KeyboardAPI
     /// <param name="inputs">An array of INPUT structures representing the input events to send.</param>
     /// <returns>True if the input events were successfully sent; otherwise, false.</returns>
     private static bool SendInput(Structures.Input[] inputs) =>
-        WinAPI.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(inputs[0])) != 0;
+        WinAPI.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Structures.Input))) != 0;
 
     /// <summary>
     /// Sends an input event to the system input queue.
@@ -61,12 +82,13 @@ internal static class KeyboardAPI
     /// Creates an INPUT structure representing a keyboard input event with the specified virtual key code.
     /// </summary>
     /// <param name="keyCode">The virtual key code of the key.</param>
+    /// <param name="dwFlags">Flags that specify various aspects of function operation.</param>
     /// <returns>The created INPUT structure.</returns>
-    private static Structures.Input CreateInput(ushort keyCode)
+    private static Structures.Input CreateInput(ushort keyCode, uint dwFlags = InputKeyDown)
     {
         var input = new Structures.Input(InputKeyboard);
         input.u.ki.wVk = keyCode;
-        input.u.ki.dwFlags = InputKeydown;
+        input.u.ki.dwFlags = dwFlags;
         return input;
     }
 }

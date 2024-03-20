@@ -98,12 +98,17 @@ internal static class InputMessages
     /// <summary>
     /// The flag for a key down event in the INPUT structure.
     /// </summary>
-    internal const int InputKeydown = 0x0001;
+    internal const int InputKeyDown = 0x0000;
+    
+    /// <summary>
+    /// The flag for a key extended event in the INPUT structure.
+    /// </summary>
+    internal const int InputKeyExtended = 0x0001;
 
     /// <summary>
     /// The flag for a key up event in the INPUT structure.
     /// </summary>
-    internal const int InputKeyup = 0x0002;
+    internal const int InputKeyUp = 0x0002;
 
     /// <summary>
     /// The type for a keyboard input event in the INPUT structure.

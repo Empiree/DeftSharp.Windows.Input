@@ -25,6 +25,7 @@ public sealed class KeyboardManipulator : IDisposable
     public bool IsKeyLocked(Key key) => _keyboardInterceptor.IsKeyLocked(key);
 
     public void Press(Key key) => _keyboardInterceptor.Press(key);
+    public void PressCombination(IEnumerable<Key> combination) => _keyboardInterceptor.PressCombination(combination);
 
     public void Prevent(Key key) => _keyboardInterceptor.Prevent(key);
 

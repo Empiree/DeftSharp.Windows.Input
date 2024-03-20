@@ -12,6 +12,7 @@ internal interface IKeyboardManipulator : IDisposable
     bool IsKeyLocked(Key key);
     
     void Press(Key key);
+    void PressCombination(IEnumerable<Key> combination);
     void Prevent(Key key);
     void Release(Key key);
     void ReleaseAll();
