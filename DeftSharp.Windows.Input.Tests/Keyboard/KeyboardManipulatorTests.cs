@@ -104,7 +104,7 @@ public class KeyboardManipulatorTests : IDisposable
             }
         });
     }
-    
+
     public void Dispose()
     {
         var manipulator = new KeyboardManipulator();

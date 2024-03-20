@@ -18,7 +18,7 @@ public sealed class KeyboardListenerUnsubscribeTests
     {
         RunListenerTest(listener =>
         {
-            listener.Subscribe(Key.A, key => { });
+            listener.Subscribe(Key.A, _ => { });
             listener.Unsubscribe(Key.A);
         });
     }
@@ -28,7 +28,7 @@ public sealed class KeyboardListenerUnsubscribeTests
     {
         RunListenerTest(listener =>
         {
-            listener.Subscribe(Key.A, key => { });
+            listener.Subscribe(Key.A, _ => { });
             listener.UnsubscribeAll();
         });
     }
@@ -39,7 +39,7 @@ public sealed class KeyboardListenerUnsubscribeTests
         RunListenerTest(listener =>
         {
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
-            listener.Subscribe(keys, key => { });
+            listener.Subscribe(keys, _ => { });
 
             foreach (var key in keys)
                 listener.Unsubscribe(key);
@@ -52,7 +52,7 @@ public sealed class KeyboardListenerUnsubscribeTests
         RunListenerTest(listener =>
         {
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
-            listener.Subscribe(keys, key => { });
+            listener.Subscribe(keys, _ => { });
             listener.Unsubscribe(Key.D);
             listener.Unsubscribe(Key.S);
             listener.Unsubscribe(Key.A);
@@ -66,8 +66,8 @@ public sealed class KeyboardListenerUnsubscribeTests
         RunListenerTest(listener =>
         {
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
-            listener.Subscribe(keys, key => { });
-            listener.Subscribe(Key.A, key => { });
+            listener.Subscribe(keys, _ => { });
+            listener.Subscribe(Key.A, _ => { });
             listener.UnsubscribeAll();
         });
     }
@@ -84,7 +84,6 @@ public sealed class KeyboardListenerUnsubscribeTests
         RunListenerTest(_ => { });
     }
 
-
     [Fact]
     public void KeyboardListener_SubscribeCombinationUnsubscribeById()
     {
@@ -92,7 +91,7 @@ public sealed class KeyboardListenerUnsubscribeTests
         {
             Key[] combination = { Key.W, Key.A };
             listener.SubscribeCombination(combination, () => { });
-            Guid combinationId = listener.Combinations.First().Id;
+            var combinationId = listener.Combinations.First().Id;
             listener.Unsubscribe(combinationId);
         });
     }
@@ -103,10 +102,9 @@ public sealed class KeyboardListenerUnsubscribeTests
         RunListenerTest(listener =>
         {
             Key[] combination = { Key.W, Key.A };
-            for (int i = 0; i < 5; i++)
-            {
+            for (var i = 0; i < 5; i++) 
                 listener.SubscribeCombination(combination, () => { });
-            }
+
             listener.UnsubscribeAll();
         });
     }
