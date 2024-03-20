@@ -120,9 +120,11 @@ var mouseListener = new MouseListener();
 mouseListener.Subscribe(MouseEvent.Move, () =>
 {
   Coordinates coordinates = mouseListener.GetPosition();
-  Console.WriteLine($"Current mouse position: X: {coordinates.X} Y: {coordinates.Y}");
+
+  Label.Text = $"X: {coordinates.X} Y: {coordinates.Y}";
 });
 ```
+![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/889e4364-9140-480a-b8a1-e0702d4b8fd9)
 
 ## MouseManipulator
 
