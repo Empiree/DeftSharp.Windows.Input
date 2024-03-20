@@ -74,18 +74,41 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor, IMouseListene
 
     private void HandleMouseInput(MouseInputArgs args)
     {
-        var mouseEvents = _subscriptions
+        var mouseSubscriptions = _subscriptions
             .Where(s => s.Event.Equals(args.Event))
-            .ToArray();
+            .ToList();
 
-        foreach (var mouseEvent in mouseEvents)
+        var genericSubscriptions = GetGenericSubscriptions(args.Event);
+        
+        mouseSubscriptions.AddRange(genericSubscriptions);
+
+        foreach (var subscription in mouseSubscriptions)
         {
-            if (mouseEvent.SingleUse)
-                Unsubscribe(mouseEvent.Id);
+            if (subscription.SingleUse)
+                Unsubscribe(subscription.Id);
 
-            mouseEvent.Invoke();
+            subscription.Invoke();
         }
     }
+
+    private IEnumerable<MouseSubscription> GetGenericSubscriptions(MouseEvent mouseEvent)
+    {
+        if (IsMouseDownEvent(mouseEvent))
+            return _subscriptions.Where(s => s.Event.Equals(MouseEvent.ButtonDown));
+
+        if (IsMouseUpEvent(mouseEvent))
+            return _subscriptions.Where(s => s.Event.Equals(MouseEvent.ButtonUp));
+        
+        return Enumerable.Empty<MouseSubscription>();
+    }
+
+    private bool IsMouseDownEvent(MouseEvent mouseEvent) =>
+        mouseEvent is MouseEvent.LeftButtonDown or
+            MouseEvent.RightButtonDown or MouseEvent.MiddleButtonDown;
+
+    private bool IsMouseUpEvent(MouseEvent mouseEvent) =>
+        mouseEvent is MouseEvent.LeftButtonUp or
+            MouseEvent.RightButtonUp or MouseEvent.MiddleButtonUp;
 
     private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {

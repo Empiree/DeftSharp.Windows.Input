@@ -6,6 +6,16 @@
 public enum MouseEvent : ushort
 {
     /// <summary>
+    /// Generic type for all button down events.
+    /// </summary>
+    ButtonDown = 0,
+    
+    /// <summary>
+    /// Generic type for all button up events.
+    /// </summary>
+    ButtonUp = 1,
+    
+    /// <summary>
     /// The mouse has been moved.
     /// </summary>
     Move = 512,
