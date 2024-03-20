@@ -124,7 +124,8 @@ mouseListener.Subscribe(MouseEvent.Move, () =>
   Label.Text = $"X: {coordinates.X} Y: {coordinates.Y}";
 });
 ```
-![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/889e4364-9140-480a-b8a1-e0702d4b8fd9)
+![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
+
 
 ## MouseManipulator
 
