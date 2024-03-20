@@ -1,6 +1,6 @@
 # DeftSharp.Windows.Input
 
-A lightweight library designed to handle and manage keyboard and mouse button events in Windows UI applications (WPF, MAUI, Avalonia). Using P/Invoke methods, this library provides an easy-to-use interface for event handling.
+A lightweight library designed to handle and manage keyboard and mouse button events in Windows UI applications (WPF, MAUI, WinUI, Avalonia). Using P/Invoke methods, this library provides an easy-to-use interface for event handling.
 
 # How to Install
 
@@ -120,9 +120,12 @@ var mouseListener = new MouseListener();
 mouseListener.Subscribe(MouseEvent.Move, () =>
 {
   Coordinates coordinates = mouseListener.GetPosition();
-  Console.WriteLine($"Current mouse position: X: {coordinates.X} Y: {coordinates.Y}");
+
+  Label.Text = $"X: {coordinates.X} Y: {coordinates.Y}";
 });
 ```
+![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
+
 
 ## MouseManipulator
 
