@@ -1,6 +1,6 @@
 # DeftSharp.Windows.Input
 
-A lightweight library designed to handle and manage keyboard and mouse button events in Windows UI applications (WPF, MAUI, Avalonia). Using P/Invoke methods, this library provides an easy-to-use interface for event handling.
+A lightweight library designed to handle and manage keyboard and mouse button events in Windows UI applications (WPF, MAUI, WinUI, Avalonia). Using P/Invoke methods, this library provides an easy-to-use interface for event handling.
 
 # How to Install
 
