@@ -19,8 +19,6 @@ public sealed class KeyboardListener : IDisposable
 
     public bool IsListening => Keys.Any() || Sequences.Any() || Combinations.Any();
 
-    ~KeyboardListener() => Dispose();
-
     public KeySubscription Subscribe(Key key, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {

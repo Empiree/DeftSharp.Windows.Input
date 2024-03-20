@@ -28,8 +28,6 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKey
         _lockedKeys = new HashSet<Key>();
     }
 
-    ~KeyboardManipulatorInterceptor() => Dispose();
-
     public void Press(Key key) => Keyboard.Press(key);
     public void PressCombination(IEnumerable<Key> combination) => Keyboard.PressCombination(combination);
 

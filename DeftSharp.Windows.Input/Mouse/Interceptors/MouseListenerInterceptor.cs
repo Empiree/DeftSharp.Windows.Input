@@ -24,8 +24,6 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor, IMouseListene
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
-    ~MouseListenerInterceptor() => Dispose();
-
     public void Subscribe(MouseSubscription subscription)
     {
         if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))

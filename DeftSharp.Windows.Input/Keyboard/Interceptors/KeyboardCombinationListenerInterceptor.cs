@@ -30,8 +30,6 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
-    ~KeyboardCombinationListenerInterceptor() => Dispose();
-
     public void Subscribe(KeyCombinationSubscription subscription)
     {
         if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))

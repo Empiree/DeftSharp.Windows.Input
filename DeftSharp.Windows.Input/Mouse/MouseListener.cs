@@ -13,8 +13,6 @@ public sealed class MouseListener : IDisposable
     public bool IsListening => _mouseInterceptor.Subscriptions.Any();
     public IEnumerable<MouseSubscription> Subscriptions => _mouseInterceptor.Subscriptions;
 
-    ~MouseListener() => Dispose();
-
     public Coordinates GetPosition() => _mouseInterceptor.GetPosition();
 
     public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null)

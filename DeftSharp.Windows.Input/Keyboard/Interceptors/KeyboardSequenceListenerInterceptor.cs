@@ -30,8 +30,6 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor,
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
-    ~KeyboardSequenceListenerInterceptor() => Dispose();
-
     public override void Dispose()
     {
         UnsubscribeAll();

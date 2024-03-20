@@ -30,8 +30,6 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor, IKeyboard
         _boundedKeys = new ConcurrentDictionary<Key, Key>();
     }
 
-    ~KeyboardBinderInterceptor() => Dispose();
-
     public void Bind(Key oldKey, Key newKey)
     {
         if (oldKey == newKey)

@@ -19,8 +19,6 @@ public sealed class MouseManipulator : IDisposable
         _mouseInterceptor.ClickPrevented += OnInterceptorClickPrevented;
     }
 
-    ~MouseManipulator() => Dispose();
-
     public bool IsKeyLocked(MouseEvent mouseEvent) => _mouseInterceptor.IsKeyLocked(mouseEvent);
 
     [DangerousBehavior("Be careful with the use of this method. You can completely lock your mouse")]

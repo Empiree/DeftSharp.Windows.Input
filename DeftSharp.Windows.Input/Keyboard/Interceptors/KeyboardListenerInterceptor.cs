@@ -24,8 +24,6 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboa
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
     }
 
-    ~KeyboardListenerInterceptor() => Dispose();
-
     public void Subscribe(KeySubscription subscription)
     {
         if (Subscriptions.Any(sub => sub.Id.Equals(subscription.Id)))
