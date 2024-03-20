@@ -21,11 +21,6 @@ public enum MouseEvent : ushort
     LeftButtonUp = 514,
 
     /// <summary>
-    /// The left mouse button is double-clicked.
-    /// </summary>
-    LeftButtonDoubleClick = 515,
-
-    /// <summary>
     /// The right mouse button is pressed down.
     /// </summary>
     RightButtonDown = 516,
@@ -33,5 +28,20 @@ public enum MouseEvent : ushort
     /// <summary>
     /// The right mouse button is released.
     /// </summary>
-    RightButtonUp = 517
+    RightButtonUp = 517,
+    
+    /// <summary>
+    /// The middle mouse button is pressed down.
+    /// </summary>
+    MiddleButtonDown = 519,
+    
+    /// <summary>
+    /// The middle mouse button is released.
+    /// </summary>
+    MiddleButtonUp = 520,
+    
+    /// <summary>
+    /// The mouse wheel was scrolled.
+    /// </summary>
+    Wheel = 522
 }

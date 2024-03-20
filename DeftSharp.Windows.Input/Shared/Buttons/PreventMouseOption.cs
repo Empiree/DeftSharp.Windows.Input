@@ -18,5 +18,15 @@ public enum PreventMouseOption : ushort
     /// <summary>
     /// Prevents right mouse button events (down, up).
     /// </summary>
-    RightButton = 516
+    RightButton = 516,
+    
+    /// <summary>
+    /// Prevents middle mouse button events (down, up).
+    /// </summary>
+    MiddleButton = 519,
+    
+    /// <summary>
+    /// Prevents mouse scroll events.
+    /// </summary>
+    Wheel = 522
 }

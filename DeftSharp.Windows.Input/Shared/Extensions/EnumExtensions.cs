@@ -18,11 +18,17 @@ internal static class EnumExtensions
             case PreventMouseOption.LeftButton:
                 preventEvents.Add(MouseEvent.LeftButtonDown);
                 preventEvents.Add(MouseEvent.LeftButtonUp);
-                preventEvents.Add(MouseEvent.LeftButtonDoubleClick);
                 break;
             case PreventMouseOption.RightButton:
                 preventEvents.Add(MouseEvent.RightButtonDown);
                 preventEvents.Add(MouseEvent.RightButtonUp);
+                break;
+            case PreventMouseOption.MiddleButton:
+                preventEvents.Add(MouseEvent.MiddleButtonDown);
+                preventEvents.Add(MouseEvent.MiddleButtonUp);
+                break;
+            case PreventMouseOption.Wheel:
+                preventEvents.Add(MouseEvent.Wheel);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(preventEvent), preventEvent,
