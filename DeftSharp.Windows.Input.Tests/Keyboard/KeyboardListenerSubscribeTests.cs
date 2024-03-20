@@ -1,4 +1,6 @@
-﻿namespace DeftSharp.Windows.Input.Tests.Keyboard;
+﻿using DeftSharp.Windows.Input.Shared.Subscriptions;
+
+namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
 public sealed class KeyboardListenerSubscribeTests
 {
@@ -108,9 +110,9 @@ public sealed class KeyboardListenerSubscribeTests
             listener.Subscribe(Key.Back, key => { });
 
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
+
             Assert.Equal(4, listener.Keys.Count());
             Assert.Equal(4, listener.Keys.Count(s => s.Key == Key.Back));
-
             listener.UnsubscribeAll();
         });
     }
@@ -122,11 +124,71 @@ public sealed class KeyboardListenerSubscribeTests
 
         _threadRunner.Run(() =>
         {
-            listener.Subscribe(Key.J, key => {});
+            listener.Subscribe(Key.J, key => { });
             listener.Dispose();
         });
-        
-        Assert.False(listener.IsListening, "Keyboard listener is not listening subscription events.");
 
+        Assert.False(listener.IsListening, "Keyboard listener is not listening subscription events.");
+    }
+
+    [Fact]
+    public void KeyboardListener_SubscribeCombination()
+    {
+        var listener = new KeyboardListener();
+
+        Key[] combination = { Key.C, Key.D, };
+        _threadRunner.Run(() =>
+        {
+            listener.SubscribeCombination(combination, () => { });
+        });
+
+        Assert.True(listener.Combinations.All(x => x.Combination.SequenceEqual(combination.AsEnumerable<Key>())),
+            "In the listener, the subscribed combination is not found within the combinations.");
+        Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
+        Assert.Single(listener.Combinations);
+    }
+
+    [Fact]
+    public void KeyboardListener_SubscribeCombinationMany()
+    {
+        var listener = new KeyboardListener();
+
+        Key[] combination = { Key.C, Key.D, };
+        _threadRunner.Run(() =>
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                listener.SubscribeCombination(combination, () => { });
+            }
+        });
+
+        Assert.True(listener.Combinations.All(x => x.Combination.SequenceEqual(combination.AsEnumerable<Key>())),
+            "In the listener, the subscribed combination is not found within the combinations.");
+
+        Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
+        Assert.Equal(10, listener.Combinations.Count());
+    }
+
+    [Fact]
+    public void KeyboardListener_SubscribeCombinationOnce()
+    {
+        var listener = new KeyboardListener();
+
+        Key[] combination = { Key.C, Key.D };
+        _threadRunner.Run(() =>
+        {
+            for (int i = 0; i < 5; i++)
+            {
+            listener.SubscribeCombinationOnce(combination, () => { });
+            listener.SubscribeCombination(combination, () => { });
+            }
+        });
+
+        Assert.True(listener.Combinations.All(x => x.Combination.SequenceEqual(combination.AsEnumerable<Key>())),
+            "In the listener, the subscribed combination is not found within the combinations.");
+
+        Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
+        Assert.Equal(10, listener.Combinations.Count());
+        Assert.Equal(5, listener.Combinations.Count(x => x.SingleUse));
     }
 }
