@@ -27,8 +27,8 @@ internal static class EnumExtensions
                 preventEvents.Add(MouseEvent.MiddleButtonDown);
                 preventEvents.Add(MouseEvent.MiddleButtonUp);
                 break;
-            case PreventMouseOption.Wheel:
-                preventEvents.Add(MouseEvent.Wheel);
+            case PreventMouseOption.Scroll:
+                preventEvents.Add(MouseEvent.Scroll);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(preventEvent), preventEvent,

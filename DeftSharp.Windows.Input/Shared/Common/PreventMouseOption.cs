@@ -28,5 +28,5 @@ public enum PreventMouseOption : ushort
     /// <summary>
     /// Prevents mouse scroll events.
     /// </summary>
-    Wheel = 522
+    Scroll = 522
 }

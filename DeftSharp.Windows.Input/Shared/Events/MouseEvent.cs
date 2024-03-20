@@ -53,5 +53,5 @@ public enum MouseEvent : ushort
     /// <summary>
     /// The mouse wheel was scrolled.
     /// </summary>
-    Wheel = 522
+    Scroll = 522
 }
