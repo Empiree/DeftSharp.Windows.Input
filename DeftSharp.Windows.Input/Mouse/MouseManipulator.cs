@@ -30,6 +30,18 @@ public sealed class MouseManipulator : IMouseManipulator
     public void Click(int x, int y, MouseButton button = MouseButton.Left) => _mouseInterceptor.Click(button, x, y);
     public void Click(MouseButton button = MouseButton.Left) => _mouseInterceptor.Click(button);
 
+    public void DoubleClick(int x, int y)
+    {
+        Click(x, y);
+        Click(x, y);
+    }
+
+    public void DoubleClick()
+    {
+        Click();
+        Click();
+    }
+
     public void Dispose() => _mouseInterceptor.ClickPrevented -= OnInterceptorClickPrevented;
 
     private void OnInterceptorClickPrevented(MouseEvent mouseEvent) => ClickPrevented?.Invoke(mouseEvent);
