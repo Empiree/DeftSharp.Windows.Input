@@ -18,6 +18,10 @@ public sealed class KeyboardListener : IKeyboardListener
     public IEnumerable<KeyCombinationSubscription> Combinations => _combinationListener.Subscriptions;
 
     public bool IsCapsLockActive => _listener.IsKeyActive(Key.Capital);
+    public bool IsNumLockActive => _listener.IsKeyActive(Key.NumLock);
+    public bool IsShiftPressed => IsKeyPressed(Key.LeftShift) || IsKeyPressed(Key.RightShift);
+    public bool IsCtrlPressed => IsKeyPressed(Key.LeftCtrl) || IsKeyPressed(Key.RightCtrl);
+    public bool IsAltPressed => IsKeyPressed(Key.LeftAlt) || IsKeyPressed(Key.RightAlt);
     public bool IsListening => Keys.Any() || Sequences.Any() || Combinations.Any();
 
     public KeySubscription Subscribe(Key key, Action<Key> onClick,
@@ -105,6 +109,8 @@ public sealed class KeyboardListener : IKeyboardListener
         _sequenceListener.UnsubscribeAll();
         _combinationListener.UnsubscribeAll();
     }
+
+    public bool IsKeyPressed(Key key) => _listener.IsKeyPressed(key);
 
     public void Dispose()
     {

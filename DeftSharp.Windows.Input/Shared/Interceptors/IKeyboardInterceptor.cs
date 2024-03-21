@@ -10,4 +10,5 @@ internal interface IKeyboardInterceptor : IInterceptor
     void Press(Key key);
     void PressCombination(IEnumerable<Key> combination);
     bool IsKeyActive(Key key);
+    bool IsKeyPressed(Key key);
 }

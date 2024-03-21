@@ -8,6 +8,16 @@
 internal static class InputMessages
 {
     /// <summary>
+    /// Flag indicating that the key is pressed.
+    /// </summary>
+    internal const int KeyPressedFlag = 0x8000;
+
+    /// <summary>
+    /// Flag indicating the activity of the key.
+    /// </summary>
+    internal const int KeyActiveFlag = 0x0001;
+
+    /// <summary>
     /// Specifies a low-level keyboard input event.
     /// </summary>
     internal const int WhKeyboardLl = 13;
@@ -99,7 +109,7 @@ internal static class InputMessages
     /// The flag for a key down event in the INPUT structure.
     /// </summary>
     internal const int InputKeyDown = 0x0000;
-    
+
     /// <summary>
     /// The flag for a key extended event in the INPUT structure.
     /// </summary>

@@ -8,12 +8,15 @@ namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
 internal interface IKeyboardListener : IDisposable
 {
-    
     public IEnumerable<KeySubscription> Keys { get; }
     public IEnumerable<KeySequenceSubscription> Sequences { get; }
     public IEnumerable<KeyCombinationSubscription> Combinations { get; }
-    
+
     bool IsCapsLockActive { get; }
+    bool IsNumLockActive { get; }
+    bool IsShiftPressed { get; }
+    bool IsCtrlPressed { get; }
+    bool IsAltPressed { get; }
     bool IsListening { get; }
 
     KeySubscription Subscribe(Key key, Action<Key> onClick,
@@ -40,6 +43,8 @@ internal interface IKeyboardListener : IDisposable
 
     IEnumerable<KeySubscription> SubscribeAll(Action<Key> onClick, TimeSpan? intervalOfClick = null,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
+
+    bool IsKeyPressed(Key key);
 
     void Unsubscribe(Key key);
     void Unsubscribe(Guid id);

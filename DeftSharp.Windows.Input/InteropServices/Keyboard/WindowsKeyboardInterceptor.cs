@@ -32,6 +32,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboard
         KeyboardAPI.PressSynchronously(combination.Distinct());
 
     public bool IsKeyActive(Key key) => KeyboardAPI.IsKeyActive(key);
+    public bool IsKeyPressed(Key key) => KeyboardAPI.IsKeyPressed(key);
 
     /// <summary>
     /// Callback method for the keyboard hook.

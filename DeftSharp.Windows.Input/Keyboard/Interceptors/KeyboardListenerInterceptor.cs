@@ -63,6 +63,7 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
     }
 
     public bool IsKeyActive(Key key) => Keyboard.IsKeyActive(key);
+    public bool IsKeyPressed(Key key) => Keyboard.IsKeyPressed(key);
 
     protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
 

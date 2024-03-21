@@ -20,7 +20,20 @@ internal static class KeyboardAPI
     internal static bool IsKeyActive(Key key)
     {
         var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
-        return (WinAPI.GetKeyState(keyCode) & 0x0001) != 0;
+        var keyState = WinAPI.GetKeyState(keyCode);
+        return (keyState & KeyActiveFlag) != 0;
+    }
+    
+    /// <summary>
+    /// Determines whether the specified key is currently pressed.
+    /// </summary>
+    /// <param name="key">The key to check.</param>
+    /// <returns>True if the specified key is currently pressed; otherwise, false.</returns>
+    internal static bool IsKeyPressed(Key key)
+    {
+        var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
+        var keyState = WinAPI.GetKeyState(keyCode);
+        return (keyState & KeyPressedFlag) != 0;
     }
     
     /// <summary>
