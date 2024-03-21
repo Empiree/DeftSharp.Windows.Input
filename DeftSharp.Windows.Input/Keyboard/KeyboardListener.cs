@@ -8,11 +8,11 @@ using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-public sealed class KeyboardListener : IDisposable
+public sealed class KeyboardListener : IKeyboardListener
 {
-    private readonly IKeyboardListener _listener = new KeyboardListenerInterceptor();
-    private readonly IKeyboardSequenceListener _sequenceListener = new KeyboardSequenceListenerInterceptor();
-    private readonly IKeyboardCombinationListener _combinationListener = new KeyboardCombinationListenerInterceptor();
+    private readonly KeyboardListenerInterceptor _listener = new();
+    private readonly KeyboardSequenceListenerInterceptor _sequenceListener = new();
+    private readonly KeyboardCombinationListenerInterceptor _combinationListener = new();
     public IEnumerable<KeySubscription> Keys => _listener.Subscriptions;
     public IEnumerable<KeySequenceSubscription> Sequences => _sequenceListener.Subscriptions;
     public IEnumerable<KeyCombinationSubscription> Combinations => _combinationListener.Subscriptions;

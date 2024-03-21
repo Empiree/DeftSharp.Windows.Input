@@ -12,7 +12,6 @@ namespace WPF.Playground
 {
     /// <summary>
     /// You can use this project to test any functionality you want.
-    /// Important! Please do not commit to this project
     /// </summary>
     public partial class MainWindow
     {
@@ -22,6 +21,11 @@ namespace WPF.Playground
 
         private KeyboardBinder _keyboardBinder1;
         private KeyboardBinder _keyboardBinder2;
+
+        private MouseListener _mouseListener;
+        private MouseManipulator _mouseManipulator;
+
+        private KeyboardManipulator _keyboardManipulator;
 
 
         public void TestBinder()
@@ -60,109 +64,62 @@ namespace WPF.Playground
 
         public MainWindow()
         {
+            _keyboardManipulator = new KeyboardManipulator();
+            _mouseManipulator = new MouseManipulator();
 
-            
-            
-            
             _keyboardListener1 = new KeyboardListener();
             _keyboardListener2 = new KeyboardListener();
-            
-            
-
-            _keyboardListener1.Subscribe(Key.B, key =>
-            {
-                var mouseManipulator = new MouseManipulator();
-                mouseManipulator.Click(MouseButton.Right);
-            });
-
-            Key[] combination = { Key.LeftCtrl, Key.C};
-            _keyboardListener1.SubscribeCombination(combination, () =>
-            {
-                PressedButtons.Text += $"CtrlC";
-            });
-            
-            // _keyboardListener1.SubscribeCombination(combination, () =>
-            // {
-            //     PressedButtons.Text += $"QWR |";
-            // });
-
-            var keyboardListener = new KeyboardListener();
-
-            Key[] sequence = { Key.Q, Key.Q, Key.E };
-
-            keyboardListener.SubscribeSequence(sequence, () =>
-            {
-                PressedButtons.Text += $"QQE | ";
-                // This code will trigger after successive presses of 'Q W E' buttons
-            });
-            
-          
-            Key[] combination2 = { Key.Z, Key.X, Key.C };
-            _keyboardListener2.SubscribeCombinationOnce(combination2, () =>
-            {
-                PressedButtons.Text += $"ZXC |";
-            });
-
-            // _keyboardListener1.SubscribeCombination(new[] { Key.Q, Key.W }, () =>
-            // {
-            //     PressedButtons.Text += $"QW |";
-            // });
-
-
-
-            _keyboardListener1.SubscribeOnce(combination2, key =>
-            {
-                PressedButtons.Text += key.ToString();
-            });
-            
-            
-            
-           // _sequenceListener1 = new KeyboardSequenceListener();
-           // _sequenceListener2 = new KeyboardSequenceListener();
-            // KeyboardBinder = new KeyboardBinder();
-            // _keyboardManipulator1 = new KeyboardManipulator();
-            // _keyboardListener1 = new KeyboardListener();
-
-            // _sequenceListener.Subscribe(new[] { Key.Q, Key.W, Key.E }, () =>
-            // {
-            //     PressedButtons.Text += $"QWE |";
-            // });
-            //
-            // _sequenceListener.Subscribe(new[] { Key.Q, Key.W}, () =>
-            // {
-            //     PressedButtons.Text += $"QW |";
-            // });
-            //
-            // _sequenceListener.Subscribe(new[] { Key.W, Key.E}, () =>
-            // {
-            //     PressedButtons.Text += $"WE |";
-            // });
-
-            // _keyboardManipulator1.Prevent(Key.Z);
-            // _keyboardManipulator1.Prevent(Key.X);
-            //
-            // KeyboardBinder.Bind(Key.Q, Key.F);
-            // KeyboardBinder.Bind(Key.W, Key.F);
-            //
-            // KeyboardBinder.Bind(Key.Z, Key.Q);
-            // KeyboardBinder.Bind(Key.X, Key.W);
-
-
-            // _sequenceListener2.Subscribe(new[] { Key.R, Key.T }, () => { PressedButtons.Text += $"RT | "; });
-            // _sequenceListener1.Subscribe(new[] { Key.Q, Key.W }, () => { PressedButtons.Text += $"QW | "; });
+            _mouseListener = new MouseListener();
 
             InitializeComponent();
         }
 
 
+        private int counter = 0;
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            // var temp = new KeyboardListener();
+            //Key[] keys = new[] { Key.LeftCtrl, Key.V };
+          //  Key[] keys = new[] { Key.LWin, Key.Tab };
+            // _mouseListener.Subscribe(MouseEvent.RightButtonDown,Key
+            //     () => {  });|| InputKeyExtended InputKeyExtendedll
+            
+            // Key[] keys = new[] { Key.LeftShift, Key.H };
             //
-            // temp.Subscribe(Key.B, key =>
+            // _mouseListener.Subscribe(MouseEvent.Scroll, mouseEvent =>
+            // {
+            //     // counter++;           
+            //     // PressedButtons.Text = counter.ToString();
+            //     _keyboardManipulator.PressCombination(keys);
+            // });
+
+            // _keyboardListener1.SubscribeAll(key =>
             // {
             //     PressedButtons.Text = key.ToString();
             // });
+
+            _mouseListener.Subscribe(MouseEvent.Scroll, () =>
+            {
+                Key[] pasteCombination = { Key.LeftCtrl, Key.LeftAlt, Key.Delete };
+            
+                _keyboardManipulator.PressCombination(pasteCombination);
+            });
+
+            // var keyboardManipulator = new KeyboardManipulator();
+            //
+            // Key[] paste = { Key.LWin, Key.V };
+            //
+            // keyboardManipulator.PressCombination(paste);
+            
+
+            _keyboardListener1.Subscribe(Key.LWin, key =>
+            {
+                PressedButtons.Text += "d";
+            });
+            
+            _keyboardListener1.Subscribe(Key.LWin, key =>
+            {
+                PressedButtons.Text += "u ";
+            }, keyboardEvent: KeyboardEvent.KeyUp);
         }
 
         private void OnClosing(object? sender, CancelEventArgs e)
@@ -174,7 +131,7 @@ namespace WPF.Playground
         {
             _keyboardListener1.UnsubscribeAll();
             _keyboardListener2.UnsubscribeAll();
-          //  _sequenceListener1.UnsubscribeAll();
+            //  _sequenceListener1.UnsubscribeAll();
         }
 
         private void OnClickButton2(object sender, RoutedEventArgs e)

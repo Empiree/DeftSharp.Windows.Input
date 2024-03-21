@@ -7,9 +7,9 @@ using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Mouse;
 
-public sealed class MouseListener : IDisposable
+public sealed class MouseListener : IMouseListener
 {
-    private readonly IMouseListener _mouseInterceptor = new MouseListenerInterceptor();
+    private readonly MouseListenerInterceptor _mouseInterceptor = new();
     public bool IsListening => _mouseInterceptor.Subscriptions.Any();
     public IEnumerable<MouseSubscription> Subscriptions => _mouseInterceptor.Subscriptions;
 

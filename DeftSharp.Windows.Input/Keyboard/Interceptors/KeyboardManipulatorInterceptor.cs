@@ -4,12 +4,11 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
 using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
-internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor, IKeyboardManipulator
+internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
 {
     private static readonly Lazy<KeyboardManipulatorInterceptor> LazyInstance =
         new(() => new KeyboardManipulatorInterceptor());

@@ -6,13 +6,12 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
 using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
-internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor, IKeyboardListener
+internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
 {
     private readonly ObservableCollection<KeySubscription> _subscriptions;
     public IEnumerable<KeySubscription> Subscriptions => _subscriptions;

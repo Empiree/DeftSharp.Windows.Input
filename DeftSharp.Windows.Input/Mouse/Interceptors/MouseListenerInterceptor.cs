@@ -5,13 +5,12 @@ using System.Collections.Specialized;
 using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
-internal sealed class MouseListenerInterceptor : MouseInterceptor, IMouseListener
+internal sealed class MouseListenerInterceptor : MouseInterceptor
 {
     private readonly ObservableCollection<MouseSubscription> _subscriptions;
 

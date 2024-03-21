@@ -6,9 +6,9 @@ using DeftSharp.Windows.Input.Shared.Attributes;
 
 namespace DeftSharp.Windows.Input.Mouse;
 
-public sealed class MouseManipulator : IDisposable
+public sealed class MouseManipulator : IMouseManipulator
 {
-    private readonly IMouseManipulator _mouseInterceptor;
+    private readonly MouseManipulatorInterceptor _mouseInterceptor;
     public IEnumerable<MouseEvent> LockedKeys => _mouseInterceptor.LockedKeys;
 
     public event Action<MouseEvent>? ClickPrevented;

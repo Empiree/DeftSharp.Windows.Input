@@ -6,14 +6,13 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.InteropServices.Keyboard;
 using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 using DeftSharp.Windows.Input.Shared.Exceptions;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
-internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor, IKeyboardSequenceListener
+internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor
 {
     private const int MinimumSequenceLength = 2;
     private const int MaximumSequenceLength = 10;

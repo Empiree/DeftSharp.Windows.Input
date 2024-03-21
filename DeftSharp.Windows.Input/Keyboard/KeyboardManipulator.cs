@@ -7,9 +7,9 @@ using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-public sealed class KeyboardManipulator : IDisposable
+public sealed class KeyboardManipulator : IKeyboardManipulator
 {
-    private readonly IKeyboardManipulator _keyboardInterceptor;
+    private readonly KeyboardManipulatorInterceptor _keyboardInterceptor;
     public IEnumerable<Key> LockedKeys => _keyboardInterceptor.LockedKeys;
 
     public event Action<KeyPressedArgs>? KeyPrevented;

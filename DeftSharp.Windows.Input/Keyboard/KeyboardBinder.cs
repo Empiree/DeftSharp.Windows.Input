@@ -5,9 +5,9 @@ using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-public sealed class KeyboardBinder
+public sealed class KeyboardBinder : IKeyboardBinder
 {
-    private readonly IKeyboardBinder _keyboardBinder = KeyboardBinderInterceptor.Instance;
+    private readonly KeyboardBinderInterceptor _keyboardBinder = KeyboardBinderInterceptor.Instance;
     public IReadOnlyDictionary<Key, Key> BoundedKeys => _keyboardBinder.BoundedKeys;
 
     public bool IsKeyBounded(Key key) => _keyboardBinder.IsKeyBounded(key);

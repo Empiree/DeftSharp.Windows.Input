@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
 using DeftSharp.Windows.Input.Shared.Extensions;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
-internal sealed class MouseManipulatorInterceptor : MouseInterceptor, IMouseManipulator
+internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 {
     private static readonly Lazy<MouseManipulatorInterceptor> LazyInstance =
         new(() => new MouseManipulatorInterceptor());
