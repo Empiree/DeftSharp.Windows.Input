@@ -4,9 +4,10 @@ using DeftSharp.Windows.Input.Shared.Delegates;
 
 namespace DeftSharp.Windows.Input.Shared.Interceptors;
 
-internal interface IKeyboardInterceptor: IInterceptor
+internal interface IKeyboardInterceptor : IInterceptor
 {
     event KeyboardInputDelegate? KeyboardInput;
     void Press(Key key);
     void PressCombination(IEnumerable<Key> combination);
+    bool IsKeyActive(Key key);
 }

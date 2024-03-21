@@ -116,4 +116,12 @@ internal static class WinAPI
     /// <param name="cbSize">The size, in bytes, of an INPUT structure.</param>
     [DllImport("user32.dll", SetLastError = true)]
     internal static extern uint SendInput(uint nInputs, Structures.Input[] pInputs, int cbSize);
+    
+    /// <summary>
+    /// Retrieves the state of the specified virtual key.
+    /// </summary>
+    /// <param name="nVirtKey">The virtual-key code.</param>
+    /// <returns>The return value specifies the status of the specified virtual key. If the high-order bit is set, the key is down.</returns>
+    [DllImport("user32.dll")]
+    public static extern short GetKeyState(int nVirtKey);
 }

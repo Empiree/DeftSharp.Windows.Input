@@ -17,6 +17,7 @@ public sealed class KeyboardListener : IKeyboardListener
     public IEnumerable<KeySequenceSubscription> Sequences => _sequenceListener.Subscriptions;
     public IEnumerable<KeyCombinationSubscription> Combinations => _combinationListener.Subscriptions;
 
+    public bool IsCapsLockActive => _listener.IsKeyActive(Key.Capital);
     public bool IsListening => Keys.Any() || Sequences.Any() || Combinations.Any();
 
     public KeySubscription Subscribe(Key key, Action<Key> onClick,

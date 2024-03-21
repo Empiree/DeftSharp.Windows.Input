@@ -13,6 +13,7 @@ internal interface IKeyboardListener : IDisposable
     public IEnumerable<KeySequenceSubscription> Sequences { get; }
     public IEnumerable<KeyCombinationSubscription> Combinations { get; }
     
+    bool IsCapsLockActive { get; }
     bool IsListening { get; }
 
     KeySubscription Subscribe(Key key, Action<Key> onClick,

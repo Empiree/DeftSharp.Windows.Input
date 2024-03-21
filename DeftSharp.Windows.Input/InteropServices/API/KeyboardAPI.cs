@@ -13,6 +13,17 @@ namespace DeftSharp.Windows.Input.InteropServices.API;
 internal static class KeyboardAPI
 {
     /// <summary>
+    /// Determines whether the specified key is currently active.
+    /// </summary>
+    /// <param name="key">The key to check.</param>
+    /// <returns>True if the specified key is currently active; otherwise, false.</returns>
+    internal static bool IsKeyActive(Key key)
+    {
+        var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
+        return (WinAPI.GetKeyState(keyCode) & 0x0001) != 0;
+    }
+    
+    /// <summary>
     /// Presses the specified key.
     /// </summary>
     /// <param name="key">The key to press.</param>
