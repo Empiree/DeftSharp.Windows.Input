@@ -4,10 +4,10 @@ public sealed class KeyboardListenerUnsubscribeTests
 {
     private readonly ThreadRunner _threadRunner = new();
 
-    private void RunListenerTest(Action<KeyboardListener> onTest)
+    private async void RunListenerTest(Action<KeyboardListener> onTest)
     {
         var keyboardListener = new KeyboardListener();
-        _threadRunner.Run(() => onTest(keyboardListener));
+        await _threadRunner.Run(() => onTest(keyboardListener));
 
         Assert.False(keyboardListener.IsListening,
             "The Unregister function is not called after unsubscribing from all events.");

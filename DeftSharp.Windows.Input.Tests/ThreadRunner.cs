@@ -5,16 +5,16 @@
 /// </summary>
 internal sealed class ThreadRunner
 {
-    public bool Run(Action onAction)
+    public async Task Run(Action onAction)
     {
         var threadFinished = new ManualResetEvent(false);
 
-        new Thread(() =>
+        await Task.Run(() =>
         {
             onAction();
             threadFinished.Set();
-        }).Start();
+        });
 
-        return threadFinished.WaitOne(3000);
+        threadFinished.WaitOne(3000);
     }
 }
