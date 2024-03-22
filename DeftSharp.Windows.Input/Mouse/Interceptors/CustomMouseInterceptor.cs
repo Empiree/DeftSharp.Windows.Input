@@ -15,10 +15,10 @@ public abstract class CustomMouseInterceptor : MouseInterceptor
 
     protected sealed override InterceptorResponse OnMouseInput(MouseInputArgs args) =>
         new(
-            CanBeProcessed(args),
+            IsInputAllowed(args),
             InterceptorType.Custom,
-            () => OnPipelineSuccess(args),
-            failedInterceptors => OnPipelineFailed(args, failedInterceptors));
+            () => OnSuccess(args),
+            failedInterceptors => OnFailure(args, failedInterceptors));
 
     protected sealed override bool OnPipelineUnhookRequested() => !IsHandled;
 
@@ -26,18 +26,18 @@ public abstract class CustomMouseInterceptor : MouseInterceptor
     /// Can we allow the button to be pressed
     /// </summary>
     /// <param name="args">Key pressed args</param>
-    protected abstract bool CanBeProcessed(MouseInputArgs args);
+    protected abstract bool IsInputAllowed(MouseInputArgs args);
     
     /// <summary>
     /// This method is called when the CanBeProcessed() method is successfully executed on all active interceptors.
     /// </summary>
     /// <param name="args">Key pressed args</param>
-    protected abstract void OnPipelineSuccess(MouseInputArgs args);
+    protected abstract void OnSuccess(MouseInputArgs args);
     
     /// <summary>
     /// This method is called if at least one active interceptor returned false in the CanBeProcessed() method.
     /// </summary>
     /// <param name="args">Key pressed args</param>
     /// <param name="failedInterceptors">A list of interceptors that did not resolve the key press.</param>
-    protected abstract void OnPipelineFailed(MouseInputArgs args, IEnumerable<InterceptorType> failedInterceptors);
+    protected abstract void OnFailure(MouseInputArgs args, IEnumerable<InterceptorType> failedInterceptors);
 }
