@@ -5,11 +5,11 @@ public class KeyboardBinderTests
     private readonly ThreadRunner _threadRunner = new();
 
     [Fact]
-    public void KeyboardBinder_IsKeyBound()
+    public async void KeyboardBinder_IsKeyBound()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             keyboardBinder.Bind(Key.A, Key.B);
 
@@ -19,11 +19,11 @@ public class KeyboardBinderTests
     }
     
     [Fact]
-    public void KeyboardBinder_IsKeyBoundWhenBindingTheSameKey()
+    public async void KeyboardBinder_IsKeyBoundWhenBindingTheSameKey()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             keyboardBinder.Bind(Key.C, Key.C);
 
@@ -32,11 +32,11 @@ public class KeyboardBinderTests
     }
     
     [Fact]
-    public void KeyboardBinder_BindMultipleKeysAtOnce()
+    public async void KeyboardBinder_BindMultipleKeysAtOnce()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             var keys = new List<Key>
             {
@@ -57,11 +57,11 @@ public class KeyboardBinderTests
     }
     
     [Fact]
-    public void KeyboardBinder_BindEmptyKeyCollection()
+    public async void KeyboardBinder_BindEmptyKeyCollection()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             var keys = new List<Key>();
 
@@ -72,11 +72,11 @@ public class KeyboardBinderTests
     }
     
     [Fact]
-    public void KeyboardBinder_Unbind()
+    public async void KeyboardBinder_Unbind()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             keyboardBinder.Bind(Key.A, Key.B);
             Assert.True(keyboardBinder.IsKeyBounded(Key.A));
@@ -88,11 +88,11 @@ public class KeyboardBinderTests
     }
     
     [Fact]
-    public void KeyboardBinder_UnbindAll()
+    public async void KeyboardBinder_UnbindAll()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             var keys = new List<Key>
             {
@@ -112,11 +112,11 @@ public class KeyboardBinderTests
     }
     
     [Fact]
-    public void KeyboardBinder_UnbindKeyThatHasNotBeenBound()
+    public async void KeyboardBinder_UnbindKeyThatHasNotBeenBound()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             Assert.Empty(keyboardBinder.BoundedKeys);
                 

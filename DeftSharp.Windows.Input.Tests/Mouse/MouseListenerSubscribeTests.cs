@@ -5,11 +5,11 @@ public sealed class MouseListenerSubscribeTests
     private readonly ThreadRunner _threadRunner = new();
 
     [Fact]
-    public void MouseListener_SingleSubscribe()
+    public async void MouseListener_SingleSubscribe()
     {
         var listener = new MouseListener();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             listener.Subscribe(MouseEvent.Move, () => { });
 
@@ -21,11 +21,11 @@ public sealed class MouseListenerSubscribeTests
     }
 
     [Fact]
-    public void MouseListener_Identical3Subscriptions()
+    public async void MouseListener_Identical3Subscriptions()
     {
         var listener = new MouseListener();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             listener.Subscribe(MouseEvent.Move, () => { });
             listener.Subscribe(MouseEvent.Move, () => { });
@@ -39,11 +39,11 @@ public sealed class MouseListenerSubscribeTests
     }
 
     [Fact]
-    public void MouseListener_SubscribeOnce()
+    public async void MouseListener_SubscribeOnce()
     {
         var listener = new MouseListener();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             listener.SubscribeOnce(MouseEvent.LeftButtonDown, () => { });
 

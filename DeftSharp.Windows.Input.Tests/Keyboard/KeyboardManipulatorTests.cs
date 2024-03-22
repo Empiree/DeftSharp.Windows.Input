@@ -5,12 +5,12 @@ public class KeyboardManipulatorTests : IDisposable
     private readonly ThreadRunner _threadRunner = new();
 
     [Fact]
-    public void KeyboardManipulator_PreventBy2()
+    public async void KeyboardManipulator_PreventBy2()
     {
         var keyboardManipulator1 = new KeyboardManipulator();
         var keyboardManipulator2 = new KeyboardManipulator();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.A);
             keyboardManipulator2.Prevent(Key.A);
@@ -22,12 +22,12 @@ public class KeyboardManipulatorTests : IDisposable
     }
 
     [Fact]
-    public void KeyboardManipulator_PreventReleaseAll()
+    public async void KeyboardManipulator_PreventReleaseAll()
     {
         var keyboardManipulator1 = new KeyboardManipulator();
         var keyboardManipulator2 = new KeyboardManipulator();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.A);
             keyboardManipulator2.Prevent(Key.A);
@@ -41,13 +41,13 @@ public class KeyboardManipulatorTests : IDisposable
     }
 
     [Fact]
-    public void KeyboardManipulator_PreventBy3()
+    public async void KeyboardManipulator_PreventBy3()
     {
         var keyboardManipulator1 = new KeyboardManipulator();
         var keyboardManipulator2 = new KeyboardManipulator();
         var keyboardManipulator3 = new KeyboardManipulator();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.Q);
             keyboardManipulator2.Prevent(Key.W);
@@ -63,13 +63,13 @@ public class KeyboardManipulatorTests : IDisposable
     }
 
     [Fact]
-    public void KeyboardManipulator_PreventBy2ReleaseAll()
+    public async void KeyboardManipulator_PreventBy2ReleaseAll()
     {
         var keyboardManipulator1 = new KeyboardManipulator();
         var keyboardManipulator2 = new KeyboardManipulator();
         var keyboardManipulator3 = new KeyboardManipulator();
 
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.Q);
             keyboardManipulator2.Prevent(Key.W);
@@ -82,9 +82,9 @@ public class KeyboardManipulatorTests : IDisposable
     }
 
     [Fact]
-    public void KeyboardManipulator_DisposeTest()
+    public async void KeyboardManipulator_DisposeTest()
     {
-        _threadRunner.Run(() =>
+        await _threadRunner.Run(() =>
         {
             using (var keyboardManipulator1 = new KeyboardManipulator())
             {
