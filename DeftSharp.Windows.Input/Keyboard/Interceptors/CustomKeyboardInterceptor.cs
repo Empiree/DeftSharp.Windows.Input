@@ -11,7 +11,8 @@ namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 public abstract class CustomKeyboardInterceptor : KeyboardInterceptor
 {
     protected CustomKeyboardInterceptor()
-        : base(WindowsKeyboardInterceptor.Instance) {
+        : base(WindowsKeyboardInterceptor.Instance)
+    {
     }
 
     protected sealed override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
@@ -24,19 +25,20 @@ public abstract class CustomKeyboardInterceptor : KeyboardInterceptor
     protected sealed override bool OnPipelineUnhookRequested() => !IsHandled;
 
     /// <summary>
-    /// Can we allow the button to be pressed
+    /// This method is called when the input event is triggered. The return value is responsible for whether we allow this event or not.
     /// </summary>
     /// <param name="args">Key pressed args</param>
+    /// <returns><b>True</b> - allow input . <b>False</b> - cancel input.</returns>
     protected abstract bool IsInputAllowed(KeyPressedArgs args);
-    
+
     /// <summary>
-    /// This method is called when the CanBeProcessed() method is successfully executed on all active interceptors.
+    /// This method is called when the IsInputAllowed() method is successfully executed on all active interceptors.
     /// </summary>
     /// <param name="args">Key pressed args</param>
     protected abstract void OnSuccess(KeyPressedArgs args);
-    
+
     /// <summary>
-    /// This method is called if at least one active interceptor returned false in the CanBeProcessed() method.
+    /// This method is called if at least one active interceptor returned false in the IsInputAllowed() method.
     /// </summary>
     /// <param name="args">Key pressed args</param>
     /// <param name="failedInterceptors">A list of interceptors that did not resolve the key press.</param>

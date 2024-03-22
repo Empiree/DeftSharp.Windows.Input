@@ -5,10 +5,16 @@ using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
+/// <summary>
+/// Parent class for all keyboard interceptors
+/// </summary>
 public abstract class KeyboardInterceptor : IInterceptor
 {
     protected readonly IKeyboardInterceptor Keyboard;
 
+    /// <summary>
+    /// The property indicates whether the hook is captured or not.
+    /// </summary>
     public bool IsHandled { get; private set; }
 
     internal KeyboardInterceptor(IKeyboardInterceptor keyboardInterceptor) 

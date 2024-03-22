@@ -5,10 +5,16 @@ using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
+/// <summary>
+/// Parent class for all mouse interceptors
+/// </summary>
 public abstract class MouseInterceptor : IInterceptor
 {
     protected readonly IMouseInterceptor Mouse;
     
+    /// <summary>
+    /// The property indicates whether the hook is captured or not.
+    /// </summary>
     public bool IsHandled { get; private set; }
 
     internal MouseInterceptor(IMouseInterceptor mouseInterceptor) 
