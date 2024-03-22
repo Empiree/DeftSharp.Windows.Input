@@ -3,4 +3,4 @@ using DeftSharp.Windows.Input.Pipeline;
 
 namespace DeftSharp.Windows.Input.Shared.Delegates;
 
-internal delegate InterceptorResponse MouseInputDelegate(MouseInputArgs args);
+public delegate InterceptorResponse MouseInputDelegate(MouseInputArgs args);

@@ -11,7 +11,8 @@ public abstract class KeyboardInterceptor : IInterceptor
 
     public bool IsHandled { get; private set; }
 
-    internal KeyboardInterceptor(IKeyboardInterceptor keyboardInterceptor) => Keyboard = keyboardInterceptor;
+    internal KeyboardInterceptor(IKeyboardInterceptor keyboardInterceptor) 
+        => Keyboard = keyboardInterceptor;
 
     public virtual void Dispose() => Unhook();
 

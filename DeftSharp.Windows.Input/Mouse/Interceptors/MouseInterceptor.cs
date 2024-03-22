@@ -5,28 +5,44 @@ using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
-internal abstract class MouseInterceptor : IInterceptor
+public abstract class MouseInterceptor : IInterceptor
 {
     protected readonly IMouseInterceptor Mouse;
+    
+    public bool IsHandled { get; private set; }
 
-    protected MouseInterceptor(IMouseInterceptor mouseInterceptor)
-    {
-        Mouse = mouseInterceptor;
-        Mouse.MouseInput += OnMouseInput;
-        Mouse.UnhookRequested += OnInterceptorUnhookRequested;
-    }
+    internal MouseInterceptor(IMouseInterceptor mouseInterceptor) 
+        => Mouse = mouseInterceptor;
 
-    public virtual void Dispose()
-    {
-        Mouse.MouseInput -= OnMouseInput;
-        Mouse.UnhookRequested -= OnInterceptorUnhookRequested;
-    }
+    public virtual void Dispose() => Unhook();
 
     protected abstract InterceptorResponse OnMouseInput(MouseInputArgs args);
-    protected abstract bool OnInterceptorUnhookRequested();
+    
+    /// <summary>
+    /// The method is called if any interceptor has called the Unhook method. If we are still working with mouse handling,
+    /// we return false. If we don't need the system hook anymore, return true. This is intended for optimization. 
+    /// </summary>
+    /// <returns>If we need hook - false, otherwise true</returns>
+    protected abstract bool OnPipelineUnhookRequested();
 
-    public void Hook() => Mouse.Hook();
-    public void Unhook() => Mouse.Unhook();
+    public void Hook()
+    {
+        if (IsHandled)
+            return;
+        
+        IsHandled = true;
+        Mouse.MouseInput += OnMouseInput;
+        Mouse.UnhookRequested += OnPipelineUnhookRequested;
+        Mouse.Hook();
+    }
+
+    public void Unhook()
+    {
+        IsHandled = false;
+        Mouse.Unhook();
+        Mouse.MouseInput -= OnMouseInput;
+        Mouse.UnhookRequested -= OnPipelineUnhookRequested;
+    }
 
     public event Func<bool>? UnhookRequested;
 }

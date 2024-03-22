@@ -6,7 +6,7 @@ namespace DeftSharp.Windows.Input.InteropServices.Mouse;
 /// <summary>
 /// Represents the arguments for mouse input events.
 /// </summary>
-internal class MouseInputArgs : EventArgs
+public class MouseInputArgs : EventArgs
 {
     /// <summary>
     /// The mouse event associated with these arguments.
