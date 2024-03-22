@@ -121,4 +121,44 @@ public sealed class KeyboardListenerUnsubscribeTests
         Assert.Single(keyboardListener.Combinations);
         Assert.True(keyboardListener.Combinations.All(x => x.Combination.SequenceEqual(combination.AsEnumerable())));
     }
+
+    [Fact]
+    public void KeyboardListener_SubscribeSequenceUnsubscribeSingleKey()
+    {
+        var keyboardListener = new KeyboardListener();
+        Key[] sequence = { Key.A, Key.K, Key.A, Key.B };
+        keyboardListener.SubscribeSequence(sequence, () => { });
+        keyboardListener.Unsubscribe(Key.A);
+        keyboardListener.Unsubscribe(Key.K);
+        keyboardListener.Unsubscribe(Key.B);
+
+        Assert.Single(keyboardListener.Sequences);
+        Assert.True(keyboardListener.Sequences.All(x => x.Sequence.SequenceEqual(sequence.AsEnumerable())));
+    }
+
+
+    [Fact]
+    public void KeyboardListener_SubscribeSequenceUnsubscribeById()
+    {
+        RunListenerTest(listener =>
+        {
+            Key[] sequence = { Key.A, Key.K, Key.A, Key.B };
+            listener.SubscribeSequence(sequence, () => { });
+            var sequenceId = listener.Sequences.First().Id;
+            listener.Unsubscribe(sequenceId);
+        });
+    }
+
+    [Fact]
+    public void KeyboardListener_SubscribeSequenceUnsubscribeAll()
+    {
+        RunListenerTest(listener =>
+        {
+            Key[] sequence = { Key.A, Key.K, Key.A, Key.B };
+            for (int i = 0; i < 5; ++i)
+                listener.SubscribeSequence(sequence, () => { });
+
+            listener.UnsubscribeAll();
+        });
+    }
 }
