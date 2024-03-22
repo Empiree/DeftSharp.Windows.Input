@@ -7,7 +7,7 @@ namespace DeftSharp.Windows.Input.Pipeline;
 /// <summary>
 /// Represents the response of an interceptor in the middleware.
 /// </summary>
-internal sealed class InterceptorResponse
+public sealed class InterceptorResponse
 {
     /// <summary>
     /// Indicates whether the interceptor allows the pipeline to continue.
@@ -36,7 +36,7 @@ internal sealed class InterceptorResponse
     /// <param name="interceptor">The middleware interceptor associated with this response.</param>
     /// <param name="onPipelineSuccess">Action to be invoked upon successful execution of the pipeline.</param>
     /// <param name="onPipelineFailed">Action to be invoked upon failure of the pipeline, providing failed interceptors.</param>
-    public InterceptorResponse(
+    internal InterceptorResponse(
         bool isAllowed,
         InterceptorType interceptor,
         Action? onPipelineSuccess = null,

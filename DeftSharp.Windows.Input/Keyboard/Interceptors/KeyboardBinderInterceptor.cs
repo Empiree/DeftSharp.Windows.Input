@@ -69,7 +69,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
         base.Dispose();
     }
 
-    protected override bool OnInterceptorUnhookRequested() => !_boundedKeys.Any();
+    protected override bool OnPipelineUnhookRequested() => !_boundedKeys.Any();
 
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args)
     {

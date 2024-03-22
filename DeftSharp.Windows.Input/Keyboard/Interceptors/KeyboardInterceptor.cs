@@ -5,28 +5,49 @@ using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
-internal abstract class KeyboardInterceptor : IInterceptor
+public abstract class KeyboardInterceptor : IInterceptor
 {
     protected readonly IKeyboardInterceptor Keyboard;
 
-    protected KeyboardInterceptor(IKeyboardInterceptor keyboardInterceptor)
-    {
-        Keyboard = keyboardInterceptor;
-        Keyboard.KeyboardInput += OnKeyboardInput;
-        Keyboard.UnhookRequested += OnInterceptorUnhookRequested;
-    }
+    public bool IsHandled { get; set; }
 
-    public virtual void Dispose()
-    {
-        Keyboard.KeyboardInput -= OnKeyboardInput;
-        Keyboard.UnhookRequested -= OnInterceptorUnhookRequested;
-    }
+    internal KeyboardInterceptor(IKeyboardInterceptor keyboardInterceptor) => Keyboard = keyboardInterceptor;
+
+    public virtual void Dispose() => Unhook();
 
     protected abstract InterceptorResponse OnKeyboardInput(KeyPressedArgs args);
-    protected abstract bool OnInterceptorUnhookRequested();
+    
+    /// <summary>
+    /// The method is called if any interceptor has called the Unhook method. If we are still working with key handling,
+    /// we return false. If we don't need the system hook anymore, return true. This is intended for optimization. 
+    /// </summary>
+    /// <returns>If we need hook - false, otherwise true</returns>
+    protected abstract bool OnPipelineUnhookRequested();
 
-    public void Hook() => Keyboard.Hook();
-    public void Unhook() => Keyboard.Unhook();
+    /// <summary>
+    /// Subscribe to system events about presses.
+    /// </summary>
+    public void Hook()
+    {
+        if (IsHandled)
+            return;
+        
+        IsHandled = true;
+        Keyboard.KeyboardInput += OnKeyboardInput;
+        Keyboard.UnhookRequested += OnPipelineUnhookRequested;
+        Keyboard.Hook();
+    }
+
+    /// <summary>
+    /// Unsubscribe from all presses. This method will call the UnhookRequested event.
+    /// </summary>
+    public void Unhook()
+    {
+        IsHandled = false;
+        Keyboard.Unhook();
+        Keyboard.KeyboardInput -= OnKeyboardInput;
+        Keyboard.UnhookRequested -= OnPipelineUnhookRequested;
+    } 
 
     public event Func<bool>? UnhookRequested;
 }

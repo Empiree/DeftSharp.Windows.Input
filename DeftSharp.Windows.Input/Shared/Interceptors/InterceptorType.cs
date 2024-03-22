@@ -3,9 +3,10 @@
 /// <summary>
 /// Enum representing types of middleware interceptors.
 /// </summary>
-internal enum InterceptorType : byte
+public enum InterceptorType : byte
 {
-    Listener = 0,
-    Manipulator = 1,
-    Binder = 2
+    Custom = 0,
+    Listener = 1,
+    Manipulator = 2,
+    Binder = 3
 }

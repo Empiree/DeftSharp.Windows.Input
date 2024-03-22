@@ -61,7 +61,7 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
         new(true, InterceptorType.Listener, () => HandleKeyPressed(args));
 
-    protected override bool OnInterceptorUnhookRequested() => !Subscriptions.Any();
+    protected override bool OnPipelineUnhookRequested() => !Subscriptions.Any();
 
     private IEnumerable<KeyCombinationSubscription> GetMatchedCombinations() =>
         _subscriptions.Where(subscription => subscription.Combination.All(key => _heldKeys.Contains(key)));
