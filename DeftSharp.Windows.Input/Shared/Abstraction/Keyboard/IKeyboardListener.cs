@@ -6,7 +6,7 @@ using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
-internal interface IKeyboardListener : IDisposable
+public interface IKeyboardListener : IDisposable
 {
     public IEnumerable<KeySubscription> Keys { get; }
     public IEnumerable<KeySequenceSubscription> Sequences { get; }

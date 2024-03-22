@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
-internal interface IKeyboardBinder
+public interface IKeyboardBinder
 {
     IReadOnlyDictionary<Key, Key> BoundedKeys { get; }
 

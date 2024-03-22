@@ -5,7 +5,7 @@ using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
 
-internal interface IMouseManipulator : IDisposable
+public interface IMouseManipulator : IDisposable
 {
     IEnumerable<MouseInputEvent> LockedKeys { get;}
     

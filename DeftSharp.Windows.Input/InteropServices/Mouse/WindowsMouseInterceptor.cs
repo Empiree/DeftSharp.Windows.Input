@@ -16,9 +16,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
     public event MouseInputDelegate? MouseInput;
 
     private WindowsMouseInterceptor()
-        : base(InputMessages.WhMouseLl)
-    {
-    }
+        : base(InputMessages.WhMouseLl) { }
 
     public Coordinates GetPosition() => MouseAPI.GetPosition();
     public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);

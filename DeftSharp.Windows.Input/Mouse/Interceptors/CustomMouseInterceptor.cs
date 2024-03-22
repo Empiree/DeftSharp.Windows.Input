@@ -5,11 +5,13 @@ using DeftSharp.Windows.Input.Shared.Interceptors;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
+/// <summary>
+/// The class allows you to create your own custom interceptors
+/// </summary>
 public abstract class CustomMouseInterceptor : MouseInterceptor
 {
     protected CustomMouseInterceptor()
-        : base(WindowsMouseInterceptor.Instance) {
-    }
+        : base(WindowsMouseInterceptor.Instance) { }
 
     protected sealed override InterceptorResponse OnMouseInput(MouseInputArgs args) =>
         new(

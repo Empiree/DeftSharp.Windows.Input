@@ -11,19 +11,15 @@ public sealed class MouseSubscription : InputSubscription<Action>
         MouseEvent mouseEvent,
         Action onClick,
         bool singleUse = false)
-        : base(onClick, singleUse)
-    {
+        : base(onClick, singleUse) =>
         Event = mouseEvent;
-    }
 
     internal MouseSubscription(
         MouseEvent mouseEvent,
         Action onClick,
         TimeSpan interval)
-        : base(onClick, interval)
-    {
+        : base(onClick, interval) =>
         Event = mouseEvent;
-    }
 
     internal void Invoke()
     {

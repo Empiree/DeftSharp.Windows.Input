@@ -5,7 +5,7 @@ using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
 
-internal interface IMouseListener : IDisposable
+public interface IMouseListener : IDisposable
 {
     IEnumerable<MouseSubscription> Subscriptions { get; }
     

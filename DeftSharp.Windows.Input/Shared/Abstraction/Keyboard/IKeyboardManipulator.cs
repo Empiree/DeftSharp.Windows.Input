@@ -5,7 +5,7 @@ using DeftSharp.Windows.Input.InteropServices.Keyboard;
 
 namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
-internal interface IKeyboardManipulator : IDisposable
+public interface IKeyboardManipulator : IDisposable
 {
     IEnumerable<Key> LockedKeys { get; }
     
