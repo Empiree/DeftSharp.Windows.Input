@@ -9,7 +9,7 @@ public abstract class KeyboardInterceptor : IInterceptor
 {
     protected readonly IKeyboardInterceptor Keyboard;
 
-    public bool IsHandled { get; set; }
+    public bool IsHandled { get; private set; }
 
     internal KeyboardInterceptor(IKeyboardInterceptor keyboardInterceptor) => Keyboard = keyboardInterceptor;
 
