@@ -11,13 +11,13 @@ public class MouseInputArgs : EventArgs
     /// <summary>
     /// The mouse event associated with these arguments.
     /// </summary>
-    public MouseEvent Event { get; }
+    public MouseInputEvent Event { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MouseInputArgs"/> class.
     /// </summary>
     /// <param name="mouseEvent">The mouse event associated with these arguments.</param>
-    public MouseInputArgs(MouseEvent mouseEvent)
+    public MouseInputArgs(MouseInputEvent mouseEvent)
     {
         Event = mouseEvent;
     }

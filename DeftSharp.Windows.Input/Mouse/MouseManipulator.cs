@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Mouse.Interceptors;
 using DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
 using DeftSharp.Windows.Input.Shared.Attributes;
@@ -9,9 +10,9 @@ namespace DeftSharp.Windows.Input.Mouse;
 public sealed class MouseManipulator : IMouseManipulator
 {
     private readonly MouseManipulatorInterceptor _mouseInterceptor;
-    public IEnumerable<MouseEvent> LockedKeys => _mouseInterceptor.LockedKeys;
+    public IEnumerable<MouseInputEvent> LockedKeys => _mouseInterceptor.LockedKeys;
 
-    public event Action<MouseEvent>? ClickPrevented;
+    public event Action<MouseInputEvent>? ClickPrevented;
 
     public MouseManipulator()
     {
@@ -19,7 +20,7 @@ public sealed class MouseManipulator : IMouseManipulator
         _mouseInterceptor.ClickPrevented += OnInterceptorClickPrevented;
     }
 
-    public bool IsKeyLocked(MouseEvent mouseEvent) => _mouseInterceptor.IsKeyLocked(mouseEvent);
+    public bool IsKeyLocked(MouseInputEvent mouseEvent) => _mouseInterceptor.IsKeyLocked(mouseEvent);
 
     [DangerousBehavior("Be careful with the use of this method. You can completely lock your mouse")]
     public void Prevent(PreventMouseOption mouseEvent) => _mouseInterceptor.Prevent(mouseEvent);
@@ -44,5 +45,5 @@ public sealed class MouseManipulator : IMouseManipulator
 
     public void Dispose() => _mouseInterceptor.ClickPrevented -= OnInterceptorClickPrevented;
 
-    private void OnInterceptorClickPrevented(MouseEvent mouseEvent) => ClickPrevented?.Invoke(mouseEvent);
+    private void OnInterceptorClickPrevented(MouseInputEvent mouseEvent) => ClickPrevented?.Invoke(mouseEvent);
 }

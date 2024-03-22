@@ -3,55 +3,55 @@
 /// <summary>
 /// Specifies types of mouse events.
 /// </summary>
-public enum MouseEvent : ushort
+public enum MouseEvent
 {
     /// <summary>
     /// Generic type for all button down events.
     /// </summary>
-    ButtonDown = 0,
+    ButtonDown,
     
     /// <summary>
     /// Generic type for all button up events.
     /// </summary>
-    ButtonUp = 1,
+    ButtonUp,
     
     /// <summary>
     /// The mouse has been moved.
     /// </summary>
-    Move = 512,
+    Move,
 
     /// <summary>
     /// The left mouse button is pressed down.
     /// </summary>
-    LeftButtonDown = 513,
+    LeftButtonDown,
 
     /// <summary>
     /// The left mouse button is released.
     /// </summary>
-    LeftButtonUp = 514,
+    LeftButtonUp,
 
     /// <summary>
     /// The right mouse button is pressed down.
     /// </summary>
-    RightButtonDown = 516,
+    RightButtonDown,
 
     /// <summary>
     /// The right mouse button is released.
     /// </summary>
-    RightButtonUp = 517,
+    RightButtonUp,
     
     /// <summary>
     /// The middle mouse button is pressed down.
     /// </summary>
-    MiddleButtonDown = 519,
+    MiddleButtonDown,
     
     /// <summary>
     /// The middle mouse button is released.
     /// </summary>
-    MiddleButtonUp = 520,
+    MiddleButtonUp,
     
     /// <summary>
     /// The mouse wheel was scrolled.
     /// </summary>
-    Scroll = 522
+    Scroll
 }

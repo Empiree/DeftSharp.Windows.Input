@@ -15,20 +15,20 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
     public static MouseManipulatorInterceptor Instance => LazyInstance.Value;
 
-    private readonly HashSet<MouseEvent> _lockedKeys;
+    private readonly HashSet<MouseInputEvent> _lockedKeys;
     private readonly object _lock = new();
 
-    public event Action<MouseEvent>? ClickPrevented;
+    public event Action<MouseInputEvent>? ClickPrevented;
 
-    public IEnumerable<MouseEvent> LockedKeys => _lockedKeys;
+    public IEnumerable<MouseInputEvent> LockedKeys => _lockedKeys;
 
     public MouseManipulatorInterceptor()
         : base(WindowsMouseInterceptor.Instance)
     {
-        _lockedKeys = new HashSet<MouseEvent>();
+        _lockedKeys = new HashSet<MouseInputEvent>();
     }
 
-    public bool IsKeyLocked(MouseEvent mouseEvent) => _lockedKeys.Any(e => e == mouseEvent);
+    public bool IsKeyLocked(MouseInputEvent mouseEvent) => _lockedKeys.Any(e => e == mouseEvent);
     public void SetPosition(int x, int y) => Mouse.SetPosition(x, y);
     public void Click(MouseButton button, int x, int y) => Mouse.Click(button, x, y);
     public void Click(MouseButton button) => Mouse.Click(button);

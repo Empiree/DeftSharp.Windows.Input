@@ -37,7 +37,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterc
         if (nCode < 0 || !InputMessages.IsMouseEvent(wParam))
             return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
 
-        var mouseEvent = (MouseEvent)wParam;
+        var mouseEvent = (MouseInputEvent)wParam;
         var args = new MouseInputArgs(mouseEvent);
 
         return StartInterceptorPipeline(args)

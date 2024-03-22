@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Pipeline;
+using DeftSharp.Windows.Input.Shared.Extensions;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
@@ -71,14 +72,12 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
 
     private void HandleMouseInput(MouseInputArgs args)
     {
-        var mouseSubscriptions = _subscriptions
-            .Where(s => s.Event.Equals(args.Event))
-            .ToList();
-
-        var genericSubscriptions = GetGenericSubscriptions(args.Event);
+        var events = args.Event.ToMouseEvents();
         
-        mouseSubscriptions.AddRange(genericSubscriptions);
-
+        var mouseSubscriptions = _subscriptions
+            .Where(s => events.Contains(s.Event))
+            .ToList();
+        
         foreach (var subscription in mouseSubscriptions)
         {
             if (subscription.SingleUse)
@@ -87,25 +86,6 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
             subscription.Invoke();
         }
     }
-
-    private IEnumerable<MouseSubscription> GetGenericSubscriptions(MouseEvent mouseEvent)
-    {
-        if (IsMouseDownEvent(mouseEvent))
-            return _subscriptions.Where(s => s.Event.Equals(MouseEvent.ButtonDown));
-
-        if (IsMouseUpEvent(mouseEvent))
-            return _subscriptions.Where(s => s.Event.Equals(MouseEvent.ButtonUp));
-        
-        return Enumerable.Empty<MouseSubscription>();
-    }
-
-    private bool IsMouseDownEvent(MouseEvent mouseEvent) =>
-        mouseEvent is MouseEvent.LeftButtonDown or
-            MouseEvent.RightButtonDown or MouseEvent.MiddleButtonDown;
-
-    private bool IsMouseUpEvent(MouseEvent mouseEvent) =>
-        mouseEvent is MouseEvent.LeftButtonUp or
-            MouseEvent.RightButtonUp or MouseEvent.MiddleButtonUp;
 
     private void SubscriptionsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
