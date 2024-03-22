@@ -22,6 +22,7 @@ public sealed class KeyboardListener : IKeyboardListener
     public bool IsShiftPressed => IsKeyPressed(Key.LeftShift) || IsKeyPressed(Key.RightShift);
     public bool IsCtrlPressed => IsKeyPressed(Key.LeftCtrl) || IsKeyPressed(Key.RightCtrl);
     public bool IsAltPressed => IsKeyPressed(Key.LeftAlt) || IsKeyPressed(Key.RightAlt);
+    public bool IsWinPressed => IsKeyPressed(Key.LWin) || IsKeyPressed(Key.RWin);
     public bool IsListening => Keys.Any() || Sequences.Any() || Combinations.Any();
 
     public KeySubscription Subscribe(Key key, Action<Key> onClick,
