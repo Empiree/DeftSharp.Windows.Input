@@ -1,7 +1,6 @@
 ﻿using System;
-using DeftSharp.Windows.Input.Shared.Interceptors;
 
-namespace DeftSharp.Windows.Input.Pipeline;
+namespace DeftSharp.Windows.Input.Interceptors;
 
 public sealed class InterceptorInfo
 {

@@ -1,9 +1,9 @@
 ﻿using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Shared.Delegates;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors;
+namespace DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 
-public interface IMouseInterceptor : IInterceptor
+public interface IMouseInterceptor : IRequestedInterceptor
 {
     event MouseInputDelegate? MouseInput;
 

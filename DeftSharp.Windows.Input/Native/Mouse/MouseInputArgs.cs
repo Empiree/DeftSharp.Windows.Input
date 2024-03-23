@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DeftSharp.Windows.Input.InteropServices.Mouse;
+namespace DeftSharp.Windows.Input.Mouse;
 
 /// <summary>
 /// Represents the arguments for mouse input events.

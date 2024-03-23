@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors;
+namespace DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 
 public interface IInterceptor : IDisposable
 {
-    event Func<bool>? UnhookRequested;
     void Hook();
     void Unhook();
 }

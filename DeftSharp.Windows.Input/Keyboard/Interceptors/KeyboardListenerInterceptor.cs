@@ -4,9 +4,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
-using DeftSharp.Windows.Input.InteropServices.Keyboard;
-using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Interceptors;
+using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Native.Keyboard;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
@@ -65,9 +64,9 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
     public bool IsKeyActive(Key key) => Keyboard.IsKeyActive(key);
     public bool IsKeyPressed(Key key) => Keyboard.IsKeyPressed(key);
 
-    protected override bool OnPipelineUnhookRequested() => !Subscriptions.Any();
+    internal override bool OnPipelineUnhookRequested() => !Subscriptions.Any();
 
-    protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
+    internal override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
         new(true, new InterceptorInfo(Name, InterceptorType.Listener), () => HandleKeyPressed(args));
 
     private void HandleKeyPressed(KeyPressedArgs args)

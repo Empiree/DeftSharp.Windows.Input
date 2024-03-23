@@ -1,8 +1,8 @@
 ﻿using System;
 using DeftSharp.Windows.Input.Mouse;
-using static DeftSharp.Windows.Input.InteropServices.API.WinAPI;
+using static DeftSharp.Windows.Input.Native.API.WinAPI;
 
-namespace DeftSharp.Windows.Input.InteropServices.API;
+namespace DeftSharp.Windows.Input.Native.API;
 
 /// <summary>
 /// Provides methods for simulating mouse input using Windows API.

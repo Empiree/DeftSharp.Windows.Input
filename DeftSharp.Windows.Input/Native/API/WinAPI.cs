@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using DeftSharp.Windows.Input.Mouse;
 
-namespace DeftSharp.Windows.Input.InteropServices.API;
+namespace DeftSharp.Windows.Input.Native.API;
 
 // https://learn.microsoft.com/en-us/windows/win32/api/
 

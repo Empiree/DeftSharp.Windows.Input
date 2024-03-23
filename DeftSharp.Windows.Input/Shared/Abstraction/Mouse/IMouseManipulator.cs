@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.Shared.Abstraction.Mouse;

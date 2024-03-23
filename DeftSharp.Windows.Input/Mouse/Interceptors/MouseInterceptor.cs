@@ -1,7 +1,5 @@
-﻿using System;
-using DeftSharp.Windows.Input.InteropServices.Mouse;
-using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Interceptors;
+﻿using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
@@ -11,7 +9,7 @@ namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 public abstract class MouseInterceptor : IInterceptor
 {
     protected readonly string Name;
-    protected readonly IMouseInterceptor Mouse;
+    internal readonly IMouseInterceptor Mouse;
     
     /// <summary>
     /// The property indicates whether the hook is captured or not.
@@ -26,14 +24,14 @@ public abstract class MouseInterceptor : IInterceptor
 
     public virtual void Dispose() => Unhook();
 
-    protected abstract InterceptorResponse OnMouseInput(MouseInputArgs args);
+    internal abstract InterceptorResponse OnMouseInput(MouseInputArgs args);
     
     /// <summary>
     /// The method is called if any interceptor has called the Unhook method. If we are still working with mouse handling,
     /// we return false. If we don't need the system hook anymore, return true. This is intended for optimization. 
     /// </summary>
     /// <returns>If we need hook - false, otherwise true</returns>
-    protected abstract bool OnPipelineUnhookRequested();
+    internal abstract bool OnPipelineUnhookRequested();
 
     public void Hook()
     {
@@ -53,6 +51,4 @@ public abstract class MouseInterceptor : IInterceptor
         Mouse.MouseInput -= OnMouseInput;
         Mouse.UnhookRequested -= OnPipelineUnhookRequested;
     }
-
-    public event Func<bool>? UnhookRequested;
 }

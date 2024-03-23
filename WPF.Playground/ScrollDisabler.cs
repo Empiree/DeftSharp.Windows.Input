@@ -1,5 +1,5 @@
-﻿using DeftSharp.Windows.Input.InteropServices.Mouse;
-using DeftSharp.Windows.Input.Mouse.Interceptors;
+﻿using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Mouse;
 
 namespace WPF.Playground;
 
@@ -8,8 +8,8 @@ public class ScrollDisabler : CustomMouseInterceptor
     protected override bool IsInputAllowed(MouseInputArgs args)
     {
         if (args.Event is MouseInputEvent.Scroll)
-            return false; // disable mouse wheel input
+            return false; // disallow mouse scroll input
         
-        return true; // all other events can be processed
+        return true; // all other input events can be processed
     }
 }

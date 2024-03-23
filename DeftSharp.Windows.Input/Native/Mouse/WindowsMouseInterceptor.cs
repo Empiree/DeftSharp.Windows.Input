@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeftSharp.Windows.Input.InteropServices.API;
+using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Mouse;
-using DeftSharp.Windows.Input.Pipeline;
+using DeftSharp.Windows.Input.Native.API;
+using DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 using DeftSharp.Windows.Input.Shared.Delegates;
-using DeftSharp.Windows.Input.Shared.Interceptors;
 
-namespace DeftSharp.Windows.Input.InteropServices.Mouse;
+namespace DeftSharp.Windows.Input.Native.Mouse;
 
 internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterceptor
 {

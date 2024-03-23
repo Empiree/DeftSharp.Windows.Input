@@ -1,5 +1,5 @@
-﻿using DeftSharp.Windows.Input.InteropServices.Mouse;
-using DeftSharp.Windows.Input.Pipeline;
+﻿using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.Shared.Delegates;
 

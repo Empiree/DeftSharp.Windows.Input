@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using DeftSharp.Windows.Input.InteropServices.Keyboard;
-using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Interceptors;
+using DeftSharp.Windows.Input.Keyboard;
+using DeftSharp.Windows.Input.Keyboard.Interceptors;
+using DeftSharp.Windows.Input.Native.Keyboard;
 
-namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
+namespace DeftSharp.Windows.Input.Interceptors;
 
 /// <summary>
 /// The class allows you to create your own custom interceptors
@@ -13,14 +13,14 @@ public abstract class CustomKeyboardInterceptor : KeyboardInterceptor
     protected CustomKeyboardInterceptor()
         : base(WindowsKeyboardInterceptor.Instance) { }
 
-    protected sealed override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
+    internal sealed override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
         new(
             IsInputAllowed(args),
             new InterceptorInfo(Name, InterceptorType.Custom),
             () => OnInputSuccess(args),
             failedInterceptors => OnInputFailure(args, failedInterceptors));
 
-    protected sealed override bool OnPipelineUnhookRequested() => !IsHandled;
+    internal sealed override bool OnPipelineUnhookRequested() => !IsHandled;
 
     /// <summary>
     /// This method is called when the input event is triggered. The return value is responsible for whether we allow this event or not.

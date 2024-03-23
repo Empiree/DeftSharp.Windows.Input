@@ -87,8 +87,14 @@ namespace WPF.Playground
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             _mouseLogger.Hook();
+            _scrollDisabler.Hook();
 
             _keyboardManipulator1.Prevent(Key.C);
+
+            _keyboardListener1.Subscribe(Key.A, key =>
+            {
+                Trace.WriteLine(key.ToString());
+            });
 
             _mouseListener.Subscribe(MouseEvent.Scroll, () => { Trace.WriteLine(_keyboardListener1.IsWinPressed); });
         }

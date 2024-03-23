@@ -2,9 +2,9 @@
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Shared.Delegates;
 
-namespace DeftSharp.Windows.Input.Shared.Interceptors;
+namespace DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 
-public interface IKeyboardInterceptor : IInterceptor
+public interface IKeyboardInterceptor : IRequestedInterceptor
 {
     event KeyboardInputDelegate? KeyboardInput;
     void Press(Key key);

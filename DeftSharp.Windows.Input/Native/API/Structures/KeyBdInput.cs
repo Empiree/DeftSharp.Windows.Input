@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace DeftSharp.Windows.Input.InteropServices.API.Structures;
+namespace DeftSharp.Windows.Input.Native.API.Structures;
 
 /// <summary>
 /// Contains information about a simulated keyboard event.

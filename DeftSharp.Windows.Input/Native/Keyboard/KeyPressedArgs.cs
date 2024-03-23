@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
-using DeftSharp.Windows.Input.Keyboard;
 
-namespace DeftSharp.Windows.Input.InteropServices.Keyboard;
+namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
 /// Provides data for the event that occurs when a key is pressed.

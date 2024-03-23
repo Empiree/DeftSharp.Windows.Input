@@ -1,4 +1,4 @@
-﻿namespace DeftSharp.Windows.Input.Shared.Interceptors;
+﻿namespace DeftSharp.Windows.Input.Interceptors;
 
 /// <summary>
 /// Enum representing types of middleware interceptors.

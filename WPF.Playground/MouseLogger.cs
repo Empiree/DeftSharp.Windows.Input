@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using DeftSharp.Windows.Input.Extensions;
-using DeftSharp.Windows.Input.InteropServices.Mouse;
-using DeftSharp.Windows.Input.Mouse.Interceptors;
-using DeftSharp.Windows.Input.Pipeline;
+using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Mouse;
 
 namespace WPF.Playground;
 

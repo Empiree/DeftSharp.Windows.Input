@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
-using DeftSharp.Windows.Input.InteropServices.API;
-using DeftSharp.Windows.Input.Pipeline;
+using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Native.API;
+using DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 using DeftSharp.Windows.Input.Shared.Exceptions;
-using DeftSharp.Windows.Input.Shared.Interceptors;
 
-namespace DeftSharp.Windows.Input.InteropServices;
+namespace DeftSharp.Windows.Input.Native;
 
-internal abstract class WindowsInterceptor : IInterceptor
+internal abstract class WindowsInterceptor : IRequestedInterceptor
 {
     private readonly int _interceptorHook;
     private bool _handled;

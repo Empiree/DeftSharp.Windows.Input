@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Interceptors;
+using DeftSharp.Windows.Input.Interceptors;
 
 namespace DeftSharp.Windows.Input.Extensions;
 

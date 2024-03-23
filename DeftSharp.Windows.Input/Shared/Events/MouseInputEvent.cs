@@ -1,4 +1,4 @@
-﻿namespace DeftSharp.Windows.Input.InteropServices.Mouse;
+﻿namespace DeftSharp.Windows.Input.Mouse;
 
 /// <summary>
 /// Specifies types of mouse events.

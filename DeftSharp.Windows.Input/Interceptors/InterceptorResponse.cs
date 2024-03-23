@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DeftSharp.Windows.Input.Pipeline;
+namespace DeftSharp.Windows.Input.Interceptors;
 
 /// <summary>
 /// Represents the response of an interceptor in the middleware.

@@ -3,9 +3,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Shared.Exceptions;
-using static DeftSharp.Windows.Input.InteropServices.API.InputMessages;
+using static DeftSharp.Windows.Input.Native.API.InputMessages;
 
-namespace DeftSharp.Windows.Input.InteropServices.API;
+namespace DeftSharp.Windows.Input.Native.API;
 
 /// <summary>
 /// Provides methods for simulating keyboard input using Windows API.

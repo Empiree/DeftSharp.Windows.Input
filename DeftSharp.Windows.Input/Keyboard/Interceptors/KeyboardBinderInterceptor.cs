@@ -3,10 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using DeftSharp.Windows.Input.InteropServices.API;
-using DeftSharp.Windows.Input.InteropServices.Keyboard;
-using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Interceptors;
+using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Native.API;
+using DeftSharp.Windows.Input.Native.Keyboard;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -69,9 +68,9 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
         base.Dispose();
     }
 
-    protected override bool OnPipelineUnhookRequested() => !_boundedKeys.Any();
+    internal override bool OnPipelineUnhookRequested() => !_boundedKeys.Any();
 
-    protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args)
+    internal override InterceptorResponse OnKeyboardInput(KeyPressedArgs args)
     {
         return new InterceptorResponse(
             CanBeProcessed(args.KeyPressed),

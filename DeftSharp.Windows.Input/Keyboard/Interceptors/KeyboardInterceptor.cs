@@ -1,7 +1,5 @@
-﻿using System;
-using DeftSharp.Windows.Input.InteropServices.Keyboard;
-using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Interceptors;
+﻿using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -14,7 +12,7 @@ public abstract class KeyboardInterceptor : IInterceptor
     /// Interceptor name
     /// </summary>
     protected readonly string Name;
-    protected readonly IKeyboardInterceptor Keyboard;
+    internal readonly IKeyboardInterceptor Keyboard;
 
     /// <summary>
     /// The property indicates whether the hook is captured or not.
@@ -29,14 +27,14 @@ public abstract class KeyboardInterceptor : IInterceptor
 
     public virtual void Dispose() => Unhook();
 
-    protected abstract InterceptorResponse OnKeyboardInput(KeyPressedArgs args);
+    internal abstract InterceptorResponse OnKeyboardInput(KeyPressedArgs args);
     
     /// <summary>
     /// The method is called if any interceptor has called the Unhook method. If we are still working with key handling,
     /// we return false. If we don't need the system hook anymore, return true. This is intended for optimization. 
     /// </summary>
     /// <returns>If we need hook - false, otherwise true</returns>
-    protected abstract bool OnPipelineUnhookRequested();
+    internal abstract bool OnPipelineUnhookRequested();
 
     /// <summary>
     /// Subscribe to system events about presses.
@@ -62,6 +60,4 @@ public abstract class KeyboardInterceptor : IInterceptor
         Keyboard.KeyboardInput -= OnKeyboardInput;
         Keyboard.UnhookRequested -= OnPipelineUnhookRequested;
     } 
-
-    public event Func<bool>? UnhookRequested;
 }

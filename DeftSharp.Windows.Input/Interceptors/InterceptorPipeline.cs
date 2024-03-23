@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DeftSharp.Windows.Input.Pipeline;
+namespace DeftSharp.Windows.Input.Interceptors;
 
 /// <summary>
 /// Pipeline responsible for running a list of interceptors and handling the interceptor responses accordingly.
