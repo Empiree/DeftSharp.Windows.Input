@@ -24,7 +24,7 @@ public class MouseLogger : CustomMouseInterceptor
     // If the input event has been prohibited
     protected override void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {
-        var failureReason = failedInterceptors.ToNames(); //string.Join(", ", failedInterceptors.Select(i => i.Name));
+        var failureReason = failedInterceptors.ToNames();
         
         Trace.WriteLine($"Failed {args.Event} by: {failureReason}");
     }

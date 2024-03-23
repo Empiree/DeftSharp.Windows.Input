@@ -1,12 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Mouse;
-using MouseButton = DeftSharp.Windows.Input.Mouse.MouseButton;
 
 namespace WPF.Playground
 {
@@ -19,14 +15,21 @@ namespace WPF.Playground
         private KeyboardListener _keyboardListener2;
         private KeyboardListener _keyboardListener3;
 
+        private KeyboardManipulator _keyboardManipulator1;
+
         private KeyboardBinder _keyboardBinder1;
         private KeyboardBinder _keyboardBinder2;
 
         private MouseListener _mouseListener;
+
         private MouseManipulator _mouseManipulator;
 
-        private KeyboardManipulator _keyboardManipulator;
+        // Custom
 
+        private KeyboardLogger _keyboardLogger;
+        private MouseLogger _mouseLogger;
+
+        private ScrollDisabler _scrollDisabler;
 
         public void TestBinder()
         {
@@ -61,97 +64,51 @@ namespace WPF.Playground
             _keyboardListener3.Subscribe(Key.E, key => PressedButtons.Text += key.ToString());
         }
 
-
         public MainWindow()
         {
-            _keyboardManipulator = new KeyboardManipulator();
+            _keyboardManipulator1 = new KeyboardManipulator();
             _mouseManipulator = new MouseManipulator();
 
             _keyboardListener1 = new KeyboardListener();
             _keyboardListener2 = new KeyboardListener();
+            _keyboardListener3 = new KeyboardListener();
             _mouseListener = new MouseListener();
+            _scrollDisabler = new ScrollDisabler();
+            _keyboardLogger = new KeyboardLogger();
+
+            _keyboardBinder1 = new KeyboardBinder();
+            _keyboardBinder2 = new KeyboardBinder();
+
+            _mouseLogger = new MouseLogger();
 
             InitializeComponent();
         }
 
-
-        private int counter = 0;
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            //Key[] keys = new[] { Key.LeftCtrl, Key.V };
-          //  Key[] keys = new[] { Key.LWin, Key.Tab };
-            // _mouseListener.Subscribe(MouseEvent.RightButtonDown,Key
-            //     () => {  });|| InputKeyExtended InputKeyExtendedll
-            
-            // Key[] keys = new[] { Key.LeftShift, Key.H };
-            //
-            // _mouseListener.Subscribe(MouseEvent.Scroll, mouseEvent =>
-            // {
-            //     // counter++;           
-            //     // PressedButtons.Text = counter.ToString();
-            //     _keyboardManipulator.PressCombination(keys);
-            // });
+            _mouseLogger.Hook();
 
-            // _keyboardListener1.SubscribeAll(key =>
-            // {
-            //     PressedButtons.Text = key.ToString();
-            // });
+            _keyboardManipulator1.Prevent(Key.C);
 
-            _mouseListener.Subscribe(MouseEvent.Scroll, () =>
-            {
-                Key[] pasteCombination = { Key.LeftCtrl, Key.LeftAlt, Key.Delete };
-            
-                _keyboardManipulator.PressCombination(pasteCombination);
-            });
-
-            // var keyboardManipulator = new KeyboardManipulator();
-            //
-            // Key[] paste = { Key.LWin, Key.V };
-            //
-            // keyboardManipulator.PressCombination(paste);
-            
-
-            _keyboardListener1.Subscribe(Key.LWin, key =>
-            {
-                PressedButtons.Text += "d";
-            });
-            
-            _keyboardListener1.Subscribe(Key.LWin, key =>
-            {
-                PressedButtons.Text += "u ";
-            }, keyboardEvent: KeyboardEvent.KeyUp);
-        }
-
-        private void OnClosing(object? sender, CancelEventArgs e)
-        {
-            //  _keyboardListener.Unregister();
+            _mouseListener.Subscribe(MouseEvent.Scroll, () => { Trace.WriteLine(_keyboardListener1.IsWinPressed); });
         }
 
         private void OnClickButton1(object sender, RoutedEventArgs e)
         {
-            _keyboardListener1.UnsubscribeAll();
-            _keyboardListener2.UnsubscribeAll();
-            //  _sequenceListener1.UnsubscribeAll();
+            _mouseLogger.Unhook();
+            _scrollDisabler.Unhook();
+            _keyboardLogger.Unhook();
+            _keyboardLogger.Unhook();
+            _mouseManipulator.ReleaseAll();
+            _mouseListener.UnsubscribeAll();
         }
 
-        private void OnClickButton2(object sender, RoutedEventArgs e)
-        {
-        }
+        private void OnClickButton2(object sender, RoutedEventArgs e) { }
 
-        private void OnClickButton3(object sender, RoutedEventArgs e)
-        {
-            _keyboardListener2.SubscribeCombination(new[] { Key.R, Key.T }, () => { PressedButtons.Text += $"RT | "; });
-            _keyboardListener1.SubscribeCombination(new[] { Key.Q, Key.W }, () => { PressedButtons.Text += $"QW | "; });
-        }
+        private void OnClickButton3(object sender, RoutedEventArgs e) { }
 
-        private void OnClickButton4(object sender, RoutedEventArgs e)
-        {
-            _keyboardListener2.UnsubscribeAll();
-        }
+        private void OnClickButton4(object sender, RoutedEventArgs e) { }
 
-        private void OnClickButton5(object sender, RoutedEventArgs e)
-        {
-            _keyboardListener3.UnsubscribeAll();
-        }
+        private void OnClickButton5(object sender, RoutedEventArgs e) { }
     }
 }
