@@ -11,16 +11,14 @@ namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 public abstract class CustomKeyboardInterceptor : KeyboardInterceptor
 {
     protected CustomKeyboardInterceptor()
-        : base(WindowsKeyboardInterceptor.Instance)
-    {
-    }
+        : base(WindowsKeyboardInterceptor.Instance) { }
 
     protected sealed override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
         new(
             IsInputAllowed(args),
             InterceptorType.Custom,
-            () => OnSuccess(args),
-            failedInterceptors => OnFailure(args, failedInterceptors));
+            () => OnInputSuccess(args),
+            failedInterceptors => OnInputFailure(args, failedInterceptors));
 
     protected sealed override bool OnPipelineUnhookRequested() => !IsHandled;
 
@@ -28,19 +26,19 @@ public abstract class CustomKeyboardInterceptor : KeyboardInterceptor
     /// This method is called when the input event is triggered. The return value is responsible for whether we allow this event or not.
     /// </summary>
     /// <param name="args">Key pressed args</param>
-    /// <returns><b>True</b> - allow input . <b>False</b> - cancel input.</returns>
+    /// <returns><b>True</b> - allow input. <b>False</b> - cancel input.</returns>
     protected abstract bool IsInputAllowed(KeyPressedArgs args);
 
     /// <summary>
     /// This method is called when the IsInputAllowed() method is successfully executed on all active interceptors.
     /// </summary>
     /// <param name="args">Key pressed args</param>
-    protected abstract void OnSuccess(KeyPressedArgs args);
+    protected abstract void OnInputSuccess(KeyPressedArgs args);
 
     /// <summary>
     /// This method is called if at least one active interceptor returned false in the IsInputAllowed() method.
     /// </summary>
     /// <param name="args">Key pressed args</param>
-    /// <param name="failedInterceptors">A list of interceptors that did not resolve the key press.</param>
-    protected abstract void OnFailure(KeyPressedArgs args, IEnumerable<InterceptorType> failedInterceptors);
+    /// <param name="failedInterceptors">A list of interceptors that did not allowed the key press.</param>
+    protected abstract void OnInputFailure(KeyPressedArgs args, IEnumerable<InterceptorType> failedInterceptors);
 }
