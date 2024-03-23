@@ -68,7 +68,7 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
     protected override bool OnPipelineUnhookRequested() => !Subscriptions.Any();
 
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
-        new(true, InterceptorType.Listener, () => HandleKeyPressed(args));
+        new(true, new InterceptorInfo(Name, InterceptorType.Listener), () => HandleKeyPressed(args));
 
     private void HandleKeyPressed(KeyPressedArgs args)
     {

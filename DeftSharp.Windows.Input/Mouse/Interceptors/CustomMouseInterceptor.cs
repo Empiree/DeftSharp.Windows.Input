@@ -16,7 +16,7 @@ public abstract class CustomMouseInterceptor : MouseInterceptor
     protected sealed override InterceptorResponse OnMouseInput(MouseInputArgs args) =>
         new(
             IsInputAllowed(args),
-            InterceptorType.Custom,
+            new InterceptorInfo(Name, InterceptorType.Custom),
             () => OnInputSuccess(args),
             failedInterceptors => OnInputFailure(args, failedInterceptors));
 
@@ -24,6 +24,8 @@ public abstract class CustomMouseInterceptor : MouseInterceptor
 
     /// <summary>
     /// This method is called when the input event is triggered. The return value is responsible for whether we allow this event or not.
+    /// <para />
+    /// <b> WARNING: Be careful with the result of this method. You can completely lock your mouse. </b>
     /// </summary>
     /// <param name="args">Mouse input args</param>
     /// <returns><b>True</b> - allow input. <b>False</b> - cancel input.</returns>
@@ -31,14 +33,15 @@ public abstract class CustomMouseInterceptor : MouseInterceptor
 
     /// <summary>
     /// This method is called when the IsInputAllowed() method is successfully executed on all active interceptors.
+    /// And the input can be successfully processed.
     /// </summary>
     /// <param name="args">Mouse input args</param>
-    protected abstract void OnInputSuccess(MouseInputArgs args);
+    protected virtual void OnInputSuccess(MouseInputArgs args) {}
 
     /// <summary>
     /// This method is called if at least one active interceptor returned false in the IsInputAllowed() method.
     /// </summary>
     /// <param name="args">Mouse input args</param>
     /// <param name="failedInterceptors">A list of interceptors that did not allowed the mouse input.</param>
-    protected abstract void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorType> failedInterceptors);
+    protected virtual void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors){}
 }

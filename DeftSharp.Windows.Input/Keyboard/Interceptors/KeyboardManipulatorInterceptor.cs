@@ -77,10 +77,10 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
 
     protected override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
         new(!IsKeyLocked(args.KeyPressed),
-            InterceptorType.Manipulator,
+            new InterceptorInfo(Name, InterceptorType.Manipulator),
             onPipelineFailed: failedInterceptors =>
             {
-                if (failedInterceptors.Contains(InterceptorType.Manipulator))
+                if (failedInterceptors.Any(i => i.Name.Equals(Name)))
                     KeyPrevented?.Invoke(args);
             });
 }

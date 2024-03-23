@@ -75,15 +75,15 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
     {
         return new InterceptorResponse(
             CanBeProcessed(args.KeyPressed),
-            InterceptorType.Binder,
+            new InterceptorInfo(Name, InterceptorType.Binder),
             null, failedInterceptors =>
             {
                 if (args.Event == KeyboardEvent.KeyUp)
                     return;
 
-                if (!failedInterceptors.Contains(InterceptorType.Binder))
+                if (!failedInterceptors.Any(i => i.Name.Equals(Name)))
                     return;
-
+                
                 if (!IsKeyBounded(args.KeyPressed))
                     return;
 

@@ -10,6 +10,10 @@ namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 /// </summary>
 public abstract class KeyboardInterceptor : IInterceptor
 {
+    /// <summary>
+    /// Interceptor name
+    /// </summary>
+    protected readonly string Name;
     protected readonly IKeyboardInterceptor Keyboard;
 
     /// <summary>
@@ -17,8 +21,11 @@ public abstract class KeyboardInterceptor : IInterceptor
     /// </summary>
     public bool IsHandled { get; private set; }
 
-    internal KeyboardInterceptor(IKeyboardInterceptor keyboardInterceptor) 
-        => Keyboard = keyboardInterceptor;
+    internal KeyboardInterceptor(IKeyboardInterceptor keyboardInterceptor)
+    {
+        Keyboard = keyboardInterceptor;
+        Name = GetType().Name;
+    }
 
     public virtual void Dispose() => Unhook();
 

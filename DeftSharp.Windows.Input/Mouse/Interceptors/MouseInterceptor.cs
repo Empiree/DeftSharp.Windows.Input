@@ -10,6 +10,7 @@ namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 /// </summary>
 public abstract class MouseInterceptor : IInterceptor
 {
+    protected readonly string Name;
     protected readonly IMouseInterceptor Mouse;
     
     /// <summary>
@@ -17,8 +18,11 @@ public abstract class MouseInterceptor : IInterceptor
     /// </summary>
     public bool IsHandled { get; private set; }
 
-    internal MouseInterceptor(IMouseInterceptor mouseInterceptor) 
-        => Mouse = mouseInterceptor;
+    internal MouseInterceptor(IMouseInterceptor mouseInterceptor)
+    {
+        Mouse = mouseInterceptor;
+        Name = GetType().Name;
+    }
 
     public virtual void Dispose() => Unhook();
 

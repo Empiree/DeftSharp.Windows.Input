@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using DeftSharp.Windows.Input.Extensions;
 using DeftSharp.Windows.Input.InteropServices.Mouse;
 using DeftSharp.Windows.Input.Pipeline;
-using DeftSharp.Windows.Input.Shared.Extensions;
 using DeftSharp.Windows.Input.Shared.Interceptors;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
@@ -68,7 +68,7 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
     protected override bool OnPipelineUnhookRequested() => !Subscriptions.Any();
 
     protected override InterceptorResponse OnMouseInput(MouseInputArgs args) =>
-        new(true, InterceptorType.Listener, () => HandleMouseInput(args));
+        new(true, new InterceptorInfo(Name, InterceptorType.Listener), () => HandleMouseInput(args));
 
     private void HandleMouseInput(MouseInputArgs args)
     {
