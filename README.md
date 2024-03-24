@@ -151,7 +151,7 @@ mouseManipulator.Prevent(PreventMouseOption.LeftButton);
 
 ## Custom Interceptors
 
-Version [0.6](https://github.com/Empiree/DeftSharp.Windows.Input/releases/edit/v0.6) introduced the ability to create your own interceptors. This means that if your use case is unique and requires its own implementation, you can create a new interceptor, similar to KeyboardListener or KeyboardManipulator!
+Version [0.6](https://github.com/Empiree/DeftSharp.Windows.Input/releases/v0.6) introduced the ability to create your own interceptors. This means that if your use case is unique and requires its own implementation, you can create a new interceptor, similar to KeyboardListener or KeyboardManipulator!
 
 To create an interceptor you need to inherit from `MouseInterceptor` or `KeyboardInterceptor` and implement `IsInputAllowed` method. To activate/deactivate it you need to call the `Hook` or `Unhook` method.
 
