@@ -13,7 +13,7 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 * Subscription to keyboard events
 * Subscription to mouse events
 * Pressing buttons from code
-* Input events blocking
+* Blocking any input events
 * Changing buttons binding
 * Custom interceptors
 * Various useful classes such as NumpadListener
