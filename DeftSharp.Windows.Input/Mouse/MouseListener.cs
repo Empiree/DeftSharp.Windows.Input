@@ -29,6 +29,21 @@ public sealed class MouseListener : IMouseListener
         _mouseInterceptor.Subscribe(subscription);
         return subscription;
     }
+    
+    /// <summary>
+    /// Subscribes to all possible enum values of type <see cref="MouseEvent"/>.
+    /// </summary>
+    public IEnumerable<MouseSubscription> SubscribeAll(Action<MouseInputEvent> onAction, TimeSpan? intervalOfClick = null)
+    {
+        var events = Enum.GetValues(typeof(MouseEvent))
+            .OfType<MouseEvent>()
+            .ToList();
+
+        events.Remove(MouseEvent.ButtonDown);
+        events.Remove(MouseEvent.ButtonUp);
+        
+        return events.Select(mouseEvent => Subscribe(mouseEvent, onAction, intervalOfClick)).ToList();
+    }
 
     public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null)
         => Subscribe(mouseEvent, _ => onAction(), intervalOfClick);

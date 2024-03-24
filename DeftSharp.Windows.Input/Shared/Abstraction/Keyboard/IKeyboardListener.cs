@@ -17,6 +17,7 @@ public interface IKeyboardListener : IDisposable
     bool IsShiftPressed { get; }
     bool IsCtrlPressed { get; }
     bool IsAltPressed { get; }
+    bool IsWinPressed { get; }
     bool IsListening { get; }
 
     KeySubscription Subscribe(Key key, Action<Key> onClick,
