@@ -18,15 +18,13 @@
         <RepositoryUrl>https://github.com/Empiree/DeftSharp.Windows.Input</RepositoryUrl>
         <RepositoryType>Open-Source</RepositoryType>
         <PackageTags>#WPF #Input #Keyboard-Listener #Mouse-Listener #WinAPI #listener #WinUI #WinUI3 #MAUI #Avalonia #Windows #Input #Keyboard #Mouse</PackageTags>
-        <Version>0.5</Version>
+        <Version>0.6</Version>
         <PackageIcon>DeftSharp-icon.png</PackageIcon>
         <PackageReleaseNotes>What's new:
 
-- New useful methods (SubscribeAll, PressCombination, etc.)
-- New subscription types for MouseListener
-- Small changes
-
-[Breaking change] : LeftButtonDoubleClick has been removed due to unstable operation.
+- Custom interceptors
+- MouseListener class improvement
+- KeyboardListener class improvement
 
 You can see all the changes in the release changelog of our GitHub repository!</PackageReleaseNotes>
     </PropertyGroup>
