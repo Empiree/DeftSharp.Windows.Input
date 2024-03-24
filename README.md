@@ -155,9 +155,19 @@ mouseManipulator.Prevent(PreventMouseOption.LeftButton);
 
 Version [0.6](https://github.com/Empiree/DeftSharp.Windows.Input/releases/edit/v0.6) introduced the ability to create your own interceptors. This means that if your use case is unique and requires its own implementation, you can create a new interceptor, similar to KeyboardListener or KeyboardManipulator!
 
-**To create an interceptor you need to inherit from `MouseInterceptor` or `KeyboardInterceptor` and implement `IsInputAllowed` method.**
+To create an interceptor you need to inherit from `MouseInterceptor` or `KeyboardInterceptor` and implement `IsInputAllowed` method.
 
-### Here is an example of an interceptor blocking the mouse scroll event
+Available methods: 
+
+- `IsInputAllowed` - сalled when a system input event is triggered and responsible for event blocking
+ 
+- `OnInputSuccess` - called if the input was processed successfully and no interceptor blocked it
+
+- `OnInputFailure` - called if the event was blocked by one or more interceptors. In it we will get the list of these interceptors
+
+### Example
+
+Interceptor, to block mouse scrolling events
 
 ```c#
 public class ScrollDisabler : MouseInterceptor
@@ -172,7 +182,7 @@ public class ScrollDisabler : MouseInterceptor
 }
 ```
 
-### Here is an example of an event output interceptor
+Interceptor, for logging mouse events
 
 ```c#
 public class MouseLogger : MouseInterceptor
@@ -199,16 +209,8 @@ public class MouseLogger : MouseInterceptor
 }
 ```
 
-In addition to the familiar `IsInputAllowed` method, we have overridden two more methods for input processing. 
-
-`OnInputSuccess` - called if the input was processed successfully and no interceptor blocked it.
-
-`OnInputFailure` - called if the event was blocked by one or more interceptors. In it we will get the list of these interceptors. 
-
-
 > [!NOTE]
 > The implementation of these 2 interceptors can be placed in one interceptor, but it is better to separate it. So that each is responsible for its own task.
-
 
 In order to use them, we need to call the `Hook` method.
 
@@ -248,18 +250,18 @@ mouseManipulator.ClickPrevented += mouseEvent =>
      Trace.WriteLine($"Failed {mouseEvent} by: MouseManipulator");
 ```
 
-## Requirements
+# Requirements
 
 - .NET 7.0 for Windows
 
-## License
+# License
 
 This project is licensed under the terms of the MIT license. See the [LICENSE](https://github.com/Empiree/DeftSharp.WPF.Keyboard/blob/main/LICENSE) file for details.
 
-## Contributing
+# Contributing
 
 We welcome any [contributions](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/CONTRIBUTING.md) to the development of this project. Whether you want to report a bug, suggest a new feature, or contribute code improvements, your input is highly valued. Please feel free to submit issues or pull requests through GitHub. Let's make this library even better together!
 
-## Feedback
+# Feedback
 
 If you have any ideas or suggestions. You can use this e-mail [deftsharp@gmail.com](mailto:deftsharp@gmail.com) for feedback.
