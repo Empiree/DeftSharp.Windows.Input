@@ -8,7 +8,7 @@ using DeftSharp.Windows.Input.Shared.Delegates;
 
 namespace DeftSharp.Windows.Input.Native.Mouse;
 
-internal sealed class WindowsMouseInterceptor : WindowsInterceptor, IMouseInterceptor
+internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouseInterceptor
 {
     private static readonly Lazy<WindowsMouseInterceptor> LazyInstance = new(() => new WindowsMouseInterceptor());
     public static WindowsMouseInterceptor Instance => LazyInstance.Value;

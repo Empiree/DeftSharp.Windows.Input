@@ -22,7 +22,7 @@ public abstract class MouseInterceptor : IInterceptor
     /// </summary>
     protected InterceptorType Type => _interceptorInfo.Type;
 
-    internal readonly IMouseInterceptor Mouse;
+    internal readonly INativeMouseInterceptor Mouse;
 
     /// <summary>
     /// The property indicates whether the hook is captured or not.

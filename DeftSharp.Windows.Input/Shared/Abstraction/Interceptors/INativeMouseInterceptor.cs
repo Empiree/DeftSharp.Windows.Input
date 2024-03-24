@@ -3,7 +3,7 @@ using DeftSharp.Windows.Input.Shared.Delegates;
 
 namespace DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 
-public interface IMouseInterceptor : IRequestedInterceptor
+public interface INativeMouseInterceptor : IRequestedInterceptor
 {
     event MouseInputDelegate? MouseInput;
 

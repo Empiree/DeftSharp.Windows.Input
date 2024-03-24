@@ -22,7 +22,7 @@ public abstract class KeyboardInterceptor : IInterceptor
     /// </summary>
     protected InterceptorType Type => _interceptorInfo.Type;
 
-    internal readonly IKeyboardInterceptor Keyboard;
+    internal readonly INativeKeyboardInterceptor Keyboard;
 
     /// <summary>
     /// The property indicates whether the hook is captured or not.

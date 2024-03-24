@@ -14,7 +14,7 @@ namespace DeftSharp.Windows.Input.Native.Keyboard;
 /// <summary>
 /// Listens for system keyboard events and raises an event when a key is pressed.
 /// </summary>
-internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, IKeyboardInterceptor
+internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKeyboardInterceptor
 {
     private static readonly Lazy<WindowsKeyboardInterceptor> LazyInstance = new(() => new WindowsKeyboardInterceptor());
     public static WindowsKeyboardInterceptor Instance => LazyInstance.Value;
