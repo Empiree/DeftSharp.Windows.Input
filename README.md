@@ -16,8 +16,6 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 * Blocking any input events
 * Changing key binding
 * Custom interceptors
-* Various useful classes such as NumpadListener
-
 
 # Examples
 
