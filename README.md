@@ -63,8 +63,8 @@ KeyboardEvent.KeyUp); // Subscribe to KeyUp event
 ### Available subscription methods: 
 
 - Subscribe
-- SubscribeOnce
 - SubscribeAll
+- SubscribeOnce
 - SubscribeSequence
 - SubscribeSequenceOnce
 - SubscribeCombination
