@@ -79,7 +79,7 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
             if (subscription.SingleUse)
                 Unsubscribe(subscription.Id);
 
-            subscription.Invoke();
+            subscription.Invoke(args.Event);
         }
     }
 

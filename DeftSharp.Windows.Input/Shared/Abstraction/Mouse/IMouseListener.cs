@@ -13,7 +13,9 @@ public interface IMouseListener : IDisposable
 
     Coordinates GetPosition();
 
+    MouseSubscription Subscribe(MouseEvent mouseEvent, Action<MouseInputEvent> onAction, TimeSpan? intervalOfClick = null);
     MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null);
+    MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action<MouseInputEvent> onAction);
     MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction);
 
     void Unsubscribe(MouseEvent mouseEvent);
