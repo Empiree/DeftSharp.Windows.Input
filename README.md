@@ -10,10 +10,10 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 
 # Features
 
-* Subscription to key presses, combinations and sequences on the keyboard
-* Subscription to mouse events and obtaining information on its coordinates
-* Pressing buttons or combinations from code
-* Prohibit pressing any button
+* Subscription to keyboard events
+* Subscription to mouse events
+* Pressing buttons from code
+* Input events blocking
 * Changing buttons binding
 * Custom interceptors
 * Various useful classes such as NumpadListener
@@ -165,7 +165,7 @@ Available methods:
 
 - `OnInputFailure` - called if the event was blocked by one or more interceptors. In it we will get the list of these interceptors
 
-### Example
+### Examples
 
 Interceptor, to block mouse scrolling events
 
