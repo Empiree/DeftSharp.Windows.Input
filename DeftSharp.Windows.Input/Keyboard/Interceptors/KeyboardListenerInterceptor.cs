@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
-using DeftSharp.Windows.Input.Native.Keyboard;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
@@ -16,7 +15,7 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
     public IEnumerable<KeySubscription> Subscriptions => _subscriptions;
 
     public KeyboardListenerInterceptor()
-        : base(WindowsKeyboardInterceptor.Instance)
+        : base(InterceptorType.Listener)
     {
         _subscriptions = new ObservableCollection<KeySubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
@@ -65,11 +64,9 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
     public bool IsKeyPressed(Key key) => Keyboard.IsKeyPressed(key);
 
     internal override bool OnPipelineUnhookRequested() => !Subscriptions.Any();
+    protected override bool IsInputAllowed(KeyPressedArgs args) => true;
 
-    internal override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
-        new(true, new InterceptorInfo(Name, InterceptorType.Listener), () => HandleKeyPressed(args));
-
-    private void HandleKeyPressed(KeyPressedArgs args)
+    protected override void OnInputSuccess(KeyPressedArgs args)
     {
         var keyboardEvents =
             _subscriptions

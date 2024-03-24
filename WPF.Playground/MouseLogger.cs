@@ -3,10 +3,11 @@ using System.Diagnostics;
 using DeftSharp.Windows.Input.Extensions;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Mouse;
+using DeftSharp.Windows.Input.Mouse.Interceptors;
 
 namespace WPF.Playground;
 
-public class MouseLogger : CustomMouseInterceptor
+public class MouseLogger : MouseInterceptor
 {
     // Always allow input because it's a logger.
     protected override bool IsInputAllowed(MouseInputArgs args) => true;

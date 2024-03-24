@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
-using DeftSharp.Windows.Input.Native.Keyboard;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -21,7 +20,7 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
     public IEnumerable<Key> LockedKeys => _lockedKeys;
 
     private KeyboardManipulatorInterceptor()
-        : base(WindowsKeyboardInterceptor.Instance)
+        : base(InterceptorType.Manipulator)
     {
         _lockedKeys = new HashSet<Key>();
     }
@@ -57,9 +56,9 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
 
     public void ReleaseAll()
     {
-        if (!_lockedKeys.Any()) 
+        if (!_lockedKeys.Any())
             return;
-        
+
         _lockedKeys.Clear();
         Unhook();
     }
@@ -73,13 +72,11 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
     }
 
     internal override bool OnPipelineUnhookRequested() => !_lockedKeys.Any();
+    protected override bool IsInputAllowed(KeyPressedArgs args) => !IsKeyLocked(args.KeyPressed);
 
-    internal override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
-        new(!IsKeyLocked(args.KeyPressed),
-            new InterceptorInfo(Name, InterceptorType.Manipulator),
-            onPipelineFailed: failedInterceptors =>
-            {
-                if (failedInterceptors.Any(i => i.Name.Equals(Name)))
-                    KeyPrevented?.Invoke(args);
-            });
+    protected override void OnInputFailure(KeyPressedArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
+    {
+        if (failedInterceptors.Any(i => i.Name.Equals(Name)))
+            KeyPrevented?.Invoke(args);
+    }
 }

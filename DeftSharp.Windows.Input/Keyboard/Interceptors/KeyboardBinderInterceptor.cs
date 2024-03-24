@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Native.API;
-using DeftSharp.Windows.Input.Native.Keyboard;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -23,7 +22,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
     public IReadOnlyDictionary<Key, Key> BoundedKeys => _boundedKeys;
 
     private KeyboardBinderInterceptor()
-        : base(WindowsKeyboardInterceptor.Instance)
+        : base(InterceptorType.Binder)
     {
         _boundedKeys = new ConcurrentDictionary<Key, Key>();
     }
@@ -70,34 +69,28 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
 
     internal override bool OnPipelineUnhookRequested() => !_boundedKeys.Any();
 
-    internal override InterceptorResponse OnKeyboardInput(KeyPressedArgs args)
+    protected override bool IsInputAllowed(KeyPressedArgs args)
     {
-        return new InterceptorResponse(
-            CanBeProcessed(args.KeyPressed),
-            new InterceptorInfo(Name, InterceptorType.Binder),
-            null, failedInterceptors =>
-            {
-                if (args.Event == KeyboardEvent.KeyUp)
-                    return;
-
-                if (!failedInterceptors.Any(i => i.Name.Equals(Name)))
-                    return;
-                
-                if (!IsKeyBounded(args.KeyPressed))
-                    return;
-
-                var key = _boundedKeys[args.KeyPressed];
-                _lastProcessedBoundedKey = key;
-                KeyboardAPI.Press(key);
-            });
-    }
-
-    private bool CanBeProcessed(Key pressedKey)
-    {
-        if (IsKeyBounded(pressedKey) && _lastProcessedBoundedKey != pressedKey)
+        if (IsKeyBounded(args.KeyPressed) && _lastProcessedBoundedKey != args.KeyPressed)
             return false;
 
         _lastProcessedBoundedKey = null;
         return true;
+    }
+
+    protected override void OnInputFailure(KeyPressedArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
+    {
+        if (args.Event == KeyboardEvent.KeyUp)
+            return;
+
+        if (!failedInterceptors.Any(i => i.Name.Equals(Name)))
+            return;
+
+        if (!IsKeyBounded(args.KeyPressed))
+            return;
+
+        var key = _boundedKeys[args.KeyPressed];
+        _lastProcessedBoundedKey = key;
+        KeyboardAPI.Press(key);
     }
 }

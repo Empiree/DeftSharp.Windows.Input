@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DeftSharp.Windows.Input.Extensions;
 using DeftSharp.Windows.Input.Interceptors;
-using DeftSharp.Windows.Input.Native.Mouse;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
@@ -22,7 +21,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
     public IEnumerable<MouseInputEvent> LockedKeys => _lockedKeys;
 
     public MouseManipulatorInterceptor()
-        : base(WindowsMouseInterceptor.Instance)
+        : base(InterceptorType.Manipulator)
     {
         _lockedKeys = new HashSet<MouseInputEvent>();
     }
@@ -85,13 +84,11 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
     }
 
     internal override bool OnPipelineUnhookRequested() => !_lockedKeys.Any();
+    protected override bool IsInputAllowed(MouseInputArgs args) => !IsKeyLocked(args.Event);
 
-    internal override InterceptorResponse OnMouseInput(MouseInputArgs args) =>
-        new(!IsKeyLocked(args.Event),
-            new InterceptorInfo(Name, InterceptorType.Manipulator),
-            onPipelineFailed: failedInterceptors =>
-            {
-                if (failedInterceptors.Any(i => i.Name.Equals(Name)))
-                    ClickPrevented?.Invoke(args.Event);
-            });
+    protected override void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
+    {
+        if (failedInterceptors.Any(i => i.Name.Equals(Name)))
+            ClickPrevented?.Invoke(args.Event);
+    }
 }

@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using DeftSharp.Windows.Input.Extensions;
 using DeftSharp.Windows.Input.Interceptors;
-using DeftSharp.Windows.Input.Native.Mouse;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
@@ -17,7 +16,7 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
     public IEnumerable<MouseSubscription> Subscriptions => _subscriptions;
 
     public MouseListenerInterceptor()
-        : base(WindowsMouseInterceptor.Instance)
+        : base(InterceptorType.Listener)
     {
         _subscriptions = new ObservableCollection<MouseSubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
@@ -65,18 +64,16 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
     }
 
     internal override bool OnPipelineUnhookRequested() => !Subscriptions.Any();
+    protected override bool IsInputAllowed(MouseInputArgs args) => true;
 
-    internal override InterceptorResponse OnMouseInput(MouseInputArgs args) =>
-        new(true, new InterceptorInfo(Name, InterceptorType.Listener), () => HandleMouseInput(args));
-
-    private void HandleMouseInput(MouseInputArgs args)
+    protected override void OnInputSuccess(MouseInputArgs args)
     {
         var events = args.Event.ToMouseEvents();
-        
+
         var mouseSubscriptions = _subscriptions
             .Where(s => events.Contains(s.Event))
             .ToList();
-        
+
         foreach (var subscription in mouseSubscriptions)
         {
             if (subscription.SingleUse)

@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
-using DeftSharp.Windows.Input.Native.Keyboard;
 using DeftSharp.Windows.Input.Shared.Exceptions;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
@@ -21,7 +20,7 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
     public IEnumerable<KeyCombinationSubscription> Subscriptions => _subscriptions;
 
     public KeyboardCombinationListenerInterceptor()
-        : base(WindowsKeyboardInterceptor.Instance)
+        : base(InterceptorType.Listener)
     {
         _heldKeys = new HashSet<Key>();
         _subscriptions = new ObservableCollection<KeyCombinationSubscription>();
@@ -57,15 +56,10 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
         base.Dispose();
     }
 
-    internal override InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
-        new(true, new InterceptorInfo(Name, InterceptorType.Listener), () => HandleKeyPressed(args));
-
     internal override bool OnPipelineUnhookRequested() => !Subscriptions.Any();
+    protected override bool IsInputAllowed(KeyPressedArgs args) => true;
 
-    private IEnumerable<KeyCombinationSubscription> GetMatchedCombinations() =>
-        _subscriptions.Where(subscription => subscription.Combination.All(key => _heldKeys.Contains(key)));
-
-    private void HandleKeyPressed(KeyPressedArgs args)
+    protected override void OnInputSuccess(KeyPressedArgs args)
     {
         if (args.Event is KeyboardEvent.KeyUp)
         {
@@ -88,6 +82,9 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
             subscription.Invoke();
         }
     }
+
+    private IEnumerable<KeyCombinationSubscription> GetMatchedCombinations() =>
+        _subscriptions.Where(subscription => subscription.Combination.All(key => _heldKeys.Contains(key)));
 
     private void CheckCombinationLength(IEnumerable<Key> combination)
     {
