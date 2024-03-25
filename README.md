@@ -165,7 +165,9 @@ Available methods:
 
 ### Examples
 
-Interceptor, to block mouse scrolling events
+As an example we will implement 2 interceptors. One of them will block mouse scroll event. The second one will output mouse input events.
+
+Interceptor for blocking mouse scroll events:
 
 ```c#
 public class ScrollDisabler : MouseInterceptor
@@ -180,7 +182,7 @@ public class ScrollDisabler : MouseInterceptor
 }
 ```
 
-Interceptor, for logging mouse events
+Interceptor for logging mouse events:
 
 ```c#
 public class MouseLogger : MouseInterceptor
