@@ -9,7 +9,7 @@ namespace DeftSharp.Windows.Input.Keyboard;
 public sealed class KeyboardManipulator : IKeyboardManipulator
 {
     private readonly KeyboardManipulatorInterceptor _keyboardInterceptor;
-    public IEnumerable<Key> LockedKeys => _keyboardInterceptor.LockedKeys;
+    public IReadOnlyDictionary<Key, Func<bool>> LockedKeys => _keyboardInterceptor.LockedKeys;
 
     public event Action<KeyPressedArgs>? KeyPrevented;
 
@@ -24,12 +24,17 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     public void Press(Key key) => _keyboardInterceptor.Press(key);
     public void PressCombination(IEnumerable<Key> combination) => _keyboardInterceptor.PressCombination(combination);
 
-    public void Prevent(Key key) => _keyboardInterceptor.Prevent(key);
+    public void Prevent(Key key, Func<bool>? predicate = null)
+    {
+        predicate ??= () => true;
+        
+        _keyboardInterceptor.Prevent(key, predicate);
+    }
 
-    public void PreventMany(IEnumerable<Key> keys)
+    public void PreventMany(IEnumerable<Key> keys, Func<bool>? predicate = null)
     {
         foreach (var key in keys)
-            Prevent(key);
+            Prevent(key, predicate);
     }
 
     public void Release(Key key) => _keyboardInterceptor.Release(key);

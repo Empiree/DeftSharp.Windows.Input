@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
@@ -13,45 +14,36 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
 
     public static KeyboardManipulatorInterceptor Instance => LazyInstance.Value;
 
-    private readonly HashSet<Key> _lockedKeys;
-    private readonly object _lock = new();
+    private readonly ConcurrentDictionary<Key, Func<bool>> _lockedKeys;
     public event Action<KeyPressedArgs>? KeyPrevented;
 
-    public IEnumerable<Key> LockedKeys => _lockedKeys;
+    public IReadOnlyDictionary<Key, Func<bool>> LockedKeys => _lockedKeys;
 
     private KeyboardManipulatorInterceptor()
-        : base(InterceptorType.Manipulator)
-    {
-        _lockedKeys = new HashSet<Key>();
-    }
+        : base(InterceptorType.Manipulator) =>
+        _lockedKeys = new ConcurrentDictionary<Key, Func<bool>>();
 
     public void Press(Key key) => Keyboard.Press(key);
     public void PressCombination(IEnumerable<Key> combination) => Keyboard.PressCombination(combination);
 
-    public void Prevent(Key key)
+    public void Prevent(Key key, Func<bool> predicate)
     {
-        lock (_lock)
-        {
-            if (_lockedKeys.Any(k => k == key))
-                return;
+        if (_lockedKeys.ContainsKey(key))
+            return;
 
-            Hook();
-            _lockedKeys.Add(key);
-        }
+        Hook();
+        _lockedKeys.TryAdd(key, predicate);
     }
 
     public void Release(Key key)
     {
-        lock (_lock)
-        {
-            if (_lockedKeys.All(k => k != key))
-                return;
+        if (!_lockedKeys.ContainsKey(key))
+            return;
 
-            _lockedKeys.Remove(key);
+        _lockedKeys.TryRemove(key, out _);
 
-            if (!_lockedKeys.Any())
-                Unhook();
-        }
+        if (!_lockedKeys.Any())
+            Unhook();
     }
 
     public void ReleaseAll()
@@ -63,7 +55,12 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
         Unhook();
     }
 
-    public bool IsKeyLocked(Key key) => _lockedKeys.Any(k => k == key);
+    public bool IsKeyLocked(Key key)
+    {
+        _lockedKeys.TryGetValue(key, out var predicate);
+
+        return predicate is not null && predicate.Invoke();
+    } 
 
     public override void Dispose()
     {

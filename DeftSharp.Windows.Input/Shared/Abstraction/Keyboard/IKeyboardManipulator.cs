@@ -7,7 +7,7 @@ namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
 public interface IKeyboardManipulator : IDisposable
 {
-    IEnumerable<Key> LockedKeys { get; }
+    IReadOnlyDictionary<Key, Func<bool>> LockedKeys { get; }
     
     event Action<KeyPressedArgs>? KeyPrevented;
 
@@ -15,8 +15,8 @@ public interface IKeyboardManipulator : IDisposable
     
     void Press(Key key);
     void PressCombination(IEnumerable<Key> combination);
-    void Prevent(Key key);
-    void PreventMany(IEnumerable<Key> keys);
+    void Prevent(Key key, Func<bool>? predicate = null);
+    void PreventMany(IEnumerable<Key> keys, Func<bool>? predicate = null);
     void Release(Key key);
     void ReleaseAll();
     
