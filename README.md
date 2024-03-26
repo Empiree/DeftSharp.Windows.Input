@@ -1,6 +1,12 @@
 # DeftSharp.Windows.Input
 
-Lightweight library designed to handle keyboard and mouse input events in Windows UI applications (WPF, MAUI, WinUI, Avalonia). Using P/Invoke methods, this library provides an easy-to-use interface for event handling.
+DeftSharp.Windows.Input is a powerful C# library designed to handle all keyboard and mouse input events in the Windows OS. It is intended for use in various UI frameworks such as WPF, WinUI, Avalonia, and MAUI, providing a universal solution for all types of Windows applications. 
+
+The library offers a wide range of capabilities, including event subscription, button binding, control over specific input events, and various mouse operations such as tracking clicks and obtaining cursor coordinates. It also provides flexible custom interceptors, allowing users to define their own logic.
+
+The main goal of this library is to provide maximum user-friendliness so that you don't have to write a lot of code. Therefore, it includes many convenient methods that facilitate an intuitive and efficient process of working with input events.
+
+The library is built on P/Invoke native calls.
 
 # How to Install
 
@@ -21,7 +27,7 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 
 ## KeyboardListener
 
-This class allows you to subscribe to keyboard press events, their sequence and combination. Also, provides various information about the current state.
+This class allows you to subscribe to keyboard press events, their sequence and combination. Also, provides various information about the current status of certain buttons.
 
 ### Simple key subscription
 
@@ -31,7 +37,7 @@ var keyboardListener = new KeyboardListener();
 
 keyboardListener.Subscribe(Key.A, key =>
 {
-    // This code will be triggered with each press of the 'A' button
+    Trace.WriteLine($"The {key} was pressed");
 });
 ```
 
@@ -40,9 +46,9 @@ keyboardListener.Subscribe(Key.A, key =>
 ```c#
 var keyboardListener = new KeyboardListener();
 
-keyboardListener.SubscribeOnce(Key.A, key =>
+keyboardListener.SubscribeOnce(Key.Escape, key =>
 {
-    // This code will be triggered only once, after the first press of the 'A' button
+    this.Close();
 });
 
 ```
@@ -52,11 +58,11 @@ keyboardListener.SubscribeOnce(Key.A, key =>
 ```c#
 var keyboardListener = new KeyboardListener();
 
-keyboardListener.Subscribe(Key.A, key =>
+keyboardListener.Subscribe(Key.Space, key =>
 {
-    // This code will be triggered no more than once every 5 seconds.
+    // This code will be triggered no more than once per second.
 },
-TimeSpan.FromSeconds(5), // Interval of callback triggering
+TimeSpan.FromSeconds(1), // Interval of callback triggering
 KeyboardEvent.KeyUp); // Subscribe to KeyUp event
 ```
 
@@ -90,7 +96,7 @@ keyboardManipulator.Press(Key.A);
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
 
-keyboardManipulator.Prevent(Key.A); // Each press of this button will be ignored
+keyboardManipulator.Prevent(Key.Delete); // Each press of this button will be ignored
 ```
 
 ## KeyboardBinder
