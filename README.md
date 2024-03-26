@@ -1,5 +1,8 @@
 # DeftSharp.Windows.Input
 
+[![Nuget version](https://badge.fury.io/nu/DeftSharp.Windows.Input.svg)](https://www.nuget.org/packages/DeftSharp.Windows.Input)
+![Licence Badge](https://img.shields.io/badge/licence-MIT-blue)
+
 DeftSharp.Windows.Input is a powerful C# library designed to handle all keyboard and mouse input events in the Windows OS. It is intended for use in various UI frameworks such as WPF, WinUI, Avalonia, and MAUI, providing a universal solution for all types of Windows applications. 
 
 The library offers a wide range of capabilities, including event subscription, button binding, control over specific input events, and various mouse operations such as tracking clicks and obtaining cursor coordinates. It also provides flexible custom interceptors, allowing users to define their own logic.
