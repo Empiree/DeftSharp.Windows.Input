@@ -3,4 +3,4 @@ using DeftSharp.Windows.Input.Keyboard;
 
 namespace DeftSharp.Windows.Input.Shared.Delegates;
 
-public delegate InterceptorResponse KeyboardInputDelegate(KeyPressedArgs args);
+internal delegate InterceptorResponse KeyboardInputDelegate(KeyPressedArgs args);

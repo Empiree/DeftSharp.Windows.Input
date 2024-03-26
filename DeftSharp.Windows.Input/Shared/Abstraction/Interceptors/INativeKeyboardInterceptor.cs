@@ -4,7 +4,7 @@ using DeftSharp.Windows.Input.Shared.Delegates;
 
 namespace DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 
-public interface INativeKeyboardInterceptor : IRequestedInterceptor
+internal interface INativeKeyboardInterceptor : IRequestedInterceptor
 {
     event KeyboardInputDelegate? KeyboardInput;
     void Press(Key key);

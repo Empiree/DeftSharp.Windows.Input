@@ -6,7 +6,7 @@ namespace DeftSharp.Windows.Input.Interceptors;
 /// <summary>
 /// Represents the response of an interceptor in the middleware.
 /// </summary>
-public sealed class InterceptorResponse
+internal sealed class InterceptorResponse
 {
     /// <summary>
     /// Indicates whether the interceptor allows the pipeline to continue.
