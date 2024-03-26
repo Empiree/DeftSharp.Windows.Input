@@ -48,7 +48,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
 
         var virtualKeyCode = Marshal.ReadInt32(lParam);
         var key = KeyInterop.KeyFromVirtualKey(virtualKeyCode);
-        var keyEvent = (KeyboardEvent)wParam;
+        var keyEvent = (KeyboardInputEvent)wParam;
         var keyPressedArgs = new KeyPressedArgs(key, keyEvent);
 
         return StartInterceptorPipeline(keyPressedArgs)

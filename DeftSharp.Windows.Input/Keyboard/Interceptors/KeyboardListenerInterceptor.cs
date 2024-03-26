@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
+using DeftSharp.Windows.Input.Extensions;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Shared.Subscriptions;
 
@@ -68,17 +69,18 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
 
     protected override void OnInputSuccess(KeyPressedArgs args)
     {
-        var keyboardEvents =
-            _subscriptions
-                .Where(s => s.Key.Equals(args.KeyPressed) && s.Event == args.Event)
-                .ToArray();
+        var events = args.Event.ToKeyboardEvents();
+        
+        var keyboardEvents = _subscriptions
+            .Where(s => events.Contains(s.Event) && s.Key.Equals(args.KeyPressed))
+            .ToList();
 
         foreach (var keyboardEvent in keyboardEvents)
         {
             if (keyboardEvent.SingleUse)
                 Unsubscribe(keyboardEvent.Id);
 
-            keyboardEvent.Invoke();
+            keyboardEvent.Invoke(args.Event);
         }
     }
 

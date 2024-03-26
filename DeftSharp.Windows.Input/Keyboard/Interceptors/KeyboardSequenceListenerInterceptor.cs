@@ -65,7 +65,7 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor
 
     protected override void OnInputSuccess(KeyPressedArgs args)
     {
-        if (args.Event == KeyboardEvent.KeyUp)
+        if (args.Event == KeyboardInputEvent.KeyUp)
             return;
 
         Enqueue(args.KeyPressed);

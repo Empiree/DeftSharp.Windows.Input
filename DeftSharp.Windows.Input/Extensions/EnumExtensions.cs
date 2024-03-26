@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.Extensions;
@@ -36,6 +38,26 @@ internal static class EnumExtensions
         }
 
         return preventEvents;
+    }
+
+    public static IEnumerable<KeyboardEvent> ToKeyboardEvents(this KeyboardInputEvent inputEvent)
+    {
+        var events = new List<KeyboardEvent>();
+
+        switch (inputEvent)
+        {
+            case KeyboardInputEvent.KeyDown:
+                events.Add(KeyboardEvent.KeyDown);
+                break;
+            case KeyboardInputEvent.KeyUp:
+                events.Add(KeyboardEvent.KeyUp);
+                break;
+            default:
+                return Enumerable.Empty<KeyboardEvent>();
+        }
+        
+        events.Add(KeyboardEvent.All);
+        return events;
     }
 
     public static IEnumerable<MouseEvent> ToMouseEvents(this MouseInputEvent inputEvent)

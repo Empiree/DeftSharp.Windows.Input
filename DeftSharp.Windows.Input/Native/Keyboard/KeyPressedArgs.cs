@@ -16,14 +16,14 @@ public class KeyPressedArgs : EventArgs
     /// <summary>
     /// Gets the key event that was pressed.
     /// </summary>
-    public KeyboardEvent Event { get; }
+    public KeyboardInputEvent Event { get; }
 
     /// <summary>
     /// Initializes a new instance of the KeyPressedArgs class with the specified key.
     /// </summary>
     /// <param name="key">The key that was pressed.</param>
     /// <param name="keyboardEvent">The key event</param>
-    public KeyPressedArgs(Key key, KeyboardEvent keyboardEvent)
+    public KeyPressedArgs(Key key, KeyboardInputEvent keyboardEvent)
     {
         KeyPressed = key;
         Event = keyboardEvent;

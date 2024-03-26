@@ -5,14 +5,14 @@ using DeftSharp.Windows.Input.Shared.Exceptions;
 
 namespace DeftSharp.Windows.Input.Shared.Subscriptions;
 
-public sealed class KeySubscription : InputSubscription<Action<Key>>
+public sealed class KeySubscription : InputSubscription<Action<Key, KeyboardInputEvent>>
 {
     public Key Key { get; }
     public KeyboardEvent Event { get; }
 
     internal KeySubscription(
         Key key,
-        Action<Key> onClick,
+        Action<Key, KeyboardInputEvent> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown,
         bool singleUse = false)
     : base(onClick, singleUse)
@@ -26,7 +26,7 @@ public sealed class KeySubscription : InputSubscription<Action<Key>>
 
     internal KeySubscription(
         Key key,
-        Action<Key> onClick,
+        Action<Key, KeyboardInputEvent> onClick,
         TimeSpan interval,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
         : base(onClick, interval)
@@ -38,12 +38,12 @@ public sealed class KeySubscription : InputSubscription<Action<Key>>
         Key = key;
     }
 
-    internal void Invoke()
+    internal void Invoke(KeyboardInputEvent inputEvent)
     {
         if (!CanBeInvoked())
             return;
 
         LastInvoked = DateTime.Now;
-        OnClick(Key);
+        OnClick(Key, inputEvent);
     }
 }

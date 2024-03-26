@@ -80,7 +80,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
 
     protected override void OnInputFailure(KeyPressedArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {
-        if (args.Event == KeyboardEvent.KeyUp)
+        if (args.Event == KeyboardInputEvent.KeyUp)
             return;
 
         if (!failedInterceptors.Any(i => i.Name.Equals(Name)))

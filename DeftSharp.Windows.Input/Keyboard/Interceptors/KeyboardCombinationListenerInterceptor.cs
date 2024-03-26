@@ -61,7 +61,7 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
 
     protected override void OnInputSuccess(KeyPressedArgs args)
     {
-        if (args.Event is KeyboardEvent.KeyUp)
+        if (args.Event is KeyboardInputEvent.KeyUp)
         {
             _heldKeys.Remove(args.KeyPressed);
             return;
