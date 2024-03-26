@@ -44,18 +44,6 @@ keyboardListener.Subscribe(Key.A, key =>
 });
 ```
 
-### One-time subscription
-
-```c#
-var keyboardListener = new KeyboardListener();
-
-keyboardListener.SubscribeOnce(Key.Escape, key =>
-{
-    this.Close();
-});
-
-```
-
 ### Subscription with interval and event type
 
 ```c#
