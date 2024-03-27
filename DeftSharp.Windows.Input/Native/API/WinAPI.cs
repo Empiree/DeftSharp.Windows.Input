@@ -115,7 +115,7 @@ internal static class WinAPI
     /// <param name="pInputs">An array of INPUT structures. Each structure represents an event to be inserted into the keyboard or mouse input stream.</param>
     /// <param name="cbSize">The size, in bytes, of an INPUT structure.</param>
     [DllImport("user32.dll", SetLastError = true)]
-    internal static extern uint SendInput(uint nInputs, Structures.Input[] pInputs, int cbSize);
+    private static extern uint SendInput(uint nInputs, Structures.Input[] pInputs, int cbSize);
     
     /// <summary>
     /// Retrieves the state of the specified virtual key.
@@ -124,4 +124,20 @@ internal static class WinAPI
     /// <returns>The return value specifies the status of the specified virtual key. If the high-order bit is set, the key is down.</returns>
     [DllImport("user32.dll")]
     public static extern short GetKeyState(int nVirtKey);
+    
+    /// <summary>
+    /// Sends an array of input events to the system input queue.
+    /// </summary>
+    /// <param name="inputs">An array of INPUT structures representing the input events to send.</param>
+    /// <returns>True if the input events were successfully sent; otherwise, false.</returns>
+    internal static bool SendInput(Structures.Input[] inputs) =>
+        SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Structures.Input))) != 0;
+
+    /// <summary>
+    /// Sends an input event to the system input queue.
+    /// </summary>
+    /// <param name="input">The INPUT structure representing the input event to send.</param>
+    /// <returns>True if the input event was successfully sent; otherwise, false.</returns>
+    internal static bool SendInput(Structures.Input input) =>
+        SendInput(new[] { input });
 }

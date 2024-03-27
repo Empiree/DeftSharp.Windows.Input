@@ -10,4 +10,6 @@ internal interface INativeMouseInterceptor : IRequestedInterceptor
     void SetPosition(int x, int y);
     void Click(MouseButton button, int x, int y);
     void Click(MouseButton button);
+
+    void Scroll(int scrollAmount);
 }

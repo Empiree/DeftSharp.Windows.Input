@@ -16,13 +16,16 @@ namespace DeftSharp.Windows.Input.Native.Keyboard;
 /// </summary>
 internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKeyboardInterceptor
 {
+    // Specifies a low-level keyboard input event.
+    private const int WhKeyboardLl = 13;
+    
     private static readonly Lazy<WindowsKeyboardInterceptor> LazyInstance = new(() => new WindowsKeyboardInterceptor());
     public static WindowsKeyboardInterceptor Instance => LazyInstance.Value;
 
     public event KeyboardInputDelegate? KeyboardInput;
 
     private WindowsKeyboardInterceptor()
-        : base(InputMessages.WhKeyboardLl)
+        : base(WhKeyboardLl)
     {
     }
 
@@ -43,7 +46,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
     /// <returns>The return value of the next hook procedure in the chain.</returns>
     protected override nint HookCallback(int nCode, nint wParam, nint lParam)
     {
-        if ((nCode < 0 || !InputMessages.IsKeyboardEvent(wParam)) && wParam != InputMessages.WmSystemKeyDown)
+        if ((nCode < 0 || !SystemEvents.IsKeyboardEvent(wParam)) && wParam != SystemEvents.WmSystemKeyDown)
             return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
 
         var virtualKeyCode = Marshal.ReadInt32(lParam);

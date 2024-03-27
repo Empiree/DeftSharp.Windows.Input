@@ -31,6 +31,8 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
     public void Click(MouseButton button, int x, int y) => Mouse.Click(button, x, y);
     public void Click(MouseButton button) => Mouse.Click(button);
 
+    public void Scroll(int scrollAmount) => Mouse.Scroll(scrollAmount);
+
     public void Prevent(PreventMouseOption preventOption)
     {
         var preventEvents = preventOption.ToMouseEvents();

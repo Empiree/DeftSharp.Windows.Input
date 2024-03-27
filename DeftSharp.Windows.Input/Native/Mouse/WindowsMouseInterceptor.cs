@@ -10,18 +10,22 @@ namespace DeftSharp.Windows.Input.Native.Mouse;
 
 internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouseInterceptor
 {
+    // The low-level mouse hook event type
+    private const int WhMouseLl = 14;
+    
     private static readonly Lazy<WindowsMouseInterceptor> LazyInstance = new(() => new WindowsMouseInterceptor());
     public static WindowsMouseInterceptor Instance => LazyInstance.Value;
 
     public event MouseInputDelegate? MouseInput;
 
     private WindowsMouseInterceptor()
-        : base(InputMessages.WhMouseLl) { }
+        : base(WhMouseLl) { }
 
     public Coordinates GetPosition() => MouseAPI.GetPosition();
     public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);
     public void Click(MouseButton button, int x, int y) => MouseAPI.Click(button, x, y);
     public void Click(MouseButton button) => MouseAPI.Click(button);
+    public void Scroll(int scrollAmount) => MouseAPI.Scroll(scrollAmount);
 
     /// <summary>
     /// Callback method for the mouse hook.
@@ -32,7 +36,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
     /// <returns>The return value of the next hook procedure in the chain.</returns>
     protected override nint HookCallback(int nCode, nint wParam, nint lParam)
     {
-        if (nCode < 0 || !InputMessages.IsMouseEvent(wParam))
+        if (nCode < 0 || !SystemEvents.IsMouseEvent(wParam))
             return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
 
         var mouseEvent = (MouseInputEvent)wParam;

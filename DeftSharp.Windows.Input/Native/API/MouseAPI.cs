@@ -1,6 +1,8 @@
 ﻿using System;
 using DeftSharp.Windows.Input.Mouse;
+using DeftSharp.Windows.Input.Native.API.Structures;
 using static DeftSharp.Windows.Input.Native.API.WinAPI;
+using static DeftSharp.Windows.Input.Native.API.InputMessages;
 
 namespace DeftSharp.Windows.Input.Native.API;
 
@@ -17,6 +19,19 @@ internal static class MouseAPI
     {
         GetCursorPos(out var position);
         return position;
+    }
+
+    /// <summary>
+    /// Scrolls the mouse wheel.
+    /// </summary>
+    /// <param name="scrollAmount">The amount to scroll. 
+    /// Positive value scrolls the wheel up, negative scrolls the wheel down.</param>
+    internal static void Scroll(int scrollAmount)
+    {
+        var input = CreateInput(InputMouseWheel);
+        input.u.mi.mouseData = (uint)scrollAmount;
+
+        SendInput(input);
     }
     
     /// <summary>
@@ -66,8 +81,8 @@ internal static class MouseAPI
     /// <param name="y">The y-coordinate of the click position.</param>
     private static void ClickRight(int x, int y)
     {
-        mouse_event(InputMessages.InputMouseRightDown, x, y, 0, 0);
-        mouse_event(InputMessages.InputMouseRightUp, x, y, 0, 0);
+        mouse_event(InputMouseRightDown, x, y, 0, 0);
+        mouse_event(InputMouseRightUp, x, y, 0, 0);
     }
 
     /// <summary>
@@ -77,7 +92,20 @@ internal static class MouseAPI
     /// <param name="y">The y-coordinate of the click position.</param>
     private static void ClickLeft(int x, int y)
     {
-        mouse_event(InputMessages.InputMouseLeftDown, x, y, 0, 0);
-        mouse_event(InputMessages.InputMouseLeftUp, x, y, 0, 0);
+        mouse_event(InputMouseLeftDown, x, y, 0, 0);
+        mouse_event(InputMouseLeftUp, x, y, 0, 0);
+    }
+    
+    /// <summary>
+    /// Creates an INPUT structure representing a mouse input event with the specified move flag.
+    /// </summary>
+    /// <param name="dwFlags">Flags that specify various aspects of function operation.</param>
+    /// <returns>The created INPUT structure.</returns>
+    private static Structures.Input CreateInput(uint dwFlags)
+    {
+        var input = new Structures.Input(InputMouse);
+        input.u.mi = new MouseInput();
+        input.u.mi.dwFlags = dwFlags;
+        return input;
     }
 }

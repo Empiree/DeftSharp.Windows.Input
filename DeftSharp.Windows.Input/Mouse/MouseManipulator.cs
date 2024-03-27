@@ -42,6 +42,13 @@ public sealed class MouseManipulator : IMouseManipulator
         Click();
     }
 
+    /// <summary>
+    /// Scrolls the mouse wheel.
+    /// </summary>
+    /// <param name="scrollAmount">The amount to scroll. 
+    /// Positive value scrolls the wheel up, negative scrolls the wheel down.</param>
+    public void Scroll(int scrollAmount) => _mouseInterceptor.Scroll(scrollAmount);
+
     public void Dispose() => _mouseInterceptor.ClickPrevented -= OnInterceptorClickPrevented;
 
     private void OnInterceptorClickPrevented(MouseInputEvent mouseEvent) => ClickPrevented?.Invoke(mouseEvent);

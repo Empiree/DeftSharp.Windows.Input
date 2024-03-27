@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Shared.Exceptions;
+using static DeftSharp.Windows.Input.Native.API.WinAPI;
 using static DeftSharp.Windows.Input.Native.API.InputMessages;
+using static DeftSharp.Windows.Input.Native.API.SystemEvents;
 
 namespace DeftSharp.Windows.Input.Native.API;
 
@@ -20,7 +21,7 @@ internal static class KeyboardAPI
     internal static bool IsKeyActive(Key key)
     {
         var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
-        var keyState = WinAPI.GetKeyState(keyCode);
+        var keyState = GetKeyState(keyCode);
         return (keyState & KeyActiveFlag) != 0;
     }
     
@@ -32,7 +33,7 @@ internal static class KeyboardAPI
     internal static bool IsKeyPressed(Key key)
     {
         var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
-        var keyState = WinAPI.GetKeyState(keyCode);
+        var keyState = GetKeyState(keyCode);
         return (keyState & KeyPressedFlag) != 0;
     }
     
@@ -85,22 +86,6 @@ internal static class KeyboardAPI
         result = SendInput(input);
         return result;
     }
-
-    /// <summary>
-    /// Sends an array of input events to the system input queue.
-    /// </summary>
-    /// <param name="inputs">An array of INPUT structures representing the input events to send.</param>
-    /// <returns>True if the input events were successfully sent; otherwise, false.</returns>
-    private static bool SendInput(Structures.Input[] inputs) =>
-        WinAPI.SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Structures.Input))) != 0;
-
-    /// <summary>
-    /// Sends an input event to the system input queue.
-    /// </summary>
-    /// <param name="input">The INPUT structure representing the input event to send.</param>
-    /// <returns>True if the input event was successfully sent; otherwise, false.</returns>
-    private static bool SendInput(Structures.Input input) =>
-        SendInput(new[] { input });
 
     /// <summary>
     /// Creates an INPUT structure representing a keyboard input event with the specified virtual key code.
