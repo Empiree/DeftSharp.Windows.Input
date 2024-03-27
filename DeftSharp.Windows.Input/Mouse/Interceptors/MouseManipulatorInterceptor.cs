@@ -16,7 +16,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
     private readonly HashSet<MouseInputEvent> _lockedKeys;
     private readonly object _lock = new();
 
-    public event Action<MouseInputEvent>? ClickPrevented;
+    public event Action<MouseInputEvent>? InputPrevented;
 
     public IEnumerable<MouseInputEvent> LockedKeys => _lockedKeys;
 
@@ -91,6 +91,6 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
     protected override void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {
         if (failedInterceptors.Any(i => i.Name.Equals(Name)))
-            ClickPrevented?.Invoke(args.Event);
+            InputPrevented?.Invoke(args.Event);
     }
 }

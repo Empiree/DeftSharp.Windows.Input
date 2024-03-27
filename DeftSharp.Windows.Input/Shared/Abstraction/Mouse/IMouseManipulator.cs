@@ -8,7 +8,7 @@ public interface IMouseManipulator : IDisposable
 {
     IEnumerable<MouseInputEvent> LockedKeys { get;}
     
-    event Action<MouseInputEvent> ClickPrevented;
+    event Action<MouseInputEvent> InputPrevented;
     
     bool IsKeyLocked(MouseInputEvent mouseEvent);
     

@@ -11,12 +11,12 @@ public sealed class MouseManipulator : IMouseManipulator
     private readonly MouseManipulatorInterceptor _mouseInterceptor;
     public IEnumerable<MouseInputEvent> LockedKeys => _mouseInterceptor.LockedKeys;
 
-    public event Action<MouseInputEvent>? ClickPrevented;
+    public event Action<MouseInputEvent>? InputPrevented;
 
     public MouseManipulator()
     {
         _mouseInterceptor = MouseManipulatorInterceptor.Instance;
-        _mouseInterceptor.ClickPrevented += OnInterceptorClickPrevented;
+        _mouseInterceptor.InputPrevented += OnInterceptorInputPrevented;
     }
 
     public bool IsKeyLocked(MouseInputEvent mouseEvent) => _mouseInterceptor.IsKeyLocked(mouseEvent);
@@ -49,7 +49,7 @@ public sealed class MouseManipulator : IMouseManipulator
     /// Positive value scrolls the wheel up, negative scrolls the wheel down.</param>
     public void Scroll(int scrollAmount) => _mouseInterceptor.Scroll(scrollAmount);
 
-    public void Dispose() => _mouseInterceptor.ClickPrevented -= OnInterceptorClickPrevented;
+    public void Dispose() => _mouseInterceptor.InputPrevented -= OnInterceptorInputPrevented;
 
-    private void OnInterceptorClickPrevented(MouseInputEvent mouseEvent) => ClickPrevented?.Invoke(mouseEvent);
+    private void OnInterceptorInputPrevented(MouseInputEvent mouseEvent) => InputPrevented?.Invoke(mouseEvent);
 }
