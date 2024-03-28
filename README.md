@@ -49,12 +49,12 @@ keyboardListener.Subscribe(Key.A, key =>
 ```c#
 var keyboardListener = new KeyboardListener();
 
-keyboardListener.Subscribe(Key.Space, key =>
+keyboardListener.Subscribe(Key.Space, (key, eventType) =>
 {
     // This code will be triggered no more than once per second
 },
 TimeSpan.FromSeconds(1), // Interval of callback triggering
-KeyboardEvent.KeyUp); // Subscribe to KeyUp event
+KeyboardEvent.All); // Subscribe to all events (down and up)
 ```
 
 ### Available subscription methods: 
@@ -243,7 +243,7 @@ mouseListener.SubscribeAll(mouseEvent =>
             
 mouseManipulator.Prevent(PreventMouseOption.Scroll);
 
-mouseManipulator.ClickPrevented += mouseEvent => 
+mouseManipulator.InputPrevented += mouseEvent => 
      Trace.WriteLine($"Failed {mouseEvent} by: MouseManipulator");
 ```
 
