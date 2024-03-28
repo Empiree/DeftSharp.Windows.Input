@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -14,7 +15,7 @@ public sealed class KeyboardBinder : IKeyboardBinder
 
     public void Bind(IEnumerable<Key> keys, Key newKey)
     {
-        foreach (var oldKey in keys)
+        foreach (var oldKey in keys.Distinct())
             Bind(oldKey, newKey);
     }
     public void Unbind(Key key) => _keyboardBinder.Unbind(key);

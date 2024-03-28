@@ -10,7 +10,7 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
 {
     private static readonly Lazy<KeyboardIntervalInterceptor> LazyInstance =
         new(() => new KeyboardIntervalInterceptor());
-    
+
     public static KeyboardIntervalInterceptor Instance => LazyInstance.Value;
 
     private readonly ConcurrentDictionary<Key, KeyClickInterval> _keyClickIntervals;
@@ -18,13 +18,13 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
     private KeyboardIntervalInterceptor()
         : base(InterceptorType.Prohibitive) =>
         _keyClickIntervals = new ConcurrentDictionary<Key, KeyClickInterval>();
-    
+
     public void SetInterval(Key key, TimeSpan interval)
     {
         if (interval.Equals(TimeSpan.Zero))
         {
             _keyClickIntervals.TryRemove(key, out _);
-            
+
             TryUnhook();
             return;
         }
@@ -39,15 +39,18 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
     public override void Dispose()
     {
         _keyClickIntervals.Clear();
-        
+
         Unhook();
         base.Dispose();
     }
-    
+
     internal override bool OnPipelineUnhookRequested() => !_keyClickIntervals.Any();
 
     protected override void OnInputSuccess(KeyPressedArgs args)
     {
+        if (args.Event is KeyboardInputEvent.KeyUp)
+            return;
+
         _keyClickIntervals.TryGetValue(args.KeyPressed, out var clickInterval);
 
         if (clickInterval is not null)
@@ -56,6 +59,9 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
 
     protected override bool IsInputAllowed(KeyPressedArgs args)
     {
+        if (args.Event is KeyboardInputEvent.KeyUp)
+            return true;
+
         _keyClickIntervals.TryGetValue(args.KeyPressed, out var keyClickInterval);
 
         return !(keyClickInterval is not null && keyClickInterval.IsBlocked);
@@ -63,7 +69,7 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
 
     private void TryUnhook()
     {
-        if(!_keyClickIntervals.Any())
+        if (!_keyClickIntervals.Any())
             Unhook();
     }
 }

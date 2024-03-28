@@ -8,8 +8,7 @@ internal sealed class KeyClickInterval
     public Key Key { get; set; }
     public TimeSpan Interval { get; }
     public DateTime? LastClicked { get; internal set; }
-
-    public bool IsBlocked => LastClicked?.Add(Interval) >= DateTime.Now;
+    public bool IsBlocked => LastClicked?.Add(Interval) > DateTime.Now;
 
     public KeyClickInterval(Key key, TimeSpan interval)
     {

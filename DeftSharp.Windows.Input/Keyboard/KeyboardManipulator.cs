@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -29,7 +30,7 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
 
     public void SetInterval(IEnumerable<Key> keys, TimeSpan interval)
     {
-        foreach (var key in keys)
+        foreach (var key in keys.Distinct())
             SetInterval(key, interval);
     }
 
@@ -42,7 +43,7 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
 
     public void Prevent(IEnumerable<Key> keys, Func<bool>? predicate = null)
     {
-        foreach (var key in keys)
+        foreach (var key in keys.Distinct())
             Prevent(key, predicate);
     }
 
