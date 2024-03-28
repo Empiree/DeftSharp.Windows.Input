@@ -8,7 +8,7 @@ namespace DeftSharp.Windows.Input.Keyboard;
 public sealed class KeyboardManipulator : IKeyboardManipulator
 {
     private readonly KeyboardManipulatorInterceptor _keyboardInterceptor;
-    public IReadOnlyDictionary<Key, Func<bool>> LockedKeys => _keyboardInterceptor.LockedKeys;
+    public IEnumerable<Key> LockedKeys => _keyboardInterceptor.LockedKeys;
 
     public event Action<KeyPressedArgs>? KeyPrevented;
 
@@ -28,6 +28,14 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
         predicate ??= () => true;
         
         _keyboardInterceptor.Prevent(key, predicate);
+    }
+
+    public void SetInterval(Key key, TimeSpan interval) => _keyboardInterceptor.SetInterval(key, interval);
+
+    public void SetInterval(IEnumerable<Key> keys, TimeSpan interval)
+    {
+        foreach (var key in keys)
+            SetInterval(key, interval);
     }
 
     public void PreventMany(IEnumerable<Key> keys, Func<bool>? predicate = null)

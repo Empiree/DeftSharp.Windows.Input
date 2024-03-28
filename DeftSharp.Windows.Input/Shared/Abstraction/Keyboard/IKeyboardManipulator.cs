@@ -6,7 +6,7 @@ namespace DeftSharp.Windows.Input.Keyboard;
 
 public interface IKeyboardManipulator : IDisposable
 {
-    IReadOnlyDictionary<Key, Func<bool>> LockedKeys { get; }
+    IEnumerable<Key> LockedKeys { get; }
     
     event Action<KeyPressedArgs>? KeyPrevented;
 
@@ -15,6 +15,8 @@ public interface IKeyboardManipulator : IDisposable
     void Press(Key key);
     void PressCombination(IEnumerable<Key> combination);
     void Prevent(Key key, Func<bool>? predicate = null);
+    void SetInterval(Key key, TimeSpan interval);
+    void SetInterval(IEnumerable<Key> keys, TimeSpan interval);
     void PreventMany(IEnumerable<Key> keys, Func<bool>? predicate = null);
     void Release(Key key);
     void ReleaseAll();
