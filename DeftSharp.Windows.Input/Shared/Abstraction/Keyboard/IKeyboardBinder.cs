@@ -11,5 +11,6 @@ public interface IKeyboardBinder
     void Bind(Key oldKey, Key newKey);
     void Bind(IEnumerable<Key> keys, Key newKey);
     void Unbind(Key key);
+    void Unbind(IEnumerable<Key> keys);
     void UnbindAll();
 }

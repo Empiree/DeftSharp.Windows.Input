@@ -22,5 +22,6 @@ public interface IKeyboardManipulator : IDisposable
     void ResetInterval(Key key);
     void ResetInterval(IEnumerable<Key> keys);
     void Release(Key key);
+    void Release(IEnumerable<Key> keys);
     void ReleaseAll();
 }

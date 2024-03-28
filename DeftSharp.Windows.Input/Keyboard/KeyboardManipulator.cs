@@ -25,7 +25,7 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
 
     public void Press(Key key) => _manipulator.Press(key);
     public void PressCombination(IEnumerable<Key> combination) => _manipulator.PressCombination(combination);
-    
+
     public void ResetInterval(Key key) => SetInterval(key, TimeSpan.Zero);
     public void ResetInterval(IEnumerable<Key> keys) => SetInterval(keys, TimeSpan.Zero);
 
@@ -53,6 +53,12 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     }
 
     public void Release(Key key) => _manipulator.Release(key);
+
+    public void Release(IEnumerable<Key> keys)
+    {
+        foreach (var key in keys.Distinct())
+            Release(key);
+    }
 
     public void ReleaseAll() => _manipulator.ReleaseAll();
 

@@ -19,5 +19,11 @@ public sealed class KeyboardBinder : IKeyboardBinder
             Bind(oldKey, newKey);
     }
     public void Unbind(Key key) => _keyboardBinder.Unbind(key);
+
+    public void Unbind(IEnumerable<Key> keys)
+    {
+        foreach (var key in keys.Distinct())
+            Unbind(key);
+    }
     public void UnbindAll() => _keyboardBinder.UnbindAll();
 }
