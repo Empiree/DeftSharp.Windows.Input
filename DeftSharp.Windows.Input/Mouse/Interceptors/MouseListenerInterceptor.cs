@@ -15,7 +15,7 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
     public IEnumerable<MouseSubscription> Subscriptions => _subscriptions;
 
     public MouseListenerInterceptor()
-        : base(InterceptorType.Listener)
+        : base(InterceptorType.Observable)
     {
         _subscriptions = new ObservableCollection<MouseSubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DeftSharp.Windows.Input.Shared.Exceptions;
 
 namespace DeftSharp.Windows.Input.Interceptors;
 
@@ -28,6 +29,9 @@ internal sealed class InterceptorPipeline
             .Where(i => !i.IsAllowed)
             .Select(i => i.Interceptor)
             .ToArray();
+
+        if (failedInterceptors.Any(i => i.Type is InterceptorType.Observable))
+            throw new InterceptorPipelineException(InterceptorType.Observable);
 
         foreach (var action in interceptors.Select(i => i.OnPipelineFailed))
             action?.Invoke(failedInterceptors);

@@ -46,7 +46,7 @@ public class KeyboardBinderTests
                 Key.Z
             };
 
-            keyboardBinder.BindMany(keys, Key.A);
+            keyboardBinder.Bind(keys, Key.A);
 
             Assert.True(keyboardBinder.IsKeyBounded(Key.W));
             Assert.True(keyboardBinder.IsKeyBounded(Key.X));
@@ -65,7 +65,7 @@ public class KeyboardBinderTests
         {
             var keys = new List<Key>();
 
-            keyboardBinder.BindMany(keys, Key.A);
+            keyboardBinder.Bind(keys, Key.A);
             
             Assert.Empty(keyboardBinder.BoundedKeys);
         });
@@ -102,7 +102,7 @@ public class KeyboardBinderTests
                 Key.Tab
             };
             
-            keyboardBinder.BindMany(keys, Key.A);
+            keyboardBinder.Bind(keys, Key.A);
             Assert.Equal(4, keyboardBinder.BoundedKeys.Count);
 
             keyboardBinder.UnbindAll();

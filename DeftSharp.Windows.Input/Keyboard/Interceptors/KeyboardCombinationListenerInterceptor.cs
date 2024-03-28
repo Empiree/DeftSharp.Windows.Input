@@ -19,7 +19,7 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
     public IEnumerable<KeyCombinationSubscription> Subscriptions => _subscriptions;
 
     public KeyboardCombinationListenerInterceptor()
-        : base(InterceptorType.Listener)
+        : base(InterceptorType.Observable)
     {
         _heldKeys = new HashSet<Key>();
         _subscriptions = new ObservableCollection<KeyCombinationSubscription>();

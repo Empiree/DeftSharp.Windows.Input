@@ -21,7 +21,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
     public IEnumerable<MouseInputEvent> LockedKeys => _lockedKeys;
 
     public MouseManipulatorInterceptor()
-        : base(InterceptorType.Manipulator)
+        : base(InterceptorType.Prohibitive)
     {
         _lockedKeys = new HashSet<MouseInputEvent>();
     }

@@ -22,10 +22,8 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
     public IReadOnlyDictionary<Key, Key> BoundedKeys => _boundedKeys;
 
     private KeyboardBinderInterceptor()
-        : base(InterceptorType.Binder)
-    {
+        : base(InterceptorType.Prohibitive) =>
         _boundedKeys = new ConcurrentDictionary<Key, Key>();
-    }
 
     public void Bind(Key oldKey, Key newKey)
     {

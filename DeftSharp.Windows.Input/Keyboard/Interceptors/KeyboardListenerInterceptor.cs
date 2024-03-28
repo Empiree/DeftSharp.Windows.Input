@@ -15,7 +15,7 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
     public IEnumerable<KeySubscription> Subscriptions => _subscriptions;
 
     public KeyboardListenerInterceptor()
-        : base(InterceptorType.Listener)
+        : base(InterceptorType.Observable)
     {
         _subscriptions = new ObservableCollection<KeySubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;

@@ -19,7 +19,7 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor
     public IEnumerable<KeySequenceSubscription> Subscriptions => _subscriptions;
 
     public KeyboardSequenceListenerInterceptor()
-        : base(InterceptorType.Listener)
+        : base(InterceptorType.Observable)
     {
         _pressedKeys = new Queue<Key>();
         _subscriptions = new ObservableCollection<KeySequenceSubscription>();

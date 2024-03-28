@@ -6,7 +6,6 @@
 public enum InterceptorType : byte
 {
     Custom = 0,
-    Listener = 1,
-    Manipulator = 2,
-    Binder = 3
+    Observable = 1,
+    Prohibitive = 2,
 }

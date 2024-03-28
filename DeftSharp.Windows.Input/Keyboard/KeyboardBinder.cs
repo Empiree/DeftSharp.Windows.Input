@@ -12,7 +12,7 @@ public sealed class KeyboardBinder : IKeyboardBinder
     public bool IsKeyBounded(Key key) => _keyboardBinder.IsKeyBounded(key);
     public void Bind(Key oldKey, Key newKey) => _keyboardBinder.Bind(oldKey, newKey);
 
-    public void BindMany(IEnumerable<Key> keys, Key newKey)
+    public void Bind(IEnumerable<Key> keys, Key newKey)
     {
         foreach (var oldKey in keys)
             Bind(oldKey, newKey);
