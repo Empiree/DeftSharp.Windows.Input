@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard.Interceptors;
-using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
-using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 

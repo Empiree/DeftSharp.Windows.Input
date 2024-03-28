@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using DeftSharp.Windows.Input.Keyboard;
-using DeftSharp.Windows.Input.Shared.Subscriptions;
 
-namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
+namespace DeftSharp.Windows.Input.Keyboard;
 
 public interface IKeyboardListener : IDisposable
 {

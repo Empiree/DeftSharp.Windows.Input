@@ -10,7 +10,7 @@ namespace DeftSharp.Windows.Input.Native;
 internal abstract class WindowsInterceptor : IRequestedInterceptor
 {
     private readonly int _interceptorHook;
-    private bool _handled;
+    private bool _isHandled;
 
     /// <summary>
     /// Delegate to the hook procedure.
@@ -48,11 +48,11 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
     /// </summary>
     public void Hook()
     {
-        if (_handled)
+        if (_isHandled)
             return;
 
         HookId = SetHook(_interceptorHook, _windowsProcedure);
-        _handled = true;
+        _isHandled = true;
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
     /// </summary>
     public void Unhook()
     {
-        if (!_handled)
+        if (!_isHandled)
             return;
 
         if (!CanBeUnhooked())
@@ -68,7 +68,7 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
 
         WinAPI.UnhookWindowsHookEx(HookId);
         HookId = nint.Zero;
-        _handled = false;
+        _isHandled = false;
     }
 
     /// <summary>

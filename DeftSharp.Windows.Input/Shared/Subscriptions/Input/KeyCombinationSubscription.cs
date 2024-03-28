@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Shared.Exceptions;
+using DeftSharp.Windows.Input.Shared.Subscriptions.Input;
 
-namespace DeftSharp.Windows.Input.Shared.Subscriptions;
+namespace DeftSharp.Windows.Input.Keyboard;
 
 public sealed class KeyCombinationSubscription : InputSubscription<Action>
 {

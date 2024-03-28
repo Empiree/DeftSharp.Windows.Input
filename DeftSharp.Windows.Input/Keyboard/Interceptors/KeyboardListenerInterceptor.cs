@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Extensions;
 using DeftSharp.Windows.Input.Interceptors;
-using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 

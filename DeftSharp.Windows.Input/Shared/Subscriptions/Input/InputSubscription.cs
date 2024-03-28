@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DeftSharp.Windows.Input.Shared.Subscriptions;
+namespace DeftSharp.Windows.Input.Shared.Subscriptions.Input;
 
 public abstract class InputSubscription<TAction>
 {

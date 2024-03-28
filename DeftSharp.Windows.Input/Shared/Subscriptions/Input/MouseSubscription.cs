@@ -1,7 +1,7 @@
 ﻿using System;
-using DeftSharp.Windows.Input.Mouse;
+using DeftSharp.Windows.Input.Shared.Subscriptions.Input;
 
-namespace DeftSharp.Windows.Input.Shared.Subscriptions;
+namespace DeftSharp.Windows.Input.Mouse;
 
 public sealed class MouseSubscription : InputSubscription<Action<MouseInputEvent>>
 {

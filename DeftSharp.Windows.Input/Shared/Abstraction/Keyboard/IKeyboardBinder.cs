@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
 
-namespace DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
+namespace DeftSharp.Windows.Input.Keyboard;
 
 public interface IKeyboardBinder
 {

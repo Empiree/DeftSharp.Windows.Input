@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Input;
-using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Shared.Exceptions;
+using DeftSharp.Windows.Input.Shared.Subscriptions.Input;
 
-namespace DeftSharp.Windows.Input.Shared.Subscriptions;
+namespace DeftSharp.Windows.Input.Keyboard;
 
 public sealed class KeySubscription : InputSubscription<Action<Key, KeyboardInputEvent>>
 {

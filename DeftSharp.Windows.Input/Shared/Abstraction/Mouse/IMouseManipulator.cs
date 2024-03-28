@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DeftSharp.Windows.Input.Mouse;
 
-namespace DeftSharp.Windows.Input.Shared.Abstraction.Mouse;
+namespace DeftSharp.Windows.Input.Mouse;
 
 public interface IMouseManipulator : IDisposable
 {

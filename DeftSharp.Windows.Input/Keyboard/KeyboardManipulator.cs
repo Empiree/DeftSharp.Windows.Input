@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard.Interceptors;
-using DeftSharp.Windows.Input.Shared.Abstraction.Keyboard;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 

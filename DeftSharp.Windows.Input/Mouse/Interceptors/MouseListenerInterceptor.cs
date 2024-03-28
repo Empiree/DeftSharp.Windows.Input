@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using DeftSharp.Windows.Input.Extensions;
 using DeftSharp.Windows.Input.Interceptors;
-using DeftSharp.Windows.Input.Shared.Subscriptions;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
