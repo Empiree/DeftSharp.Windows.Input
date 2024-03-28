@@ -11,22 +11,16 @@
         <RootNamespace>DeftSharp.Windows.Input</RootNamespace>
         <AssemblyName>DeftSharp.Windows.Input</AssemblyName>
         <Title>DeftSharp.Windows.Input</Title>
-        <Description>A simple keyboard/mouse event handler for Windows UI applications (WPF, MAUI, WinUI, Avalonia) </Description>
+        <Description>.NET library designed to handle global keyboard/mouse input events in Windows UI applications (WPF, MAUI, WinUI, Avalonia) </Description>
         <Copyright>@ DeftSharp. All rights reserved.</Copyright>
         <PackageProjectUrl>https://github.com/Empiree/DeftSharp.Windows.Input</PackageProjectUrl>
         <PackageLicenseUrl></PackageLicenseUrl>
         <RepositoryUrl>https://github.com/Empiree/DeftSharp.Windows.Input</RepositoryUrl>
         <RepositoryType>Open-Source</RepositoryType>
         <PackageTags>#WPF #Input #Keyboard-Listener #Mouse-Listener #WinAPI #listener #WinUI #WinUI3 #MAUI #Avalonia #Windows #Input #Keyboard #Mouse</PackageTags>
-        <Version>0.6</Version>
+        <Version>0.7</Version>
         <PackageIcon>DeftSharp-icon.png</PackageIcon>
-        <PackageReleaseNotes>What's new:
-
-- Custom interceptors
-- MouseListener class improvement
-- KeyboardListener class improvement
-
-You can see all the changes in the release changelog of our GitHub repository!</PackageReleaseNotes>
+        <PackageReleaseNotes>You can see all the changes in the release changelog of our GitHub repository!</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
