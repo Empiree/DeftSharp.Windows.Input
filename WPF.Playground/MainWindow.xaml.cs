@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Mouse;
@@ -11,115 +10,51 @@ namespace WPF.Playground
     /// </summary>
     public partial class MainWindow
     {
-        private KeyboardListener _keyboardListener1;
-        private KeyboardListener _keyboardListener2;
-        private KeyboardListener _keyboardListener3;
+        private readonly Key[] _keys = { Key.Q, Key.W, Key.E };
 
-        private KeyboardManipulator _keyboardManipulator1;
+        private readonly KeyboardListener _keyboardListener1 = new();
+        private readonly KeyboardListener _keyboardListener2 = new();
+        private readonly KeyboardListener _keyboardListener3 = new();
 
-        private KeyboardBinder _keyboardBinder1;
-        private KeyboardBinder _keyboardBinder2;
+        private readonly KeyboardManipulator _keyboardManipulator1 = new();
+        private readonly KeyboardManipulator _keyboardManipulator2 = new();
 
-        private MouseListener _mouseListener;
+        private readonly KeyboardBinder _keyboardBinder1 = new();
+        private readonly KeyboardBinder _keyboardBinder2 = new();
 
-        private MouseManipulator _mouseManipulator;
+        private readonly MouseListener _mouseListener = new();
 
-        // Custom
+        private readonly MouseManipulator _mouseManipulator = new();
 
-        private KeyboardLogger _keyboardLogger;
-        private MouseLogger _mouseLogger;
+        private readonly KeyboardLogger _keyboardLogger = new();
+        private readonly MouseLogger _mouseLogger = new();
+        private readonly ScrollDisabler _scrollDisabler = new();
 
-        private ScrollDisabler _scrollDisabler;
+        public MainWindow() => InitializeComponent();
 
-        public void TestBinder()
-        {
-            _keyboardBinder1 = new KeyboardBinder();
-            _keyboardBinder2 = new KeyboardBinder();
-
-
-            _keyboardBinder1.Bind(Key.Q, Key.W);
-            _keyboardBinder2.Bind(Key.W, Key.Q);
-
-            _keyboardListener1 = new KeyboardListener();
-
-            _keyboardListener1.Subscribe(Key.Q, key => PressedButtons.Text += key.ToString());
-
-            _keyboardListener1.Subscribe(Key.W, key => PressedButtons.Text += key.ToString());
-
-            _keyboardListener1.Subscribe(Key.E, key => { PressedButtons.Text += key.ToString(); });
-
-            _keyboardListener1.Subscribe(Key.C, key => { PressedButtons.Text += key.ToString(); });
-
-            _keyboardListener1.Subscribe(Key.V, key => { PressedButtons.Text += key.ToString(); });
-        }
-
-        public void TestListener()
-        {
-            _keyboardListener1 = new KeyboardListener();
-            _keyboardListener2 = new KeyboardListener();
-            _keyboardListener3 = new KeyboardListener();
-
-            _keyboardListener1.Subscribe(Key.Q, key => PressedButtons.Text += key.ToString());
-            _keyboardListener2.Subscribe(Key.W, key => PressedButtons.Text += key.ToString());
-            _keyboardListener3.Subscribe(Key.E, key => PressedButtons.Text += key.ToString());
-        }
-
-        public MainWindow()
-        {
-            _keyboardManipulator1 = new KeyboardManipulator();
-            _mouseManipulator = new MouseManipulator();
-
-            _keyboardListener1 = new KeyboardListener();
-            _keyboardListener2 = new KeyboardListener();
-            _keyboardListener3 = new KeyboardListener();
-            _mouseListener = new MouseListener();
-            _scrollDisabler = new ScrollDisabler();
-            _keyboardLogger = new KeyboardLogger();
-
-            _keyboardBinder1 = new KeyboardBinder();
-            _keyboardBinder2 = new KeyboardBinder();
-
-            _mouseLogger = new MouseLogger();
-
-            InitializeComponent();
-        }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            _mouseLogger.Hook();
-            _keyboardLogger.Hook();
-            _scrollDisabler.Hook();
-            
-            _keyboardBinder1.Bind(Key.Q, Key.W);
-            _keyboardBinder2.Bind(Key.W, Key.Q);
-
-            _keyboardManipulator1.Prevent(Key.C);
-            _keyboardManipulator1.Prevent(Key.V);
-
-            _keyboardListener1.Subscribe(Key.A, key =>
-            {
-                Trace.WriteLine(key.ToString());
-            });
-
-            _mouseListener.Subscribe(MouseEvent.Scroll, () => { Trace.WriteLine(_keyboardListener1.IsWinPressed); });
         }
 
         private void OnClickButton1(object sender, RoutedEventArgs e)
         {
-            _mouseLogger.Unhook();
-            _scrollDisabler.Unhook();
-            _keyboardLogger.Unhook();
-            _keyboardLogger.Unhook();
-            _mouseManipulator.ReleaseAll();
-            _mouseListener.UnsubscribeAll();
         }
 
-        private void OnClickButton2(object sender, RoutedEventArgs e) { }
+        private void OnClickButton2(object sender, RoutedEventArgs e)
+        {
+        }
 
-        private void OnClickButton3(object sender, RoutedEventArgs e) { }
+        private void OnClickButton3(object sender, RoutedEventArgs e)
+        {
+        }
 
-        private void OnClickButton4(object sender, RoutedEventArgs e) { }
+        private void OnClickButton4(object sender, RoutedEventArgs e)
+        {
+        }
 
-        private void OnClickButton5(object sender, RoutedEventArgs e) { }
+        private void OnClickButton5(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }
