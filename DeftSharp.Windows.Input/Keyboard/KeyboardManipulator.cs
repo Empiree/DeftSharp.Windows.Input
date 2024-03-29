@@ -24,7 +24,7 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     public bool IsKeyLocked(Key key) => _manipulator.IsKeyLocked(key);
 
     public void Press(Key key) => _manipulator.Press(key);
-    public void PressCombination(IEnumerable<Key> combination) => _manipulator.PressCombination(combination);
+    public void Press(IEnumerable<Key> keys) => _manipulator.PressCombination(keys);
 
     public void ResetInterval(Key key) => SetInterval(key, TimeSpan.Zero);
     public void ResetInterval(IEnumerable<Key> keys) => SetInterval(keys, TimeSpan.Zero);
