@@ -3,7 +3,7 @@
 [![Nuget version](https://badge.fury.io/nu/DeftSharp.Windows.Input.svg)](https://www.nuget.org/packages/DeftSharp.Windows.Input)
 ![GitHub License](https://img.shields.io/github/license/Empiree/DeftSharp.Windows.Input?color=rgb(0%2C191%2C255))
 
-DeftSharp.Windows.Input is a powerful C# library designed to handle global keyboard and mouse input events in the Windows OS. It is intended for use in various UI frameworks such as WPF, WinUI, Avalonia, and MAUI, providing a universal solution for all types of Windows applications. 
+DeftSharp.Windows.Input is a powerful .NET library designed to handle global keyboard and mouse input events in the Windows OS. It is intended for use in various UI frameworks such as WPF, WinUI, Avalonia, and MAUI, providing a universal solution for all types of Windows applications. 
 
 The library offers a wide range of capabilities, including event subscription, button binding, control over specific input events, and various mouse operations such as tracking clicks and obtaining cursor coordinates. It also provides flexible custom interceptors, allowing users to define their own logic.
 
@@ -23,6 +23,7 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 * Subscription to mouse events
 * Pressing buttons from code
 * Blocking any input events
+* Setting press frequency
 * Changing key binding
 * Custom interceptors
 
@@ -72,9 +73,9 @@ KeyboardEvent.All); // Subscribe to all events (down and up)
 
 ## KeyboardManipulator
 
-This class provides the ability to control the keyboard. It allows you to prevent pressing a key and press key or their combination from code.
+This class provides the ability to control the keyboard. This allows you to disable key presses, set their press interval, and simulate any key presses directly from the code.
 
-### Pressing a key from the code
+### Pressing a keys from the code
 
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
@@ -87,7 +88,16 @@ keyboardManipulator.Press(Key.A);
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
 
-keyboardManipulator.Prevent(Key.Delete); // Each press of this button will be ignored
+// Each press of this button will be ignored
+keyboardManipulator.Prevent(Key.Delete); 
+
+// Prevent with condition
+keyboardManipulator.Prevent(Key.Escape, () => 
+{
+   var currentTime = DateTime.Now;
+
+   return currentTime.Minute > 30;
+});
 ```
 
 ## KeyboardBinder
@@ -130,21 +140,13 @@ mouseListener.Subscribe(MouseEvent.Move, () =>
 
 This class allows you to control the mouse. It is based on the principle of KeyboardManipulator.
 
-### Click the right mouse button on the specified coordinates
-
 ```c#
 var mouseManipulator = new MouseManipulator();
-            
-mouseManipulator.Click(x:100, y:100, MouseButton.Right);
-```
 
-### Prohibit mouse button pressing
-
-```c#
-mouseManipulator.Prevent(PreventMouseOption.LeftButton);
+mouseManipulator.DoubleClick();
+mouseManipulator.Scroll(150);            
+mouseManipulator.Click(100, 100, MouseButton.Right);
 ```
-> [!NOTE]
-> Be careful when using this method. You may completely block the operation of your mouse.
 
 ## Custom Interceptors
 
