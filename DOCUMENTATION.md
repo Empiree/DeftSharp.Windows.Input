@@ -13,17 +13,17 @@
 
 [Keyboard](#keyboard)
 
-- Keyboard Listener
-- Keyboard Manipulator
-- Keyboard Binder
-- Useful classes
+- [Keyboard Listener](#keyboardlistener)
+- [Keyboard Manipulator](#keyboardmanipulator)
+- [Keyboard Binder](#keyboardbinder)
+- [Useful classes](#useful-classes)
 
-Mouse
+[Mouse](#mouse)
 
-- Mouse Listener
-- Mouse Manipulator
+- [Mouse Listener](#mouselistener)
+- [Mouse Manipulator](#mousemanipulator)
 
-Custom Interceptors
+[Custom Interceptors](#custom-interceptors)
 
 # Keyboard
 
