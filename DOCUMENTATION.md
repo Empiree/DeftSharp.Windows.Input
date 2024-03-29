@@ -68,9 +68,29 @@ KeyboardEvent.All); // Subscribe to all events (down and up)
 - SubscribeCombination
 - SubscribeCombinationOnce
 
+> [!NOTE]
+> Each object of the KeyboardListener class stores its own subscriptions. Keep this in mind when you use the `UnsubscribeAll()` method.
+
 ## KeyboardManipulator
 
+This class provides the ability to control the keyboard. This allows you to disable key presses, set their press interval, and simulate any key presses directly from the code.
+
+> [!NOTE]
+> Prevented keys are shared among all class objects. You don't have to worry that an object in this class has locked a particular button and you no longer have access to that object.
+
 ## KeyboardBinder
+
+This class provides the option to change the bind of the specified button.
+
+### Change the button bind
+
+```c#
+var keyboardBinder = new KeyboardBinder();
+            
+keyboardBinder.Bind(Key.Q, Key.W); 
+
+// Now any time the 'Q' button is triggered, it will behave like the 'W' button
+```
 
 ## Useful classes
 
@@ -80,7 +100,33 @@ KeyboardEvent.All); // Subscribe to all events (down and up)
 
 ## MouseListener
 
+This class allows you to subscribe to mouse events, as well as receive various information, such as the current cursor coordinates.
+
+### Subscribe to mouse move event and get current coordinates
+
+```c#
+var mouseListener = new MouseListener();
+
+mouseListener.Subscribe(MouseEvent.Move, () =>
+{
+  Coordinates coordinates = mouseListener.GetPosition();
+
+  Label.Text = $"X: {coordinates.X} Y: {coordinates.Y}";
+});
+```
+![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
+
 ## MouseManipulator
+
+This class allows you to control the mouse. It is based on the principle of KeyboardManipulator.
+
+```c#
+var mouseManipulator = new MouseManipulator();
+
+mouseManipulator.DoubleClick();
+mouseManipulator.Scroll(150);            
+mouseManipulator.Click(100, 100, MouseButton.Right);
+```
 
 # Custom interceptors
 
