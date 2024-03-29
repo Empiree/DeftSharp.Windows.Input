@@ -27,7 +27,46 @@
 
 # Keyboard
 
+
+
 ## KeyboardListener
+
+This class is intended for processing input events from the keyboard, as well as obtaining various information about its current state. You can use it to subscribe to a key press, a key combination or a sequence of keys.
+
+### Simple key subscription
+
+```c#
+
+var keyboardListener = new KeyboardListener();
+
+keyboardListener.Subscribe(Key.A, key =>
+{
+    Trace.WriteLine($"The {key} was pressed");
+});
+```
+
+### Subscription with interval and event type
+
+```c#
+var keyboardListener = new KeyboardListener();
+
+keyboardListener.Subscribe(Key.Space, (key, eventType) =>
+{
+    // This code will be triggered no more than once per second
+},
+TimeSpan.FromSeconds(1), // Interval of callback triggering
+KeyboardEvent.All); // Subscribe to all events (down and up)
+```
+
+### Available subscription options
+
+- Subscribe
+- SubscribeAll
+- SubscribeOnce
+- SubscribeSequence
+- SubscribeSequenceOnce
+- SubscribeCombination
+- SubscribeCombinationOnce
 
 ## KeyboardManipulator
 
