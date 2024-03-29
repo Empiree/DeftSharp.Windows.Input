@@ -83,3 +83,104 @@ KeyboardEvent.All); // Subscribe to all events (down and up)
 ## MouseManipulator
 
 # Custom interceptors
+
+Custom interceptors provide the ability for users to manage incoming events themselves. This is a bit more complex than using already created interceptors such as [KeyboardListener](#keyboardlistener). But in some cases you can't do without it.
+
+The work of interceptors can be visualized as a pipeline. Before an incoming event is processed by the system, it passes through all registered interceptors and if at least one interceptor blocks an incoming event, it will not be processed. Each interceptor has its own name, which corresponds to the name of the class. And also the type of interceptor. 
+
+Interceptors are registered using the `Hook` method. A call to this method adds an interceptor to the pipeline, and a call to the `Unhook` method removes it.
+
+## Creating 
+
+To create an interceptor you need to inherit from `MouseInterceptor` or `KeyboardInterceptor` and implement `IsInputAllowed` method.
+
+`IsInputAllowed` method is called when any input event occurs. It decides whether we need to block this event or not.
+
+Also, interceptors have two optional methods, such as `OnInputSuccess` and `OnInputFailure`. The `OnInputSuccess` method is called when the input event is successfully processed by all interceptors. In this method we can get the details of the event and execute the code we need. The `OnInputFailure` method is called if the event was blocked, and besides the event details we can also get the list of interceptors that did not approve this input.
+
+> [!NOTE]
+> **Best Practice:** Design interceptors so that each interceptor solves only one specific problem.
+
+## Examples
+
+As an example we will implement 2 interceptors. One of them will block mouse scroll event. The second one will output mouse input events.
+
+Interceptor for blocking mouse scroll events:
+
+```c#
+public class ScrollDisabler : MouseInterceptor
+{
+    protected override bool IsInputAllowed(MouseInputArgs args)
+    {
+        if (args.Event is MouseInputEvent.Scroll)
+            return false; // disallow mouse scroll input
+        
+        return true; // all other input events can be processed
+    }
+}
+```
+
+Interceptor for logging mouse events:
+
+```c#
+public class MouseLogger : MouseInterceptor
+{
+    // Always allow input because it's a logger
+    protected override bool IsInputAllowed(MouseInputArgs args) => true;
+
+    // If the input event was successfully processed
+    protected override void OnInputSuccess(MouseInputArgs args)
+    {
+        if (args.Event is MouseInputEvent.Move) // Don't log a move event
+            return;
+        
+        Trace.WriteLine($"Processed {args.Event}");
+    }
+
+    // If the input event has been blocked
+    protected override void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
+    {
+        var failureReason = failedInterceptors.ToNames();
+        
+        Trace.WriteLine($"Failed {args.Event} by: {failureReason}");
+    }
+}
+```
+
+In order to use them, we need to call the `Hook` method.
+
+```c#
+var scrollDisabler = new ScrollDisabler();
+var mouseLogger = new MouseLogger();
+            
+scrollDisabler.Hook();
+mouseLogger.Hook();
+```
+
+Now let's run our project and test their work:
+
+![image](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/5126e37f-e928-4a18-aa32-c8ef7141e538)
+
+In the Debug console, we can see that the mouse button events have fired. And mouse wheel scrolling was blocked by `ScrollDisabler` class. If we need to disable this interceptor, it is enough to call the `Unhook` method.
+
+It was a simple implementation of a custom interceptor. In your scenarios they can be much larger and with stronger logic.
+
+Identical functionality using existing interceptors:
+
+```c#
+var mouseListener = new MouseListener();
+var mouseManipulator = new MouseManipulator();
+
+mouseListener.SubscribeAll(mouseEvent =>
+{
+     if (mouseEvent is MouseInputEvent.Move)
+         return;
+                
+     Trace.WriteLine($"Processed {mouseEvent}");
+});
+            
+mouseManipulator.Prevent(PreventMouseOption.Scroll);
+
+mouseManipulator.InputPrevented += mouseEvent => 
+     Trace.WriteLine($"Failed {mouseEvent} by: MouseManipulator");
+```
