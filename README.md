@@ -11,12 +11,6 @@ The main goal of this library is to provide maximum user-friendliness so that yo
 
 The library is built on P/Invoke native calls.
 
-# How to Install
-
-The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.Windows.Input)
-
-`dotnet add package DeftSharp.Windows.Input`
-
 # Features
 
 * Subscription to keyboard events
@@ -26,6 +20,16 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 * Setting press frequency
 * Changing key binding
 * Custom interceptors
+
+# How to Install
+
+The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.Windows.Input)
+
+`dotnet add package DeftSharp.Windows.Input`
+
+# Documentation
+
+You can read the complete documentation in the file [DOCUMENTATION](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md). It is in the process of being written. If you would like to help, please read the issues.
 
 # Examples
 
