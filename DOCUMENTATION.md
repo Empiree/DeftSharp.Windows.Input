@@ -27,38 +27,13 @@
 
 # Keyboard
 
-
+These classes provide handling of keyboard input events.
 
 ## KeyboardListener
 
-This class is intended for processing input events from the keyboard, as well as obtaining various information about its current state. You can use it to subscribe to a key press, a key combination or a sequence of keys.
+This class is intended for processing input events from the keyboard, as well as obtaining various information about its current state. You can use it to subscribe to a key press, a key combination or a sequence of keys. In order to subscribe to any event, we need to call one of the `Subscribe` methods. Unsubscribe is done in the same way, using the `Unsubscribe` methods. 
 
-### Simple key subscription
-
-```c#
-
-var keyboardListener = new KeyboardListener();
-
-keyboardListener.Subscribe(Key.A, key =>
-{
-    Trace.WriteLine($"The {key} was pressed");
-});
-```
-
-### Subscription with interval and event type
-
-```c#
-var keyboardListener = new KeyboardListener();
-
-keyboardListener.Subscribe(Key.Space, (key, eventType) =>
-{
-    // This code will be triggered no more than once per second
-},
-TimeSpan.FromSeconds(1), // Interval of callback triggering
-KeyboardEvent.All); // Subscribe to all events (down and up)
-```
-
-### Available subscription options
+### Available subscription options:
 
 - Subscribe
 - SubscribeAll
@@ -69,14 +44,96 @@ KeyboardEvent.All); // Subscribe to all events (down and up)
 - SubscribeCombinationOnce
 
 > [!NOTE]
-> Each object of the KeyboardListener class stores its own subscriptions. Keep this in mind when you use the `UnsubscribeAll()` method.
+> Each object of the `KeyboardListener` class stores its own subscriptions. Keep this in mind when you use the `UnsubscribeAll()` method.
+
+### Simple key subscriptions
+
+```c#
+
+var keyboardListener = new KeyboardListener();
+
+// Subscription for each click
+keyboardListener.Subscribe(Key.Space, key => Trace.WriteLine($"The {key} was pressed"));
+
+// One-time subscription
+keyboardListener.SubscribeOnce(Key.Space, key => Trace.WriteLine($"The {key} was pressed"));
+
+// Subscription with interval and event type
+keyboardListener.Subscribe(Key.Space, (key, eventType) =>
+{
+    Trace.WriteLine($"The {key} was pressed")
+},
+TimeSpan.FromSeconds(1), // Interval of callback triggering
+KeyboardEvent.All); // Subscribe to all events (down and up)
+```
+
+### Getting the current state of the keyboard
+
+```c#
+var keyboardListener = new KeyboardListener();
+
+var isNumLockActive = keyboardListener.IsNumLockActive;
+var isCapsLockActive = keyboardListener.IsCapsLockActive;
+            
+var IsWinPressed = keyboardListener.IsWinPressed;
+var IsAltPressed = keyboardListener.IsAltPressed;
+var IsCtrlPressed = keyboardListener.IsCtrlPressed;
+var isShiftPressed = keyboardListener.IsShiftPressed;
+
+var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
+```
 
 ## KeyboardManipulator
 
-This class provides the ability to control the keyboard. This allows you to disable key presses, set their press interval, and simulate any key presses directly from the code.
+This class provides the ability to control the keyboard.
+
+### Features
+
+- Setting the key press lock 
+- Setting the key press interval 
+- Simulation of key presses and their combinations
 
 > [!NOTE]
 > Prevented keys are shared among all class objects. You don't have to worry that an object in this class has locked a particular button and you no longer have access to that object.
+
+### Key press lock 
+
+```c#
+var keyboardManipulator = new KeyboardManipulator();
+        
+keyboardManipulator.Prevent(Key.Space);
+
+var isSpaceLocked = keyboardManipulator.IsKeyLocked(Key.Space); // true
+       
+keyboardManipulator.Release(Key.Space);
+```
+
+### Setting the press interval
+
+```c#
+var keyboardManipulator = new KeyboardManipulator();
+            
+// Space will now trigger no more than once per second
+keyboardManipulator.SetInterval(Key.Space, TimeSpan.FromSeconds(1));
+            
+// Remove interval
+keyboardManipulator.ResetInterval(Key.Space); 
+            
+// Remove interval alternative
+keyboardManipulator.SetInterval(Key.Space, TimeSpan.Zero);
+```
+
+### Simulation of key presses
+
+```c#
+var keyboardManipulator = new KeyboardManipulator();
+            
+keyboardManipulator.Press(Key.Space);
+
+var paste = new[] { Key.LeftCtrl, Key.V };
+            
+keyboardManipulator.Press(paste);
+```
 
 ## KeyboardBinder
 
