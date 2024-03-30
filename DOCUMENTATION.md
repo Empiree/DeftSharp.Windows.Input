@@ -188,7 +188,7 @@ public class MouseLogger : MouseInterceptor
     {
         var failureReason = failedInterceptors.ToNames();
         
-        Trace.WriteLine($"Failed {args.Event} by: {failureReason}");
+        Trace.WriteLine($"Failed {args.Event} by {failureReason}");
     }
 }
 ```
@@ -203,11 +203,11 @@ scrollDisabler.Hook();
 mouseLogger.Hook();
 ```
 
-Now let's run our project and test their work:
+Now let's run our project in Debug mode and test their work:
 
-![image](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/5126e37f-e928-4a18-aa32-c8ef7141e538)
+![image](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/31add1c6-6b2d-4844-8765-979f4dfcfa38)
 
-In the Debug console, we can see that the mouse button events have fired. And mouse wheel scrolling was blocked by `ScrollDisabler` class. If we need to disable this interceptor, it is enough to call the `Unhook` method.
+In the console, we can see that the mouse button events have fired. And mouse wheel scrolling was blocked by `ScrollDisabler` class. If we need to disable this interceptor, it is enough to call the `Unhook` method.
 
 It was a simple implementation of a custom interceptor. In your scenarios they can be much larger and with stronger logic.
 
@@ -228,5 +228,5 @@ mouseListener.SubscribeAll(mouseEvent =>
 mouseManipulator.Prevent(PreventMouseOption.Scroll);
 
 mouseManipulator.InputPrevented += mouseEvent => 
-     Trace.WriteLine($"Failed {mouseEvent} by: MouseManipulator");
+     Trace.WriteLine($"Failed {mouseEvent} by MouseManipulator");
 ```
