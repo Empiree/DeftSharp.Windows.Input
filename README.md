@@ -17,7 +17,7 @@ The library is built on P/Invoke native calls.
 * Subscription to mouse events
 * Pressing buttons from code
 * Blocking any input events
-* Setting press frequency
+* Changing press frequency
 * Changing key binding
 * Custom interceptors
 
@@ -82,10 +82,11 @@ mouseManipulator.Scroll(150);
 mouseManipulator.Click(100, 100, MouseButton.Right);
 ```
 
-### Prevent key pressing
+### Prohibit input events
 
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
+var mouseManipulator = new MouseManipulator();
 
 // Each press of this button will be ignored
 keyboardManipulator.Prevent(Key.Delete); 
@@ -97,6 +98,9 @@ keyboardManipulator.Prevent(Key.Escape, () =>
 
    return currentTime.Minute > 30;
 });
+
+// Prevent mouse scroll            
+mouseManipulator.Prevent(PreventMouseOption.Scroll);
 ```
 
 # Requirements
