@@ -37,7 +37,7 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 You can read the complete documentation in the file [DOCUMENTATION](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md). 
 
 > [!NOTE]
-> Documentation is in the process of being written. If you would like to help, please check out the issues.
+> Documentation is in the process of being written.
 
 # Examples
 
