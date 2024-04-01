@@ -18,11 +18,9 @@ The library is built on P/Invoke native calls.
 
 # Features
 
-* Subscription to keyboard events
-* Subscription to mouse events
-* Pressing buttons from code
-* Changing press frequency
-* Changing keys binding
+* Subscribe to keyboard and mouse events
+* Adjust press frequency and key bindings
+* Dynamically simulate button presses
 * Prevent input events
 * Custom interceptors
 
