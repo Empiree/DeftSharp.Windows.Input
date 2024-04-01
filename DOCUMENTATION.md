@@ -127,12 +127,12 @@ keyboardManipulator.SetInterval(Key.Space, TimeSpan.Zero);
 
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
-            
+
+// Single button press            
 keyboardManipulator.Press(Key.Space);
 
-var paste = new[] { Key.LeftCtrl, Key.V };
-            
-keyboardManipulator.Press(paste);
+// Combination press
+keyboardManipulator.Press(Key.LeftCtrl, Key.V);
 ```
 
 ## KeyboardBinder
