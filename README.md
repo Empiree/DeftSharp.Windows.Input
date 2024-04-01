@@ -1,7 +1,12 @@
-# DeftSharp.Windows.Input
+<h1 align="center">DeftSharp.Windows.Input</h1>
 
+<div align="center">
+    
 [![Nuget version](https://badge.fury.io/nu/DeftSharp.Windows.Input.svg)](https://www.nuget.org/packages/DeftSharp.Windows.Input)
 ![GitHub License](https://img.shields.io/github/license/Empiree/DeftSharp.Windows.Input?color=rgb(0%2C191%2C255))
+![GitHub Stars](https://img.shields.io/github/stars/Empiree/DeftSharp.Windows.Input)
+
+</div>
 
 DeftSharp.Windows.Input is a powerful .NET library designed to handle global keyboard and mouse input events in the Windows OS. It is intended for use in various UI frameworks such as WPF, WinUI, Avalonia, and MAUI, providing a universal solution for all types of Windows applications. 
 
@@ -29,7 +34,10 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 
 # Documentation
 
-You can read the complete documentation in the file [DOCUMENTATION](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md). It is in the process of being written. If you would like to help, please read the issues.
+You can read the complete documentation in the file [DOCUMENTATION](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md). 
+
+> [!NOTE]
+> Documentation is in the process of being written. If you would like to help, please check out the issues.
 
 # Examples
 
@@ -72,27 +80,31 @@ mouseListener.Subscribe(MouseEvent.Move, () =>
 ```
 ![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
 
-### Mouse control from code
+### Keyboard/Mouse control from code
 
 ```c#
-var mouseManipulator = new MouseManipulator();
+var keyboard = new KeyboardManipulator();
+var mouse = new MouseManipulator();
 
-mouseManipulator.DoubleClick();
-mouseManipulator.Scroll(150);            
-mouseManipulator.Click(100, 100, MouseButton.Right);
+keyboard.Press(Key.Escape);
+keyboard.Press(Key.LeftCtrl, Key.V); 
+
+mouse.Click();
+mouse.DoubleClick();
+mouse.Scroll(150); 
 ```
 
 ### Prevent input events
 
 ```c#
-var keyboardManipulator = new KeyboardManipulator();
-var mouseManipulator = new MouseManipulator();
+var keyboard = new KeyboardManipulator();
+var mouse = new MouseManipulator();
 
 // Each press of this button will be ignored
-keyboardManipulator.Prevent(Key.Delete); 
+keyboard.Prevent(Key.Delete); 
 
 // Prevent with condition
-keyboardManipulator.Prevent(Key.Escape, () => 
+keyboard.Prevent(Key.Escape, () => 
 {
    var currentTime = DateTime.Now;
 
@@ -100,7 +112,7 @@ keyboardManipulator.Prevent(Key.Escape, () =>
 });
 
 // Prevent mouse scroll            
-mouseManipulator.Prevent(PreventMouseOption.Scroll);
+mouse.Prevent(PreventMouseOption.Scroll);
 ```
 
 # Requirements
