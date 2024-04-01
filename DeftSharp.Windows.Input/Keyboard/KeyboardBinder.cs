@@ -18,6 +18,13 @@ public sealed class KeyboardBinder : IKeyboardBinder
         foreach (var oldKey in keys.Distinct())
             Bind(oldKey, newKey);
     }
+
+    public void Swap(Key first, Key second)
+    {
+        Bind(first, second);
+        Bind(second, first);
+    }
+
     public void Unbind(Key key) => _keyboardBinder.Unbind(key);
 
     public void Unbind(IEnumerable<Key> keys)
@@ -25,5 +32,6 @@ public sealed class KeyboardBinder : IKeyboardBinder
         foreach (var key in keys.Distinct())
             Unbind(key);
     }
+
     public void UnbindAll() => _keyboardBinder.UnbindAll();
 }

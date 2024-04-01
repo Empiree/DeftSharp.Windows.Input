@@ -10,6 +10,7 @@ public interface IKeyboardBinder
     bool IsKeyBounded(Key key);
     void Bind(Key oldKey, Key newKey);
     void Bind(IEnumerable<Key> keys, Key newKey);
+    void Swap(Key first, Key second);
     void Unbind(Key key);
     void Unbind(IEnumerable<Key> keys);
     void UnbindAll();
