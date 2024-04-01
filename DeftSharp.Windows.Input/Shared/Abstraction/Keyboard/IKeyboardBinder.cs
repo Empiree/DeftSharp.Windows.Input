@@ -7,6 +7,7 @@ public interface IKeyboardBinder
 {
     IReadOnlyDictionary<Key, Key> BoundedKeys { get; }
 
+    Key GetBoundKey(Key key);
     bool IsKeyBounded(Key key);
     void Bind(Key oldKey, Key newKey);
     void Bind(IEnumerable<Key> keys, Key newKey);

@@ -18,6 +18,11 @@ public sealed class KeyboardBinder : IKeyboardBinder
     public IReadOnlyDictionary<Key, Key> BoundedKeys => _keyboardBinder.BoundedKeys;
 
     /// <summary>
+    /// Gets the key bound to the specified key.
+    /// </summary>
+    public Key GetBoundKey(Key key) => _keyboardBinder.GetBoundKey(key);
+
+    /// <summary>
     /// Checks if the specified key is bound to another key.
     /// </summary>
     public bool IsKeyBounded(Key key) => _keyboardBinder.IsKeyBounded(key);

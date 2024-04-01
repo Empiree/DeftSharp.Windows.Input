@@ -57,6 +57,8 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
             Unbind(boundedKey);
     }
 
+    public Key GetBoundKey(Key key) => _boundedKeys.GetValueOrDefault(key, key);
+
     public bool IsKeyBounded(Key key) => _boundedKeys.ContainsKey(key);
 
     public override void Dispose()
