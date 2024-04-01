@@ -14,7 +14,9 @@ The library offers a wide range of capabilities, including event subscription, b
 
 The main goal of this library is to provide maximum user-friendliness so that you don't have to write a lot of code. Therefore, it includes many convenient methods that facilitate an intuitive and efficient process of working with input events.
 
-The library is built on P/Invoke native calls.
+The library is built on [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) native calls.
+
+You can read the complete documentation [here](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md).
 
 # Features
 
@@ -30,14 +32,7 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 
 `dotnet add package DeftSharp.Windows.Input`
 
-# Documentation
-
-You can read the complete documentation in the file [DOCUMENTATION](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md). 
-
-> [!NOTE]
-> Documentation is in the process of being written.
-
-# Examples
+# Examples:
 
 ### Simple key subscription
 
@@ -124,7 +119,5 @@ This project is licensed under the terms of the MIT license. See the [LICENSE](h
 # Contributing
 
 We welcome any [contributions](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/CONTRIBUTING.md) to the development of this project. Whether you want to report a bug, suggest a new feature, or contribute code improvements, your input is highly valued. Please feel free to submit issues or pull requests through GitHub. Let's make this library even better together!
+You can also use this e-mail [deftsharp@gmail.com](mailto:deftsharp@gmail.com), if you have any ideas or suggestions.
 
-# Feedback
-
-If you have any ideas or suggestions. You can use this e-mail [deftsharp@gmail.com](mailto:deftsharp@gmail.com) for feedback.
