@@ -13,7 +13,7 @@ public interface IKeyboardManipulator : IDisposable
     bool IsKeyLocked(Key key);
 
     void Press(Key key);
-    void Press(IEnumerable<Key> keys);
+    void Press(params Key[] keys);
     void Prevent(Key key, Func<bool>? predicate = null);
     void Prevent(IEnumerable<Key> keys, Func<bool>? predicate = null);
     void SetInterval(Key key, TimeSpan interval);
