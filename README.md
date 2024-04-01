@@ -11,27 +11,27 @@ The main goal of this library is to provide maximum user-friendliness so that yo
 
 The library is built on P/Invoke native calls.
 
+# Features
+
+* Subscription to keyboard events
+* Subscription to mouse events
+* Pressing buttons from code
+* Changing press frequency
+* Changing keys binding
+* Prevent input events
+* Custom interceptors
+
 # How to Install
 
 The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.Windows.Input)
 
 `dotnet add package DeftSharp.Windows.Input`
 
-# Features
+# Documentation
 
-* Subscription to keyboard events
-* Subscription to mouse events
-* Pressing buttons from code
-* Blocking any input events
-* Setting press frequency
-* Changing key binding
-* Custom interceptors
+You can read the complete documentation in the file [DOCUMENTATION](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md). It is in the process of being written. If you would like to help, please read the issues.
 
 # Examples
-
-## KeyboardListener
-
-This class allows you to subscribe to keyboard press events, their sequence and combination. Also, provides various information about the current status of certain buttons.
 
 ### Simple key subscription
 
@@ -39,7 +39,7 @@ This class allows you to subscribe to keyboard press events, their sequence and 
 
 var keyboardListener = new KeyboardListener();
 
-keyboardListener.Subscribe(Key.A, key =>
+keyboardListener.Subscribe(Key.Space, key =>
 {
     Trace.WriteLine($"The {key} was pressed");
 });
@@ -58,70 +58,7 @@ TimeSpan.FromSeconds(1), // Interval of callback triggering
 KeyboardEvent.All); // Subscribe to all events (down and up)
 ```
 
-### Available subscription methods: 
-
-- Subscribe
-- SubscribeAll
-- SubscribeOnce
-- SubscribeSequence
-- SubscribeSequenceOnce
-- SubscribeCombination
-- SubscribeCombinationOnce
-
-> [!NOTE]
-> Each object of the KeyboardListener class stores its own subscriptions. Keep this in mind when you use the `UnsubscribeAll()` method.
-
-## KeyboardManipulator
-
-This class provides the ability to control the keyboard. This allows you to disable key presses, set their press interval, and simulate any key presses directly from the code.
-
-### Pressing a keys from the code
-
-```c#
-var keyboardManipulator = new KeyboardManipulator();
-
-keyboardManipulator.Press(Key.A); 
-```
-
-### Prevent key pressing
-
-```c#
-var keyboardManipulator = new KeyboardManipulator();
-
-// Each press of this button will be ignored
-keyboardManipulator.Prevent(Key.Delete); 
-
-// Prevent with condition
-keyboardManipulator.Prevent(Key.Escape, () => 
-{
-   var currentTime = DateTime.Now;
-
-   return currentTime.Minute > 30;
-});
-```
-
-## KeyboardBinder
-
-This class provides the option to change the bind of the specified button.
-
-### Change the button bind
-
-```c#
-var keyboardBinder = new KeyboardBinder();
-            
-keyboardBinder.Bind(Key.Q, Key.W); 
-
-// Now any time the 'Q' button is triggered, it will behave like the 'W' button
-```
-
-> [!NOTE]
-> Prevented and bounded buttons are shared among all class objects. You don't have to worry that an object in this class has locked a particular button and you no longer have access to that object.
-
-## MouseListener
-
-This class allows you to subscribe to mouse events, as well as receive various information, such as the current cursor coordinates.
-
-### Subscribe to mouse move event and get current coordinates
+### Subscription to mouse move event and get current coordinates
 
 ```c#
 var mouseListener = new MouseListener();
@@ -135,10 +72,7 @@ mouseListener.Subscribe(MouseEvent.Move, () =>
 ```
 ![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
 
-
-## MouseManipulator
-
-This class allows you to control the mouse. It is based on the principle of KeyboardManipulator.
+### Mouse control from code
 
 ```c#
 var mouseManipulator = new MouseManipulator();
@@ -148,105 +82,25 @@ mouseManipulator.Scroll(150);
 mouseManipulator.Click(100, 100, MouseButton.Right);
 ```
 
-## Custom Interceptors
-
-Version [0.6](https://github.com/Empiree/DeftSharp.Windows.Input/releases/v0.6) introduced the ability to create your own interceptors. This means that if your use case is unique and requires its own implementation, you can create a new interceptor, similar to KeyboardListener or KeyboardManipulator!
-
-To create an interceptor you need to inherit from `MouseInterceptor` or `KeyboardInterceptor` and implement `IsInputAllowed` method. To activate/deactivate it you need to call the `Hook` or `Unhook` method.
-
-Available methods: 
-
-- `IsInputAllowed` - сalled when a system input event is triggered and responsible for event blocking
- 
-- `OnInputSuccess` - called if the input was processed successfully and no interceptor blocked it
-
-- `OnInputFailure` - called if the event was blocked by one or more interceptors. In it we will get the list of these interceptors
-
-### Examples
-
-As an example we will implement 2 interceptors. One of them will block mouse scroll event. The second one will output mouse input events.
-
-Interceptor for blocking mouse scroll events:
+### Prevent input events
 
 ```c#
-public class ScrollDisabler : MouseInterceptor
-{
-    protected override bool IsInputAllowed(MouseInputArgs args)
-    {
-        if (args.Event is MouseInputEvent.Scroll)
-            return false; // disallow mouse scroll input
-        
-        return true; // all other input events can be processed
-    }
-}
-```
-
-Interceptor for logging mouse events:
-
-```c#
-public class MouseLogger : MouseInterceptor
-{
-    // Always allow input because it's a logger
-    protected override bool IsInputAllowed(MouseInputArgs args) => true;
-
-    // If the input event was successfully processed
-    protected override void OnInputSuccess(MouseInputArgs args)
-    {
-        if (args.Event is MouseInputEvent.Move) // Don't log a move event
-            return;
-        
-        Trace.WriteLine($"Processed {args.Event}");
-    }
-
-    // If the input event has been blocked
-    protected override void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
-    {
-        var failureReason = failedInterceptors.ToNames();
-        
-        Trace.WriteLine($"Failed {args.Event} by: {failureReason}");
-    }
-}
-```
-
-> [!NOTE]
-> The implementation of these 2 interceptors can be placed in one interceptor, but it is better to separate it. So that each is responsible for its own task.
-
-In order to use them, we need to call the `Hook` method.
-
-```c#
-var scrollDisabler = new ScrollDisabler();
-var mouseLogger = new MouseLogger();
-            
-scrollDisabler.Hook();
-mouseLogger.Hook();
-```
-
-Now let's run our project and test their work:
-
-![image](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/5126e37f-e928-4a18-aa32-c8ef7141e538)
-
-In the Debug console, we can see that the mouse button events have fired. And mouse wheel scrolling was blocked by `ScrollDisabler` class. If we need to disable this interceptor, it is enough to call the `Unhook` method.
-
-It was a simple implementation of a custom interceptor. In your scenarios they can be much larger and with stronger logic.
-
-Identical functionality using existing interceptors:
-
-```c#
-var mouseListener = new MouseListener();
+var keyboardManipulator = new KeyboardManipulator();
 var mouseManipulator = new MouseManipulator();
 
-mouseListener.SubscribeAll(mouseEvent =>
-{
-     if (mouseEvent is MouseInputEvent.Move)
-         return;
-                
-     Trace.WriteLine($"Processed {mouseEvent}");
-});
-            
-mouseManipulator.Prevent(PreventMouseOption.Scroll);
+// Each press of this button will be ignored
+keyboardManipulator.Prevent(Key.Delete); 
 
-mouseManipulator.InputPrevented += mouseEvent => 
-     Trace.WriteLine($"Failed {mouseEvent} by: MouseManipulator");
+// Prevent with condition
+keyboardManipulator.Prevent(Key.Escape, () => 
+{
+   var currentTime = DateTime.Now;
+
+   return currentTime.Minute > 30;
+});
+
+// Prevent mouse scroll            
+mouseManipulator.Prevent(PreventMouseOption.Scroll);
 ```
 
 # Requirements
