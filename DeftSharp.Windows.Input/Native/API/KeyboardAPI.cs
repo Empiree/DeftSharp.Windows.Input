@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
@@ -23,9 +24,7 @@ internal static class KeyboardAPI
     /// </returns>
     internal static KeyboardLayout GetLayout()
     {
-        var idThread = GetCurrentThreadId();
-
-        var layoutHandle = GetKeyboardLayout(idThread);
+        var layoutHandle = GetLayoutHandle();
         
         var lcid = layoutHandle.ToInt32() & 0xFFFF;
         
@@ -33,7 +32,7 @@ internal static class KeyboardAPI
 
         return new KeyboardLayout(culture.KeyboardLayoutId, lcid, culture.Name, culture.DisplayName);
     }
-    
+
     /// <summary>
     /// Determines whether the specified key is currently active.
     /// </summary>
@@ -89,6 +88,12 @@ internal static class KeyboardAPI
         
         SendInput(inputs);
     }
+    
+    /// <summary>
+    /// Retrieves the handle to the current keyboard layout.
+    /// </summary>
+    internal static IntPtr GetLayoutHandle() 
+        => GetKeyboardLayout(GetCurrentThreadId());
 
     /// <summary>
     /// Simulates pressing a key with the specified virtual key code.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.Native.API;
@@ -160,4 +161,37 @@ internal static class WinAPI
     /// <returns>True if the input event was successfully sent; otherwise, false.</returns>
     internal static bool SendInput(Structures.Input input) =>
         SendInput(new[] { input });
+
+    /// <summary>
+    /// Translates the specified virtual-key code and keyboard state to the corresponding Unicode character or characters.
+    /// </summary>
+    /// <param name="wVirtKey">The virtual-key code to be translated.</param>
+    /// <param name="wScanCode">The hardware scan code of the key to be translated.</param>
+    /// <param name="lpKeyState">A pointer to a 256-byte array that contains the current keyboard state.</param>
+    /// <param name="pwszBuff">A pointer to the buffer that receives the translated Unicode character or characters.</param>
+    /// <param name="cchBuff">The size, in characters, of the buffer pointed to by the pwszBuff parameter.</param>
+    /// <param name="wFlags">Specifies the behavior of the function.</param>
+    /// <param name="dwhkl">The input locale identifier.</param>
+    /// <returns>
+    /// The return value is one of the following:
+    /// - -1 if the specified virtual key is a dead-key character (accent or diacritic).
+    /// - 0 if the specified virtual key has no translation for the current state of the keyboard.
+    /// - 1 if one character was copied to the buffer.
+    /// - 2 or greater if two or more characters were copied to the buffer.
+    /// </returns>
+    [DllImport("user32.dll")]
+    internal static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[] lpKeyState,
+        [Out, MarshalAs(UnmanagedType.LPWStr, SizeConst = 64)] StringBuilder pwszBuff, int cchBuff, uint wFlags,
+        IntPtr dwhkl);
+    
+    /// <summary>
+    /// Translates (maps) a virtual-key code into a scan code or character value, or translates a scan code into a virtual-key code.
+    /// </summary>
+    /// <param name="uCode">The virtual-key code or scan code for a key.</param>
+    /// <param name="uMapType">The translation to be performed.</param>
+    /// <returns>
+    /// The return value is either a scan code, a virtual-key code, or a character value, depending on the value of uCode and uMapType.
+    /// </returns>
+    [DllImport("user32.dll")]
+    internal static extern uint MapVirtualKey(uint uCode, uint uMapType);
 }
