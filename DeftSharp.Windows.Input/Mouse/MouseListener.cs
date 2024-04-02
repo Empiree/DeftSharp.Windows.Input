@@ -59,6 +59,7 @@ public sealed class MouseListener : IMouseListener
     {
         var events = Enum.GetValues(typeof(MouseEvent))
             .OfType<MouseEvent>()
+            .Distinct()
             .ToList();
 
         events.Remove(MouseEvent.ButtonDown);

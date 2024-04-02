@@ -167,6 +167,7 @@ public sealed class KeyboardListener : IKeyboardListener
     {
         var keys = Enum.GetValues(typeof(Key))
             .OfType<Key>()
+            .Distinct()
             .ToList();
 
         keys.Remove(Key.None);
