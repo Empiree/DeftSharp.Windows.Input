@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.Native.API;
@@ -18,6 +19,25 @@ internal static class WinAPI
     /// <param name="lParam">Specifies additional information about the message.</param>
     /// <returns>A handle to the next hook procedure in the chain or <c>0</c> if there's no next procedure.</returns>
     internal delegate nint WindowsProcedure(int nCode, nint wParam, nint lParam);
+
+    /// <summary>
+    /// Retrieves the handle to the current keyboard layout for the specified thread.
+    /// </summary>
+    /// <param name="idThread">The identifier of the thread to query.</param>
+    /// <returns>
+    /// The handle to the keyboard layout for the specified thread. 
+    /// </returns>
+    [DllImport("user32.dll")]
+    internal static extern IntPtr GetKeyboardLayout(uint idThread);
+
+    /// <summary>
+    /// Retrieves the identifier of the current thread.
+    /// </summary>
+    /// <returns>
+    /// The identifier of the current thread.
+    /// </returns>
+    [DllImport("kernel32.dll")]
+    internal static extern uint GetCurrentThreadId();
 
     /// <summary>
     /// Installs an application-defined hook procedure into a hook chain.
@@ -97,7 +117,7 @@ internal static class WinAPI
     /// <param name="dwExtraInfo">An additional value associated with the mouse event.</param>
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     internal static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
-    
+
     /// <summary>
     /// Synthesizes a keystroke by generating a KEYBDINPUT structure specifying the event.
     /// </summary>
@@ -116,7 +136,7 @@ internal static class WinAPI
     /// <param name="cbSize">The size, in bytes, of an INPUT structure.</param>
     [DllImport("user32.dll", SetLastError = true)]
     private static extern uint SendInput(uint nInputs, Structures.Input[] pInputs, int cbSize);
-    
+
     /// <summary>
     /// Retrieves the state of the specified virtual key.
     /// </summary>
@@ -124,7 +144,7 @@ internal static class WinAPI
     /// <returns>The return value specifies the status of the specified virtual key. If the high-order bit is set, the key is down.</returns>
     [DllImport("user32.dll")]
     public static extern short GetKeyState(int nVirtKey);
-    
+
     /// <summary>
     /// Sends an array of input events to the system input queue.
     /// </summary>

@@ -44,7 +44,7 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     /// <summary>
     /// Presses the specified combination of keys.
     /// </summary>
-    public void Press(params Key[] keys) => _manipulator.PressCombination(keys);
+    public void Press(params Key[] keys) => _manipulator.Press(keys);
 
     /// <summary>
     /// Resets the press interval for the specified key.

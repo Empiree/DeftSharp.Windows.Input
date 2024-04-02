@@ -66,6 +66,11 @@ public sealed class KeyboardListener : IKeyboardListener
     public bool IsListening => Keys.Any() || Sequences.Any() || Combinations.Any();
 
     /// <summary>
+    /// Gets the current keyboard layout.
+    /// </summary>
+    public KeyboardLayout Layout => _listener.Keyboard.GetLayout();
+
+    /// <summary>
     /// Subscribes to a key with the specified event handler and optional parameters.
     /// </summary>
     /// <returns>The created subscription.</returns>

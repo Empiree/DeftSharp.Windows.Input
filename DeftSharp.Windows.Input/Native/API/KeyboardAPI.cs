@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
+using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Shared.Exceptions;
 using static DeftSharp.Windows.Input.Native.API.WinAPI;
 using static DeftSharp.Windows.Input.Native.API.InputMessages;
@@ -13,6 +15,25 @@ namespace DeftSharp.Windows.Input.Native.API;
 /// </summary>
 internal static class KeyboardAPI
 {
+    /// <summary>
+    /// Retrieves the current keyboard layout.
+    /// </summary>
+    /// <returns>
+    /// The <see cref="KeyboardLayout"/> object representing the current keyboard layout.
+    /// </returns>
+    internal static KeyboardLayout GetLayout()
+    {
+        var idThread = GetCurrentThreadId();
+
+        var layoutHandle = GetKeyboardLayout(idThread);
+        
+        var lcid = layoutHandle.ToInt32() & 0xFFFF;
+        
+        var culture = new CultureInfo(lcid);
+
+        return new KeyboardLayout(culture.KeyboardLayoutId, lcid, culture.Name, culture.DisplayName);
+    }
+    
     /// <summary>
     /// Determines whether the specified key is currently active.
     /// </summary>

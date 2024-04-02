@@ -24,7 +24,7 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
         _lockedKeys = new ConcurrentDictionary<Key, Func<bool>>();
 
     public void Press(Key key) => Keyboard.Press(key);
-    public void PressCombination(IEnumerable<Key> combination) => Keyboard.PressCombination(combination);
+    public void Press(IEnumerable<Key> combination) => Keyboard.Press(combination);
 
     public void Prevent(Key key, Func<bool> predicate)
     {

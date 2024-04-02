@@ -17,6 +17,8 @@ public interface IKeyboardListener : IDisposable
     bool IsAltPressed { get; }
     bool IsWinPressed { get; }
     bool IsListening { get; }
+    
+    KeyboardLayout Layout { get; }
 
     
     public KeySubscription Subscribe(Key key, Action<Key> onClick,
