@@ -109,6 +109,7 @@ mouse.Prevent(PreventMouseOption.Scroll);
 # Requirements
 
 - .NET 7.0 for Windows
+- Any UI framework (WPF, WinUI, MAUI, Avalonia)
 
 # License
 
