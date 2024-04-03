@@ -17,7 +17,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
 {
     // Specifies a low-level keyboard input event.
     private const int WhKeyboardLl = 13;
-    
+
     private static readonly Lazy<WindowsKeyboardInterceptor> LazyInstance = new(() => new WindowsKeyboardInterceptor());
     public static WindowsKeyboardInterceptor Instance => LazyInstance.Value;
 
@@ -32,8 +32,8 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
 
     public void Press(Key key) => KeyboardAPI.Press(key);
 
-    public void Press(IEnumerable<Key> combination) =>
-        KeyboardAPI.PressSynchronously(combination.Distinct());
+    public void Press(IEnumerable<Key> keys) =>
+        KeyboardAPI.PressSynchronously(keys);
 
     public bool IsKeyActive(Key key) => KeyboardAPI.IsKeyActive(key);
     public bool IsKeyPressed(Key key) => KeyboardAPI.IsKeyPressed(key);

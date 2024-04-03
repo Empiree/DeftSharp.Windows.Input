@@ -9,7 +9,7 @@ internal interface INativeKeyboardInterceptor : IRequestedInterceptor
 {
     event KeyboardInputDelegate? KeyboardInput;
     void Press(Key key);
-    void Press(IEnumerable<Key> combination);
+    void Press(IEnumerable<Key> keys);
     bool IsKeyActive(Key key);
     bool IsKeyPressed(Key key);
     KeyboardLayout GetLayout();

@@ -78,6 +78,7 @@ internal static class KeyboardAPI
     internal static void PressSynchronously(IEnumerable<Key> keys)
     {
         var inputs = keys
+            .Distinct()
             .Select(k => (byte)KeyInterop.VirtualKeyFromKey(k))
             .Select(code => CreateInput(code))
             .ToArray();
