@@ -63,6 +63,9 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
     public bool IsKeyActive(Key key) => Keyboard.IsKeyActive(key);
     public bool IsKeyPressed(Key key) => Keyboard.IsKeyPressed(key);
 
+    public KeyboardType GetKeyboardType() => Keyboard.GetKeyboardType();
+    public KeyboardLayout GetKeyboardLayout() => Keyboard.GetLayout();
+
     internal override bool OnPipelineUnhookRequested() => !Subscriptions.Any();
     protected override bool IsInputAllowed(KeyPressedArgs args) => true;
 

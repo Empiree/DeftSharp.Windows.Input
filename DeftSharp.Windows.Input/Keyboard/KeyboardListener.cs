@@ -71,6 +71,11 @@ public sealed class KeyboardListener : IKeyboardListener
     public KeyboardLayout Layout => _listener.Keyboard.GetLayout();
 
     /// <summary>
+    /// Gets the current keyboard type.
+    /// </summary>
+    public KeyboardType KeyboardType => _listener.GetKeyboardType();
+
+    /// <summary>
     /// Subscribes to a key with the specified event handler and optional parameters.
     /// </summary>
     /// <returns>The created subscription.</returns>

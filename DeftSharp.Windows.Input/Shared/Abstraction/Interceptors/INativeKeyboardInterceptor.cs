@@ -13,4 +13,5 @@ internal interface INativeKeyboardInterceptor : IRequestedInterceptor
     bool IsKeyActive(Key key);
     bool IsKeyPressed(Key key);
     KeyboardLayout GetLayout();
+    KeyboardType GetKeyboardType();
 }

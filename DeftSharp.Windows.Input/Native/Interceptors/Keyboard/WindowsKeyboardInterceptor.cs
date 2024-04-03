@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
@@ -29,6 +28,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
     }
 
     public KeyboardLayout GetLayout() => KeyboardAPI.GetLayout();
+    public KeyboardType GetKeyboardType() => KeyboardAPI.GetKeyboardType();
 
     public void Press(Key key) => KeyboardAPI.Press(key);
 

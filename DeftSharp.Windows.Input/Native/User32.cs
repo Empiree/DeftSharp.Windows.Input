@@ -20,7 +20,7 @@ internal static class User32
     /// </returns>
     [DllImport("user32.dll")]
     internal static extern IntPtr GetKeyboardLayout(uint idThread);
-    
+
     /// <summary>
     /// Installs an application-defined hook procedure into a hook chain.
     /// </summary>
@@ -51,8 +51,8 @@ internal static class User32
     /// <returns>The return value of the next hook procedure in the chain.</returns>
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     internal static extern nint CallNextHookEx(nint hhk, int nCode, nint wParam, nint lParam);
-    
-     /// <summary>
+
+    /// <summary>
     /// Retrieves the position of the cursor in screen coordinates.
     /// </summary>
     /// <param name="lpPoint">A reference to a <see cref="Point"/> structure that receives the screen coordinates of the cursor.</param>
@@ -154,9 +154,10 @@ internal static class User32
     /// </returns>
     [DllImport("user32.dll")]
     internal static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[] lpKeyState,
-        [Out, MarshalAs(UnmanagedType.LPWStr, SizeConst = 64)] StringBuilder pwszBuff, int cchBuff, uint wFlags,
+        [Out, MarshalAs(UnmanagedType.LPWStr, SizeConst = 64)]
+        StringBuilder pwszBuff, int cchBuff, uint wFlags,
         IntPtr dwhkl);
-    
+
     /// <summary>
     /// Translates (maps) a virtual-key code into a scan code or character value, or translates a scan code into a virtual-key code.
     /// </summary>
@@ -167,7 +168,7 @@ internal static class User32
     /// </returns>
     [DllImport("user32.dll")]
     internal static extern uint MapVirtualKey(uint uCode, uint uMapType);
-    
+
     /// <summary>
     /// Retrieves or sets system parameters.
     /// </summary>
@@ -180,4 +181,15 @@ internal static class User32
     /// </returns>
     [DllImport("user32.dll", SetLastError = true)]
     internal static extern bool SystemParametersInfo(int uiAction, int uiParam, out int pvParam, int fWinIni);
+
+    /// <summary>
+    /// Retrieves the type of keyboard hardware.
+    /// </summary>
+    /// <param name="nTypeFlag">The type of keyboard hardware to retrieve.</param>
+    /// <returns>
+    /// If the function succeeds, the return value specifies the type of keyboard hardware. 
+    /// If the function fails, the return value is zero. To get extended error information, call GetLastError.
+    /// </returns>
+    [DllImport("user32.dll", SetLastError = true)]
+    internal static extern int GetKeyboardType(int nTypeFlag);
 }

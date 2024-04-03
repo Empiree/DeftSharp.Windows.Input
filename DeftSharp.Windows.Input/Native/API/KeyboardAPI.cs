@@ -18,6 +18,33 @@ namespace DeftSharp.Windows.Input.Native;
 internal static class KeyboardAPI
 {
     /// <summary>
+    /// Retrieves the type of keyboard hardware.
+    /// </summary>
+    /// <returns>
+    /// The type of keyboard hardware as a <see cref="KeyboardType"/> object.
+    /// </returns>
+    internal static KeyboardType GetKeyboardType()
+    {
+        const int keyboardTypeFlag = 0;
+
+        var keyboardTypeValue = User32.GetKeyboardType(keyboardTypeFlag);
+
+        var keyboardName = keyboardTypeValue switch
+        {
+            1 => "IBM PC/XT or compatible (83-key) keyboard",
+            2 => "Olivetti \"ICO\" (102-key) keyboard ",
+            3 => "IBM PC/AT (84-key) or similar keyboard",
+            4 => "IBM enhanced (101- or 102-key) keyboard",
+            5 => "Nokia 1050 and similar keyboards",
+            6 => "Nokia 9140 and similar keyboards",
+            7 => "Japanese keyboard",
+            _ => "Unknown"
+        };
+
+        return new KeyboardType(keyboardTypeValue, keyboardName);
+    }
+
+    /// <summary>
     /// Retrieves the current keyboard layout.
     /// </summary>
     /// <returns>
@@ -26,9 +53,9 @@ internal static class KeyboardAPI
     internal static KeyboardLayout GetLayout()
     {
         var layoutHandle = GetLayoutHandle();
-        
+
         var lcid = layoutHandle.ToInt32() & 0xFFFF;
-        
+
         var culture = new CultureInfo(lcid);
 
         return new KeyboardLayout(culture.KeyboardLayoutId, lcid, culture.Name, culture.DisplayName);
@@ -45,7 +72,7 @@ internal static class KeyboardAPI
         var keyState = GetKeyState(keyCode);
         return (keyState & KeyActiveFlag) != 0;
     }
-    
+
     /// <summary>
     /// Determines whether the specified key is currently pressed.
     /// </summary>
@@ -57,7 +84,7 @@ internal static class KeyboardAPI
         var keyState = GetKeyState(keyCode);
         return (keyState & KeyPressedFlag) != 0;
     }
-    
+
     /// <summary>
     /// Presses the specified key.
     /// </summary>
@@ -82,19 +109,19 @@ internal static class KeyboardAPI
             .Select(k => (byte)KeyInterop.VirtualKeyFromKey(k))
             .Select(code => CreateInput(code))
             .ToArray();
-        
+
         SendInput(inputs);
 
         for (var i = 0; i < inputs.Length; i++)
             inputs[i].u.ki.dwFlags = InputKeyUp;
-        
+
         SendInput(inputs);
     }
-    
+
     /// <summary>
     /// Retrieves the handle to the current keyboard layout.
     /// </summary>
-    internal static IntPtr GetLayoutHandle() 
+    internal static IntPtr GetLayoutHandle()
         => GetKeyboardLayout(GetCurrentThreadId());
 
     /// <summary>
