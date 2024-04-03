@@ -7,13 +7,33 @@ namespace DeftSharp.Windows.Input.Keyboard;
 /// </summary>
 public sealed class KeyboardInfo : IKeyboardInfo
 {
+    private KeyboardLayout? _layout;
+    private KeyboardType? _type;
+
     /// <summary>
     /// Gets the current keyboard layout.
     /// </summary>
-    public KeyboardLayout Layout => GetLayout();
-    
+    public KeyboardLayout Layout
+    {
+        get
+        {
+            _layout ??= GetLayout();
+
+            return _layout;
+        }
+    }
+
     /// <summary>
     /// Gets the current keyboard type.
     /// </summary>
-    public KeyboardType Type => GetKeyboardType();
+    public KeyboardType Type
+    {
+        get
+        {
+            _type ??= GetKeyboardType();
+
+            return _type;
+        }
+    }
+
 }
