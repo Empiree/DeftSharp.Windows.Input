@@ -4,7 +4,6 @@ using DeftSharp.Windows.Input.Native.System;
 using static DeftSharp.Windows.Input.Native.System.InputMessages;
 using static DeftSharp.Windows.Input.Native.User32;
 
-
 namespace DeftSharp.Windows.Input.Native;
 
 /// <summary>
@@ -15,8 +14,8 @@ internal static class MouseAPI
     /// <summary>
     /// Retrieves the current position of the cursor on the screen.
     /// </summary>
-    /// <returns>The current position of the cursor as a <see cref="Coordinates"/> structure.</returns>
-    internal static Coordinates GetPosition()
+    /// <returns>The current position of the cursor as a <see cref="Point"/> structure.</returns>
+    internal static Point GetPosition()
     {
         GetCursorPos(out var position);
         return position;
@@ -34,14 +33,14 @@ internal static class MouseAPI
 
         SendInput(input);
     }
-    
+
     /// <summary>
     /// Sets the position of the mouse cursor.
     /// </summary>
     /// <param name="x">The new x-coordinate of the mouse cursor.</param>
     /// <param name="y">The new y-coordinate of the mouse cursor.</param>
     internal static void SetPosition(int x, int y) => SetCursorPos(x, y);
-    
+
     /// <summary>
     /// Simulates a mouse click at the current position.
     /// </summary>
@@ -76,6 +75,21 @@ internal static class MouseAPI
     }
 
     /// <summary>
+    /// Retrieves the current mouse speed level, which ranges from 1 to 20.
+    /// </summary>
+    /// <returns>
+    /// The current mouse speed level. Returns <c>-1</c> if the speed level could not be retrieved.
+    /// </returns>
+    internal static int GetMouseSpeed()
+    {
+        const int mouseSpeedInfo = 0x0070;
+
+        var result = SystemParametersInfo(mouseSpeedInfo, 0, out var sensitivity, 0);
+
+        return result ? sensitivity : -1;
+    }
+
+    /// <summary>
     /// Simulates a right mouse click at the specified position.
     /// </summary>
     /// <param name="x">The x-coordinate of the click position.</param>
@@ -96,7 +110,7 @@ internal static class MouseAPI
         mouse_event(InputMouseLeftDown, x, y, 0, 0);
         mouse_event(InputMouseLeftUp, x, y, 0, 0);
     }
-    
+
     /// <summary>
     /// Creates an INPUT structure representing a mouse input event with the specified move flag.
     /// </summary>

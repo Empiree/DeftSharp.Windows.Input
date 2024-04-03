@@ -6,7 +6,8 @@ namespace DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 internal interface INativeMouseInterceptor : IRequestedInterceptor
 {
     event MouseInputDelegate? MouseInput;
-    Coordinates GetPosition();
+    int GetSpeed();
+    Point GetPosition();
     void SetPosition(int x, int y);
     void Click(MouseButton button, int x, int y);
     void Click(MouseButton button);

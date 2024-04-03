@@ -55,10 +55,10 @@ internal static class User32
      /// <summary>
     /// Retrieves the position of the cursor in screen coordinates.
     /// </summary>
-    /// <param name="lpPoint">A reference to a <see cref="Coordinates"/> structure that receives the screen coordinates of the cursor.</param>
+    /// <param name="lpPoint">A reference to a <see cref="Point"/> structure that receives the screen coordinates of the cursor.</param>
     /// <returns>true if successful; otherwise, false. To get extended error information, call GetLastError.</returns>
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    internal static extern bool GetCursorPos(out Coordinates lpPoint);
+    internal static extern bool GetCursorPos(out Point lpPoint);
 
     /// <summary>
     /// Moves the cursor to the specified screen coordinates.
@@ -167,4 +167,17 @@ internal static class User32
     /// </returns>
     [DllImport("user32.dll")]
     internal static extern uint MapVirtualKey(uint uCode, uint uMapType);
+    
+    /// <summary>
+    /// Retrieves or sets system parameters.
+    /// </summary>
+    /// <param name="uiAction">The system parameter to query or set.</param>
+    /// <param name="uiParam">A parameter whose usage and meaning depend on the system parameter being queried or set.</param>
+    /// <param name="pvParam">A pointer to the variable that receives the requested information.</param>
+    /// <param name="fWinIni">Determines whether the user profile is to be updated.</param>
+    /// <returns>
+    /// <c>true</c> if the function succeeds, <c>false</c> otherwise. To get extended error information, call GetLastError.
+    /// </returns>
+    [DllImport("user32.dll", SetLastError = true)]
+    internal static extern bool SystemParametersInfo(int uiAction, int uiParam, out int pvParam, int fWinIni);
 }

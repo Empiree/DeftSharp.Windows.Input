@@ -18,14 +18,19 @@ public sealed class MouseListener : IMouseListener
     public bool IsListening => _mouseInterceptor.Subscriptions.Any();
 
     /// <summary>
-    /// Gets the active subscriptions for mouse events.
+    /// Gets the current mouse speed level.
     /// </summary>
-    public IEnumerable<MouseSubscription> Subscriptions => _mouseInterceptor.Subscriptions;
-
+    public int Speed => _mouseInterceptor.GetSpeed();
+    
     /// <summary>
     /// Gets the current mouse position.
     /// </summary>
-    public Coordinates GetPosition() => _mouseInterceptor.GetPosition();
+    public Point Position => _mouseInterceptor.GetPosition();
+
+    /// <summary>
+    /// Gets the active subscriptions for mouse events.
+    /// </summary>
+    public IEnumerable<MouseSubscription> Subscriptions => _mouseInterceptor.Subscriptions;
 
     /// <summary>
     /// Subscribes to a specific mouse event with the specified action to be performed.
