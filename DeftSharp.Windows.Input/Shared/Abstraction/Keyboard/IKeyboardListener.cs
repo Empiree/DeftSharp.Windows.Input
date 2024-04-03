@@ -18,9 +18,6 @@ public interface IKeyboardListener : IDisposable
     bool IsWinPressed { get; }
     bool IsListening { get; }
 
-    KeyboardLayout Layout { get; }
-    KeyboardType KeyboardType { get; }
-
     public KeySubscription Subscribe(Key key, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 

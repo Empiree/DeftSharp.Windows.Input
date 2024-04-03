@@ -7,7 +7,7 @@ using DeftSharp.Windows.Input.Keyboard.Interceptors;
 namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
-/// Provides the ability to subscribe to various keyboard events.
+/// Provides the ability to subscribe to various keyboard events and get current state.
 /// </summary>
 public sealed class KeyboardListener : IKeyboardListener
 {
@@ -64,16 +64,6 @@ public sealed class KeyboardListener : IKeyboardListener
     /// Checks if the keyboard listener is actively listening for events.
     /// </summary>
     public bool IsListening => Keys.Any() || Sequences.Any() || Combinations.Any();
-
-    /// <summary>
-    /// Gets the current keyboard layout.
-    /// </summary>
-    public KeyboardLayout Layout => _listener.Keyboard.GetLayout();
-
-    /// <summary>
-    /// Gets the current keyboard type.
-    /// </summary>
-    public KeyboardType KeyboardType => _listener.GetKeyboardType();
 
     /// <summary>
     /// Subscribes to a key with the specified event handler and optional parameters.
