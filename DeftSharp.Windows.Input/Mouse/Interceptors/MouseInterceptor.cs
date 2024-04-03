@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using DeftSharp.Windows.Input.Interceptors;
-using DeftSharp.Windows.Input.Native.Mouse;
+using DeftSharp.Windows.Input.Native.Interceptors;
 using DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;

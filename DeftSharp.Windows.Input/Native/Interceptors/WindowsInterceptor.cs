@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using DeftSharp.Windows.Input.Interceptors;
-using DeftSharp.Windows.Input.Native.API;
+using DeftSharp.Windows.Input.Native;
+using DeftSharp.Windows.Input.Native.System;
 using DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 using DeftSharp.Windows.Input.Shared.Exceptions;
 
-namespace DeftSharp.Windows.Input.Native;
+namespace DeftSharp.Windows.Input.Interceptors;
 
 internal abstract class WindowsInterceptor : IRequestedInterceptor
 {
@@ -15,7 +15,7 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
     /// <summary>
     /// Delegate to the hook procedure.
     /// </summary>
-    private readonly WinAPI.WindowsProcedure _windowsProcedure;
+    private readonly WindowsProcedure _windowsProcedure;
 
     /// <summary>
     /// Event that is raised when a request to unhook the windows hook is received.
@@ -66,7 +66,7 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
         if (!CanBeUnhooked())
             return;
 
-        WinAPI.UnhookWindowsHookEx(HookId);
+        User32.UnhookWindowsHookEx(HookId);
         HookId = nint.Zero;
         _isHandled = false;
     }
@@ -105,7 +105,7 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
     /// <param name="idHook">Identifier for the installed WinAPI hook.</param>
     /// <param name="procedure">A pointer to the windows hook procedure.</param>
     /// <returns>A handle to the hook procedure if successful; otherwise, <c>0</c>.</returns>
-    private nint SetHook(int idHook, WinAPI.WindowsProcedure procedure)
+    private nint SetHook(int idHook, WindowsProcedure procedure)
     {
         using var currentProcess = Process.GetCurrentProcess();
         using var currentModule = currentProcess.MainModule;
@@ -113,7 +113,9 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
         if (currentModule?.ModuleName is null)
             throw new MainModuleException();
 
-        return WinAPI.SetWindowsHookEx(idHook, procedure, WinAPI.GetModuleHandle(currentModule.ModuleName), 0);
+        var moduleHandle = Kernel32.GetModuleHandle(currentModule.ModuleName);
+
+        return User32.SetWindowsHookEx(idHook, procedure, moduleHandle, 0);
     }
 
     /// <summary>

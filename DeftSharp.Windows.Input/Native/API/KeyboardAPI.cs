@@ -5,11 +5,12 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Shared.Exceptions;
-using static DeftSharp.Windows.Input.Native.API.WinAPI;
-using static DeftSharp.Windows.Input.Native.API.InputMessages;
-using static DeftSharp.Windows.Input.Native.API.SystemEvents;
+using static DeftSharp.Windows.Input.Native.User32;
+using static DeftSharp.Windows.Input.Native.Kernel32;
+using static DeftSharp.Windows.Input.Native.System.InputMessages;
+using static DeftSharp.Windows.Input.Native.SystemEvents;
 
-namespace DeftSharp.Windows.Input.Native.API;
+namespace DeftSharp.Windows.Input.Native;
 
 /// <summary>
 /// Provides methods for simulating keyboard input using Windows API.
@@ -119,9 +120,9 @@ internal static class KeyboardAPI
     /// <param name="keyCode">The virtual key code of the key.</param>
     /// <param name="dwFlags">Flags that specify various aspects of function operation.</param>
     /// <returns>The created INPUT structure.</returns>
-    private static Structures.Input CreateInput(ushort keyCode, uint dwFlags = InputKeyDown)
+    private static System.Input CreateInput(ushort keyCode, uint dwFlags = InputKeyDown)
     {
-        var input = new Structures.Input(InputKeyboard);
+        var input = new System.Input(InputKeyboard);
         input.u.ki.wVk = keyCode;
         input.u.ki.dwFlags = dwFlags;
         return input;

@@ -2,25 +2,15 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using DeftSharp.Windows.Input.Mouse;
+using DeftSharp.Windows.Input.Native.System;
 
-namespace DeftSharp.Windows.Input.Native.API;
-
-// https://learn.microsoft.com/en-us/windows/win32/api/
+namespace DeftSharp.Windows.Input.Native;
 
 /// <summary>
-/// Provides a set of methods to interact with Windows API functions.
+/// Provides methods for interacting with the User32.dll library.
 /// </summary>
-internal static class WinAPI
+internal static class User32
 {
-    /// <summary>
-    /// Defines a delegate for processing windows events.
-    /// </summary>
-    /// <param name="nCode">Specifies whether the hook procedure must process the message.</param>
-    /// <param name="wParam">Specifies additional information about the message.</param>
-    /// <param name="lParam">Specifies additional information about the message.</param>
-    /// <returns>A handle to the next hook procedure in the chain or <c>0</c> if there's no next procedure.</returns>
-    internal delegate nint WindowsProcedure(int nCode, nint wParam, nint lParam);
-
     /// <summary>
     /// Retrieves the handle to the current keyboard layout for the specified thread.
     /// </summary>
@@ -30,16 +20,7 @@ internal static class WinAPI
     /// </returns>
     [DllImport("user32.dll")]
     internal static extern IntPtr GetKeyboardLayout(uint idThread);
-
-    /// <summary>
-    /// Retrieves the identifier of the current thread.
-    /// </summary>
-    /// <returns>
-    /// The identifier of the current thread.
-    /// </returns>
-    [DllImport("kernel32.dll")]
-    internal static extern uint GetCurrentThreadId();
-
+    
     /// <summary>
     /// Installs an application-defined hook procedure into a hook chain.
     /// </summary>
@@ -70,16 +51,8 @@ internal static class WinAPI
     /// <returns>The return value of the next hook procedure in the chain.</returns>
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     internal static extern nint CallNextHookEx(nint hhk, int nCode, nint wParam, nint lParam);
-
-    /// <summary>
-    /// Retrieves a module handle for the specified module.
-    /// </summary>
-    /// <param name="lpModuleName">The name of the loaded module (either a .dll or .exe file).</param>
-    /// <returns>A handle to the specified module, or <c>0</c> if the module could not be found.</returns>
-    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    internal static extern nint GetModuleHandle(string lpModuleName);
-
-    /// <summary>
+    
+     /// <summary>
     /// Retrieves the position of the cursor in screen coordinates.
     /// </summary>
     /// <param name="lpPoint">A reference to a <see cref="Coordinates"/> structure that receives the screen coordinates of the cursor.</param>
@@ -136,7 +109,7 @@ internal static class WinAPI
     /// <param name="pInputs">An array of INPUT structures. Each structure represents an event to be inserted into the keyboard or mouse input stream.</param>
     /// <param name="cbSize">The size, in bytes, of an INPUT structure.</param>
     [DllImport("user32.dll", SetLastError = true)]
-    private static extern uint SendInput(uint nInputs, Structures.Input[] pInputs, int cbSize);
+    private static extern uint SendInput(uint nInputs, System.Input[] pInputs, int cbSize);
 
     /// <summary>
     /// Retrieves the state of the specified virtual key.
@@ -151,15 +124,15 @@ internal static class WinAPI
     /// </summary>
     /// <param name="inputs">An array of INPUT structures representing the input events to send.</param>
     /// <returns>True if the input events were successfully sent; otherwise, false.</returns>
-    internal static bool SendInput(Structures.Input[] inputs) =>
-        SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(Structures.Input))) != 0;
+    internal static bool SendInput(System.Input[] inputs) =>
+        SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(System.Input))) != 0;
 
     /// <summary>
     /// Sends an input event to the system input queue.
     /// </summary>
     /// <param name="input">The INPUT structure representing the input event to send.</param>
     /// <returns>True if the input event was successfully sent; otherwise, false.</returns>
-    internal static bool SendInput(Structures.Input input) =>
+    internal static bool SendInput(System.Input input) =>
         SendInput(new[] { input });
 
     /// <summary>

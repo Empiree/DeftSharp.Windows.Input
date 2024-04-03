@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using System.Windows.Input;
-using DeftSharp.Windows.Input.Native.API;
+using DeftSharp.Windows.Input.Native;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
@@ -13,12 +13,12 @@ public static class KeyboardExtensions
     {
         var virtualKeyCode = (uint)KeyInterop.VirtualKeyFromKey(key);
         var handle = KeyboardAPI.GetLayoutHandle();
-        var scanCode = WinAPI.MapVirtualKey(virtualKeyCode, 0);
+        var scanCode = User32.MapVirtualKey(virtualKeyCode, 0);
         
         var buffer = new StringBuilder(5);
         var keyboardState = new byte[256];
         
-        var result = WinAPI.ToUnicodeEx(virtualKeyCode, scanCode, keyboardState, buffer, buffer.Capacity, 0, handle);
+        var result = User32.ToUnicodeEx(virtualKeyCode, scanCode, keyboardState, buffer, buffer.Capacity, 0, handle);
 
         return result > 0 ? buffer.ToString() : string.Empty;
     }

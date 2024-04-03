@@ -1,4 +1,4 @@
-﻿namespace DeftSharp.Windows.Input.Native.API;
+﻿namespace DeftSharp.Windows.Input.Native.System;
 
 // https://learn.microsoft.com/en-us/windows/win32/winmsg/about-hooks
 

@@ -1,10 +1,11 @@
 ﻿using System;
 using DeftSharp.Windows.Input.Mouse;
-using DeftSharp.Windows.Input.Native.API.Structures;
-using static DeftSharp.Windows.Input.Native.API.WinAPI;
-using static DeftSharp.Windows.Input.Native.API.InputMessages;
+using DeftSharp.Windows.Input.Native.System;
+using static DeftSharp.Windows.Input.Native.System.InputMessages;
+using static DeftSharp.Windows.Input.Native.User32;
 
-namespace DeftSharp.Windows.Input.Native.API;
+
+namespace DeftSharp.Windows.Input.Native;
 
 /// <summary>
 /// Provides methods for simulating mouse input using Windows API.
@@ -101,9 +102,9 @@ internal static class MouseAPI
     /// </summary>
     /// <param name="dwFlags">Flags that specify various aspects of function operation.</param>
     /// <returns>The created INPUT structure.</returns>
-    private static Structures.Input CreateInput(uint dwFlags)
+    private static System.Input CreateInput(uint dwFlags)
     {
-        var input = new Structures.Input(InputMouse);
+        var input = new System.Input(InputMouse);
         input.u.mi = new MouseInput();
         input.u.mi.dwFlags = dwFlags;
         return input;

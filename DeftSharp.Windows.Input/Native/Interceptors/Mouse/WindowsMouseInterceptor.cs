@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Mouse;
-using DeftSharp.Windows.Input.Native.API;
 using DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 using DeftSharp.Windows.Input.Shared.Delegates;
 
-namespace DeftSharp.Windows.Input.Native.Mouse;
+namespace DeftSharp.Windows.Input.Native.Interceptors;
 
 internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouseInterceptor
 {
@@ -37,13 +36,13 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
     protected override nint HookCallback(int nCode, nint wParam, nint lParam)
     {
         if (nCode < 0 || !SystemEvents.IsMouseEvent(wParam))
-            return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
+            return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
 
         var mouseEvent = (MouseInputEvent)wParam;
         var args = new MouseInputArgs(mouseEvent);
 
         return StartInterceptorPipeline(args)
-            ? WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam)
+            ? User32.CallNextHookEx(HookId, nCode, wParam, lParam)
             : 1;
     }
 

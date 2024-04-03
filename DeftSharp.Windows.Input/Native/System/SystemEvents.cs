@@ -1,4 +1,4 @@
-﻿namespace DeftSharp.Windows.Input.Native.API;
+﻿namespace DeftSharp.Windows.Input.Native;
 
 /// <summary>
 /// Provides constants for Windows events

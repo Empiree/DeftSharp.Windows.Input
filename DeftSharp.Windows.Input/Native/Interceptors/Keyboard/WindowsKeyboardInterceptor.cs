@@ -5,11 +5,10 @@ using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Keyboard;
-using DeftSharp.Windows.Input.Native.API;
 using DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 using DeftSharp.Windows.Input.Shared.Delegates;
 
-namespace DeftSharp.Windows.Input.Native.Keyboard;
+namespace DeftSharp.Windows.Input.Native.Interceptors;
 
 /// <summary>
 /// Listens for system keyboard events and raises an event when a key is pressed.
@@ -49,7 +48,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
     protected override nint HookCallback(int nCode, nint wParam, nint lParam)
     {
         if ((nCode < 0 || !SystemEvents.IsKeyboardEvent(wParam)) && wParam != SystemEvents.WmSystemKeyDown)
-            return WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam);
+            return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
 
         var virtualKeyCode = Marshal.ReadInt32(lParam);
         var key = KeyInterop.KeyFromVirtualKey(virtualKeyCode);
@@ -57,7 +56,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
         var keyPressedArgs = new KeyPressedArgs(key, keyEvent);
 
         return StartInterceptorPipeline(keyPressedArgs)
-            ? WinAPI.CallNextHookEx(HookId, nCode, wParam, lParam)
+            ? User32.CallNextHookEx(HookId, nCode, wParam, lParam)
             : 1;
     }
 

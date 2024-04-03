@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
-using DeftSharp.Windows.Input.Native.API;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -91,6 +90,6 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
 
         var key = _boundedKeys[args.KeyPressed];
         _lastProcessedBoundedKey = key;
-        KeyboardAPI.Press(key);
+        Keyboard.Press(key);
     }
 }
