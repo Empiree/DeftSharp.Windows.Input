@@ -37,7 +37,12 @@ public sealed class MouseManipulator : IMouseManipulator
     /// Prevents the specified mouse event.
     /// </summary>
     [DangerousBehavior("Be careful with the use of this method. You can completely lock your mouse")]
-    public void Prevent(PreventMouseOption mouseEvent) => _mouseInterceptor.Prevent(mouseEvent);
+    public void Prevent(PreventMouseOption mouseEvent, Func<bool>? predicate = null)
+    {
+        predicate ??= () => true;
+
+        _mouseInterceptor.Prevent(mouseEvent, predicate);
+    }
 
     /// <summary>
     /// Releases the prevention of the specified mouse event.

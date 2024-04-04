@@ -19,8 +19,8 @@ public interface IMouseManipulator : IDisposable
     void DoubleClick();
 
     void Scroll(int scrollAmount);
-    
-    void Prevent(PreventMouseOption mouseEvent);
+
+    void Prevent(PreventMouseOption mouseEvent, Func<bool>? predicate = null);
     void Release(PreventMouseOption mouseEvent);
     void ReleaseAll();
 }

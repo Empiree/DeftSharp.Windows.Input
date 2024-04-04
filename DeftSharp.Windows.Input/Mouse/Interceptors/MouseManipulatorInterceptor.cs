@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using DeftSharp.Windows.Input.Extensions;
@@ -13,20 +14,16 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
     public static MouseManipulatorInterceptor Instance => LazyInstance.Value;
 
-    private readonly HashSet<MouseInputEvent> _lockedKeys;
-    private readonly object _lock = new();
+    private readonly ConcurrentDictionary<MouseInputEvent, Func<bool>> _lockedKeys;
 
     public event Action<MouseInputEvent>? InputPrevented;
 
-    public IEnumerable<MouseInputEvent> LockedKeys => _lockedKeys;
+    public IEnumerable<MouseInputEvent> LockedKeys => _lockedKeys.Keys;
 
     public MouseManipulatorInterceptor()
-        : base(InterceptorType.Prohibitive)
-    {
-        _lockedKeys = new HashSet<MouseInputEvent>();
-    }
+        : base(InterceptorType.Prohibitive) =>
+        _lockedKeys = new ConcurrentDictionary<MouseInputEvent, Func<bool>>();
 
-    public bool IsKeyLocked(MouseInputEvent mouseEvent) => _lockedKeys.Any(e => e == mouseEvent);
     public void SetPosition(int x, int y) => Mouse.SetPosition(x, y);
     public void Click(MouseButton button, int x, int y) => Mouse.Click(x, y, button);
 
@@ -38,21 +35,16 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
     public void Scroll(int scrollAmount) => Mouse.Scroll(scrollAmount);
 
-    public void Prevent(PreventMouseOption preventOption)
+    public void Prevent(PreventMouseOption preventOption, Func<bool> predicate)
     {
         var preventEvents = preventOption.ToMouseEvents();
 
-        lock (_lock)
+        Hook();
+
+        foreach (var inputEvent in preventEvents)
         {
-            Hook();
-
-            foreach (var preventEvent in preventEvents)
-            {
-                if (_lockedKeys.Any(e => e == preventEvent))
-                    continue;
-
-                _lockedKeys.Add(preventEvent);
-            }
+            _lockedKeys.AddOrUpdate(inputEvent, predicate,
+                (_, _) => predicate);
         }
     }
 
@@ -60,19 +52,10 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
     {
         var preventEvents = preventOption.ToMouseEvents();
 
-        lock (_lock)
-        {
-            foreach (var preventEvent in preventEvents)
-            {
-                if (_lockedKeys.All(e => e != preventEvent))
-                    continue;
+        foreach (var inputEvent in preventEvents)
+            _lockedKeys.TryRemove(inputEvent, out _);
 
-                _lockedKeys.Remove(preventEvent);
-            }
-
-            if (!_lockedKeys.Any())
-                Unhook();
-        }
+        TryUnhook();
     }
 
     public void ReleaseAll()
@@ -82,6 +65,13 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
         _lockedKeys.Clear();
         Unhook();
+    }
+
+    public bool IsKeyLocked(MouseInputEvent mouseEvent)
+    {
+        _lockedKeys.TryGetValue(mouseEvent, out var predicate);
+
+        return predicate is not null && predicate.Invoke();
     }
 
     public override void Dispose()
@@ -97,5 +87,11 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
     {
         if (failedInterceptors.Any(i => i.Name.Equals(Name)))
             InputPrevented?.Invoke(args.Event);
+    }
+
+    private void TryUnhook()
+    {
+        if (!_lockedKeys.Any())
+            Unhook();
     }
 }
