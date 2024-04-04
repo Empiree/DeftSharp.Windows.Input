@@ -55,7 +55,6 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
     }
 
     public Point GetPosition() => Mouse.GetPosition();
-    public int GetSpeed() => Mouse.GetSpeed();
 
     public override void Dispose()
     {

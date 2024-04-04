@@ -21,7 +21,6 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
         : base(WhMouseLl) { }
 
     public Point GetPosition() => MouseAPI.GetPosition();
-    public int GetSpeed() => MouseAPI.GetMouseSpeed();
     public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);
     public void Click(int x, int y, MouseButton button) => MouseAPI.Click(x, y, button);
     public void Scroll(int scrollAmount) => MouseAPI.Scroll(scrollAmount);

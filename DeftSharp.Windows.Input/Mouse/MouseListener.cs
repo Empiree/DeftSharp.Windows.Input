@@ -16,11 +16,6 @@ public sealed class MouseListener : IMouseListener
     /// Checks if the mouse listener is actively listening for events.
     /// </summary>
     public bool IsListening => _mouseInterceptor.Subscriptions.Any();
-
-    /// <summary>
-    /// Gets the current mouse speed level.
-    /// </summary>
-    public int Speed => _mouseInterceptor.GetSpeed();
     
     /// <summary>
     /// Gets the current mouse position.

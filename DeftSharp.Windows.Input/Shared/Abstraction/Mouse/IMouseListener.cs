@@ -8,7 +8,6 @@ public interface IMouseListener : IDisposable
     IEnumerable<MouseSubscription> Subscriptions { get; }
 
     bool IsListening { get; }
-    int Speed { get; }
     Point Position { get; }
 
     MouseSubscription Subscribe(MouseEvent mouseEvent, Action<MouseInputEvent> onAction,
