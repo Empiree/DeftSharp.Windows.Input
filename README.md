@@ -4,7 +4,7 @@
     
 [![Nuget version](https://badge.fury.io/nu/DeftSharp.Windows.Input.svg)](https://www.nuget.org/packages/DeftSharp.Windows.Input)
 ![GitHub License](https://img.shields.io/github/license/Empiree/DeftSharp.Windows.Input?color=rgb(0%2C191%2C255))
-[![Join the chat at https://gitter.im/DeftSharp/DeftSharp](https://badges.gitter.im/Join%20Chat.svg)](https://app.gitter.im/#/room/#deftsharp:gitter.im)
+[![Join the chat at https://gitter.im/DeftSharp/DeftSharp](https://badges.gitter.im/Join%20Chat.svg)](https://app.gitter.im/#/room/#deftsharp-windows-input:gitter.im)
 ![GitHub Stars](https://img.shields.io/github/stars/Empiree/DeftSharp.Windows.Input)
 
 </div>
