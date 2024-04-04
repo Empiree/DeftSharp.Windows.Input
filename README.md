@@ -4,13 +4,14 @@
     
 [![Nuget version](https://badge.fury.io/nu/DeftSharp.Windows.Input.svg)](https://www.nuget.org/packages/DeftSharp.Windows.Input)
 ![GitHub License](https://img.shields.io/github/license/Empiree/DeftSharp.Windows.Input?color=rgb(0%2C191%2C255))
+[![Join the chat at https://gitter.im/DeftSharp/DeftSharp](https://badges.gitter.im/Join%20Chat.svg)](https://app.gitter.im/#/room/#deftsharp:gitter.im)
 ![GitHub Stars](https://img.shields.io/github/stars/Empiree/DeftSharp.Windows.Input)
 
 </div>
 
 DeftSharp.Windows.Input is a powerful .NET library designed to control and manage the keyboard and mouse in the Windows OS. It is intended for use in various UI frameworks such as WPF, WinUI, Avalonia, and MAUI, providing a universal solution for all types of Windows applications. 
 
-The library offers a wide range of features including event subscriptions, custom bindings, disallowing specific input events, status information, mouse position and a lot of other things. It also provides flexible custom interceptors, allowing users to define their own logic.
+The library offers a wide range of features including event subscriptions, custom bindings, disallowing input events, device information and a lot of other things. It also provides flexible custom interceptors, allowing users to define their own logic.
 
 The main goal of this library is to provide maximum user-friendliness so that you don't have to write a lot of code. Therefore, it includes many convenient methods that facilitate an intuitive and efficient process of working with input events.
 
