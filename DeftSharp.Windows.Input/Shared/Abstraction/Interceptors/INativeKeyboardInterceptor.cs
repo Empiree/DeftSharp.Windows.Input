@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
-using DeftSharp.Windows.Input.Keyboard;
+using DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 using DeftSharp.Windows.Input.Shared.Delegates;
 
-namespace DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
+namespace DeftSharp.Windows.Input.Keyboard;
 
 internal interface INativeKeyboardInterceptor : IRequestedInterceptor
 {

@@ -1,7 +1,7 @@
-﻿using DeftSharp.Windows.Input.Mouse;
+﻿using DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
 using DeftSharp.Windows.Input.Shared.Delegates;
 
-namespace DeftSharp.Windows.Input.Shared.Abstraction.Interceptors;
+namespace DeftSharp.Windows.Input.Mouse;
 
 internal interface INativeMouseInterceptor : IRequestedInterceptor
 {
