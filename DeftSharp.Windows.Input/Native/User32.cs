@@ -183,6 +183,19 @@ internal static class User32
     internal static extern bool SystemParametersInfo(int uiAction, int uiParam, out int pvParam, int fWinIni);
 
     /// <summary>
+    /// Retrieves or sets system parameters.
+    /// </summary>
+    /// <param name="uiAction">The system parameter to query or set.</param>
+    /// <param name="uiParam">A parameter whose usage and meaning depend on the system parameter being queried or set.</param>
+    /// <param name="pvParam">A pointer to the variable that receives the requested information.</param>
+    /// <param name="fWinIni">Determines whether the user profile is to be updated.</param>
+    /// <returns>
+    /// <c>true</c> if the function succeeds, <c>false</c> otherwise. To get extended error information, call GetLastError.
+    /// </returns>
+    [DllImport("user32.dll", SetLastError = true)]
+    internal static extern bool SystemParametersInfo(int uiAction, int uiParam, IntPtr pvParam, int fWinIni);
+
+    /// <summary>
     /// Retrieves the type of keyboard hardware.
     /// </summary>
     /// <param name="nTypeFlag">The type of keyboard hardware to retrieve.</param>

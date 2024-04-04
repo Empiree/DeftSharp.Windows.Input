@@ -12,6 +12,7 @@ public interface IMouseManipulator : IDisposable
     bool IsKeyLocked(MouseInputEvent mouseEvent);
     
     void SetPosition(int x, int y);
+    void SetMouseSpeed(int speed);
     void Click(int x, int y, MouseButton button = MouseButton.Left);
     void Click(MouseButton button = MouseButton.Left);
 

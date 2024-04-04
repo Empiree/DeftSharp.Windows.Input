@@ -25,6 +25,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
         _lockedKeys = new ConcurrentDictionary<MouseInputEvent, Func<bool>>();
 
     public void SetPosition(int x, int y) => Mouse.SetPosition(x, y);
+    public void SetMouseSpeed(int speed) => Mouse.SetMouseSpeed(speed);
     public void Click(MouseButton button, int x, int y) => Mouse.Click(x, y, button);
 
     public void Click(MouseButton button)

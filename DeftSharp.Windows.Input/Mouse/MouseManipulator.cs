@@ -95,6 +95,12 @@ public sealed class MouseManipulator : IMouseManipulator
     public void Scroll(int scrollAmount) => _mouseInterceptor.Scroll(scrollAmount);
 
     /// <summary>
+    /// Sets the mouse speed.
+    /// </summary>
+    /// <param name="speed">The desired mouse speed. Must be a value between 1 and 20.</param>
+    public void SetMouseSpeed(int speed) => _mouseInterceptor.SetMouseSpeed(speed);
+
+    /// <summary>
     /// Disposes of all resources used by the mouse manipulator.
     /// </summary>
     public void Dispose() => _mouseInterceptor.InputPrevented -= OnInterceptorInputPrevented;

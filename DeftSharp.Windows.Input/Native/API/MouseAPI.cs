@@ -72,11 +72,31 @@ internal static class MouseAPI
     /// </returns>
     internal static int GetMouseSpeed()
     {
-        const int mouseSpeedInfo = 0x0070;
+        const int getMouseSpeedInfo = 0x0070;
 
-        var result = SystemParametersInfo(mouseSpeedInfo, 0, out var sensitivity, 0);
+        var result = SystemParametersInfo(getMouseSpeedInfo, 0, out var sensitivity, 0);
 
         return result ? sensitivity : -1;
+    }
+
+    /// <summary>
+    /// Sets the mouse speed.
+    /// </summary>
+    /// <param name="speed">The desired mouse speed. Must be a value between 1 and 20.</param>
+    internal static void SetMouseSpeed(int speed)
+    {
+        const int setMouseSpeedInfo = 0x0071;
+        const int updateIniFile = 0x01;
+        const int sendChangeInfo = 0x02;
+
+        var mouseSpeed = speed switch
+        {
+            > 20 => 20,
+            < 1 => 1,
+            _ => speed
+        };
+
+        SystemParametersInfo(setMouseSpeedInfo, 0, mouseSpeed, updateIniFile | sendChangeInfo);
     }
 
     /// <summary>
