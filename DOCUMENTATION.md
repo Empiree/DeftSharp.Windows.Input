@@ -104,6 +104,8 @@ keyboardManipulator.Release(Key.Space);
 
 ### Setting the press interval
 
+The interval setting allows you to control the frequency of presses. KeyboardManipulator has this functionality by using the `SetInterval` method. With this method, we will set a global interval for pressing a key on the keyboard. 
+
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
             
