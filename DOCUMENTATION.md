@@ -25,7 +25,7 @@ These classes provide handling of keyboard input events.
 
 ## KeyboardListener
 
-This class is intended for processing input events from the keyboard, as well as obtaining various information about its current state. You can use it to subscribe to a key press, a key combination or a sequence of keys. In order to subscribe to any event, we need to call one of the `Subscribe` methods. Unsubscribe is done in the same way, using the `Unsubscribe` methods. 
+The `KeyboardListener` class provides the ability to subscribe to global keyboard input events. This allows you, to get the information you need about the user's presses, sequences and key combinations. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to suit your needs.
 
 ### Available subscription options:
 
@@ -38,12 +38,13 @@ This class is intended for processing input events from the keyboard, as well as
 - SubscribeCombinationOnce
 
 > [!NOTE]
-> Each object of the `KeyboardListener` class stores its own subscriptions. Keep this in mind when you use the `UnsubscribeAll()` method.
+> Each object of the `KeyboardListener` class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
-### Simple key subscriptions
+### Subscription to the press event
+
+The `KeyboardListener` class stores active subscriptions in properties: `Keys`, `Sequences`, `Combinations`. With these properties we can find out our current subscriptions, as well as their status. 
 
 ```c#
-
 var keyboardListener = new KeyboardListener();
 
 // Subscription for each click
@@ -61,7 +62,25 @@ TimeSpan.FromSeconds(1), // Interval of callback triggering
 KeyboardEvent.All); // Subscribe to all events (down and up)
 ```
 
+### Unsubscribing from the event
+
+You can unsubscribe from an event using several options: unsubscribe by GUID, by key, and unsubscribe from all events at once. 
+
+```c#
+var keyboardListener = new KeyboardListener();
+
+// Subscribe to the event
+var subscription = keyboardListener.Subscribe(Key.A, key => { });
+            
+// 3 different unsubscribe options
+keyboardListener.Unsubscribe(subscription.Id);
+keyboardListener.Unsubscribe(Key.A);
+keyboardListener.UnsubscribeAll(); 
+```
+
 ### Getting the current state of the keyboard
+
+With the help of convenient properties, we can get information about the current state of the keys.
 
 ```c#
 var keyboardListener = new KeyboardListener();
