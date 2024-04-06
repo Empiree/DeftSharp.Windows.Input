@@ -27,7 +27,7 @@ These classes provide handling of keyboard input events.
 
 The `KeyboardListener` class provides the ability to subscribe to global keyboard input events. This allows you, to get the information you need about the user's presses, sequences and key combinations. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to suit your needs.
 
-This class stores active subscriptions in properties: `Keys`, `Sequences`, `Combinations`. With these properties you can find out our current subscriptions, as well as their status. 
+This class stores active subscriptions in properties: `Keys`, `Sequences` and `Combinations`.
 
 Each object of the `KeyboardListener` class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
