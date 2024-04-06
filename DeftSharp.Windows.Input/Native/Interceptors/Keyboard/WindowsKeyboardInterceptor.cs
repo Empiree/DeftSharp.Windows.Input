@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Keyboard;
@@ -54,9 +55,16 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
         var keyEvent = (KeyboardInputEvent)wParam;
         var keyPressedArgs = new KeyPressedArgs(key, keyEvent);
 
-        return StartInterceptorPipeline(keyPressedArgs)
-            ? User32.CallNextHookEx(HookId, nCode, wParam, lParam)
-            : 1;
+        var pipeline = CreatePipeline(keyPressedArgs);
+
+        if (pipeline is null)
+            return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
+
+        if (!pipeline.IsAllowed)
+            return 1;
+
+        Application.Current.Dispatcher.BeginInvoke(pipeline.Run);
+        return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
     }
 
     /// <summary>
@@ -64,12 +72,12 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
     /// </summary>
     /// <param name="args">The <see cref="KeyPressedArgs"/> representing the key press event.</param>
     /// <returns>True if the event can be processed; otherwise, false.</returns>
-    private bool StartInterceptorPipeline(KeyPressedArgs args)
+    private InterceptorPipeline? CreatePipeline(KeyPressedArgs args)
     {
         if (KeyboardInput is null)
         {
             Unhook();
-            return true;
+            return null;
         }
 
         var interceptors = new List<InterceptorResponse>();
@@ -80,6 +88,6 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
             interceptors.Add(interceptor);
         }
 
-        return InterceptorPipeline.Run(interceptors);
+        return new InterceptorPipeline(interceptors);
     }
 }

@@ -9,33 +9,34 @@ namespace DeftSharp.Windows.Input.Interceptors;
 /// </summary>
 internal sealed class InterceptorPipeline
 {
+    private readonly IEnumerable<InterceptorResponse> _interceptors;
+
+    public InterceptorPipeline(IEnumerable<InterceptorResponse> interceptors) => _interceptors = interceptors;
+
+    public bool IsAllowed => _interceptors.All(i => i.IsAllowed);
+
     /// <summary>
-    /// Runs the interceptors and determines if the pipeline can be processed based on interceptor responses.
+    /// Runs the interceptors results.
     /// </summary>
-    /// <param name="interceptors">The list of interceptor responses.</param>
-    /// <returns>True if the pipeline can be processed; otherwise, false.</returns>
-    public bool Run(List<InterceptorResponse> interceptors)
+    public void Run()
     {
-        var isPipelineAllowed = interceptors.All(i => i.IsAllowed);
-
-        if (isPipelineAllowed)
+        if (IsAllowed)
         {
-            foreach (var action in interceptors.Select(i => i.OnPipelineSuccess))
+            foreach (var action in _interceptors.Select(i => i.OnPipelineSuccess))
                 action?.Invoke();
-            return true;
+            
+            return;
         }
-
-        var failedInterceptors = interceptors
+        
+        var failedInterceptors = _interceptors
             .Where(i => !i.IsAllowed)
             .Select(i => i.Interceptor)
             .ToArray();
 
         if (failedInterceptors.Any(i => i.Type is InterceptorType.Observable))
             throw new InterceptorPipelineException(InterceptorType.Observable);
-
-        foreach (var action in interceptors.Select(i => i.OnPipelineFailed))
+        
+        foreach (var action in _interceptors.Select(i => i.OnPipelineFailed))
             action?.Invoke(failedInterceptors);
-
-        return false;
     }
 }

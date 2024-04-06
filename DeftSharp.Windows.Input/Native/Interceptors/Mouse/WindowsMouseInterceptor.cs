@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Shared.Delegates;
+using Point = DeftSharp.Windows.Input.Mouse.Point;
 
 namespace DeftSharp.Windows.Input.Native.Interceptors;
 
@@ -10,14 +12,16 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
 {
     // The low-level mouse hook event type
     private const int WhMouseLl = 14;
-    
+
     private static readonly Lazy<WindowsMouseInterceptor> LazyInstance = new(() => new WindowsMouseInterceptor());
     public static WindowsMouseInterceptor Instance => LazyInstance.Value;
 
     public event MouseInputDelegate? MouseInput;
 
     private WindowsMouseInterceptor()
-        : base(WhMouseLl) { }
+        : base(WhMouseLl)
+    {
+    }
 
     public Point GetPosition() => MouseAPI.GetPosition();
     public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);
@@ -40,9 +44,16 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
         var mouseEvent = (MouseInputEvent)wParam;
         var args = new MouseInputArgs(mouseEvent);
 
-        return StartInterceptorPipeline(args)
-            ? User32.CallNextHookEx(HookId, nCode, wParam, lParam)
-            : 1;
+        var pipeline = CreatePipeline(args);
+
+        if (pipeline is null)
+            return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
+
+        if (!pipeline.IsAllowed)
+            return 1;
+
+        Application.Current.Dispatcher.BeginInvoke(pipeline.Run);
+        return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
     }
 
     /// <summary>
@@ -50,12 +61,12 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
     /// </summary>
     /// <param name="args">The <see cref="MouseInputArgs"/> representing the mouse press event.</param>
     /// <returns>True if the event can be processed; otherwise, false.</returns>
-    private bool StartInterceptorPipeline(MouseInputArgs args)
+    private InterceptorPipeline? CreatePipeline(MouseInputArgs args)
     {
         if (MouseInput is null)
         {
             Unhook();
-            return true;
+            return null;
         }
 
         var interceptors = new List<InterceptorResponse>();
@@ -66,6 +77,6 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
             interceptors.Add(interceptor);
         }
 
-        return InterceptorPipeline.Run(interceptors);
+        return new InterceptorPipeline(interceptors);
     }
 }

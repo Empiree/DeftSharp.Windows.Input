@@ -29,18 +29,12 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
     protected nint HookId = nint.Zero;
 
     /// <summary>
-    /// Middleware responsible for handling interceptors and pipeline execution.
-    /// </summary>
-    protected readonly InterceptorPipeline InterceptorPipeline;
-
-    /// <summary>
     /// Initializes a new instance of the WindowsListener class.
     /// </summary>
     protected WindowsInterceptor(int interceptorHook)
     {
         _interceptorHook = interceptorHook;
         _windowsProcedure = HookCallback;
-        InterceptorPipeline = new InterceptorPipeline();
     }
 
     /// <summary>
