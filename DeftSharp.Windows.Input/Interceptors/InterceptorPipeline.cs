@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using DeftSharp.Windows.Input.Shared.Exceptions;
 
 namespace DeftSharp.Windows.Input.Interceptors;
@@ -20,23 +22,26 @@ internal sealed class InterceptorPipeline
     /// </summary>
     public void Run()
     {
-        if (IsAllowed)
+        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
         {
-            foreach (var action in _interceptors.Select(i => i.OnPipelineSuccess))
-                action?.Invoke();
-            
-            return;
-        }
-        
-        var failedInterceptors = _interceptors
-            .Where(i => !i.IsAllowed)
-            .Select(i => i.Interceptor)
-            .ToArray();
+            if (IsAllowed)
+            {
+                foreach (var action in _interceptors.Select(i => i.OnPipelineSuccess))
+                    action?.Invoke();
 
-        if (failedInterceptors.Any(i => i.Type is InterceptorType.Observable))
-            throw new InterceptorPipelineException(InterceptorType.Observable);
-        
-        foreach (var action in _interceptors.Select(i => i.OnPipelineFailed))
-            action?.Invoke(failedInterceptors);
+                return;
+            }
+
+            var failedInterceptors = _interceptors
+                .Where(i => !i.IsAllowed)
+                .Select(i => i.Interceptor)
+                .ToArray();
+
+            if (failedInterceptors.Any(i => i.Type is InterceptorType.Observable))
+                throw new InterceptorPipelineException(InterceptorType.Observable);
+
+            foreach (var action in _interceptors.Select(i => i.OnPipelineFailed))
+                action?.Invoke(failedInterceptors);
+        }));
     }
 }

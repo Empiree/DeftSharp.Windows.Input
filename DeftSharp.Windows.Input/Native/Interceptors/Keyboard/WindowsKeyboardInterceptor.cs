@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Keyboard;
@@ -63,7 +62,8 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
         if (!pipeline.IsAllowed)
             return 1;
 
-        Application.Current.Dispatcher.BeginInvoke(pipeline.Run);
+        pipeline.Run();
+        
         return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
     }
 

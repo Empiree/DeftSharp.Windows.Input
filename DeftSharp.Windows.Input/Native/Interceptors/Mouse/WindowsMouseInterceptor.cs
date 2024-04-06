@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Shared.Delegates;
@@ -52,7 +51,8 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
         if (!pipeline.IsAllowed)
             return 1;
 
-        Application.Current.Dispatcher.BeginInvoke(pipeline.Run);
+        pipeline.Run();
+        
         return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
     }
 
