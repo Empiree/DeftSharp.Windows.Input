@@ -11,7 +11,7 @@
 
 DeftSharp.Windows.Input is a powerful .NET library designed to control and manage the keyboard and mouse in the Windows OS. It is intended for use in various UI frameworks such as WPF, WinUI, Avalonia, and MAUI, providing a universal solution for all types of Windows applications. 
 
-The library offers a wide range of features including event subscriptions, custom bindings, disallowing input events, device information and a lot of other things. It also provides flexible custom interceptors, allowing users to define their own logic.
+The library offers a wide range of features including event subscriptions, custom bindings, preventing input events, device information and a lot of other things. It also provides flexible custom interceptors, allowing users to define their own logic.
 
 The main goal of this library is to provide maximum user-friendliness so that you don't have to write a lot of code. Therefore, it includes many convenient methods that facilitate an intuitive and efficient process of working with input events.
 
@@ -35,44 +35,23 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 
 ### Simple key subscription
 
+You can subscribe to various global keyboard events. Including their sequence and combination.
+
 ```c#
 
 var keyboardListener = new KeyboardListener();
 
-keyboardListener.Subscribe(Key.Space, key =>
-{
-    Trace.WriteLine($"The {key} was pressed");
-});
+// Subscription for each click
+keyboardListener.Subscribe(Key.Space, key => Trace.WriteLine($"The {key} was pressed"));
+
+// One-time subscription
+keyboardListener.SubscribeOnce(Key.Space, key => Trace.WriteLine($"The {key} was pressed"));
+
 ```
 
-### Subscription with interval and event type
+### Input control from the code
 
-```c#
-var keyboardListener = new KeyboardListener();
-
-keyboardListener.Subscribe(Key.Space, (key, eventType) =>
-{
-    // This code will be triggered no more than once per second
-},
-TimeSpan.FromSeconds(1), // Interval of callback triggering
-KeyboardEvent.All); // Subscribe to all events (down and up)
-```
-
-### Subscription to mouse move event and get current coordinates
-
-```c#
-var mouseListener = new MouseListener();
-
-mouseListener.Subscribe(MouseEvent.Move, () =>
-{
-  Coordinates coordinates = mouseListener.GetPosition();
-
-  Label.Text = $"X: {coordinates.X} Y: {coordinates.Y}";
-});
-```
-![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
-
-### Keyboard/Mouse control from code
+With the help of special classes, you can simulate the operation of your keyboard and mouse. By calling different input actions.
 
 ```c#
 var keyboard = new KeyboardManipulator();
@@ -87,6 +66,8 @@ mouse.Scroll(150);
 ```
 
 ### Prevent input events
+
+You can prevent input events. As a permanent ban or with different settings.
 
 ```c#
 var keyboard = new KeyboardManipulator();
@@ -106,6 +87,22 @@ keyboard.Prevent(Key.Escape, () =>
 // Prevent mouse scroll            
 mouse.Prevent(PreventMouseOption.Scroll);
 ```
+
+### Subscription to mouse move event and get current coordinates
+
+You can track the current location of the mouse cursor
+
+```c#
+var mouseListener = new MouseListener();
+
+mouseListener.Subscribe(MouseEvent.Move, () =>
+{
+  Coordinates coordinates = mouseListener.GetPosition();
+
+  Label.Text = $"X: {coordinates.X} Y: {coordinates.Y}";
+});
+```
+![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
 
 # Requirements
 
