@@ -47,6 +47,9 @@ keyboardListener.Subscribe(Key.Space, key => Trace.WriteLine($"The {key} was pre
 // One-time subscription
 keyboardListener.SubscribeOnce(Key.Space, key => Trace.WriteLine($"The {key} was pressed"));
 
+// Subscription to the combination
+keyboardListener.SubscribeCombination([Key.LeftShift, Key.W], () => Trace.WriteLine($"The Shift+W was pressed"));
+
 ```
 
 ### Input control from the code
@@ -88,9 +91,8 @@ keyboard.Prevent(Key.Escape, () =>
 mouse.Prevent(PreventMouseOption.Scroll);
 ```
 
-### Subscription to mouse move event and get current coordinates
+### Subscription to mouse move and get current coordinates
 
-You can track the current location of the mouse cursor
 
 ```c#
 var mouseListener = new MouseListener();
