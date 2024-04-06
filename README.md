@@ -11,7 +11,7 @@
 
 DeftSharp.Windows.Input is a powerful .NET library designed to control and manage the keyboard and mouse in the Windows OS. It is intended for use in various UI frameworks such as WPF, WinUI, Avalonia, and MAUI, providing a universal solution for all types of Windows applications. 
 
-The library offers a wide range of features including event subscriptions, custom bindings, preventing input events, device information and a lot of other things. It also provides flexible custom interceptors, allowing users to define their own logic.
+The library offers a wide range of features including event subscriptions, bindings, preventing input events, device information and a lot of other things. It also provides flexible custom interceptors, allowing users to define their own logic.
 
 The main goal of this library is to provide maximum user-friendliness so that you don't have to write a lot of code. Therefore, it includes many convenient methods that facilitate an intuitive and efficient process of working with input events.
 
@@ -35,7 +35,7 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 
 ### Simple key subscription
 
-You can subscribe to various global keyboard events. Including their sequence and combination.
+You can subscribe to global keyboard events. Including their sequence and combination.
 
 ```c#
 
@@ -48,7 +48,8 @@ keyboardListener.Subscribe(Key.Space, key => Trace.WriteLine($"The {key} was pre
 keyboardListener.SubscribeOnce(Key.Space, key => Trace.WriteLine($"The {key} was pressed"));
 
 // Subscription to the combination
-keyboardListener.SubscribeCombination([Key.LeftShift, Key.W], () => Trace.WriteLine($"The Shift+W was pressed"));
+keyboardListener.SubscribeCombination([Key.LeftShift, Key.W], () =>
+    Trace.WriteLine($"The Shift + W was pressed"));
 
 ```
 
