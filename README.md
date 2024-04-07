@@ -55,7 +55,7 @@ keyboardListener.SubscribeCombination([Key.LeftShift, Key.W], () =>
 
 ### Input control from the code
 
-You can simulate the operation of your keyboard and mouse, by calling different input actions.
+You can simulate the operation of your keyboard and mouse by calling different input actions.
 
 ```c#
 var keyboard = new KeyboardManipulator();
@@ -71,7 +71,7 @@ mouse.Scroll(150);
 
 ### Prevent input events
 
-You can prevent input events, by default or with some condition.
+You can prevent input events by default or with some condition.
 
 ```c#
 var keyboard = new KeyboardManipulator();
