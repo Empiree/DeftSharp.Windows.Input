@@ -18,7 +18,7 @@
         <RepositoryUrl>https://github.com/Empiree/DeftSharp.Windows.Input</RepositoryUrl>
         <RepositoryType>Open-Source</RepositoryType>
         <PackageTags>#WPF #Input #Keyboard-Listener #Mouse-Listener #WinAPI #listener #WinUI #WinUI3 #MAUI #Avalonia #Windows #Input #Keyboard #Mouse</PackageTags>
-        <Version>0.8</Version>
+        <Version>0.8.1</Version>
         <PackageIcon>DeftSharp-icon.png</PackageIcon>
         <PackageReleaseNotes>You can see all the changes in the release changelog of our GitHub repository!</PackageReleaseNotes>
     </PropertyGroup>
