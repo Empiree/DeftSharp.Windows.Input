@@ -114,7 +114,7 @@ This class provides the ability to control the keyboard.
 
 ### Prevent input events
 
-You can prevent global input events by default or with some condition. In order to disallow input you need to call the `Prevent()` method. To remove the restriction, call `Release()`. 
+You can prevent global input events by default or with some condition. All locked keys are stored in the `LockedKeys` collection.
 
 ```c#
 var keyboard = new KeyboardManipulator();
@@ -134,18 +134,12 @@ keyboard.Prevent(Key.Escape, () =>
 keyboard.ReleaseAll();
 ```
 
-All locked keys are stored in the `LockedKeys` collection.
-
 To check the current state of a button you can use the `IsKeyLocked()` method.
 
 ```c#
-
 keyboard.Prevent(Key.Space); 
 
-Trace.WriteLine($"Length of locked keys: {keyboard.LockedKeys.Count()}"); // 1
-
 keyboard.IsKeyLocked(Key.Space); // true
-
 ```
 
 ### Setting the press interval
@@ -166,6 +160,8 @@ keyboardManipulator.SetInterval(Key.Space, TimeSpan.Zero);
 ```
 
 ### Simulation of key presses
+
+You can simulate button presses from the keyboard with this class.
 
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
