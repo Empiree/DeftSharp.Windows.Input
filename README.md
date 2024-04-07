@@ -99,11 +99,7 @@ mouse.Prevent(PreventMouseOption.Scroll);
 var mouseListener = new MouseListener();
 
 mouseListener.Subscribe(MouseEvent.Move, () =>
-{
-  Coordinates coordinates = mouseListener.GetPosition();
-
-  Label.Text = $"X: {coordinates.X} Y: {coordinates.Y}";
-});
+     Label.Text = $"X: {mouseListener.Position.X} Y: {mouseListener.Position.Y}");
 ```
 ![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
 
