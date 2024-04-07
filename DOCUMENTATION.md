@@ -43,7 +43,7 @@ Each object of the `KeyboardListener` class stores its own subscriptions. Keep t
 
 ### Subscription to the press event
 
-Different ways to subscribe to a button press:
+Different ways to subscribe to a button press.
 
 ```c#
 var keyboardListener = new KeyboardListener();
@@ -65,7 +65,7 @@ KeyboardEvent.Up); // Subscribe to up events
 
 ### Unsubscribing from the event
 
-You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once: 
+You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once.
 
 ```c#
 var keyboardListener = new KeyboardListener();
@@ -81,7 +81,7 @@ keyboardListener.UnsubscribeAll();
 
 ### Getting the current state of the keyboard
 
-With the help of convenient properties, you can get information about the current state of the keys:
+With the help of convenient properties, you can get information about the current state of the keys.
 
 ```c#
 var keyboardListener = new KeyboardListener();
@@ -110,18 +110,42 @@ This class provides the ability to control the keyboard.
 - Simulation of key presses and their combinations
 
 > [!NOTE]
-> Prevented keys are shared among all class objects. You don't have to worry that an object in this class has locked a particular button and you no longer have access to that object.
+> The KeyboardManipulator class works with a single context. Therefore, all your objects of this class have the same state.
 
-### Key press lock 
+### Prevent input events
+
+You can prevent global input events by default or with some condition. In order to disallow input you need to call the `Prevent()` method. To remove the restriction, call `Release()`. 
 
 ```c#
-var keyboardManipulator = new KeyboardManipulator();
+var keyboard = new KeyboardManipulator();
         
-keyboardManipulator.Prevent(Key.Space);
+// Each press of this button will be ignored
+keyboard.Prevent(Key.Delete); 
 
-var isSpaceLocked = keyboardManipulator.IsKeyLocked(Key.Space); // true
-       
-keyboardManipulator.Release(Key.Space);
+// Prevent with condition
+keyboard.Prevent(Key.Escape, () => 
+{
+   var currentTime = DateTime.Now;
+
+   return currentTime.Minute > 30;
+});
+
+// Release locked keys
+keyboard.ReleaseAll();
+```
+
+All locked keys are stored in the `LockedKeys` collection.
+
+To check the current state of a button you can use the `IsKeyLocked()` method.
+
+```c#
+
+keyboard.Prevent(Key.Space); 
+
+Trace.WriteLine($"Length of locked keys: {keyboard.LockedKeys.Count()}"); // 1
+
+keyboard.IsKeyLocked(Key.Space); // true
+
 ```
 
 ### Setting the press interval
@@ -186,11 +210,7 @@ This class allows you to subscribe to mouse events, as well as receive various i
 var mouseListener = new MouseListener();
 
 mouseListener.Subscribe(MouseEvent.Move, () =>
-{
-  Coordinates coordinates = mouseListener.GetPosition();
-
-  Label.Text = $"X: {coordinates.X} Y: {coordinates.Y}";
-});
+     Label.Text = $"X: {mouseListener.Position.X} Y: {mouseListener.Position.Y}");
 ```
 ![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
 
