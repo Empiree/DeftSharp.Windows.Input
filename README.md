@@ -90,7 +90,7 @@ keyboard.Prevent(Key.Escape, () =>
 });
 
 // Prevent mouse scroll            
-mouse.Prevent(PreventMouseOption.Scroll);
+mouse.Prevent(PreventMouseEvent.Scroll);
 ```
 
 ### Subscription to mouse move and get current coordinates
