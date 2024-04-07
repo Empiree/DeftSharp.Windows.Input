@@ -20,7 +20,7 @@ The main goal of this library is to provide maximum user-friendliness so that yo
 # Main Features
 
 * Subscribe to global keyboard and mouse events
-* Simulation of input control from code
+* Simulation of input from the code
 * Prevent specific input events
 * Change key bindings
 * Custom interceptors
