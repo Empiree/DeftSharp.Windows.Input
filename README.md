@@ -17,13 +17,14 @@ The main goal of this library is to provide maximum user-friendliness so that yo
 
 **You can read the full documentation [here](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md)**
 
-# Features
+# Main Features
 
-* Subscribe to keyboard and mouse events
-* Adjust press frequency and key bindings
-* Dynamically simulate button presses
-* Prevent input events
+* Subscribe to global keyboard and mouse events
+* Simulation of input control from code
+* Prevent specific input events
+* Change key bindings
 * Custom interceptors
+* Device information
 
 # How to Install
 
