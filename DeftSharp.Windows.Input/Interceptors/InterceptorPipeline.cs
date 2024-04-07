@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 using DeftSharp.Windows.Input.Shared.Exceptions;
 
 namespace DeftSharp.Windows.Input.Interceptors;
@@ -13,35 +13,66 @@ internal sealed class InterceptorPipeline
 {
     private readonly IEnumerable<InterceptorResponse> _interceptors;
 
-    public InterceptorPipeline(IEnumerable<InterceptorResponse> interceptors) => _interceptors = interceptors;
-
-    public bool IsAllowed => _interceptors.All(i => i.IsAllowed);
+    /// <summary>
+    /// Gets a value indicating whether the pipeline has passed through all interceptors.
+    /// </summary>
+    public bool IsPassed { get; private set; }
 
     /// <summary>
-    /// Runs the interceptors results.
+    /// Gets a value indicating whether the system is allowed to proceed input event.
     /// </summary>
+    public bool IsAllowed => _interceptors.All(i => i.IsAllowed);
+
+    public InterceptorPipeline(IEnumerable<InterceptorResponse> interceptors)
+        => _interceptors = interceptors;
+
+    /// <summary>
+    /// Runs the interceptors callbacks.
+    /// </summary>               
     public void Run()
     {
-        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-        {
-            if (IsAllowed)
-            {
-                foreach (var action in _interceptors.Select(i => i.OnPipelineSuccess))
-                    action?.Invoke();
+        var dispatcher = Application.Current is null
+            ? Dispatcher.CurrentDispatcher
+            : Application.Current.Dispatcher;
 
-                return;
-            }
+        dispatcher.BeginInvoke(RunCallbacks);
+    }
 
-            var failedInterceptors = _interceptors
-                .Where(i => !i.IsAllowed)
-                .Select(i => i.Interceptor)
-                .ToArray();
+    private void RunCallbacks()
+    {
+        if (IsAllowed)
+            RunSuccessful();
+        else
+            RunFailed();
+    }
 
-            if (failedInterceptors.Any(i => i.Type is InterceptorType.Observable))
-                throw new InterceptorPipelineException(InterceptorType.Observable);
+    private void RunFailed()
+    {
+        if (IsPassed || IsAllowed)
+            return;
 
-            foreach (var action in _interceptors.Select(i => i.OnPipelineFailed))
-                action?.Invoke(failedInterceptors);
-        }));
+        var failedInterceptors = _interceptors
+            .Where(i => !i.IsAllowed)
+            .Select(i => i.Interceptor)
+            .ToArray();
+
+        if (failedInterceptors.Any(i => i.Type is InterceptorType.Observable))
+            throw new InterceptorPipelineException(InterceptorType.Observable);
+
+        foreach (var callback in _interceptors.Select(i => i.OnPipelineFailed))
+            callback?.Invoke(failedInterceptors);
+
+        IsPassed = true;
+    }
+
+    private void RunSuccessful()
+    {
+        if (IsPassed || !IsAllowed)
+            return;
+
+        foreach (var callback in _interceptors.Select(i => i.OnPipelineSuccess))
+            callback?.Invoke();
+
+        IsPassed = true;
     }
 }
