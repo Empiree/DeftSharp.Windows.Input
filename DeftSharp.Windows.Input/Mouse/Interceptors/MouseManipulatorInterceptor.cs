@@ -36,7 +36,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
     public void Scroll(int scrollAmount) => Mouse.Scroll(scrollAmount);
 
-    public void Prevent(PreventMouseOption preventOption, Func<bool> predicate)
+    public void Prevent(PreventMouseEvent preventOption, Func<bool> predicate)
     {
         var preventEvents = preventOption.ToMouseEvents();
 
@@ -49,7 +49,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
         }
     }
 
-    public void Release(PreventMouseOption preventOption)
+    public void Release(PreventMouseEvent preventOption)
     {
         var preventEvents = preventOption.ToMouseEvents();
 
