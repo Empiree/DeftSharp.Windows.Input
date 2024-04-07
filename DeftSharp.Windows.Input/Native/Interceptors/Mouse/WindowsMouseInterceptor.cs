@@ -48,12 +48,11 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
         if (pipeline is null)
             return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
 
-        if (!pipeline.IsAllowed)
-            return 1;
-
         pipeline.Run();
-        
-        return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
+
+        return pipeline.IsAllowed
+            ? User32.CallNextHookEx(HookId, nCode, wParam, lParam)
+            : 1;
     }
 
     /// <summary>
