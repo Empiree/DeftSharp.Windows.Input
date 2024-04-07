@@ -97,6 +97,8 @@ var isShiftPressed = keyboardListener.IsShiftPressed;
 var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
 ```
 
+--- 
+
 ## KeyboardManipulator
 
 This class provides the ability to control the keyboard.
@@ -150,6 +152,7 @@ keyboardManipulator.Press(Key.Space);
 // Combination press
 keyboardManipulator.Press(Key.LeftCtrl, Key.V);
 ```
+---
 
 ## KeyboardBinder
 
@@ -164,6 +167,8 @@ keyboardBinder.Bind(Key.Q, Key.W);
 
 // Now any time the 'Q' button is triggered, it will behave like the 'W' button
 ```
+
+---
 
 ## Useful classes
 
@@ -189,6 +194,8 @@ mouseListener.Subscribe(MouseEvent.Move, () =>
 ```
 ![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
 
+---
+
 ## MouseManipulator
 
 This class allows you to control the mouse. It is based on the principle of KeyboardManipulator.
@@ -200,6 +207,8 @@ mouseManipulator.DoubleClick();
 mouseManipulator.Scroll(150);            
 mouseManipulator.Click(100, 100, MouseButton.Right);
 ```
+
+---
 
 # Custom interceptors
 
