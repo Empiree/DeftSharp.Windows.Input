@@ -11,14 +11,14 @@
         <RootNamespace>DeftSharp.Windows.Input</RootNamespace>
         <AssemblyName>DeftSharp.Windows.Input</AssemblyName>
         <Title>DeftSharp.Windows.Input</Title>
-        <Description>A .NET library designed to handle global keyboard and mouse input events in the Windows OS. </Description>
+        <Description>A .NET library designed to control and manage the keyboard and mouse in Windows. </Description>
         <Copyright>@ DeftSharp. All rights reserved.</Copyright>
         <PackageProjectUrl>https://github.com/Empiree/DeftSharp.Windows.Input</PackageProjectUrl>
         <PackageLicenseUrl></PackageLicenseUrl>
         <RepositoryUrl>https://github.com/Empiree/DeftSharp.Windows.Input</RepositoryUrl>
         <RepositoryType>Open-Source</RepositoryType>
         <PackageTags>#WPF #Input #Keyboard-Listener #Mouse-Listener #WinAPI #listener #WinUI #WinUI3 #MAUI #Avalonia #Windows #Input #Keyboard #Mouse</PackageTags>
-        <Version>0.7.1</Version>
+        <Version>0.8</Version>
         <PackageIcon>DeftSharp-icon.png</PackageIcon>
         <PackageReleaseNotes>You can see all the changes in the release changelog of our GitHub repository!</PackageReleaseNotes>
     </PropertyGroup>
