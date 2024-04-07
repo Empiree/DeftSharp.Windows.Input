@@ -35,6 +35,9 @@ This class stores active subscriptions in properties: `Keys`, `Sequences` and `C
 
 Each object of the `KeyboardListener` class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
+> [!NOTE]
+> **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
+
 ### Available subscription options:
 
 - Subscribe
@@ -203,6 +206,9 @@ keyboardBinder.Bind(Key.Q, Key.W);
 ## MouseListener
 
 This class allows you to subscribe to mouse events, as well as receive various information, such as the current cursor coordinates.
+
+> [!NOTE]
+> **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
 
 ### Subscribe to mouse move event and get current coordinates
 
