@@ -3,6 +3,10 @@
 > [!NOTE]
 > Documentation is in the process of being written.
 
+The library provides flexible and powerful functionality for keyboard and mouse control in the Windows OS.
+
+It is built using [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) methods, with the help of libraries such as [User32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files) and [Kernel32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files). 
+
 # Overview
 
 [Keyboard](#keyboard)
