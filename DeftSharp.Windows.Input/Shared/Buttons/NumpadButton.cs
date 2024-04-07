@@ -2,12 +2,12 @@
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-public class NumpadButton
+public sealed class NumButton
 {
     public Key Key { get; }
     public int Number { get; }
 
-    public NumpadButton(Key key, int number)
+    public NumButton(Key key, int number)
     {
         Key = key;
         Number = number;

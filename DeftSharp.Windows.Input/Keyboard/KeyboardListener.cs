@@ -78,7 +78,7 @@ public sealed class KeyboardListener : IKeyboardListener
     }
 
     /// <summary>
-    /// Subscribes to a key with the specified event handler and optional parameters, allowing multiple keys to be subscribed at once.
+    /// Subscribes to multiple keys with the specified event handler.
     /// </summary>
     /// <returns>The collection of created subscriptions.</returns>
     public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key, KeyboardInputEvent> onClick,
@@ -179,7 +179,7 @@ public sealed class KeyboardListener : IKeyboardListener
         Subscribe(key, (k, _) => onClick(k), intervalOfClick, keyboardEvent);
 
     /// <summary>
-    /// Subscribes to a key with the specified event handler and optional parameters, allowing multiple keys to be subscribed at once.
+    /// Subscribes to multiple keys with the specified event handler.
     /// </summary>
     /// <returns>The collection of created subscriptions.</returns>
     public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,

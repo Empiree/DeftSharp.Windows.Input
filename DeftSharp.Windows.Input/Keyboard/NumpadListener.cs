@@ -11,7 +11,7 @@ public sealed class NumpadListener
 {
     private readonly KeyboardListener _keyboardListener;
 
-    private readonly NumpadButton[] _numKeys =
+    private readonly NumButton[] _numKeys =
     {
         new(Key.NumPad7, 7), new(Key.NumPad8, 8), new(Key.NumPad9, 9),
         new(Key.NumPad4, 4), new(Key.NumPad5, 5), new(Key.NumPad6, 6),
