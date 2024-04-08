@@ -107,7 +107,7 @@ var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
 
 # KeyboardManipulator
 
-This class provides the ability to control the keyboard. 
+The KeyboardManipulator class provides the ability to control the keyboard. 
 
 > [!NOTE]
 > This class works with a single context. Therefore, all your objects of this class have the same state.
@@ -210,6 +210,8 @@ keyboardBinder.Bind(Key.Q, Key.W);
 In order to swap the button bindings, you can use the `Swap()` method.
 
 ```c#
+var keyboardBinder = new KeyboardBinder();
+
 keyboardBinder.Swap(Key.Q, Key.W);
             
 // Alternative option
@@ -223,6 +225,8 @@ keyboardBinder.Bind(Key.W, Key.Q);
 Get the current state of the bindings using the `IsKeyBounded()` method, which returns true/false depending on the existence of the binding. And `GetBoundKey()` method which returns the current key to which the specified key belongs.
 
 ```c#
+var keyboardBinder = new KeyboardBinder();
+
 keyboardBinder.Bind(Key.Q, Key.W);
 
 keyboardBinder.IsKeyBounded(Key.Q); // true
@@ -235,7 +239,14 @@ keyboardBinder.GetBoundKey(Key.W); // W
 To unbind buttons, you need to call method one of the `Unbind()` method overloads.
 
 ```c#
+var keyboardBinder = new KeyboardBinder();
+
+keyboardBinder.Bind(Key.Q, Key.W);
+
 keyboardBinder.Unbind(Key.Q);
+
+// Alternative option
+
 keyboardBinder.UnbindAll();
 ```
 
@@ -450,7 +461,7 @@ numpadListener.Unsubscribe();
 
 # Methods
 
-## ToUnicode()
+## Key.ToUnicode()
 
 This extension method is applied to enum `Key`. It returns the interpretation of the key as a unicode string depending on your current keyboard layout.
 
@@ -460,6 +471,7 @@ var key = Key.Z;
             
 Trace.WriteLine(key.ToUnicode());
 
+// Output
 // English layout: z
 // German layout: y
 // Russian layout: я
