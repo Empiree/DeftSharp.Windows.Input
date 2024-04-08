@@ -32,7 +32,7 @@ The library is published as a [Nuget](https://www.nuget.org/packages/DeftSharp.W
 
 `dotnet add package DeftSharp.Windows.Input`
 
-# Examples:
+# Examples
 
 ### Simple key subscription
 
