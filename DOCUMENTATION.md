@@ -53,7 +53,7 @@ Each object of the KeyboardListener class stores its own subscriptions. Keep thi
 
 ## Subscribe to the press event
 
-Different ways to subscribe to a button press.
+In order to subscribe to press events, you need to call one of the overloads of the subscribe method. 
 
 ```c#
 var keyboardListener = new KeyboardListener();
@@ -71,6 +71,19 @@ keyboardListener.Subscribe(Key.Space, (key, eventType) =>
 },
 TimeSpan.FromSeconds(1), // Interval of callback triggering
 KeyboardEvent.Up); // Subscribe to up events
+```
+
+Each subscription method returns an object with data about that subscription.
+
+```c#
+var subscription = keyboardListener.Subscribe(Key.Back, key => { });
+
+subscription.Id // 8a0e5778-71c4-4598-bf37-67ab339b1e27
+subscription.Key // Back
+subscription.Event // KeyDown
+subscription.IntervalOfClick // 00:00:00
+subscription.SingleUse // false
+subscription.LastInvoked // null
 ```
 
 ## Unsubscribe from the event
@@ -95,9 +108,9 @@ You can get information about the current state of the keys. To do this, you can
 var isNumLockActive = keyboardListener.IsNumLockActive;
 var isCapsLockActive = keyboardListener.IsCapsLockActive;
             
-var IsWinPressed = keyboardListener.IsWinPressed;
-var IsAltPressed = keyboardListener.IsAltPressed;
-var IsCtrlPressed = keyboardListener.IsCtrlPressed;
+var isWinPressed = keyboardListener.IsWinPressed;
+var isAltPressed = keyboardListener.IsAltPressed;
+var isCtrlPressed = keyboardListener.IsCtrlPressed;
 var isShiftPressed = keyboardListener.IsShiftPressed;
 
 var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
