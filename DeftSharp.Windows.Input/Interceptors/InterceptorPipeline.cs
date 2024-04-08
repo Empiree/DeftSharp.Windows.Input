@@ -27,9 +27,9 @@ internal sealed class InterceptorPipeline
         => _interceptors = interceptors;
 
     /// <summary>
-    /// Runs the interceptors callbacks.
+    /// Asynchronously runs the interceptors callbacks.
     /// </summary>               
-    public void Run()
+    public void RunAsync()
     {
         var dispatcher = Application.Current is null
             ? Dispatcher.CurrentDispatcher
@@ -37,6 +37,11 @@ internal sealed class InterceptorPipeline
 
         dispatcher.BeginInvoke(RunCallbacks);
     }
+    
+    /// <summary>
+    /// Runs the interceptors callbacks.
+    /// </summary>
+    public void Run() => RunCallbacks();
 
     private void RunCallbacks()
     {

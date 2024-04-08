@@ -59,7 +59,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
         if (pipeline is null)
             return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
 
-        pipeline.Run();
+        pipeline.RunAsync();
 
         return pipeline.IsAllowed
             ? User32.CallNextHookEx(HookId, nCode, wParam, lParam)
