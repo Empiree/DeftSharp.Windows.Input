@@ -75,15 +75,6 @@ KeyboardEvent.Up); // Subscribe to up events
 
 Each subscription method returns an `KeySubscription` with data about that subscription.
 
-|   Property     | Type         | Description                                                                                                   |
-|----------------|--------------|---------------------------------------------------------------------------------------------------------------|
-| Id             | GUID         | Unique identifier                                                                                             |
-| Key            | Key          | Subscription key. Can also be a collection of `IEnumerable<Key>` if the subscription covers multiple keys.    |
-| Event          | KeyboardEvent| Subscription event, available types: `All`, `KeyDown`, `KeyUp`.                                               |
-| IntervalOfClick| TimeSpan     | Callback trigger interval. TimeSpan.Zero is set by default.                                                   |
-| SingleUse      | bool         | Is it a one-time subscription.                                                                                |
-| LastInvoked    | DateTime?    | Date of the last callback invoked.                                                                            |
-
 ## Unsubscribe from the event
 
 You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once.
