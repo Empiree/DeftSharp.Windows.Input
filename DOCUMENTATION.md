@@ -89,7 +89,7 @@ keyboardListener.UnsubscribeAll();
 
 ## Get the current state of the keys
 
-You can get information about the current state of the keys.
+You can get information about the current state of the keys. To do this, you can use the already created properties, or you can call the `IsKeyPressed()` method.
 
 ```c#
 var isNumLockActive = keyboardListener.IsNumLockActive;
@@ -156,7 +156,7 @@ Also, the class has a `KeyPrevented` event that fires when a press has been prev
 
 ## Set the press interval
 
-The interval setting allows you to control the frequency of presses. With `SetInterval()` method, we will set a global interval for pressing a key on the keyboard. As with locked buttons, the interval will remain until you remove it or the application is completed.
+The interval setting allows you to control the frequency of presses. With `SetInterval()` method, you will set a global interval for pressing a key on the keyboard. As with locked buttons, the interval will remain until you remove it or the application is completed.
 
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
@@ -173,7 +173,7 @@ keyboardManipulator.SetInterval(Key.Space, TimeSpan.Zero);
 
 ## Simulate of key presses
 
-You can simulate button presses from the keyboard with this class. The simulated keys are fully compatible with other pressed keys. If you press the Shift key and simulate the call of some key, the Shift modifier will be applied to this input.
+You can simulate button presses from the keyboard with this class. The simulated keys are fully compatible with other pressed keys. If you press the Shift button and simulate the call of some key, the Shift modifier will be applied to this input.
 
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
@@ -207,7 +207,7 @@ keyboardBinder.Bind(Key.Q, Key.W);
 
 ## Swap button bindings
 
-In order to swap the button bindings, we can use the `Swap()` method.
+In order to swap the button bindings, you can use the `Swap()` method.
 
 ```c#
 keyboardBinder.Swap(Key.Q, Key.W);
