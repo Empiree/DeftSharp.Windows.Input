@@ -14,31 +14,35 @@ It is built using [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/n
 - [Keyboard Listener](#keyboardlistener)
 - [Keyboard Manipulator](#keyboardmanipulator)
 - [Keyboard Binder](#keyboardbinder)
+- [Keyboard Info](#keyboardinfo)
 - [Useful classes](#useful-classes)
 
 [Mouse](#mouse)
 
 - [Mouse Listener](#mouselistener)
 - [Mouse Manipulator](#mousemanipulator)
+- [Mouse Info](#mouseinfo)
 
 [Custom Interceptors](#custom-interceptors)
 
+[Extensions](#extensions)
+
 # Keyboard
 
-These classes provide handling of keyboard input events.
+These classes provide global control and observation of the keyboard.
 
-## KeyboardListener
+# KeyboardListener
 
-The `KeyboardListener` class provides the ability to subscribe to global keyboard input events. This allows you, to get the information you need about the user's presses, sequences and key combinations. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to suit your needs.
+The KeyboardListener class provides the ability to subscribe to global keyboard input events. This allows you, to get the information you need about the user's presses, sequences and key combinations. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to suit your needs.
 
 This class stores active subscriptions in properties: `Keys`, `Sequences` and `Combinations`.
 
-Each object of the `KeyboardListener` class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
+Each object of the KeyboardListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
 > [!NOTE]
 > **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
 
-### Available subscription options:
+## Available subscription options
 
 - Subscribe
 - SubscribeAll
@@ -48,7 +52,7 @@ Each object of the `KeyboardListener` class stores its own subscriptions. Keep t
 - SubscribeCombination
 - SubscribeCombinationOnce
 
-### Subscription to the press event
+## Subscription to the press event
 
 Different ways to subscribe to a button press.
 
@@ -70,13 +74,11 @@ TimeSpan.FromSeconds(1), // Interval of callback triggering
 KeyboardEvent.Up); // Subscribe to up events
 ```
 
-### Unsubscribing from the event
+## Unsubscribing from the event
 
 You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once.
 
 ```c#
-var keyboardListener = new KeyboardListener();
-
 // Subscribe to the event
 var subscription = keyboardListener.Subscribe(Key.A, key => { });
             
@@ -86,13 +88,11 @@ keyboardListener.Unsubscribe(Key.A);
 keyboardListener.UnsubscribeAll(); 
 ```
 
-### Getting the current state of the keyboard
+## Getting the current state of the keys
 
-With the help of convenient properties, you can get information about the current state of the keys.
+You can get information about the current state of the keys.
 
 ```c#
-var keyboardListener = new KeyboardListener();
-
 var isNumLockActive = keyboardListener.IsNumLockActive;
 var isCapsLockActive = keyboardListener.IsCapsLockActive;
             
@@ -106,22 +106,21 @@ var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
 
 --- 
 
-## KeyboardManipulator
+# KeyboardManipulator
 
-This class provides the ability to control the keyboard.
+This class provides the ability to control the keyboard. 
 
-### Features
+The KeyboardManipulator class works with a single context. Therefore, all your objects of this class have the same state.
 
-- Setting the key press lock 
-- Setting the key press interval 
-- Simulation of key presses and their combinations
+## Features
 
-> [!NOTE]
-> The KeyboardManipulator class works with a single context. Therefore, all your objects of this class have the same state.
+- Prevent input events 
+- Set the press interval 
+- Simulate of key presses
 
-### Prevent input events
+## Prevent input events
 
-You can prevent global input events by default or with some condition. All locked keys are stored in the `LockedKeys` collection.
+You can prevent global input events by default or with some condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or the application is completed.
 
 ```c#
 var keyboard = new KeyboardManipulator();
@@ -149,9 +148,15 @@ keyboard.Prevent(Key.Space);
 keyboard.IsKeyLocked(Key.Space); // true
 ```
 
-### Setting the press interval
+Also, the class has a `KeyPrevented` event that fires when a press has been prevented by this class.
 
-The interval setting allows you to control the frequency of presses. KeyboardManipulator has this functionality by using the `SetInterval` method. With this method, we will set a global interval for pressing a key on the keyboard. 
+```c#
+ keyboard.KeyPrevented += args => Trace.WriteLine($"Pressing the {args.KeyPressed} button has been prevented");
+```
+
+## Set the press interval
+
+The interval setting allows you to control the frequency of presses. With `SetInterval` method, we will set a global interval for pressing a key on the keyboard. As with locked buttons, the interval will remain until you remove it or the application is completed.
 
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
@@ -166,9 +171,9 @@ keyboardManipulator.ResetInterval(Key.Space);
 keyboardManipulator.SetInterval(Key.Space, TimeSpan.Zero);
 ```
 
-### Simulation of key presses
+## Simulate of key presses
 
-You can simulate button presses from the keyboard with this class.
+You can simulate button presses from the keyboard with this class. The simulated keys are fully compatible with other pressed keys. If you press the Shift key and simulate the call of some key, the Shift modifier will be applied to this input.
 
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
@@ -181,11 +186,11 @@ keyboardManipulator.Press(Key.LeftCtrl, Key.V);
 ```
 ---
 
-## KeyboardBinder
+# KeyboardBinder
 
 This class provides the option to change the bind of the specified button.
 
-### Change the button bind
+## Change the button bind
 
 ```c#
 var keyboardBinder = new KeyboardBinder();
@@ -194,16 +199,54 @@ keyboardBinder.Bind(Key.Q, Key.W);
 
 // Now any time the 'Q' button is triggered, it will behave like the 'W' button
 ```
+---
+
+# KeyboardInfo
+
+This class provides various information about the keyboard, both physical and software.
+
+## Get the current keyboard layout
+
+This method helps to find out the active layout of the user.
+
+```c#
+
+var keyboardInfo = new KeyboardInfo();
+
+// Getting the layout
+var layout = keyboardInfo.Layout;
+            
+Trace.WriteLine(layout.Id); // 1033
+Trace.WriteLine(layout.LocaleId); // 1033
+Trace.WriteLine(layout.Name); // en-US 
+Trace.WriteLine(layout.DisplayName); // English (United States)
+```
+
+## Get the current keyboard type
+
+Up to 7 basic keyboard types are supported. 
+
+```c#
+var keyboardInfo = new KeyboardInfo();
+
+// Getting the type
+var type = keyboardInfo.Type;
+            
+Trace.WriteLine(type.Name); // IBM enhanced (101- or 102-key) keyboard
+Trace.WriteLine(type.Value); // 4
+```
 
 ---
 
-## Useful classes
+# Useful classes
 
-### NumpadListener
+## NumpadListener
 
 # Mouse
 
-## MouseListener
+These classes provide global control and observation of the mouse.
+
+# MouseListener
 
 This class allows you to subscribe to mouse events, as well as receive various information, such as the current cursor coordinates.
 
@@ -222,7 +265,7 @@ mouseListener.Subscribe(MouseEvent.Move, () =>
 
 ---
 
-## MouseManipulator
+# MouseManipulator
 
 This class allows you to control the mouse. It is based on the principle of KeyboardManipulator.
 
@@ -233,6 +276,10 @@ mouseManipulator.DoubleClick();
 mouseManipulator.Scroll(150);            
 mouseManipulator.Click(100, 100, MouseButton.Right);
 ```
+
+---
+
+# MouseInfo
 
 ---
 
@@ -333,8 +380,11 @@ mouseListener.SubscribeAll(mouseEvent =>
      Trace.WriteLine($"Processed {mouseEvent}");
 });
             
-mouseManipulator.Prevent(PreventMouseOption.Scroll);
+mouseManipulator.Prevent(PreventMouseEvent.Scroll);
 
 mouseManipulator.InputPrevented += mouseEvent => 
      Trace.WriteLine($"Failed {mouseEvent} by MouseManipulator");
 ```
+---
+
+# Extensions
