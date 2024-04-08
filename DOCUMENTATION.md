@@ -73,7 +73,7 @@ TimeSpan.FromSeconds(1), // Interval of callback triggering
 KeyboardEvent.Up); // Subscribe to up events
 ```
 
-Each subscription method returns an object with data about that subscription.
+Each subscription method returns an `KeySubscription` with data about that subscription.
 
 ```c#
 var subscription = keyboardListener.Subscribe(Key.Back, key => { });
@@ -85,6 +85,15 @@ subscription.IntervalOfClick // 00:00:00
 subscription.SingleUse // false
 subscription.LastInvoked // null
 ```
+
+|   Property     | Type         | Description                                                                                                   |
+|----------------|--------------|---------------------------------------------------------------------------------------------------------------|
+| Id             | GUID         | Unique identifier                                                                                             |
+| Key            | Key          | Subscription key. Can also be a collection of `IEnumerable<Key>` if the subscription covers multiple keys.    |
+| Event          | KeyboardEvent| Subscription event, available types: `All`, `KeyDown`, `KeyUp`.                                               |
+| IntervalOfClick| TimeSpan     | Callback trigger interval. TimeSpan.Zero is set by default.                                                   |
+| SingleUse      | bool         | Is it a one-time subscription.                                                                                |
+| LastInvoked    | DateTime?    | Date of the last callback invoked.                                                                            |
 
 ## Unsubscribe from the event
 
