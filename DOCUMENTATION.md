@@ -75,17 +75,6 @@ KeyboardEvent.Up); // Subscribe to up events
 
 Each subscription method returns an `KeySubscription` with data about that subscription.
 
-```c#
-var subscription = keyboardListener.Subscribe(Key.Back, key => { });
-
-subscription.Id // 8a0e5778-71c4-4598-bf37-67ab339b1e27
-subscription.Key // Back
-subscription.Event // KeyDown
-subscription.IntervalOfClick // 00:00:00
-subscription.SingleUse // false
-subscription.LastInvoked // null
-```
-
 |   Property     | Type         | Description                                                                                                   |
 |----------------|--------------|---------------------------------------------------------------------------------------------------------------|
 | Id             | GUID         | Unique identifier                                                                                             |
