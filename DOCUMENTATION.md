@@ -15,7 +15,6 @@ It is built using [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/n
 - [Keyboard Manipulator](#keyboardmanipulator)
 - [Keyboard Binder](#keyboardbinder)
 - [Keyboard Info](#keyboardinfo)
-- [Useful classes](#useful-classes)
 
 [Mouse](#mouse)
 
@@ -217,7 +216,6 @@ keyboardBinder.Swap(Key.Q, Key.W);
             
 keyboardBinder.Bind(Key.Q, Key.W);
 keyboardBinder.Bind(Key.W, Key.Q);
-
 ```
 
 ## Get current state
@@ -277,12 +275,7 @@ var type = keyboardInfo.Type;
 Trace.WriteLine(type.Name); // IBM enhanced (101- or 102-key) keyboard
 Trace.WriteLine(type.Value); // 4
 ```
-
 ---
-
-# Useful classes
-
-## NumpadListener
 
 # Mouse
 
@@ -427,6 +420,47 @@ mouseManipulator.Prevent(PreventMouseEvent.Scroll);
 mouseManipulator.InputPrevented += mouseEvent => 
      Trace.WriteLine($"Failed {mouseEvent} by MouseManipulator");
 ```
+
 ---
 
 # Extensions
+
+Additional functionality of the library.
+
+# Classes
+
+## NumpadListener
+
+This class is a decorator over the [KeyboardListener](#keyboardlistener) class. It allows you to easily subscribe to all Numpad numeric keys. 
+
+```c#
+var keyboardListener = new KeyboardListener();
+var numpadListener = new NumpadListener(keyboardListener);
+            
+// 0-9 numpad buttons
+numpadListener.Subscribe(number =>
+{
+    Trace.WriteLine($"The {number} was pressed");
+});
+            
+// ...
+            
+numpadListener.Unsubscribe();
+```
+
+# Methods
+
+## ToUnicode()
+
+This extension method is applied to enum `Key`. It returns the interpretation of the key as a unicode string depending on your current keyboard layout.
+
+```c#
+
+var key = Key.Z;
+            
+Trace.WriteLine(key.ToUnicode());
+
+// English layout: z
+// German layout: y
+// Russian layout: я
+```
