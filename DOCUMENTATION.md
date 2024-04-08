@@ -442,7 +442,9 @@ Additional functionality of the library.
 
 ## NumpadListener
 
-This class is a decorator over the [KeyboardListener](#keyboardlistener) class. It allows you to easily subscribe to all Numpad numeric keys. 
+The NumpadListener class allows you to easily subscribe to Numpad buttons. It is a decorator over the [KeyboardListener](#keyboardlistener) class. To create an object of this class, it needs to be passed an existing KeyboardListener through which it will create subscriptions. 
+
+Using the `Subscribe()` method, it subscribes to each numeric Numpad key. The method has a single required parameter `Action<Key>` which is triggered when one of the buttons is pressed. To unsubscribe from all events, you need to call the `Unsubscribe()` method.
 
 ```c#
 var keyboardListener = new KeyboardListener();
@@ -463,15 +465,13 @@ numpadListener.Unsubscribe();
 
 ## Key.ToUnicode()
 
-This extension method is applied to enum `Key`. It returns the interpretation of the key as a unicode string depending on your current keyboard layout.
+This extension method is applied to [Key](https://learn.microsoft.com/en-us/dotnet/api/system.windows.input.key) enum. It returns the interpretation of the key as a unicode string depending on your current keyboard layout. If the key cannot be represented in text format, `String.Empty` will be returned.
 
 ```c#
-
 var key = Key.Z;
             
 Trace.WriteLine(key.ToUnicode());
 
-// Output
 // English layout: z
 // German layout: y
 // Russian layout: я
