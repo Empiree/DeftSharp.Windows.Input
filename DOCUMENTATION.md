@@ -52,7 +52,7 @@ Each object of the KeyboardListener class stores its own subscriptions. Keep thi
 - SubscribeCombination
 - SubscribeCombinationOnce
 
-## Subscription to the press event
+## Subscribe to the press event
 
 Different ways to subscribe to a button press.
 
@@ -74,7 +74,7 @@ TimeSpan.FromSeconds(1), // Interval of callback triggering
 KeyboardEvent.Up); // Subscribe to up events
 ```
 
-## Unsubscribing from the event
+## Unsubscribe from the event
 
 You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once.
 
@@ -88,7 +88,7 @@ keyboardListener.Unsubscribe(Key.A);
 keyboardListener.UnsubscribeAll(); 
 ```
 
-## Getting the current state of the keys
+## Get the current state of the keys
 
 You can get information about the current state of the keys.
 
@@ -110,7 +110,8 @@ var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
 
 This class provides the ability to control the keyboard. 
 
-The KeyboardManipulator class works with a single context. Therefore, all your objects of this class have the same state.
+> [!NOTE]
+> This class works with a single context. Therefore, all your objects of this class have the same state.
 
 ## Features
 
@@ -156,7 +157,7 @@ Also, the class has a `KeyPrevented` event that fires when a press has been prev
 
 ## Set the press interval
 
-The interval setting allows you to control the frequency of presses. With `SetInterval` method, we will set a global interval for pressing a key on the keyboard. As with locked buttons, the interval will remain until you remove it or the application is completed.
+The interval setting allows you to control the frequency of presses. With `SetInterval()` method, we will set a global interval for pressing a key on the keyboard. As with locked buttons, the interval will remain until you remove it or the application is completed.
 
 ```c#
 var keyboardManipulator = new KeyboardManipulator();
@@ -188,9 +189,14 @@ keyboardManipulator.Press(Key.LeftCtrl, Key.V);
 
 # KeyboardBinder
 
-This class provides the option to change the bind of the specified button.
+This class allows you to modify the bindings of the specified keys. All bindings are stored in the `BoundedKeys` property.
+
+> [!NOTE]
+> This class works with a single context. Therefore, all your objects of this class have the same state.
 
 ## Change the button bind
+
+To change the bind of a button, all you need to do is call the `Bind()` method. This method always works, even if a bind already exists, it will just change it to a new one.
 
 ```c#
 var keyboardBinder = new KeyboardBinder();
@@ -199,6 +205,42 @@ keyboardBinder.Bind(Key.Q, Key.W);
 
 // Now any time the 'Q' button is triggered, it will behave like the 'W' button
 ```
+
+## Swap button bindings
+
+In order to swap the button bindings, we can use the `Swap()` method.
+
+```c#
+keyboardBinder.Swap(Key.Q, Key.W);
+            
+// Alternative option
+            
+keyboardBinder.Bind(Key.Q, Key.W);
+keyboardBinder.Bind(Key.W, Key.Q);
+
+```
+
+## Get current state
+
+Get the current state of the bindings using the `IsKeyBounded()` method, which returns true/false depending on the existence of the binding. And `GetBoundKey()` method which returns the current key to which the specified key belongs.
+
+```c#
+keyboardBinder.Bind(Key.Q, Key.W);
+
+keyboardBinder.IsKeyBounded(Key.Q); // true
+keyboardBinder.GetBoundKey(Key.Q); // W
+keyboardBinder.GetBoundKey(Key.W); // W
+```
+
+## Unbind the key
+
+To unbind buttons, you need to call method one of the `Unbind()` method overloads.
+
+```c#
+keyboardBinder.Unbind(Key.Q);
+keyboardBinder.UnbindAll();
+```
+
 ---
 
 # KeyboardInfo
