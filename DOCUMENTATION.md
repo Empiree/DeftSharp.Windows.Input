@@ -446,7 +446,7 @@ Additional functionality of the library.
 
 The NumpadListener class allows you to easily subscribe to Numpad buttons. It is a decorator over the [KeyboardListener](#keyboardlistener) class. To create an object of this class, it needs to be passed an existing KeyboardListener through which it will create subscriptions. 
 
-Using the `Subscribe()` method, it subscribes to each numeric Numpad key. The method has a single required parameter `Action<Key>` which is triggered when one of the buttons is pressed. To unsubscribe from all events, you need to call the `Unsubscribe()` method.
+Using the `Subscribe()` method, it subscribes to each numeric Numpad key. The method has a single required parameter `Action<Key>` which is triggered when one of the buttons is pressed. To unsubscribe from all created subscriptions, you need to call the `Unsubscribe()` method.
 
 ```c#
 var keyboardListener = new KeyboardListener();
