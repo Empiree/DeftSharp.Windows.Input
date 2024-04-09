@@ -55,7 +55,7 @@ Or you can use the command in the console:
 
 Now, using a basic WPF application as an example, we'll subscribe to our first event, the Escape button press. When this button is pressed, our application should close, regardless of whether our window is currently active or not.
 
-To do this, we'll go into MainWindow.xaml.cs and add a little logic. First of all, we need to create an object of the [KeyboardListener](#keyboardlistener) class, with which we can subscribe to global keyboard input events. 
+To do this, we'll go into `MainWindow.xaml.cs` and add a little logic. We need to create an object of the [KeyboardListener](#keyboardlistener) class, with which we can subscribe to global keyboard input events. 
 
 ![image](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/03970fe2-f8ca-4a2b-ace0-86c3d3c4eada)
 
