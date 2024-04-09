@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 
@@ -10,6 +11,8 @@ namespace DeftSharp.Windows.Input.Keyboard;
 public sealed class NumpadListener
 {
     private readonly KeyboardListener _keyboardListener;
+
+    private readonly HashSet<Guid> _numpadListenerSubscriptionIds = new();
 
     private readonly NumButton[] _numKeys =
     {
@@ -36,7 +39,7 @@ public sealed class NumpadListener
     {
         var keys = _numKeys.Select(n => n.Key);
 
-        _keyboardListener.Subscribe(keys, key =>
+        var subscriptions = _keyboardListener.Subscribe(keys, key =>
         {
             var numKey = _numKeys.FirstOrDefault(n => n.Key == key);
 
@@ -45,6 +48,9 @@ public sealed class NumpadListener
 
             onNumClick(numKey.Number);
         });
+
+        foreach (var subscription in subscriptions)
+            _numpadListenerSubscriptionIds.Add(subscription.Id);
     }
 
     /// <summary>
@@ -52,8 +58,9 @@ public sealed class NumpadListener
     /// </summary>
     public void Unsubscribe()
     {
-        var keys = _numKeys.Select(n => n.Key);
-        foreach (var key in keys)
-            _keyboardListener.Unsubscribe(key);
+        foreach (var numpadListenerSubscriptionId in _numpadListenerSubscriptionIds)
+            _keyboardListener.Unsubscribe(numpadListenerSubscriptionId);
+
+        _numpadListenerSubscriptionIds.Clear();
     }
 }
