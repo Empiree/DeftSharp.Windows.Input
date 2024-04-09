@@ -5,7 +5,24 @@
 
 The library provides flexible and powerful functionality for keyboard and mouse control in the Windows OS. 
 
-## How the library works
+# Overview
+
+- [Introduction](#introduction)
+- [Getting started](#getting-started)
+- [Reference](#reference)
+  - [Keyboard](#keyboard)
+     - [Keyboard Listener](#keyboardlistener)
+     - [Keyboard Manipulator](#keyboardmanipulator)
+     - [Keyboard Binder](#keyboardbinder)
+     - [Keyboard Info](#keyboardinfo)
+  - [Mouse](#mouse)
+     - [Mouse Listener](#mouselistener)
+     - [Mouse Manipulator](#mousemanipulator)
+     - [Mouse Info](#mouseinfo)
+- [Custom Interceptors](#custom-interceptors)
+- [Extensions](#extensions)
+
+# Introduction 
 
 The library is built using [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) methods, with the help of libraries such as [User32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files) and [Kernel32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files). 
 
@@ -15,25 +32,42 @@ New interceptors are registered by your interaction with classes such as [Keyboa
 
 The functionality of the library can be divided into temporary and permanent changes. Temporary ones are those that will be active only while the program is running, such as subscribing to input events. Permanent changes are those that do not depend on your application, such as changes in mouse speed.
 
+# Getting started
 
-# Overview
+### 1. Prerequisites
 
-[Keyboard](#keyboard)
+You should make sure that your application fits the requirements of this library.
 
-- [Keyboard Listener](#keyboardlistener)
-- [Keyboard Manipulator](#keyboardmanipulator)
-- [Keyboard Binder](#keyboardbinder)
-- [Keyboard Info](#keyboardinfo)
+- Version .NET 7 or higher
+- Any Windows UI framework (WPF, WinUI, Avalonia, and MAUI)
 
-[Mouse](#mouse)
+### 2. Installation
 
-- [Mouse Listener](#mouselistener)
-- [Mouse Manipulator](#mousemanipulator)
-- [Mouse Info](#mouseinfo)
+Next, you need to use the [Nuget](https://www.nuget.org/packages/DeftSharp.Windows.Input) package manager and install this library.
 
-[Custom Interceptors](#custom-interceptors)
+![image](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/dc1dfd62-1aea-4bbd-81fb-e48104d3b46e)
 
-[Extensions](#extensions)
+Or you can use the command:
+
+`dotnet add package DeftSharp.Windows.Input`
+
+### 3. Subscribe to the event
+
+Now, using a typical WPF application as an example, we'll subscribe to our first event, the Escape button press. When this button is pressed, our application should close, regardless of whether our window is currently active or not.
+
+To do this, we'll go into MainWindow.xaml.cs and add a little logic. First of all, we need to create an object of the [KeyboardListener](#keyboardlistener) class, with which we can subscribe to global keyboard input events. 
+
+![image](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/03970fe2-f8ca-4a2b-ace0-86c3d3c4eada)
+
+Our application starts, and when the Escape button is pressed, it terminates.
+
+### 4. Explore new options
+
+The DeftSharp library has many different classes for handle user input. Below, you will be able to familiarize yourself with all of them.
+
+# Reference
+
+In this section, you can familiarize yourself with all the existing classes.
 
 # Keyboard
 
