@@ -53,7 +53,7 @@ Each object of the KeyboardListener class stores its own subscriptions. Keep thi
 
 ## Subscribe to the press event
 
-In order to subscribe to press events, you need to call one of the overloads of the subscribe method. 
+In order to subscribe to press events, you need to call one of the subscribe method. 
 
 ```c#
 var keyboardListener = new KeyboardListener();
@@ -73,7 +73,7 @@ TimeSpan.FromSeconds(1), // Interval of callback triggering
 KeyboardEvent.Up); // Subscribe to up events
 ```
 
-Each subscription method returns an `KeySubscription` with data about that subscription.
+Each subscription method returns a subscription object with all the details. Including the unique identifier and event type.
 
 ## Unsubscribe from the event
 
@@ -153,7 +153,7 @@ keyboard.IsKeyLocked(Key.Space); // true
 Also, the class has a `KeyPrevented` event that fires when a press has been prevented by this class.
 
 ```c#
- keyboard.KeyPrevented += args => Trace.WriteLine($"Pressing the {args.KeyPressed} button has been prevented");
+keyboard.KeyPrevented += args => Trace.WriteLine($"Pressing the {args.KeyPressed} button has been prevented");
 ```
 
 ## Set the press interval
