@@ -1,4 +1,4 @@
-﻿using static DeftSharp.Windows.Input.Native.KeyboardAPI;
+﻿using DeftSharp.Windows.Input.Native;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
@@ -10,10 +10,10 @@ public sealed class KeyboardInfo : IKeyboardInfo
     /// <summary>
     /// Gets the current keyboard layout.
     /// </summary>
-    public KeyboardLayout Layout => GetLayout();
+    public KeyboardLayout GetLayout() => KeyboardAPI.GetLayout();
 
     /// <summary>
     /// Gets the current keyboard type.
     /// </summary>
-    public KeyboardType Type => GetKeyboardType();
+    public KeyboardType GetKeyboardType() => KeyboardAPI.GetKeyboardType();
 }

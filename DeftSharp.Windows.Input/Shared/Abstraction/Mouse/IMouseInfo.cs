@@ -2,5 +2,5 @@
 
 public interface IMouseInfo
 {
-    int Speed { get; }
+    int GetSpeed();
 }

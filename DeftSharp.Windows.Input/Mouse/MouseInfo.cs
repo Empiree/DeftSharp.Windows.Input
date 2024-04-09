@@ -10,5 +10,5 @@ public sealed class MouseInfo : IMouseInfo
     /// <summary>
     /// Gets the current mouse speed level.
     /// </summary>
-    public int Speed => GetMouseSpeed();
+    public int GetSpeed() => GetMouseSpeed();
 }
