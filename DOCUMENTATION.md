@@ -38,7 +38,7 @@ The functionality of the library can be divided into temporary and permanent cha
 
 You should make sure that your application fits the requirements of this library.
 
-- Version .NET 7 or higher
+- Version .NET 7 or higher ([Install](https://dotnet.microsoft.com/en-us/download/dotnet))
 - Any Windows UI framework (WPF, WinUI, Avalonia, and MAUI)
 
 ### 2. Installation
@@ -47,13 +47,13 @@ Next, you need to use the [Nuget](https://www.nuget.org/packages/DeftSharp.Windo
 
 ![image](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/dc1dfd62-1aea-4bbd-81fb-e48104d3b46e)
 
-Or you can use the command:
+Or you can use the command in the console:
 
 `dotnet add package DeftSharp.Windows.Input`
 
 ### 3. Subscribe to the event
 
-Now, using a typical WPF application as an example, we'll subscribe to our first event, the Escape button press. When this button is pressed, our application should close, regardless of whether our window is currently active or not.
+Now, using a basic WPF application as an example, we'll subscribe to our first event, the Escape button press. When this button is pressed, our application should close, regardless of whether our window is currently active or not.
 
 To do this, we'll go into MainWindow.xaml.cs and add a little logic. First of all, we need to create an object of the [KeyboardListener](#keyboardlistener) class, with which we can subscribe to global keyboard input events. 
 
