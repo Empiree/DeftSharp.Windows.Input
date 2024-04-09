@@ -3,7 +3,13 @@
 > [!NOTE]
 > Documentation is in the process of being written.
 
-The library provides flexible and powerful functionality for keyboard and mouse control in the Windows OS.
+The library provides flexible and powerful functionality for keyboard and mouse control in the Windows OS. 
+
+## How the library works
+
+The principle of the library is built on a pipeline of interceptors. When a user uses any methods, including event subscriptions, a certain pipeline is formed. Before an event can be successfully processed by the system, it must pass through all registered interceptors. If the pipeline is empty, the library does not use any system resources and does not affect their operation in any way. 
+
+The functionality of the library can be divided into temporary and permanent changes. Temporary ones are those that will be active only while the program is running, such as subscribing to input events. Permanent changes are those that do not depend on your application, such as changes in mouse speed.
 
 It is built using [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) methods, with the help of libraries such as [User32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files) and [Kernel32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files). 
 
@@ -190,14 +196,14 @@ keyboardManipulator.Press(Key.LeftCtrl, Key.V);
 
 # KeyboardBinder
 
-This class allows you to modify the bindings of the specified keys. All bindings are stored in the `BoundedKeys` property.
+The KeyboardBinder class provides the ability to modify the bindings of the specified keys. All bindings are stored in the `BoundedKeys` property.
 
 > [!NOTE]
 > This class works with a single context. Therefore, all your objects of this class have the same state.
 
 ## Change the button bind
 
-To change the bind of a button, all you need to do is call the `Bind()` method. This method always works, even if a bind already exists, it will just change it to a new one.
+To change the button binding, you must call the `Bind()` method. This method always works, even if a bind already exists, it will just change it to a new one.
 
 ```c#
 var keyboardBinder = new KeyboardBinder();
@@ -238,7 +244,7 @@ keyboardBinder.GetBoundKey(Key.W); // W
 
 ## Unbind the key
 
-To unbind buttons, you need to call method one of the `Unbind()` method overloads.
+To unbind buttons, you need to call one of the `Unbind()` method overloads.
 
 ```c#
 var keyboardBinder = new KeyboardBinder();
