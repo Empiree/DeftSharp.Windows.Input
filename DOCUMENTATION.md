@@ -3,8 +3,6 @@
 > [!NOTE]
 > Documentation is in the process of being written.
 
-The library provides flexible and powerful functionality for keyboard and mouse control in the Windows OS. 
-
 # Overview
 
 - [Introduction](#introduction)
@@ -24,7 +22,9 @@ The library provides flexible and powerful functionality for keyboard and mouse 
 
 # Introduction 
 
-The library is built using [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) methods, with the help of libraries such as [User32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files) and [Kernel32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files). 
+The DeftSharp library provides flexible and powerful functionality for keyboard and mouse control in the Windows OS. 
+
+It is built using [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) methods, with the help of libraries such as [User32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files) and [Kernel32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files). 
 
 The principle of the library is based on a chain of interceptors that are formed into a pipeline. Before an incoming event can be successfully processed by the system, it must pass through all registered interceptors. If the pipeline is empty, the library will not use system resources and will not affect their operation in any way.
 
@@ -58,8 +58,6 @@ Now, using a basic WPF application as an example, we'll subscribe to our first e
 To do this, we'll go into `MainWindow.xaml.cs` and add a little logic. We need to create an object of the [KeyboardListener](#keyboardlistener) class, with which we can subscribe to global keyboard input events. 
 
 ![image](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/03970fe2-f8ca-4a2b-ace0-86c3d3c4eada)
-
-Our application starts, and when the Escape button is pressed, it terminates.
 
 ### 4. Explore new options
 
