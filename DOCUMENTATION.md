@@ -147,11 +147,11 @@ The KeyboardManipulator class provides the ability to control the keyboard.
 
 ## Features
 
-- Simulate keyboard control
+- Simulate keyboard input
 - Prevent input events 
 - Set the press interval 
 
-## Simulate keyboard control
+## Simulate keyboard input
 
 You can simulate button presses from the keyboard with this class. The simulated keys are fully compatible with other pressed keys. If you press the Shift button and simulate the call of some key, the Shift modifier will be applied to this input.
 
@@ -396,11 +396,11 @@ The MouseManipulator class provides the ability to control the mouse.
 
 ## Features
 
-- Simulate mouse control
+- Simulate mouse input
 - Prevent input events 
 - Global mouse configuration
 
-## Simulate mouse control
+## Simulate mouse input
 
 You can simulate mouse clicks events.
 
