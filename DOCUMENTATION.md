@@ -202,16 +202,16 @@ keyboard.KeyPrevented += args => Trace.WriteLine($"Pressing the {args.KeyPressed
 The interval setting allows you to control the frequency of presses. With `SetInterval()` method, you will set a global interval for pressing a key on the keyboard. As with locked buttons, the interval will remain until you remove it or the application is completed.
 
 ```c#
-var keyboardManipulator = new KeyboardManipulator();
+var keyboard = new KeyboardManipulator();
             
 // Space will now trigger no more than once per second
-keyboardManipulator.SetInterval(Key.Space, TimeSpan.FromSeconds(1));
+keyboard.SetInterval(Key.Space, TimeSpan.FromSeconds(1));
             
 // Remove interval
-keyboardManipulator.ResetInterval(Key.Space); 
+keyboard.ResetInterval(Key.Space); 
             
 // Remove interval alternative
-keyboardManipulator.SetInterval(Key.Space, TimeSpan.Zero);
+keyboard.SetInterval(Key.Space, TimeSpan.Zero);
 ```
 
 ## Simulate of key presses
@@ -219,13 +219,13 @@ keyboardManipulator.SetInterval(Key.Space, TimeSpan.Zero);
 You can simulate button presses from the keyboard with this class. The simulated keys are fully compatible with other pressed keys. If you press the Shift button and simulate the call of some key, the Shift modifier will be applied to this input.
 
 ```c#
-var keyboardManipulator = new KeyboardManipulator();
+var keyboard = new KeyboardManipulator();
 
 // Single button press            
-keyboardManipulator.Press(Key.Space);
+keyboard.Press(Key.Space);
 
 // Combination press
-keyboardManipulator.Press(Key.LeftCtrl, Key.V);
+keyboard.Press(Key.LeftCtrl, Key.V);
 ```
 ---
 
