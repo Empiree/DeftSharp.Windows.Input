@@ -471,8 +471,6 @@ mouse.InputPrevented += mEvent => Trace.WriteLine($"The {mEvent} event was preve
 
 You can make permanent changes with this class. They will be active even after your application is terminated.
 
-Setting the mouse speed.
-
 ```c#
 var mouse = new MouseManipulator();
             
