@@ -299,7 +299,7 @@ This method helps to find out the active layout of the user.
 var keyboardInfo = new KeyboardInfo();
 
 // Getting the layout
-var layout = keyboardInfo.Layout;
+var layout = keyboardInfo.GetLayout();
             
 Trace.WriteLine(layout.Id); // 1033
 Trace.WriteLine(layout.LocaleId); // 1033
@@ -315,7 +315,7 @@ Up to 7 basic keyboard types are supported.
 var keyboardInfo = new KeyboardInfo();
 
 // Getting the type
-var type = keyboardInfo.Type;
+var type = keyboardInfo.GetKeyboardType();
             
 Trace.WriteLine(type.Name); // IBM enhanced (101- or 102-key) keyboard
 Trace.WriteLine(type.Value); // 4
@@ -487,7 +487,7 @@ This class provides various information about the mouse, both physical and softw
 ```c#
 var mouseInfo = new MouseInfo();
             
-// Getting the layout
+// Getting the speed
 var speed = mouseInfo.GetSpeed();
             
 Trace.WriteLine(speed); // 10
