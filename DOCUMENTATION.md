@@ -82,16 +82,6 @@ Each object of the KeyboardListener class stores its own subscriptions. Keep thi
 > [!NOTE]
 > **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
 
-## Available subscription options
-
-- Subscribe
-- SubscribeAll
-- SubscribeOnce
-- SubscribeSequence
-- SubscribeSequenceOnce
-- SubscribeCombination
-- SubscribeCombinationOnce
-
 ## Subscribe to the press event
 
 In order to subscribe to press events, you need to call one of the subscribe method. 
