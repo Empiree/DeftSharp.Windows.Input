@@ -179,6 +179,14 @@ public sealed class KeyboardListener : IKeyboardListener
         Subscribe(key, (k, _) => onClick(k), intervalOfClick, keyboardEvent);
 
     /// <summary>
+    /// Subscribes to a key with the specified event handler and optional parameters.
+    /// </summary>
+    /// <returns>The created subscription.</returns>
+    public KeySubscription Subscribe(Key key, Action onClick,
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+        Subscribe(key, (_, _) => onClick(), intervalOfClick, keyboardEvent);
+
+    /// <summary>
     /// Subscribes to multiple keys with the specified event handler.
     /// </summary>
     /// <returns>The collection of created subscriptions.</returns>
@@ -187,12 +195,28 @@ public sealed class KeyboardListener : IKeyboardListener
         Subscribe(keys, (k, _) => onClick(k), intervalOfClick, keyboardEvent);
 
     /// <summary>
+    /// Subscribes to multiple keys with the specified event handler.
+    /// </summary>
+    /// <returns>The collection of created subscriptions.</returns>
+    public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action onClick,
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+        Subscribe(keys, (_, _) => onClick(), intervalOfClick, keyboardEvent);
+
+    /// <summary>
     /// Subscribes to a key with the specified event handler to be executed once.
     /// </summary>
     /// <returns>The created subscription.</returns>
     public KeySubscription SubscribeOnce(Key key, Action<Key> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
         SubscribeOnce(key, (k, _) => onClick(k), keyboardEvent);
+
+    /// <summary>
+    /// Subscribes to a key with the specified event handler to be executed once.
+    /// </summary>
+    /// <returns>The created subscription.</returns>
+    public KeySubscription SubscribeOnce(Key key, Action onClick,
+        KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+        SubscribeOnce(key, (_, _) => onClick(), keyboardEvent);
 
     /// <summary>
     /// Subscribes to multiple keys with the specified event handler to be executed once.
@@ -210,6 +234,15 @@ public sealed class KeyboardListener : IKeyboardListener
     public IEnumerable<KeySubscription> SubscribeAll(Action<Key> onClick, TimeSpan? intervalOfClick = null,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
         SubscribeAll((k, _) => onClick(k), intervalOfClick, keyboardEvent);
+
+    /// <summary>
+    /// Subscribes to all possible enum values of type <see cref="Key"/>.
+    /// </summary>
+    /// <remarks>Except <b>Key.None</b></remarks>
+    /// <returns>The collection of created subscriptions.</returns>
+    public IEnumerable<KeySubscription> SubscribeAll(Action onClick, TimeSpan? intervalOfClick = null,
+        KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
+        SubscribeAll((_, _) => onClick(), intervalOfClick, keyboardEvent);
 
     /// <summary>
     /// Unsubscribes the specified key.

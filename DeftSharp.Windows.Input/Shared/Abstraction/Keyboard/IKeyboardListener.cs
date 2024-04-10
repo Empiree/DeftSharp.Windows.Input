@@ -18,34 +18,45 @@ public interface IKeyboardListener : IDisposable
     bool IsWinPressed { get; }
     bool IsListening { get; }
 
-    public KeySubscription Subscribe(Key key, Action<Key> onClick,
+    KeySubscription Subscribe(Key key, Action onClick,
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
+
+    KeySubscription Subscribe(Key key, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
     KeySubscription Subscribe(Key key, Action<Key, KeyboardInputEvent> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
+    IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action onClick,
+        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
-    public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
+    IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
     IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key, KeyboardInputEvent> onClick,
         TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
 
-    public IEnumerable<KeySubscription> SubscribeAll(Action<Key> onClick, TimeSpan? intervalOfClick = null,
+    IEnumerable<KeySubscription> SubscribeAll(Action onClick, TimeSpan? intervalOfClick = null,
+        KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
+
+    IEnumerable<KeySubscription> SubscribeAll(Action<Key> onClick, TimeSpan? intervalOfClick = null,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
     IEnumerable<KeySubscription> SubscribeAll(Action<Key, KeyboardInputEvent> onClick, TimeSpan? intervalOfClick = null,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
 
-    public KeySubscription SubscribeOnce(Key key, Action<Key> onClick,
+    KeySubscription SubscribeOnce(Key key, Action onClick,
+        KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
+
+    KeySubscription SubscribeOnce(Key key, Action<Key> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
     KeySubscription SubscribeOnce(Key key, Action<Key, KeyboardInputEvent> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
-    public IEnumerable<KeySubscription> SubscribeOnce(IEnumerable<Key> keys, Action<Key> onClick,
+    IEnumerable<KeySubscription> SubscribeOnce(IEnumerable<Key> keys, Action<Key> onClick,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
     IEnumerable<KeySubscription> SubscribeOnce(IEnumerable<Key> keys, Action<Key, KeyboardInputEvent> onClick,
