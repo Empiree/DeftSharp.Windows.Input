@@ -95,6 +95,7 @@ mouse.Prevent(PreventMouseEvent.Scroll);
 
 ### Subscription to mouse move and get current coordinates
 
+You can track mouse coordinates in real-time.
 
 ```c#
 var mouseListener = new MouseListener();
