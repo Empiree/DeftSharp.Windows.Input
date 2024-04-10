@@ -80,7 +80,7 @@ This class stores active subscriptions in properties: `Keys`, `Sequences` and `C
 Each object of the KeyboardListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
 > [!NOTE]
-> **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
+> :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
 
 ## Subscribe to the press event
 
@@ -143,7 +143,7 @@ var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
 The KeyboardManipulator class provides the ability to control the keyboard. 
 
 > [!NOTE]
-> This class works with a single context. Therefore, all your objects of this class have the same state.
+> :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
 
 ## Features
 
@@ -225,7 +225,7 @@ keyboard.SetInterval(Key.Space, TimeSpan.Zero);
 The KeyboardBinder class provides the ability to modify the bindings of the specified keys. All bindings are stored in the `BoundedKeys` property.
 
 > [!NOTE]
-> This class works with a single context. Therefore, all your objects of this class have the same state.
+> :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
 
 ## Change the button bind
 
@@ -335,7 +335,7 @@ This class stores active subscriptions in `Subscriptions` property.
 Each object of the MouseListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
 > [!NOTE]
-> **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
+> :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
 
 ## Subscribe to the mouse events
 
@@ -392,7 +392,7 @@ Trace.WriteLine($"X: {position.X} Y: {position.Y}"); // X: 943 Y: 378
 The MouseManipulator class provides the ability to control the mouse. 
 
 > [!NOTE]
-> This class works with a single context. Therefore, all your objects of this class have the same state.
+> :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
 
 ## Features
 
@@ -514,7 +514,7 @@ To create an interceptor you need to inherit from `MouseInterceptor` or `Keyboar
 Also, interceptors have two optional methods, such as `OnInputSuccess` and `OnInputFailure`. The `OnInputSuccess` method is called when the input event is successfully processed by all interceptors. In this method we can get the details of the event and execute the code we need. The `OnInputFailure` method is called if the event was blocked, and besides the event details we can also get the list of interceptors that did not approve this input.
 
 > [!NOTE]
-> **Best Practice:** Design interceptors so that each interceptor solves only one specific problem.
+> :bulb: **Best Practice:** Design interceptors so that each interceptor solves only one specific problem.
 
 ## Examples
 
