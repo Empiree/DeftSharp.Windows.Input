@@ -337,38 +337,131 @@ These classes provide global control and observation of the mouse.
 
 # MouseListener
 
-This class allows you to subscribe to mouse events, as well as receive various information, such as the current cursor coordinates.
+The MouseListener class provides the ability to subscribe to global mouse input events. This will give you the information you need about mouse clicks, scrolling, mouse movement and etc. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to suit your needs.
+
+This class stores active subscriptions in `Subscriptions` property.
+
+Each object of the MouseListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
 > [!NOTE]
 > **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
 
-### Subscribe to mouse move event and get current coordinates
+## Subscribe to the mouse events
+
+In order to subscribe to mouse events, you need to call one of the subscribe method.
 
 ```c#
 var mouseListener = new MouseListener();
 
-mouseListener.Subscribe(MouseEvent.Move, () =>
-     Label.Text = $"X: {mouseListener.Position.X} Y: {mouseListener.Position.Y}");
+// Subscription for left button down event
+mouseListener.Subscribe(MouseEvent.LeftButtonDown,
+    () => Trace.WriteLine($"The left mouse button was pressed"));
+
+// One-time subscription            
+mouseListener.SubscribeOnce(MouseEvent.RightButtonDown,
+    () => Trace.WriteLine($"The right mouse button was pressed"));
+
+// Subscription to generic mouse down event that will trigger on any mouse button            
+ mouseListener.Subscribe(MouseEvent.ButtonDown, mouseEvent 
+     => Trace.WriteLine($"The {mouseEvent} was pressed"));
 ```
-![MouseListenerSample](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/9c9a04f6-cb39-491c-b8de-2cb6b435e112)
+
+Each subscription method returns a subscription object with all the details. Including the unique identifier and event type.
+
+## Unsubscribe from the event
+
+You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once.
+
+```c#
+// Subscribe to the event
+var subscription = mouseListener.Subscribe(MouseEvent.MiddleButtonDown, () => { });
+
+// 3 different unsubscribe options
+mouseListener.Unsubscribe(subscription.Id);
+mouseListener.Unsubscribe(MouseEvent.MiddleButtonDown);
+mouseListener.UnsubscribeAll(); 
+```
+
+## Get mouse position
+
+You can get the position of the mouse using the `Position` property. It will return you the Point class with two values as X and Y.
+
+```c#
+var mouseListener = new MouseListener();
+
+var position = mouseListener.Position;
+            
+Trace.WriteLine($"X: {position.X} Y: {position.Y}"); // X: 943 Y: 378
+```
 
 ---
 
 # MouseManipulator
 
-This class allows you to control the mouse. It is based on the principle of KeyboardManipulator.
+The MouseManipulator class provides the ability to control the mouse. 
+
+> [!NOTE]
+> This class works with a single context. Therefore, all your objects of this class have the same state.
+
+## Prevent input events
+
+You can prevent global input events by default or with some condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or the application is completed.
 
 ```c#
-var mouseManipulator = new MouseManipulator();
+var mouse = new MouseManipulator();
+        
+// Each scroll event will be ignored
+mouse.Prevent(PreventMouseEvent.Scroll); 
 
-mouseManipulator.DoubleClick();
-mouseManipulator.Scroll(150);            
-mouseManipulator.Click(100, 100, MouseButton.Right);
+// Prevent with condition
+mouse.Prevent(PreventMouseEvent.RightButton, () => 
+{
+   var currentTime = DateTime.Now;
+
+   return currentTime.Minute > 30;
+});
+
+// Release locked keys
+mouse.ReleaseAll();
 ```
+
+To check the current state of a key you can use the `IsKeyLocked()` method.
+
+```c#
+mouse.Prevent(PreventMouseEvent.Move); 
+
+mouse.IsKeyLocked(PreventMouseEvent.Move); // true
+```
+
+Also, the class has a `InputPrevented` event that fires when a input has been prevented by this class.
+
+```c#
+mouse.InputPrevented += mEvent => Trace.WriteLine($"The {mEvent} event was prevented");
+```
+
+## Simulate of mouse input
+
+You can simulate input from the mouse with this class. The simulated keys are fully compatible with other pressed keys. 
+
 
 ---
 
 # MouseInfo
+
+This class provides various information about the mouse, both physical and software.
+
+## Get the current mouse speed
+
+```c#
+var mouseInfo = new MouseInfo();
+            
+// Getting the layout
+var speed = mouseInfo.GetSpeed();
+            
+Trace.WriteLine(speed); // 10
+```
+
+You can change the speed of the mouse using the [MouseManipulator](#mousemanipulator) class.
 
 ---
 
