@@ -80,7 +80,7 @@ This class stores active subscriptions in properties: `Keys`, `Sequences` and `C
 Each object of the KeyboardListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
 > [!NOTE]
-> :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
+> :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This will allow the application to correctly release all system resources it uses.
 
 ## Subscribe to the press event
 
@@ -335,7 +335,7 @@ This class stores active subscriptions in `Subscriptions` property.
 Each object of the MouseListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
 > [!NOTE]
-> :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This allows the application to release all the system resources it is using.
+> :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This will allow the application to correctly release all system resources it uses.
 
 ## Subscribe to the mouse events
 
