@@ -157,9 +157,23 @@ The KeyboardManipulator class provides the ability to control the keyboard.
 
 ## Features
 
+- Simulate keyboard control
 - Prevent input events 
 - Set the press interval 
-- Simulate of key presses
+
+## Simulate keyboard control
+
+You can simulate button presses from the keyboard with this class. The simulated keys are fully compatible with other pressed keys. If you press the Shift button and simulate the call of some key, the Shift modifier will be applied to this input.
+
+```c#
+var keyboard = new KeyboardManipulator();
+
+// Single button press            
+keyboard.Press(Key.Space);
+
+// Combination press
+keyboard.Press(Key.LeftCtrl, Key.V);
+```
 
 ## Prevent input events
 
@@ -214,19 +228,6 @@ keyboard.ResetInterval(Key.Space);
 keyboard.SetInterval(Key.Space, TimeSpan.Zero);
 ```
 
-## Simulate of key presses
-
-You can simulate button presses from the keyboard with this class. The simulated keys are fully compatible with other pressed keys. If you press the Shift button and simulate the call of some key, the Shift modifier will be applied to this input.
-
-```c#
-var keyboard = new KeyboardManipulator();
-
-// Single button press            
-keyboard.Press(Key.Space);
-
-// Combination press
-keyboard.Press(Key.LeftCtrl, Key.V);
-```
 ---
 
 # KeyboardBinder
@@ -403,6 +404,43 @@ The MouseManipulator class provides the ability to control the mouse.
 > [!NOTE]
 > This class works with a single context. Therefore, all your objects of this class have the same state.
 
+## Features
+
+- Simulate mouse control
+- Prevent input events 
+- Global mouse configuration
+
+## Simulate mouse control
+
+You can simulate mouse clicks events.
+
+```c#
+var mouse = new MouseManipulator();
+      
+mouse.Click();
+mouse.DoubleClick();
+```
+
+You can also set the coordinates of moves and clicks.
+
+```c#
+// Sets the mouse cursor to X:840 Y:420 coordinates
+mouse.SetPosition(840, 420); 
+
+// Right click by coordinates
+mouse.Click(500, 500, MouseButton.Right);
+```
+
+You can scroll the mouse wheel in the direction you want.
+
+```c#
+// Scroll up
+mouse.Scroll(450);
+            
+// Scroll down
+mouse.Scroll(-150);
+```
+
 ## Prevent input events
 
 You can prevent global input events by default or with some condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or the application is completed.
@@ -439,11 +477,17 @@ Also, the class has a `InputPrevented` event that fires when a input has been pr
 mouse.InputPrevented += mEvent => Trace.WriteLine($"The {mEvent} event was prevented");
 ```
 
-## Simulate of mouse input
+## Global mouse configuration
 
-You can simulate input from the mouse with this class. The simulated keys are fully compatible with other pressed keys. 
+You can make permanent changes with this class. They will be active even after your application is terminated.
 
+Setting the mouse speed.
 
+```c#
+var mouse = new MouseManipulator();
+            
+mouse.SetMouseSpeed(5); // changes the mouse speed on your system
+```
 ---
 
 # MouseInfo
