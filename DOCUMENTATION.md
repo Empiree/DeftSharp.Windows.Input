@@ -59,7 +59,7 @@ To do this, we'll go into `MainWindow.xaml.cs` and add a little logic. We need t
 
 ![image](https://github.com/Empiree/DeftSharp.Windows.Input/assets/60399216/03970fe2-f8ca-4a2b-ace0-86c3d3c4eada)
 
-### 4. Explore new options
+### 4. Explore the library's features
 
 The DeftSharp library has many different classes for handle user input. Below, you will be able to familiarize yourself with all of them.
 
