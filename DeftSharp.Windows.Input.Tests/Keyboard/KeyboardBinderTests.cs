@@ -105,7 +105,7 @@ public class KeyboardBinderTests
             keyboardBinder.Bind(keys, Key.A);
             Assert.Equal(4, keyboardBinder.BoundedKeys.Count);
 
-            keyboardBinder.UnbindAll();
+            keyboardBinder.Unbind();
 
             Assert.Empty(keyboardBinder.BoundedKeys);
         });

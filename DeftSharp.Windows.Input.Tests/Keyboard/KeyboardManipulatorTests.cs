@@ -34,7 +34,7 @@ public class KeyboardManipulatorTests : IDisposable
 
             Assert.Equal(keyboardManipulator1.LockedKeys.Count(), keyboardManipulator2.LockedKeys.Count());
 
-            keyboardManipulator1.ReleaseAll();
+            keyboardManipulator1.Release();
 
             Assert.Empty(keyboardManipulator2.LockedKeys);
         });
@@ -56,7 +56,7 @@ public class KeyboardManipulatorTests : IDisposable
             Assert.Equal(keyboardManipulator1.LockedKeys.Count(), keyboardManipulator2.LockedKeys.Count());
             Assert.Equal(keyboardManipulator2.LockedKeys.Count(), keyboardManipulator3.LockedKeys.Count());
 
-            keyboardManipulator1.ReleaseAll();
+            keyboardManipulator1.Release();
 
             Assert.Empty(keyboardManipulator2.LockedKeys);
         });
@@ -74,7 +74,7 @@ public class KeyboardManipulatorTests : IDisposable
             keyboardManipulator1.Prevent(Key.Q);
             keyboardManipulator2.Prevent(Key.W);
 
-            keyboardManipulator3.ReleaseAll();
+            keyboardManipulator3.Release();
 
             Assert.Empty(keyboardManipulator1.LockedKeys);
             Assert.Empty(keyboardManipulator2.LockedKeys);

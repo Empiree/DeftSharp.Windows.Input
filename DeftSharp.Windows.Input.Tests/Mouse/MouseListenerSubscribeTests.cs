@@ -16,7 +16,7 @@ public sealed class MouseListenerSubscribeTests
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
             Assert.Single(listener.Subscriptions);
 
-            listener.UnsubscribeAll();
+            listener.Unsubscribe();
         });
     }
 
@@ -34,7 +34,7 @@ public sealed class MouseListenerSubscribeTests
             Assert.True(listener.IsListening, "Keyboard listener is not listening subscription events.");
             Assert.Equal(3, listener.Subscriptions.Count(s => s.Event == MouseEvent.Move));
 
-            listener.UnsubscribeAll();
+            listener.Unsubscribe();
         });
     }
 
@@ -51,7 +51,7 @@ public sealed class MouseListenerSubscribeTests
             Assert.Equal(1, listener.Subscriptions.Count(s => s.SingleUse));
             Assert.Single(listener.Subscriptions);
 
-            listener.UnsubscribeAll();
+            listener.Unsubscribe();
         });
     }
 }

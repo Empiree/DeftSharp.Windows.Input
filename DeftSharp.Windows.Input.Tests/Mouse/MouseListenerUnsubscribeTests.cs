@@ -29,7 +29,7 @@ public sealed class MouseListenerUnsubscribeTests
         RunListenerTest(listener =>
         {
             listener.Subscribe(MouseEvent.LeftButtonDown, () => { });
-            listener.UnsubscribeAll();
+            listener.Unsubscribe();
         });
     }
 
@@ -42,7 +42,7 @@ public sealed class MouseListenerUnsubscribeTests
             listener.Subscribe(MouseEvent.RightButtonUp, () => { });
             listener.Subscribe(MouseEvent.RightButtonDown, () => { });
             listener.Subscribe(MouseEvent.RightButtonUp, () => { });
-            listener.UnsubscribeAll();
+            listener.Unsubscribe();
         });
     }
 
@@ -66,7 +66,7 @@ public sealed class MouseListenerUnsubscribeTests
     [Fact]
     public void MouseListener_UnsubscribeAll()
     {
-        RunListenerTest(listener => listener.UnsubscribeAll());
+        RunListenerTest(listener => listener.Unsubscribe());
     }
 
     [Fact]

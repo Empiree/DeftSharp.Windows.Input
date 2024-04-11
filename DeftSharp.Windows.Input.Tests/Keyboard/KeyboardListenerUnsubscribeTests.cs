@@ -29,7 +29,7 @@ public sealed class KeyboardListenerUnsubscribeTests
         RunListenerTest(listener =>
         {
             listener.Subscribe(Key.A, _ => { });
-            listener.UnsubscribeAll();
+            listener.Unsubscribe();
         });
     }
 
@@ -68,14 +68,14 @@ public sealed class KeyboardListenerUnsubscribeTests
             Key[] keys = { Key.W, Key.A, Key.S, Key.D };
             listener.Subscribe(keys, _ => { });
             listener.Subscribe(Key.A, _ => { });
-            listener.UnsubscribeAll();
+            listener.Unsubscribe();
         });
     }
 
     [Fact]
     public void KeyboardListener_UnsubscribeAll()
     {
-        RunListenerTest(listener => listener.UnsubscribeAll());
+        RunListenerTest(listener => listener.Unsubscribe());
     }
 
     [Fact]
@@ -105,7 +105,7 @@ public sealed class KeyboardListenerUnsubscribeTests
             for (var i = 0; i < 5; i++) 
                 listener.SubscribeCombination(combination, () => { });
 
-            listener.UnsubscribeAll();
+            listener.Unsubscribe();
         });
     }
 
@@ -158,7 +158,7 @@ public sealed class KeyboardListenerUnsubscribeTests
             for (int i = 0; i < 5; ++i)
                 listener.SubscribeSequence(sequence, () => { });
 
-            listener.UnsubscribeAll();
+            listener.Unsubscribe();
         });
     }
 }
