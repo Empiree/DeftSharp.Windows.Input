@@ -28,7 +28,7 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor
 
     public override void Dispose()
     {
-        UnsubscribeAll();
+        Unsubscribe();
         base.Dispose();
     }
 
@@ -53,7 +53,7 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor
         _subscriptions.Remove(keyboardSubscribe);
     }
 
-    public void UnsubscribeAll()
+    public void Unsubscribe()
     {
         if (_subscriptions.Any())
             _subscriptions.Clear();

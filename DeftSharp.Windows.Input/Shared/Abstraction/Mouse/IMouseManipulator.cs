@@ -23,5 +23,5 @@ public interface IMouseManipulator : IDisposable
 
     void Prevent(PreventMouseEvent mouseEvent, Func<bool>? predicate = null);
     void Release(PreventMouseEvent mouseEvent);
-    void ReleaseAll();
+    void Release();
 }

@@ -262,11 +262,11 @@ public sealed class KeyboardListener : IKeyboardListener
     /// <summary>
     /// Unsubscribes all subscriptions.
     /// </summary>
-    public void UnsubscribeAll()
+    public void Unsubscribe()
     {
-        _listener.UnsubscribeAll();
-        _sequenceListener.UnsubscribeAll();
-        _combinationListener.UnsubscribeAll();
+        _listener.Unsubscribe();
+        _sequenceListener.Unsubscribe();
+        _combinationListener.Unsubscribe();
     }
 
     /// <summary>

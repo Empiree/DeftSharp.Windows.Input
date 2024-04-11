@@ -48,7 +48,7 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
         _subscriptions.Remove(keyboardSubscribe);
     }
 
-    public void UnsubscribeAll()
+    public void Unsubscribe()
     {
         if (_subscriptions.Any())
             _subscriptions.Clear();
@@ -56,7 +56,7 @@ internal sealed class KeyboardListenerInterceptor : KeyboardInterceptor
 
     public override void Dispose()
     {
-        UnsubscribeAll();
+        Unsubscribe();
         base.Dispose();
     }
 

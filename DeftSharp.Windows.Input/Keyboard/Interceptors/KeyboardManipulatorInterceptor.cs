@@ -39,7 +39,7 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
         TryUnhook();
     }
 
-    public void ReleaseAll()
+    public void Release()
     {
         _lockedKeys.Clear();
         Unhook();
@@ -54,7 +54,7 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
 
     public override void Dispose()
     {
-        ReleaseAll();
+        Release();
         base.Dispose();
     }
 

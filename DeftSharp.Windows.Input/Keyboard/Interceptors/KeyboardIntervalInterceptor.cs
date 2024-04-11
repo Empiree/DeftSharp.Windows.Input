@@ -36,7 +36,7 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
         Hook();
     }
 
-    public void ResetIntervals()
+    public void ResetInterval()
     {
         _keyClickIntervals.Clear();
         Unhook();
@@ -44,7 +44,7 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
 
     public override void Dispose()
     {
-        ResetIntervals();
+        ResetInterval();
         base.Dispose();
     }
 

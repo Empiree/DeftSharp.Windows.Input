@@ -59,7 +59,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
         TryUnhook();
     }
 
-    public void ReleaseAll()
+    public void Release()
     {
         if (!_lockedKeys.Any())
             return;
@@ -77,7 +77,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
     public override void Dispose()
     {
-        ReleaseAll();
+        Release();
         base.Dispose();
     }
 

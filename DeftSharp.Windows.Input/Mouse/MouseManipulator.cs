@@ -52,7 +52,7 @@ public sealed class MouseManipulator : IMouseManipulator
     /// <summary>
     /// Releases the prevention of all mouse events.
     /// </summary>
-    public void ReleaseAll() => _mouseInterceptor.ReleaseAll();
+    public void Release() => _mouseInterceptor.Release();
 
     /// <summary>
     /// Sets the position of the mouse cursor.

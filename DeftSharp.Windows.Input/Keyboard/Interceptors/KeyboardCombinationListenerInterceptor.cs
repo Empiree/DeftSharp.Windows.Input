@@ -36,7 +36,7 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
         _subscriptions.Add(subscription);
     }
 
-    public void UnsubscribeAll() => _subscriptions.Clear();
+    public void Unsubscribe() => _subscriptions.Clear();
 
     public void Unsubscribe(Guid id)
     {
@@ -51,7 +51,7 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
 
     public override void Dispose()
     {
-        UnsubscribeAll();
+        Unsubscribe();
         base.Dispose();
     }
 

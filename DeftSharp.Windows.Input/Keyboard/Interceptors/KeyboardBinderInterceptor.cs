@@ -49,7 +49,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
             Unhook();
     }
 
-    public void UnbindAll()
+    public void Unbind()
     {
         var boundedKeys = _boundedKeys.Keys.ToArray();
         foreach (var boundedKey in boundedKeys)
@@ -62,7 +62,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
 
     public override void Dispose()
     {
-        UnbindAll();
+        Unbind();
         base.Dispose();
     }
 

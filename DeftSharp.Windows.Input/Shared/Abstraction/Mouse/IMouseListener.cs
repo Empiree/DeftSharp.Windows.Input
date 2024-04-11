@@ -20,5 +20,5 @@ public interface IMouseListener : IDisposable
 
     void Unsubscribe(MouseEvent mouseEvent);
     void Unsubscribe(Guid id);
-    void UnsubscribeAll();
+    void Unsubscribe();
 }

@@ -97,7 +97,7 @@ public sealed class MouseListener : IMouseListener
     /// <summary>
     /// Unsubscribes all mouse event subscriptions.
     /// </summary>
-    public void UnsubscribeAll() => _mouseInterceptor.UnsubscribeAll();
+    public void Unsubscribe() => _mouseInterceptor.Unsubscribe();
 
     /// <summary>
     /// Disposes of all resources used by the mouse listener.

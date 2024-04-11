@@ -48,7 +48,7 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
         _subscriptions.Remove(mouseEvent);
     }
 
-    public void UnsubscribeAll()
+    public void Unsubscribe()
     {
         if (_subscriptions.Any())
             _subscriptions.Clear();
@@ -58,7 +58,7 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
 
     public override void Dispose()
     {
-        UnsubscribeAll();
+        Unsubscribe();
         base.Dispose();
     }
 

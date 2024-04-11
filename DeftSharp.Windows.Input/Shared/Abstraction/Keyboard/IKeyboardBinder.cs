@@ -14,5 +14,5 @@ public interface IKeyboardBinder
     void Swap(Key first, Key second);
     void Unbind(Key key);
     void Unbind(IEnumerable<Key> keys);
-    void UnbindAll();
+    void Unbind();
 }

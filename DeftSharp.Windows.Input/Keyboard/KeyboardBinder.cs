@@ -67,5 +67,5 @@ public sealed class KeyboardBinder : IKeyboardBinder
     /// <summary>
     /// Unbinds all keys.
     /// </summary>
-    public void UnbindAll() => _keyboardBinder.UnbindAll();
+    public void Unbind() => _keyboardBinder.Unbind();
 }

@@ -59,7 +59,7 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     /// <summary>
     /// Resets all press intervals.
     /// </summary>
-    public void ResetIntervals() => _intervalInterceptor.ResetIntervals();
+    public void ResetInterval() => _intervalInterceptor.ResetInterval();
 
     /// <summary>
     /// Sets the press interval for the specified key.
@@ -111,7 +111,7 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     /// <summary>
     /// Releases all currently pressed keys.
     /// </summary>
-    public void ReleaseAll() => _manipulator.ReleaseAll();
+    public void Release() => _manipulator.Release();
 
     /// <summary>
     /// Disposes of all resources used by the keyboard manipulator.

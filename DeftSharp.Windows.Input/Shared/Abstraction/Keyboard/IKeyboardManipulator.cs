@@ -18,10 +18,10 @@ public interface IKeyboardManipulator : IDisposable
     void Prevent(IEnumerable<Key> keys, Func<bool>? predicate = null);
     void SetInterval(Key key, TimeSpan interval);
     void SetInterval(IEnumerable<Key> keys, TimeSpan interval);
-    void ResetIntervals();
+    void ResetInterval();
     void ResetInterval(Key key);
     void ResetInterval(IEnumerable<Key> keys);
     void Release(Key key);
     void Release(IEnumerable<Key> keys);
-    void ReleaseAll();
+    void Release();
 }
