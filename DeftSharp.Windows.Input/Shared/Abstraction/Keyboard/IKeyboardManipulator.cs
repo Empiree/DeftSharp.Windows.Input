@@ -14,6 +14,8 @@ public interface IKeyboardManipulator : IDisposable
 
     void Press(Key key);
     void Press(params Key[] keys);
+    void Simulate(Key key, KeyboardInputEvent keyboardEvent);
+    void Simulate(IEnumerable<Key> keys, KeyboardInputEvent keyboardEvent);
     void Prevent(Key key, Func<bool>? predicate = null);
     void Prevent(IEnumerable<Key> keys, Func<bool>? predicate = null);
     void SetInterval(Key key, TimeSpan interval);

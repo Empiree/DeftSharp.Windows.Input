@@ -119,6 +119,29 @@ internal static class KeyboardAPI
     }
 
     /// <summary>
+    /// Simulates a keyboard input event for the specified key.
+    /// </summary>
+    /// <param name="key">The key to simulate.</param>
+    /// <param name="keyboardEvent">The type of keyboard input event.</param>
+    /// <exception cref="NotImplementedException">Thrown if the specified keyboard event is not implemented.</exception>
+    internal static void Simulate(Key key, KeyboardInputEvent keyboardEvent)
+    {
+        var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
+
+        switch (keyboardEvent)
+        {
+            case KeyboardInputEvent.KeyDown:
+                SimulateKeyDown(keyCode);
+                break;
+            case KeyboardInputEvent.KeyUp:
+                SimulateKeyUp(keyCode);
+                break;
+            default:
+                throw new NotImplementedException(nameof(keyboardEvent));
+        }
+    }
+
+    /// <summary>
     /// Retrieves the handle to the current keyboard layout.
     /// </summary>
     internal static IntPtr GetLayoutHandle()
@@ -130,16 +153,32 @@ internal static class KeyboardAPI
     /// <param name="keyCode">The virtual key code of the key to simulate pressing.</param>
     /// <returns>True if the key press simulation was successful; otherwise, false.</returns>
     private static bool SimulateKeyPress(ushort keyCode)
+        => SimulateKeyDown(keyCode) && SimulateKeyUp(keyCode);
+
+    /// <summary>
+    /// Simulates a key down event for the specified virtual key code.
+    /// </summary>
+    /// <param name="keyCode">The virtual key code of the key to simulate.</param>
+    /// <returns>
+    /// <c>true</c> if the function succeeds, <c>false</c> otherwise. To get extended error information, call GetLastError.
+    /// </returns>
+    private static bool SimulateKeyDown(ushort keyCode)
     {
-        var input = CreateInput(keyCode);
-        var result = SendInput(input);
+        var input = CreateInput(keyCode, InputKeyDown);
+        return SendInput(input);
+    }
 
-        if (!result)
-            return false;
-
-        input.u.ki.dwFlags = InputKeyUp;
-        result = SendInput(input);
-        return result;
+    /// <summary>
+    /// Simulates a key up event for the specified virtual key code.
+    /// </summary>
+    /// <param name="keyCode">The virtual key code of the key to simulate.</param>
+    /// <returns>
+    /// <c>true</c> if the function succeeds, <c>false</c> otherwise. To get extended error information, call GetLastError.
+    /// </returns>
+    private static bool SimulateKeyUp(ushort keyCode)
+    {
+        var input = CreateInput(keyCode, InputKeyUp);
+        return SendInput(input);
     }
 
     /// <summary>
