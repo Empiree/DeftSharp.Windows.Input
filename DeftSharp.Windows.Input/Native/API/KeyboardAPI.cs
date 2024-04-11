@@ -81,7 +81,7 @@ internal static class KeyboardAPI
     internal static bool IsKeyPressed(Key key)
     {
         var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
-        var keyState = GetKeyState(keyCode);
+        var keyState = GetAsyncKeyState(keyCode);
         return (keyState & KeyPressedFlag) != 0;
     }
 
