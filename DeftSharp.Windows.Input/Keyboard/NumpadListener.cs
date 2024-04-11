@@ -12,7 +12,7 @@ public sealed class NumpadListener
 {
     private readonly KeyboardListener _keyboardListener;
 
-    private readonly HashSet<Guid> _numpadListenerSubscriptionIds = new();
+    private readonly HashSet<Guid> _subscriptionIds;
 
     private readonly NumButton[] _numKeys =
     {
@@ -23,11 +23,17 @@ public sealed class NumpadListener
     };
 
     /// <summary>
+    /// Checks if the numpad listener is actively listening for events.
+    /// </summary>
+    public bool IsListening => _subscriptionIds.Any();
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="NumpadListener"/> class.
     /// </summary>
     /// <param name="keyboardListener">The keyboard listener instance to use for listening to key presses.</param>
     public NumpadListener(KeyboardListener keyboardListener)
     {
+        _subscriptionIds = new HashSet<Guid>();
         _keyboardListener = keyboardListener;
     }
 
@@ -50,7 +56,7 @@ public sealed class NumpadListener
         });
 
         foreach (var subscription in subscriptions)
-            _numpadListenerSubscriptionIds.Add(subscription.Id);
+            _subscriptionIds.Add(subscription.Id);
     }
 
     /// <summary>
@@ -58,8 +64,7 @@ public sealed class NumpadListener
     /// </summary>
     public void Unsubscribe()
     {
-        _keyboardListener.Unsubscribe(_numpadListenerSubscriptionIds);
-
-        _numpadListenerSubscriptionIds.Clear();
+        _keyboardListener.Unsubscribe(_subscriptionIds);
+        _subscriptionIds.Clear();
     }
 }
