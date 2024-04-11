@@ -93,6 +93,15 @@ public sealed class MouseListener : IMouseListener
     /// </summary>
     public void Unsubscribe(Guid id) =>
         _mouseInterceptor.Unsubscribe(id);
+    
+    /// <summary>
+    /// Unsubscribes all subscriptions associated with the specified identifiers.
+    /// </summary>
+    public void Unsubscribe(IEnumerable<Guid> ids)
+    {
+        foreach (var id in ids.Distinct())
+            Unsubscribe(id);
+    }
 
     /// <summary>
     /// Unsubscribes all mouse event subscriptions.

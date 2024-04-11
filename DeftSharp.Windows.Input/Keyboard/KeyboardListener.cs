@@ -260,6 +260,15 @@ public sealed class KeyboardListener : IKeyboardListener
     }
 
     /// <summary>
+    /// Unsubscribes all subscriptions associated with the specified identifiers.
+    /// </summary>
+    public void Unsubscribe(IEnumerable<Guid> ids)
+    {
+        foreach (var id in ids.Distinct())
+            Unsubscribe(id);
+    }
+
+    /// <summary>
     /// Unsubscribes all subscriptions.
     /// </summary>
     public void Unsubscribe()

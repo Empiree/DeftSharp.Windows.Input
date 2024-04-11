@@ -58,8 +58,7 @@ public sealed class NumpadListener
     /// </summary>
     public void Unsubscribe()
     {
-        foreach (var numpadListenerSubscriptionId in _numpadListenerSubscriptionIds)
-            _keyboardListener.Unsubscribe(numpadListenerSubscriptionId);
+        _keyboardListener.Unsubscribe(_numpadListenerSubscriptionIds);
 
         _numpadListenerSubscriptionIds.Clear();
     }
