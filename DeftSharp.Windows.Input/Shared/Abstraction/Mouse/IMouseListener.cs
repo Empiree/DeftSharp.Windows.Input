@@ -22,4 +22,6 @@ public interface IMouseListener : IDisposable
     void Unsubscribe(Guid id);
     void Unsubscribe(IEnumerable<Guid> ids);
     void Unsubscribe();
+
+    bool IsKeyPressed(MouseButton button);
 }

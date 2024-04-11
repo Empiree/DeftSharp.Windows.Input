@@ -56,6 +56,8 @@ internal sealed class MouseListenerInterceptor : MouseInterceptor
 
     public Point GetPosition() => Mouse.GetPosition();
 
+    public bool IsKeyPressed(MouseButton button) => Mouse.IsKeyPressed(button);
+
     public override void Dispose()
     {
         Unsubscribe();

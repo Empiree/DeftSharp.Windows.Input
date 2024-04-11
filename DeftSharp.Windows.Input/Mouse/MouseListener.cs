@@ -109,6 +109,11 @@ public sealed class MouseListener : IMouseListener
     public void Unsubscribe() => _mouseInterceptor.Unsubscribe();
 
     /// <summary>
+    /// Checks if the specified key is currently pressed.
+    /// </summary>
+    public bool IsKeyPressed(MouseButton button) => _mouseInterceptor.IsKeyPressed(button);
+
+    /// <summary>
     /// Disposes of all resources used by the mouse listener.
     /// </summary>
     public void Dispose() => _mouseInterceptor.Dispose();

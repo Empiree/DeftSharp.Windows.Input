@@ -2,6 +2,7 @@
 using DeftSharp.Windows.Input.Mouse;
 using DeftSharp.Windows.Input.Native.System;
 using static DeftSharp.Windows.Input.Native.System.InputMessages;
+using static DeftSharp.Windows.Input.Native.SystemEvents;
 using static DeftSharp.Windows.Input.Native.User32;
 
 namespace DeftSharp.Windows.Input.Native;
@@ -19,6 +20,26 @@ internal static class MouseAPI
     {
         GetCursorPos(out var position);
         return position;
+    }
+    
+    /// <summary>
+    /// Determines whether the specified mouse button is currently pressed.
+    /// </summary>
+    /// <param name="button">The mouse button to check.</param>
+    /// <returns>
+    /// <c>true</c> if the specified mouse button is currently pressed; otherwise, <c>false</c>.
+    /// </returns>
+    internal static bool IsMouseButtonPressed(MouseButton button)
+    {
+        var vkButton = button switch
+        {
+            MouseButton.Left => 0x01,
+            MouseButton.Right => 0x02,
+            _ => throw new NotImplementedException(nameof(button))
+        };
+
+        var state = GetAsyncKeyState(vkButton);
+        return (state & KeyPressedFlag) != 0;
     }
 
     /// <summary>

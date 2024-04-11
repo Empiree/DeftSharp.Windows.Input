@@ -205,4 +205,15 @@ internal static class User32
     /// </returns>
     [DllImport("user32.dll", SetLastError = true)]
     internal static extern int GetKeyboardType(int nTypeFlag);
+
+    /// <summary>
+    /// Retrieves the status of the specified virtual key.
+    /// </summary>
+    /// <param name="vKey">The virtual key code.</param>
+    /// <returns>
+    /// If the most significant bit is set, the key is down; otherwise, it is up.
+    /// If the least significant bit is set, the key was pressed after the previous call to GetAsyncKeyState.
+    /// </returns>
+    [DllImport("user32.dll")]
+    public static extern short GetAsyncKeyState(int vKey);
 }

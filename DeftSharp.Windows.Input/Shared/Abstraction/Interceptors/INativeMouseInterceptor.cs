@@ -6,6 +6,7 @@ namespace DeftSharp.Windows.Input.Mouse;
 internal interface INativeMouseInterceptor : IRequestedInterceptor
 {
     event MouseInputDelegate? MouseInput;
+    bool IsKeyPressed(MouseButton button);
     Point GetPosition();
     void SetPosition(int x, int y);
     void SetMouseSpeed(int speed);

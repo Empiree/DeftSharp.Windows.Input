@@ -22,6 +22,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
     {
     }
 
+    public bool IsKeyPressed(MouseButton button) => MouseAPI.IsMouseButtonPressed(button);
     public Point GetPosition() => MouseAPI.GetPosition();
     public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);
     public void SetMouseSpeed(int speed) => MouseAPI.SetMouseSpeed(speed);
