@@ -75,6 +75,9 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
         return predicate is not null && predicate.Invoke();
     }
 
+    public bool IsKeyLocked(PreventMouseEvent mouseEvent) 
+        => mouseEvent.ToMouseEvents().Any(IsKeyLocked);
+
     public override void Dispose()
     {
         Release();

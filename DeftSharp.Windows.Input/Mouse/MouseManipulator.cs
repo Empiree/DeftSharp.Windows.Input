@@ -31,7 +31,7 @@ public sealed class MouseManipulator : IMouseManipulator
     /// <summary>
     /// Checks if the specified mouse event is currently locked.
     /// </summary>
-    public bool IsKeyLocked(MouseInputEvent mouseEvent) => _mouseInterceptor.IsKeyLocked(mouseEvent);
+    public bool IsKeyLocked(PreventMouseEvent mouseEvent) => _mouseInterceptor.IsKeyLocked(mouseEvent);
 
     /// <summary>
     /// Prevents the specified mouse event.

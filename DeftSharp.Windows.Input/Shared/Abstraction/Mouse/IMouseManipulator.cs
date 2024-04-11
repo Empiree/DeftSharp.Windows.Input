@@ -8,8 +8,8 @@ public interface IMouseManipulator : IDisposable
     IEnumerable<MouseInputEvent> LockedKeys { get;}
     
     event Action<MouseInputEvent> InputPrevented;
-    
-    bool IsKeyLocked(MouseInputEvent mouseEvent);
+
+    bool IsKeyLocked(PreventMouseEvent mouseEvent);
     
     void SetPosition(int x, int y);
     void SetMouseSpeed(int speed);
