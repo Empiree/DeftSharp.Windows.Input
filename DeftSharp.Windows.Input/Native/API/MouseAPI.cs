@@ -21,7 +21,7 @@ internal static class MouseAPI
         GetCursorPos(out var position);
         return position;
     }
-    
+
     /// <summary>
     /// Determines whether the specified mouse button is currently pressed.
     /// </summary>
@@ -33,8 +33,10 @@ internal static class MouseAPI
     {
         var vkButton = button switch
         {
+            // 0x05, 0x06 for side buttons
             MouseButton.Left => 0x01,
             MouseButton.Right => 0x02,
+            MouseButton.Middle => 0x04,
             _ => throw new NotImplementedException(nameof(button))
         };
 
@@ -79,6 +81,9 @@ internal static class MouseAPI
                 break;
             case MouseButton.Right:
                 ClickRight(x, y);
+                break;
+            case MouseButton.Middle:
+                ClickMiddle(x, y);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(button), button, null);
@@ -140,6 +145,17 @@ internal static class MouseAPI
     {
         mouse_event(InputMouseLeftDown, x, y, 0, 0);
         mouse_event(InputMouseLeftUp, x, y, 0, 0);
+    }
+
+    /// <summary>
+    /// Simulates a middle mouse click at the specified position.
+    /// </summary>
+    /// <param name="x">The x-coordinate of the click position.</param>
+    /// <param name="y">The y-coordinate of the click position.</param>
+    private static void ClickMiddle(int x, int y)
+    {
+        mouse_event(InputMouseMiddleDown, x, y, 0, 0);
+        mouse_event(InputMouseMiddleUp, x, y, 0, 0);
     }
 
     /// <summary>

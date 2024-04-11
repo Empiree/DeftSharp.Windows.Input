@@ -13,5 +13,10 @@ public enum MouseButton : byte
     /// <summary>
     /// The right mouse button.
     /// </summary>
-    Right = 1
+    Right = 1,
+
+    /// <summary>
+    /// The middle mouse button.
+    /// </summary>
+    Middle = 2
 }

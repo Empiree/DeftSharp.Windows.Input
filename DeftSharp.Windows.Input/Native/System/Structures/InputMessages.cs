@@ -26,7 +26,7 @@ internal static class InputMessages
     /// The type for a keyboard input event in the INPUT structure.
     /// </summary>
     internal const int InputKeyboard = 1;
-    
+
     /// <summary>
     /// The type for a mouse input event in the INPUT structure.
     /// </summary>
@@ -56,4 +56,14 @@ internal static class InputMessages
     /// Constant representing the mouse wheel event in the INPUT structure.
     /// </summary>
     internal const int InputMouseWheel = 0x0800;
+
+    /// <summary>
+    /// Constant representing the middle mouse button down event in the INPUT structure.
+    /// </summary>
+    internal const int InputMouseMiddleDown = 0x0020;
+
+    /// <summary>
+    /// Constant representing the middle mouse button up event in the INPUT structure.
+    /// </summary>
+    internal const int InputMouseMiddleUp = 0x0040;
 }
