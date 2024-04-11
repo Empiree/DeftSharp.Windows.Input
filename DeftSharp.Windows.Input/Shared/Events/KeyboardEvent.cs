@@ -1,7 +1,7 @@
 ﻿namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
-/// Specifies types of keyboard events.
+/// Specifies types of keyboard subscription events.
 /// </summary>
 public enum KeyboardEvent
 {

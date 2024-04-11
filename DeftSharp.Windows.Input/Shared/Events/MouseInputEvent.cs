@@ -1,7 +1,7 @@
 ﻿namespace DeftSharp.Windows.Input.Mouse;
 
 /// <summary>
-/// Specifies types of mouse events.
+/// Specifies types of system input mouse events.
 /// </summary>
 public enum MouseInputEvent : ushort
 {

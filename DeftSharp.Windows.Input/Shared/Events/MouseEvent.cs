@@ -1,7 +1,7 @@
 ﻿namespace DeftSharp.Windows.Input.Mouse;
 
 /// <summary>
-/// Specifies types of mouse events.
+/// Specifies types of mouse subscription events.
 /// </summary>
 public enum MouseEvent
 {
