@@ -328,14 +328,15 @@ These classes provide global control and observation of the mouse.
 
 # MouseListener
 
-The MouseListener class provides the ability to subscribe to global mouse input events. This will give you the information you need about mouse clicks, scrolling, mouse movement and etc. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to suit your needs.
+The **MouseListener** class provides the ability to use global mouse input events. This gives you information about mouse clicks, scrolling, mouse movement, and more. 
 
-This class stores active subscriptions in `Subscriptions` property.
+You can subscribe to different events from the MouseListener class to enable these features and customize them.
+
+This class stores active subscriptions in the `Subscriptions` property.
 
 Each object of the MouseListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
-> [!NOTE]
-> :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This will allow the application to correctly release all system resources it uses.
+> **Best Practice:** Before closing the application, unsubscribe from all events. This correctly releases the system resources used by the application.
 
 ## Subscribe to the mouse events
 
