@@ -336,7 +336,8 @@ This class stores active subscriptions in the `Subscriptions` property.
 
 Each object of the MouseListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
-> **Best Practice:** Before closing the application, unsubscribe from all events. This correctly releases the system resources used by the application.
+> [!NOTE]
+> :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This correctly releases the system resources used by the application.
 
 ## Subscribe to the mouse events
 
