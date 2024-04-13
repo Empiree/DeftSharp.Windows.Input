@@ -9,7 +9,7 @@
 
 </div>
 
-DeftSharp.Windows.Input is a powerful .NET library designed to control and manage the keyboard and mouse in the Windows OS. It is intended for use in various UI frameworks such as WPF, WinUI, Avalonia, and MAUI, providing a universal solution for all types of Windows applications. 
+A powerful .NET library designed to control and manage the keyboard and mouse in the Windows OS. It is intended for use in various UI frameworks such as WPF, WinUI, Avalonia, and MAUI, providing a universal solution for all types of Windows applications. 
 
 The library offers a wide range of features including event subscriptions, bindings, preventing input events, device information and a lot of other things. It also provides flexible custom interceptors, allowing users to define their own logic.
 
