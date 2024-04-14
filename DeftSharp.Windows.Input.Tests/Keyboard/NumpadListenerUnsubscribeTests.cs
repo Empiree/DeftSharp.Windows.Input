@@ -2,8 +2,6 @@ namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
 public sealed class NumpadListenerUnsubscribeTests
 {
-    private readonly ThreadRunner _threadRunner = new();
-
     private readonly NumButton[] _numKeys =
     {
         new(Key.NumPad7, 7), new(Key.NumPad8, 8), new(Key.NumPad9, 9),
@@ -18,7 +16,7 @@ public sealed class NumpadListenerUnsubscribeTests
         var keyboardListener = new KeyboardListener();
         var numpadListener = new NumpadListener(keyboardListener);
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             numpadListener.Subscribe(_ => { });
             numpadListener.Unsubscribe();
@@ -34,7 +32,7 @@ public sealed class NumpadListenerUnsubscribeTests
         var numpadListener = new NumpadListener(keyboardListener);
         var keys = _numKeys.Select(n => n.Key).ToArray();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             keyboardListener.Subscribe(keys, _ => { });
 

@@ -2,12 +2,10 @@ namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
 public sealed class KeyboardListenerUnsubscribeTests
 {
-    private readonly ThreadRunner _threadRunner = new();
-
     private async void RunListenerTest(Action<KeyboardListener> onTest)
     {
         var keyboardListener = new KeyboardListener();
-        await _threadRunner.Run(() => onTest(keyboardListener));
+        await Task.Run(() => onTest(keyboardListener));
 
         Assert.False(keyboardListener.IsListening,
             "The Unregister function is not called after unsubscribing from all events.");
@@ -102,7 +100,7 @@ public sealed class KeyboardListenerUnsubscribeTests
         RunListenerTest(listener =>
         {
             Key[] combination = { Key.W, Key.A };
-            for (var i = 0; i < 5; i++) 
+            for (var i = 0; i < 5; i++)
                 listener.SubscribeCombination(combination, () => { });
 
             listener.Unsubscribe();

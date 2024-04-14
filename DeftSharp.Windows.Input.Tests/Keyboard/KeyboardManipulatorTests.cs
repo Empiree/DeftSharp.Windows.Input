@@ -2,15 +2,13 @@ namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
 public class KeyboardManipulatorTests : IDisposable
 {
-    private readonly ThreadRunner _threadRunner = new();
-
     [Fact]
     public async void KeyboardManipulator_PreventBy2()
     {
         var keyboardManipulator1 = new KeyboardManipulator();
         var keyboardManipulator2 = new KeyboardManipulator();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.A);
             keyboardManipulator2.Prevent(Key.A);
@@ -27,7 +25,7 @@ public class KeyboardManipulatorTests : IDisposable
         var keyboardManipulator1 = new KeyboardManipulator();
         var keyboardManipulator2 = new KeyboardManipulator();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.A);
             keyboardManipulator2.Prevent(Key.A);
@@ -47,7 +45,7 @@ public class KeyboardManipulatorTests : IDisposable
         var keyboardManipulator2 = new KeyboardManipulator();
         var keyboardManipulator3 = new KeyboardManipulator();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.Q);
             keyboardManipulator2.Prevent(Key.W);
@@ -69,7 +67,7 @@ public class KeyboardManipulatorTests : IDisposable
         var keyboardManipulator2 = new KeyboardManipulator();
         var keyboardManipulator3 = new KeyboardManipulator();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             keyboardManipulator1.Prevent(Key.Q);
             keyboardManipulator2.Prevent(Key.W);
@@ -84,7 +82,7 @@ public class KeyboardManipulatorTests : IDisposable
     [Fact]
     public async void KeyboardManipulator_DisposeTest()
     {
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             using (var keyboardManipulator1 = new KeyboardManipulator())
             {

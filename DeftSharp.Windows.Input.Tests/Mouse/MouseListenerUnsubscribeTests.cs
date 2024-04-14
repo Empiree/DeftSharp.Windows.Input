@@ -2,12 +2,10 @@
 
 public sealed class MouseListenerUnsubscribeTests
 {
-    private readonly ThreadRunner _threadRunner = new();
-
     private async void RunListenerTest(Action<MouseListener> onTest)
     {
         var mouseListener = new MouseListener();
-        await _threadRunner.Run(() => onTest(mouseListener));
+        await Task.Run(() => onTest(mouseListener));
 
         Assert.False(mouseListener.IsListening,
             "The Unregister function is not called after unsubscribing from all events.");

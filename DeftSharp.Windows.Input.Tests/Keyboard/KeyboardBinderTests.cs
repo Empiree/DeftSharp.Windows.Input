@@ -2,14 +2,12 @@
 
 public class KeyboardBinderTests
 {
-    private readonly ThreadRunner _threadRunner = new();
-
     [Fact]
     public async void KeyboardBinder_IsKeyBound()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             keyboardBinder.Bind(Key.A, Key.B);
 
@@ -17,26 +15,26 @@ public class KeyboardBinderTests
             Assert.False(keyboardBinder.IsKeyBounded(Key.B));
         });
     }
-    
+
     [Fact]
     public async void KeyboardBinder_IsKeyBoundWhenBindingTheSameKey()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             keyboardBinder.Bind(Key.C, Key.C);
 
             Assert.False(keyboardBinder.IsKeyBounded(Key.C));
         });
     }
-    
+
     [Fact]
     public async void KeyboardBinder_BindMultipleKeysAtOnce()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             var keys = new List<Key>
             {
@@ -55,28 +53,28 @@ public class KeyboardBinderTests
             Assert.False(keyboardBinder.IsKeyBounded(Key.A));
         });
     }
-    
+
     [Fact]
     public async void KeyboardBinder_BindEmptyKeyCollection()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             var keys = new List<Key>();
 
             keyboardBinder.Bind(keys, Key.A);
-            
+
             Assert.Empty(keyboardBinder.BoundedKeys);
         });
     }
-    
+
     [Fact]
     public async void KeyboardBinder_Unbind()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             keyboardBinder.Bind(Key.A, Key.B);
             Assert.True(keyboardBinder.IsKeyBounded(Key.A));
@@ -86,13 +84,13 @@ public class KeyboardBinderTests
             Assert.Empty(keyboardBinder.BoundedKeys);
         });
     }
-    
+
     [Fact]
     public async void KeyboardBinder_UnbindAll()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             var keys = new List<Key>
             {
@@ -101,7 +99,7 @@ public class KeyboardBinderTests
                 Key.End,
                 Key.Tab
             };
-            
+
             keyboardBinder.Bind(keys, Key.A);
             Assert.Equal(4, keyboardBinder.BoundedKeys.Count);
 
@@ -110,16 +108,16 @@ public class KeyboardBinderTests
             Assert.Empty(keyboardBinder.BoundedKeys);
         });
     }
-    
+
     [Fact]
     public async void KeyboardBinder_UnbindKeyThatHasNotBeenBound()
     {
         var keyboardBinder = new KeyboardBinder();
 
-        await _threadRunner.Run(() =>
+        await Task.Run(() =>
         {
             Assert.Empty(keyboardBinder.BoundedKeys);
-                
+
             keyboardBinder.Unbind(Key.A);
 
             Assert.Empty(keyboardBinder.BoundedKeys);
