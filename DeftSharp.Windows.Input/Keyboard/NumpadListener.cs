@@ -41,7 +41,9 @@ public sealed class NumpadListener
     /// Subscribes to numpad key presses and triggers the specified action when a numpad key is pressed.
     /// </summary>
     /// <param name="onNumClick">The action to execute when a numpad key is pressed. It takes an integer argument representing the pressed number.</param>
-    public void Subscribe(Action<int> onNumClick)
+    /// <param name="intervalOfClick">Allows control of the frequency of key presses. During interval key cannot be pressed again.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action</param>
+    public void Subscribe(Action<int> onNumClick, TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
         var keys = _numKeys.Select(n => n.Key);
 
@@ -53,7 +55,9 @@ public sealed class NumpadListener
                 throw new NotImplementedException($"{key} was not implemented!");
 
             onNumClick(numKey.Number);
-        });
+        },
+        intervalOfClick,
+        keyboardEvent);
 
         foreach (var subscription in subscriptions)
             _subscriptionIds.Add(subscription.Id);
