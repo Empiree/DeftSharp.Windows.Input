@@ -42,7 +42,7 @@ public sealed class NumpadListener
     /// </summary>
     /// <param name="onNumClick">The action to execute when a numpad key is pressed. It takes an integer argument representing the pressed number.</param>
     /// <param name="intervalOfClick">Allows control of the frequency of key presses. During interval key cannot be pressed again.</param>
-    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     public void Subscribe(Action<int> onNumClick, TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
         var keys = _numKeys.Select(n => n.Key);
