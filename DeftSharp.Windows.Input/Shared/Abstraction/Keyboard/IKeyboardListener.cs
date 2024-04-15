@@ -19,31 +19,31 @@ public interface IKeyboardListener : IDisposable
     bool IsListening { get; }
 
     KeySubscription Subscribe(Key key, Action onClick,
-        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
+        TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
     KeySubscription Subscribe(Key key, Action<Key> onClick,
-        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
+        TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
     KeySubscription Subscribe(Key key, Action<Key, KeyboardInputEvent> onClick,
-        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
+        TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
     IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action onClick,
-        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
+        TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
     IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
-        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
+        TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
     IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key, KeyboardInputEvent> onClick,
-        TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
+        TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
 
-    IEnumerable<KeySubscription> SubscribeAll(Action onClick, TimeSpan? intervalOfClick = null,
+    IEnumerable<KeySubscription> SubscribeAll(Action onClick, TimeSpan? interval = null,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
-    IEnumerable<KeySubscription> SubscribeAll(Action<Key> onClick, TimeSpan? intervalOfClick = null,
+    IEnumerable<KeySubscription> SubscribeAll(Action<Key> onClick, TimeSpan? interval = null,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
-    IEnumerable<KeySubscription> SubscribeAll(Action<Key, KeyboardInputEvent> onClick, TimeSpan? intervalOfClick = null,
+    IEnumerable<KeySubscription> SubscribeAll(Action<Key, KeyboardInputEvent> onClick, TimeSpan? interval = null,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown);
 
 
@@ -64,13 +64,13 @@ public interface IKeyboardListener : IDisposable
 
 
     KeySequenceSubscription SubscribeSequence(IEnumerable<Key> sequence, Action onClick,
-        TimeSpan? intervalOfClick = null);
+        TimeSpan? interval = null);
 
     KeySequenceSubscription SubscribeSequenceOnce(IEnumerable<Key> sequence, Action onClick);
 
 
     KeyCombinationSubscription SubscribeCombination(IEnumerable<Key> combination, Action onClick,
-        TimeSpan? intervalOfClick = null);
+        TimeSpan? interval = null);
 
     KeyCombinationSubscription SubscribeCombinationOnce(IEnumerable<Key> combination, Action onClick);
 

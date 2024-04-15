@@ -41,9 +41,9 @@ public sealed class NumpadListener
     /// Subscribes to numpad key presses and triggers the specified action when a numpad key is pressed.
     /// </summary>
     /// <param name="onNumClick">The action to execute when a numpad key is pressed. It takes an integer argument representing the pressed number.</param>
-    /// <param name="intervalOfClick">Allows control of the frequency of key presses. During interval key cannot be pressed again.</param>
+    /// <param name="interval">Allows you to specify the frequency of subscription triggering.</param>
     /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
-    public void Subscribe(Action<int> onNumClick, TimeSpan? intervalOfClick = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
+    public void Subscribe(Action<int> onNumClick, TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
         var keys = _numKeys.Select(n => n.Key);
 
@@ -56,7 +56,7 @@ public sealed class NumpadListener
 
             onNumClick(numKey.Number);
         },
-        intervalOfClick,
+        interval,
         keyboardEvent);
 
         foreach (var subscription in subscriptions)

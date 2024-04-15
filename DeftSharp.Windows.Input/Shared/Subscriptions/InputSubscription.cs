@@ -6,7 +6,7 @@ public abstract class InputSubscription<TAction>
 {
     protected readonly TAction OnClick;
     public Guid Id { get; }
-    public TimeSpan IntervalOfClick { get; }
+    public TimeSpan Interval { get; }
     public DateTime? LastInvoked { get; protected set; }
     public bool SingleUse { get; }
 
@@ -18,10 +18,10 @@ public abstract class InputSubscription<TAction>
         Id = Guid.NewGuid();
     }
 
-    protected InputSubscription(TAction onClick, TimeSpan intervalOfClick)
+    protected InputSubscription(TAction onClick, TimeSpan interval)
     : this(onClick)
     {
-        IntervalOfClick = intervalOfClick;
+        Interval = interval;
     }
 
     internal virtual bool CanBeInvoked()
@@ -29,7 +29,7 @@ public abstract class InputSubscription<TAction>
         if (LastInvoked.HasValue && SingleUse)
             return false;
 
-        if (LastInvoked?.Add(IntervalOfClick) >= DateTime.Now)
+        if (LastInvoked?.Add(Interval) >= DateTime.Now)
             return false;
 
         return true;

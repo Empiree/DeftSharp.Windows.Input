@@ -26,8 +26,8 @@ public sealed class KeyCombinationSubscription : InputSubscription<Action>
     public KeyCombinationSubscription(
         IEnumerable<Key> combination,
         Action onClick, 
-        TimeSpan intervalOfClick) 
-        : base(onClick, intervalOfClick)
+        TimeSpan interval) 
+        : base(onClick, interval)
     {
         Combination = combination.Distinct();
         

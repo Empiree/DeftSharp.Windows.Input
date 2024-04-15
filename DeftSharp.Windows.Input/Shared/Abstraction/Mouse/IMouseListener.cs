@@ -11,12 +11,12 @@ public interface IMouseListener : IDisposable
     Point Position { get; }
 
     MouseSubscription Subscribe(MouseEvent mouseEvent, Action<MouseInputEvent> onAction,
-        TimeSpan? intervalOfClick = null);
+        TimeSpan? interval = null);
 
-    MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null);
+    MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? interval = null);
     MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action<MouseInputEvent> onAction);
     MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction);
-    IEnumerable<MouseSubscription> SubscribeAll(Action<MouseInputEvent> onAction, TimeSpan? intervalOfClick = null);
+    IEnumerable<MouseSubscription> SubscribeAll(Action<MouseInputEvent> onAction, TimeSpan? interval = null);
 
     void Unsubscribe(MouseEvent mouseEvent);
     void Unsubscribe(Guid id);

@@ -32,9 +32,9 @@ public sealed class MouseListener : IMouseListener
     /// </summary>
     /// <returns>The created subscription.</returns>
     public MouseSubscription Subscribe(MouseEvent mouseEvent, Action<MouseInputEvent> onAction,
-        TimeSpan? intervalOfClick = null)
+        TimeSpan? interval = null)
     {
-        var subscription = new MouseSubscription(mouseEvent, onAction, intervalOfClick ?? TimeSpan.Zero);
+        var subscription = new MouseSubscription(mouseEvent, onAction, interval ?? TimeSpan.Zero);
         _mouseInterceptor.Subscribe(subscription);
         return subscription;
     }
@@ -55,7 +55,7 @@ public sealed class MouseListener : IMouseListener
     /// </summary>
     /// <returns>The collection of created subscriptions.</returns>
     public IEnumerable<MouseSubscription> SubscribeAll(Action<MouseInputEvent> onAction,
-        TimeSpan? intervalOfClick = null)
+        TimeSpan? interval = null)
     {
         var events = Enum.GetValues(typeof(MouseEvent))
             .OfType<MouseEvent>()
@@ -65,15 +65,15 @@ public sealed class MouseListener : IMouseListener
         events.Remove(MouseEvent.ButtonDown);
         events.Remove(MouseEvent.ButtonUp);
 
-        return events.Select(mouseEvent => Subscribe(mouseEvent, onAction, intervalOfClick)).ToList();
+        return events.Select(mouseEvent => Subscribe(mouseEvent, onAction, interval)).ToList();
     }
 
     /// <summary>
     /// Subscribes to a specific mouse event with the specified action to be performed.
     /// </summary>
     /// <returns>The created subscription.</returns>
-    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? intervalOfClick = null)
-        => Subscribe(mouseEvent, _ => onAction(), intervalOfClick);
+    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? interval = null)
+        => Subscribe(mouseEvent, _ => onAction(), interval);
 
     /// <summary>
     /// Subscribes to a specific mouse event with the specified action to be performed once.
