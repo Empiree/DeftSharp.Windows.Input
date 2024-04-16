@@ -127,11 +127,6 @@ You can get information about the current state of the keys. To do this, you can
 ```c#
 var isNumLockActive = keyboardListener.IsNumLockActive;
 var isCapsLockActive = keyboardListener.IsCapsLockActive;
-            
-var isWinPressed = keyboardListener.IsWinPressed;
-var isAltPressed = keyboardListener.IsAltPressed;
-var isCtrlPressed = keyboardListener.IsCtrlPressed;
-var isShiftPressed = keyboardListener.IsShiftPressed;
 
 var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
 ```
