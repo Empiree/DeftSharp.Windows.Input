@@ -73,7 +73,7 @@ These classes provide global control and observation of the keyboard.
 
 # KeyboardListener
 
-The KeyboardListener class provides the ability to subscribe to global keyboard input events. This allows you, to get the information you need about the user's presses, sequences and key combinations. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to suit your needs.
+The **KeyboardListener** class provides the ability to subscribe to global keyboard input events. This allows you, to get the information you need about the user's presses, sequences and key combinations. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to suit your needs.
 
 This class stores active subscriptions in properties: `Keys`, `Sequences` and `Combinations`.
 
@@ -140,7 +140,7 @@ var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
 
 # KeyboardManipulator
 
-The KeyboardManipulator class provides the ability to control the keyboard. 
+The **KeyboardManipulator** class provides the ability to control the keyboard. 
 
 > [!NOTE]
 > :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
@@ -222,7 +222,7 @@ keyboard.SetInterval(Key.Space, TimeSpan.Zero);
 
 # KeyboardBinder
 
-The KeyboardBinder class provides the ability to modify the bindings of the specified keys. All bindings are stored in the `BoundedKeys` property.
+The **KeyboardBinder** class provides the ability to modify the bindings of the specified keys. All bindings are stored in the `BoundedKeys` property.
 
 > [!NOTE]
 > :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
@@ -399,7 +399,7 @@ Trace.WriteLine($"X: {position.X} Y: {position.Y}"); // X: 943 Y: 378
 
 # MouseManipulator
 
-The MouseManipulator class provides the ability to control the mouse. 
+The **MouseManipulator** class provides the ability to control the mouse. 
 
 > [!NOTE]
 > :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
@@ -620,7 +620,7 @@ Additional functionality of the library.
 
 ## NumpadListener
 
-The NumpadListener class allows you to easily subscribe to Numpad buttons. It is a decorator over the [KeyboardListener](#keyboardlistener) class. To create an object of this class, it needs to be passed an existing KeyboardListener through which it will create subscriptions. 
+The **NumpadListener** class allows you to easily subscribe to numpad buttons. It is a decorator over the [KeyboardListener](#keyboardlistener) class. To create an object of this class, it needs to be passed an existing KeyboardListener through which it will create subscriptions. 
 
 Using the `Subscribe()` method, it subscribes to each numeric Numpad key. The method has a required parameter `Action<Key>` which is triggered when one of the buttons is pressed. To unsubscribe from all created subscriptions, you need to call the `Unsubscribe()` method.
 
