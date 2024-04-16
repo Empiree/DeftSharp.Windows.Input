@@ -375,6 +375,14 @@ mouseListener.Unsubscribe(subscription.Id);
 mouseListener.Unsubscribe(MouseEvent.MiddleButtonDown);
 ```
 
+## Get the current state of the keys
+
+You can get information about the current state of the keys. To do this you can call the `IsKeyPressed()` method.
+
+```c#
+var isLeftButtonPressed = mouseListener.IsKeyPressed(MouseButton.Left);
+```
+
 ## Get mouse position
 
 You can get the position of the mouse using the `Position` property. It will return you the Point class with two values as X and Y.
