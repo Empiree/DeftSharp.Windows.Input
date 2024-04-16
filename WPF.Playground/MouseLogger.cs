@@ -18,7 +18,7 @@ public class MouseLogger : MouseInterceptor
         if (args.Event is MouseInputEvent.Move) // Don't log a move event
             return;
         
-        Trace.WriteLine($"Proceed {args.Event}");
+        Trace.WriteLine($"Processed {args.Event}");
     }
 
     // If the input event has been prohibited
@@ -26,6 +26,6 @@ public class MouseLogger : MouseInterceptor
     {
         var failureReason = failedInterceptors.ToNames();
         
-        Trace.WriteLine($"Failed {args.Event} by: {failureReason}");
+        Trace.WriteLine($"Failed {args.Event} by {failureReason}");
     }
 }

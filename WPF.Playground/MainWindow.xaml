@@ -4,7 +4,7 @@
         Loaded="OnLoaded"
         Title="MainWindow" Height="450" Width="800">
     <StackPanel>
-        <TextBlock x:Name="PressedButtons"></TextBlock>
+        <TextBlock x:Name="Output"></TextBlock>
         <Button 
             Click="OnClickButton1"
             Width="120" 
