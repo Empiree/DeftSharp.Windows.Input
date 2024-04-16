@@ -43,7 +43,7 @@ You can subscribe to global keyboard events. Including their sequence and combin
 var keyboardListener = new KeyboardListener();
 
 // Subscription for each click
-keyboardListener.Subscribe(Key.Space, key => Trace.WriteLine($"The {key} was pressed"));
+keyboardListener.Subscribe(Key.Space, () => Trace.WriteLine($"The Space was pressed"));
 
 // One-time subscription
 keyboardListener.SubscribeOnce(Key.Space, key => Trace.WriteLine($"The {key} was pressed"));
