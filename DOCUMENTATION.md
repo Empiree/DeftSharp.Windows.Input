@@ -90,7 +90,7 @@ In order to subscribe to press events, you need to call one of the subscribe met
 var keyboardListener = new KeyboardListener();
 
 // Subscription for each click
-keyboardListener.Subscribe(Key.Space, key => Trace.WriteLine($"The {key} was pressed"));
+keyboardListener.Subscribe(Key.Space, () => Trace.WriteLine($"The Space was pressed"));
 
 // One-time subscription
 keyboardListener.SubscribeOnce(Key.Space, key => Trace.WriteLine($"The {key} was pressed"));
@@ -115,9 +115,9 @@ You can unsubscribe from an event using several options. Unsubscribe by GUID, by
 var subscription = keyboardListener.Subscribe(Key.A, key => { });
             
 // 3 different unsubscribe options
-keyboardListener.Unsubscribe(subscription.Id);
+keyboardListener.Unsubscribe(); 
 keyboardListener.Unsubscribe(Key.A);
-keyboardListener.UnsubscribeAll(); 
+keyboardListener.Unsubscribe(subscription.Id);
 ```
 
 ## Get the current state of the keys
@@ -184,7 +184,7 @@ keyboard.Prevent(Key.Escape, () =>
 });
 
 // Release locked keys
-keyboard.ReleaseAll();
+keyboard.Release();
 ```
 
 To check the current state of a button you can use the `IsKeyLocked()` method.
@@ -279,9 +279,9 @@ keyboardBinder.Bind(Key.Q, Key.W);
 
 keyboardBinder.Unbind(Key.Q);
 
-// Alternative option
+// Unbind all the buttons, alternatively
 
-keyboardBinder.UnbindAll();
+keyboardBinder.Unbind();
 ```
 
 ---
@@ -370,9 +370,9 @@ You can unsubscribe from an event using several options. Unsubscribe by GUID, by
 var subscription = mouseListener.Subscribe(MouseEvent.MiddleButtonDown, () => { });
 
 // 3 different unsubscribe options
+mouseListener.Unsubscribe(); 
 mouseListener.Unsubscribe(subscription.Id);
 mouseListener.Unsubscribe(MouseEvent.MiddleButtonDown);
-mouseListener.UnsubscribeAll(); 
 ```
 
 ## Get mouse position
@@ -452,7 +452,7 @@ mouse.Prevent(PreventMouseEvent.RightButton, () =>
 });
 
 // Release locked keys
-mouse.ReleaseAll();
+mouse.Release();
 ```
 
 To check the current state of a key you can use the `IsKeyLocked()` method.
@@ -614,7 +614,7 @@ Additional functionality of the library.
 
 The NumpadListener class allows you to easily subscribe to Numpad buttons. It is a decorator over the [KeyboardListener](#keyboardlistener) class. To create an object of this class, it needs to be passed an existing KeyboardListener through which it will create subscriptions. 
 
-Using the `Subscribe()` method, it subscribes to each numeric Numpad key. The method has a single required parameter `Action<Key>` which is triggered when one of the buttons is pressed. To unsubscribe from all created subscriptions, you need to call the `Unsubscribe()` method.
+Using the `Subscribe()` method, it subscribes to each numeric Numpad key. The method has a required parameter `Action<Key>` which is triggered when one of the buttons is pressed. To unsubscribe from all created subscriptions, you need to call the `Unsubscribe()` method.
 
 ```c#
 var keyboardListener = new KeyboardListener();
