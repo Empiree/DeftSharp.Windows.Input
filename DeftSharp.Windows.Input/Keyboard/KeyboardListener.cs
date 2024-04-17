@@ -7,7 +7,7 @@ using DeftSharp.Windows.Input.Keyboard.Interceptors;
 namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
-/// Provides the ability to subscribe to various keyboard events and get current state.
+/// Provides the ability to subscribe to global keyboard events and get current state.
 /// </summary>
 public sealed class KeyboardListener : IKeyboardListener
 {
@@ -66,13 +66,17 @@ public sealed class KeyboardListener : IKeyboardListener
     public bool IsListening => Keys.Any() || Sequences.Any() || Combinations.Any();
 
     /// <summary>
-    /// Subscribes to a key with the specified event handler and optional parameters.
+    /// Subscribes to a key with the specified event handler.
     /// </summary>
+    /// <param name="key">The keyboard key.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The created subscription.</returns>
-    public KeySubscription Subscribe(Key key, Action<Key, KeyboardInputEvent> onClick,
+    public KeySubscription Subscribe(Key key, Action<Key, KeyboardInputEvent> action,
         TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
-        var subscription = new KeySubscription(key, onClick, interval ?? TimeSpan.Zero, keyboardEvent);
+        var subscription = new KeySubscription(key, action, interval ?? TimeSpan.Zero, keyboardEvent);
         _listener.Subscribe(subscription);
         return subscription;
     }
@@ -80,19 +84,26 @@ public sealed class KeyboardListener : IKeyboardListener
     /// <summary>
     /// Subscribes to multiple keys with the specified event handler.
     /// </summary>
+    /// <param name="keys">The keyboard keys.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The collection of created subscriptions.</returns>
-    public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key, KeyboardInputEvent> onClick,
+    public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key, KeyboardInputEvent> action,
         TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        keys.Select(k => Subscribe(k, onClick, interval, keyboardEvent)).ToList();
+        keys.Select(k => Subscribe(k, action, interval, keyboardEvent)).ToList();
 
     /// <summary>
     /// Subscribes to a key with the specified event handler to be executed once.
     /// </summary>
+    /// <param name="key">The keyboard key.</param>
+    /// <param name="action">The work to execute.</param> 
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The created subscription.</returns>
-    public KeySubscription SubscribeOnce(Key key, Action<Key, KeyboardInputEvent> onClick,
+    public KeySubscription SubscribeOnce(Key key, Action<Key, KeyboardInputEvent> action,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
-        var subscription = new KeySubscription(key, onClick, keyboardEvent, true);
+        var subscription = new KeySubscription(key, action, keyboardEvent, true);
         _listener.Subscribe(subscription);
         return subscription;
     }
@@ -100,19 +111,25 @@ public sealed class KeyboardListener : IKeyboardListener
     /// <summary>
     /// Subscribes to multiple keys with the specified event handler to be executed once.
     /// </summary>
+    /// <param name="keys">The keyboard keys.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The collection of created subscriptions.</returns>
-    public IEnumerable<KeySubscription> SubscribeOnce(IEnumerable<Key> keys, Action<Key, KeyboardInputEvent> onClick,
+    public IEnumerable<KeySubscription> SubscribeOnce(IEnumerable<Key> keys, Action<Key, KeyboardInputEvent> action,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        keys.Select(k => SubscribeOnce(k, onClick, keyboardEvent)).ToList();
+        keys.Select(k => SubscribeOnce(k, action, keyboardEvent)).ToList();
 
     /// <summary>
     /// Subscribes to a key sequence with the specified event handler.
     /// </summary>
+    /// <param name="sequence">The keyboard key sequence.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
     /// <returns>The created subscription.</returns>
-    public KeySequenceSubscription SubscribeSequence(IEnumerable<Key> sequence, Action onClick,
+    public KeySequenceSubscription SubscribeSequence(IEnumerable<Key> sequence, Action action,
         TimeSpan? interval = null)
     {
-        var subscription = new KeySequenceSubscription(sequence, onClick, interval ?? TimeSpan.Zero);
+        var subscription = new KeySequenceSubscription(sequence, action, interval ?? TimeSpan.Zero);
         _sequenceListener.Subscribe(subscription);
         return subscription;
     }
@@ -120,10 +137,12 @@ public sealed class KeyboardListener : IKeyboardListener
     /// <summary>
     /// Subscribes to a key sequence with the specified event handler to be executed once.
     /// </summary>
+    /// <param name="sequence">The keyboard key sequence.</param>
+    /// <param name="action">The work to execute.</param>
     /// <returns>The created subscription.</returns>
-    public KeySequenceSubscription SubscribeSequenceOnce(IEnumerable<Key> sequence, Action onClick)
+    public KeySequenceSubscription SubscribeSequenceOnce(IEnumerable<Key> sequence, Action action)
     {
-        var subscription = new KeySequenceSubscription(sequence, onClick, true);
+        var subscription = new KeySequenceSubscription(sequence, action, true);
         _sequenceListener.Subscribe(subscription);
         return subscription;
     }
@@ -131,11 +150,14 @@ public sealed class KeyboardListener : IKeyboardListener
     /// <summary>
     /// Subscribes to a key combination with the specified event handler.
     /// </summary>
+    /// <param name="combination">The keyboard key combination.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
     /// <returns>The created subscription.</returns>
-    public KeyCombinationSubscription SubscribeCombination(IEnumerable<Key> combination, Action onClick,
+    public KeyCombinationSubscription SubscribeCombination(IEnumerable<Key> combination, Action action,
         TimeSpan? interval = null)
     {
-        var subscription = new KeyCombinationSubscription(combination, onClick, interval ?? TimeSpan.Zero);
+        var subscription = new KeyCombinationSubscription(combination, action, interval ?? TimeSpan.Zero);
         _combinationListener.Subscribe(subscription);
         return subscription;
     }
@@ -143,10 +165,12 @@ public sealed class KeyboardListener : IKeyboardListener
     /// <summary>
     /// Subscribes to a key combination with the specified event handler to be executed once.
     /// </summary>
+    /// <param name="combination">The keyboard key combination.</param>
+    /// <param name="action">The work to execute.</param>
     /// <returns>The created subscription.</returns>
-    public KeyCombinationSubscription SubscribeCombinationOnce(IEnumerable<Key> combination, Action onClick)
+    public KeyCombinationSubscription SubscribeCombinationOnce(IEnumerable<Key> combination, Action action)
     {
-        var subscription = new KeyCombinationSubscription(combination, onClick, true);
+        var subscription = new KeyCombinationSubscription(combination, action, true);
         _combinationListener.Subscribe(subscription);
         return subscription;
     }
@@ -155,8 +179,11 @@ public sealed class KeyboardListener : IKeyboardListener
     /// Subscribes to all possible enum values of type <see cref="Key"/>.
     /// </summary>
     /// <remarks>Except <b>Key.None</b></remarks>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The collection of created subscriptions.</returns>
-    public IEnumerable<KeySubscription> SubscribeAll(Action<Key, KeyboardInputEvent> onClick,
+    public IEnumerable<KeySubscription> SubscribeAll(Action<Key, KeyboardInputEvent> action,
         TimeSpan? interval = null,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown)
     {
@@ -167,82 +194,113 @@ public sealed class KeyboardListener : IKeyboardListener
 
         keys.Remove(Key.None);
 
-        return Subscribe(keys, onClick, interval, keyboardEvent);
+        return Subscribe(keys, action, interval, keyboardEvent);
     }
 
     /// <summary>
     /// Subscribes to a key with the specified event handler and optional parameters.
     /// </summary>
+    /// <param name="key">The keyboard key.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The created subscription.</returns>
-    public KeySubscription Subscribe(Key key, Action<Key> onClick,
+    public KeySubscription Subscribe(Key key, Action<Key> action,
         TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        Subscribe(key, (k, _) => onClick(k), interval, keyboardEvent);
+        Subscribe(key, (k, _) => action(k), interval, keyboardEvent);
 
     /// <summary>
     /// Subscribes to a key with the specified event handler and optional parameters.
     /// </summary>
+    /// <param name="key">The keyboard key.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The created subscription.</returns>
-    public KeySubscription Subscribe(Key key, Action onClick,
+    public KeySubscription Subscribe(Key key, Action action,
         TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        Subscribe(key, (_, _) => onClick(), interval, keyboardEvent);
+        Subscribe(key, (_, _) => action(), interval, keyboardEvent);
 
     /// <summary>
     /// Subscribes to multiple keys with the specified event handler.
     /// </summary>
+    /// <param name="keys">The keyboard keys.</param>
+    /// <param name="action">The work to execute.</param> 
+    /// <param name="interval">Frequency of subscription triggering.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param> 
     /// <returns>The collection of created subscriptions.</returns>
-    public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key> onClick,
+    public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action<Key> action,
         TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        Subscribe(keys, (k, _) => onClick(k), interval, keyboardEvent);
+        Subscribe(keys, (k, _) => action(k), interval, keyboardEvent);
 
     /// <summary>
     /// Subscribes to multiple keys with the specified event handler.
     /// </summary>
+    /// <param name="keys">The keyboard keys.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The collection of created subscriptions.</returns>
-    public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action onClick,
+    public IEnumerable<KeySubscription> Subscribe(IEnumerable<Key> keys, Action action,
         TimeSpan? interval = null, KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        Subscribe(keys, (_, _) => onClick(), interval, keyboardEvent);
+        Subscribe(keys, (_, _) => action(), interval, keyboardEvent);
 
     /// <summary>
     /// Subscribes to a key with the specified event handler to be executed once.
     /// </summary>
+    /// <param name="key">The keyboard key.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The created subscription.</returns>
-    public KeySubscription SubscribeOnce(Key key, Action<Key> onClick,
+    public KeySubscription SubscribeOnce(Key key, Action<Key> action,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        SubscribeOnce(key, (k, _) => onClick(k), keyboardEvent);
+        SubscribeOnce(key, (k, _) => action(k), keyboardEvent);
 
     /// <summary>
     /// Subscribes to a key with the specified event handler to be executed once.
     /// </summary>
+    /// <param name="key">The keyboard key.</param>
+    /// <param name="action">The work to execute.</param> 
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The created subscription.</returns>
-    public KeySubscription SubscribeOnce(Key key, Action onClick,
+    public KeySubscription SubscribeOnce(Key key, Action action,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        SubscribeOnce(key, (_, _) => onClick(), keyboardEvent);
+        SubscribeOnce(key, (_, _) => action(), keyboardEvent);
 
     /// <summary>
     /// Subscribes to multiple keys with the specified event handler to be executed once.
     /// </summary>
+    /// <param name="keys">The keyboard keys.</param>
+    /// <param name="action">The work to execute.</param> 
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The collection of created subscriptions.</returns>
-    public IEnumerable<KeySubscription> SubscribeOnce(IEnumerable<Key> keys, Action<Key> onClick,
+    public IEnumerable<KeySubscription> SubscribeOnce(IEnumerable<Key> keys, Action<Key> action,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        SubscribeOnce(keys, (k, _) => onClick(k), keyboardEvent);
+        SubscribeOnce(keys, (k, _) => action(k), keyboardEvent);
 
     /// <summary>
     /// Subscribes to all possible enum values of type <see cref="Key"/>.
     /// </summary>
     /// <remarks>Except <b>Key.None</b></remarks>
+    /// <param name="action">The work to execute.</param> 
+    /// <param name="interval">Frequency of subscription triggering.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The collection of created subscriptions.</returns>
-    public IEnumerable<KeySubscription> SubscribeAll(Action<Key> onClick, TimeSpan? interval = null,
+    public IEnumerable<KeySubscription> SubscribeAll(Action<Key> action, TimeSpan? interval = null,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        SubscribeAll((k, _) => onClick(k), interval, keyboardEvent);
+        SubscribeAll((k, _) => action(k), interval, keyboardEvent);
 
     /// <summary>
     /// Subscribes to all possible enum values of type <see cref="Key"/>.
     /// </summary>
     /// <remarks>Except <b>Key.None</b></remarks>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
+    /// <param name="keyboardEvent">The keyboard subscription event which triggers the action.</param>
     /// <returns>The collection of created subscriptions.</returns>
-    public IEnumerable<KeySubscription> SubscribeAll(Action onClick, TimeSpan? interval = null,
+    public IEnumerable<KeySubscription> SubscribeAll(Action action, TimeSpan? interval = null,
         KeyboardEvent keyboardEvent = KeyboardEvent.KeyDown) =>
-        SubscribeAll((_, _) => onClick(), interval, keyboardEvent);
+        SubscribeAll((_, _) => action(), interval, keyboardEvent);
 
     /// <summary>
     /// Unsubscribes the specified key.
