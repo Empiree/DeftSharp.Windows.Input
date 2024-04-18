@@ -6,7 +6,7 @@ using DeftSharp.Windows.Input.Mouse.Interceptors;
 namespace DeftSharp.Windows.Input.Mouse;
 
 /// <summary>
-/// Provides the ability to subscribe to various mouse events.
+/// Provides the ability to subscribe to global mouse events and get current state.
 /// </summary>
 public sealed class MouseListener : IMouseListener
 {
@@ -28,24 +28,29 @@ public sealed class MouseListener : IMouseListener
     public IEnumerable<MouseSubscription> Subscriptions => _mouseInterceptor.Subscriptions;
 
     /// <summary>
-    /// Subscribes to a specific mouse event with the specified action to be performed.
+    /// Subscribes to an input mouse event with the specified event handler.
     /// </summary>
+    /// <param name="mouseEvent">The input mouse event.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
     /// <returns>The created subscription.</returns>
-    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action<MouseInputEvent> onAction,
+    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action<MouseInputEvent> action,
         TimeSpan? interval = null)
     {
-        var subscription = new MouseSubscription(mouseEvent, onAction, interval ?? TimeSpan.Zero);
+        var subscription = new MouseSubscription(mouseEvent, action, interval ?? TimeSpan.Zero);
         _mouseInterceptor.Subscribe(subscription);
         return subscription;
     }
 
     /// <summary>
-    /// Subscribes to a specific mouse event with the specified action to be performed once.
+    /// Subscribes to an input mouse event with the specified event handler to be performed once.
     /// </summary>
+    /// <param name="mouseEvent">The input mouse event.</param>
+    /// <param name="action">The work to execute.</param>
     /// <returns>The created subscription.</returns>
-    public MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action<MouseInputEvent> onAction)
+    public MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action<MouseInputEvent> action)
     {
-        var subscription = new MouseSubscription(mouseEvent, onAction, true);
+        var subscription = new MouseSubscription(mouseEvent, action, true);
         _mouseInterceptor.Subscribe(subscription);
         return subscription;
     }
@@ -53,8 +58,10 @@ public sealed class MouseListener : IMouseListener
     /// <summary>
     /// Subscribes to all possible enum values of type <see cref="MouseEvent"/>.
     /// </summary>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
     /// <returns>The collection of created subscriptions.</returns>
-    public IEnumerable<MouseSubscription> SubscribeAll(Action<MouseInputEvent> onAction,
+    public IEnumerable<MouseSubscription> SubscribeAll(Action<MouseInputEvent> action,
         TimeSpan? interval = null)
     {
         var events = Enum.GetValues(typeof(MouseEvent))
@@ -65,22 +72,27 @@ public sealed class MouseListener : IMouseListener
         events.Remove(MouseEvent.ButtonDown);
         events.Remove(MouseEvent.ButtonUp);
 
-        return events.Select(mouseEvent => Subscribe(mouseEvent, onAction, interval)).ToList();
+        return events.Select(mouseEvent => Subscribe(mouseEvent, action, interval)).ToList();
     }
 
     /// <summary>
-    /// Subscribes to a specific mouse event with the specified action to be performed.
+    /// Subscribes to an input mouse event with the specified event handler.
     /// </summary>
+    /// <param name="mouseEvent">The input mouse event.</param>
+    /// <param name="action">The work to execute.</param>
+    /// <param name="interval">Frequency of subscription triggering.</param>
     /// <returns>The created subscription.</returns>
-    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action onAction, TimeSpan? interval = null)
-        => Subscribe(mouseEvent, _ => onAction(), interval);
+    public MouseSubscription Subscribe(MouseEvent mouseEvent, Action action, TimeSpan? interval = null)
+        => Subscribe(mouseEvent, _ => action(), interval);
 
     /// <summary>
-    /// Subscribes to a specific mouse event with the specified action to be performed once.
+    /// Subscribes to an input mouse event with the specified event handler to be performed once.
     /// </summary>
+    /// <param name="mouseEvent">The input mouse event.</param>
+    /// <param name="action">The work to execute.</param>
     /// <returns>The created subscription.</returns>
-    public MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action onAction)
-        => SubscribeOnce(mouseEvent, _ => onAction());
+    public MouseSubscription SubscribeOnce(MouseEvent mouseEvent, Action action)
+        => SubscribeOnce(mouseEvent, _ => action());
 
     /// <summary>
     /// Unsubscribes from the specified mouse event.
