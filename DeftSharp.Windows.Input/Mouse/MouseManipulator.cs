@@ -29,7 +29,7 @@ public sealed class MouseManipulator : IMouseManipulator
     }
 
     /// <summary>
-    /// Checks if the specified mouse event is currently locked.
+    /// Checks if the mouse event is currently locked.
     /// </summary>
     public bool IsKeyLocked(PreventMouseEvent mouseEvent) => _mouseInterceptor.IsKeyLocked(mouseEvent);
 
@@ -60,17 +60,17 @@ public sealed class MouseManipulator : IMouseManipulator
     public void SetPosition(int x, int y) => _mouseInterceptor.SetPosition(x, y);
 
     /// <summary>
-    /// Performs a mouse click at the specified coordinates with the specified button.
+    /// Simulates a mouse click at the specified coordinates.
     /// </summary>
     public void Click(int x, int y, MouseButton button = MouseButton.Left) => _mouseInterceptor.Click(button, x, y);
 
     /// <summary>
-    /// Performs a mouse click with the specified button.
+    /// Simulates a mouse click at the current coordinates.
     /// </summary>
     public void Click(MouseButton button = MouseButton.Left) => _mouseInterceptor.Click(button);
 
     /// <summary>
-    /// Performs a double-click at the specified coordinates.
+    /// Simulates a mouse double-click at the specified coordinates.
     /// </summary>
     public void DoubleClick(int x, int y)
     {
@@ -79,7 +79,7 @@ public sealed class MouseManipulator : IMouseManipulator
     }
 
     /// <summary>
-    /// Performs a double-click.
+    /// Simulates a mouse double-click at the current coordinates.
     /// </summary>
     public void DoubleClick()
     {
@@ -95,7 +95,7 @@ public sealed class MouseManipulator : IMouseManipulator
     public void Scroll(int scrollAmount) => _mouseInterceptor.Scroll(scrollAmount);
 
     /// <summary>
-    /// Sets the mouse speed.
+    /// Sets the system mouse speed.
     /// </summary>
     /// <param name="speed">The desired mouse speed. Must be a value between 1 and 20.</param>
     public void SetMouseSpeed(int speed) => _mouseInterceptor.SetMouseSpeed(speed);

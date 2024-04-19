@@ -32,17 +32,17 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     }
 
     /// <summary>
-    /// Checks if the specified key is currently locked.
+    /// Checks if the key is currently locked.
     /// </summary>
     public bool IsKeyLocked(Key key) => _manipulator.IsKeyLocked(key);
 
     /// <summary>
-    /// Presses the specified key.
+    /// Presses the key.
     /// </summary>
     public void Press(Key key) => _manipulator.Press(key);
 
     /// <summary>
-    /// Presses the specified combination of keys.
+    /// Presses the combination of keys.
     /// </summary>
     public void Press(params Key[] keys) => _manipulator.Press(keys);
 
@@ -61,12 +61,12 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     }
 
     /// <summary>
-    /// Resets the press interval for the specified key.
+    /// Resets the press interval for the key.
     /// </summary>
     public void ResetInterval(Key key) => SetInterval(key, TimeSpan.Zero);
 
     /// <summary>
-    /// Resets the press interval for the specified keys.
+    /// Resets the press interval for the keys.
     /// </summary>
     public void ResetInterval(IEnumerable<Key> keys) => SetInterval(keys, TimeSpan.Zero);
 
@@ -76,12 +76,12 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     public void ResetInterval() => _intervalInterceptor.ResetInterval();
 
     /// <summary>
-    /// Sets the press interval for the specified key.
+    /// Sets the press interval for the key.
     /// </summary>
     public void SetInterval(Key key, TimeSpan interval) => _intervalInterceptor.SetInterval(key, interval);
 
     /// <summary>
-    /// Sets the press interval for the specified keys.
+    /// Sets the press interval for the keys.
     /// </summary>
     public void SetInterval(IEnumerable<Key> keys, TimeSpan interval)
     {
