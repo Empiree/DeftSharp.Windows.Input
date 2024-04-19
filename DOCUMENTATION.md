@@ -380,9 +380,9 @@ mouseListener.Unsubscribe(MouseEvent.MiddleButtonDown);
 mouseListener.UnsubscribeAll(); 
 ```
 
-## Get mouse position
-
-You can get the position of the mouse using the `Position` property. It will return you the Point class with two values as X and Y.
+## Getting the mouse position
+ 
+You can get the position of the mouse by using the `Position` property. It will return the Point class with an X and Y value.
 
 ```c#
 var mouseListener = new MouseListener();
