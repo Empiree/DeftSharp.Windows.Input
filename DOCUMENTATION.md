@@ -67,7 +67,7 @@ The DeftSharp library has many different classes for handle user input. Below, y
 
 In this section, you can familiarize yourself with all the existing classes.
 
-## Keyboard
+# Keyboard
 
 These classes provide global control and observation of the keyboard.
 
