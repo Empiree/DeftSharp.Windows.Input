@@ -334,9 +334,9 @@ Each object of the MouseListener class stores its own subscriptions. Keep this i
 > [!NOTE]
 > :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This correctly releases the system resources used by the application.
 
-## Subscribe to the mouse events
+## Subscribing to mouse listener events
 
-In order to subscribe to mouse events, you need to call one of the subscribe method.
+Call one of the following methods to subscribe to a mouse event.
 
 ```c#
 var mouseListener = new MouseListener();
@@ -344,19 +344,25 @@ var mouseListener = new MouseListener();
 // Subscription for left button down event
 mouseListener.Subscribe(MouseEvent.LeftButtonDown,
     () => Trace.WriteLine($"The left mouse button was pressed"));
+```
+```c#
+var mouseListener = new MouseListener();
 
 // One-time subscription            
 mouseListener.SubscribeOnce(MouseEvent.RightButtonDown,
     () => Trace.WriteLine($"The right mouse button was pressed"));
+```
+```c#
+var mouseListener = new MouseListener();
 
 // Subscription to generic mouse down event that will trigger on any mouse button            
  mouseListener.Subscribe(MouseEvent.ButtonDown, mouseEvent 
      => Trace.WriteLine($"The {mouseEvent} was pressed"));
 ```
 
-Each subscription method returns a subscription object with all the details. Including the unique identifier and event type.
+Each subscription method returns an object with event details, such as a unique identifier and event type.
 
-## Unsubscribe from the event
+## Unsubscribing from mouse listener events
 
 You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once.
 
@@ -378,9 +384,9 @@ You can get information about the current state of the keys. To do this you can 
 var isLeftButtonPressed = mouseListener.IsKeyPressed(MouseButton.Left);
 ```
 
-## Get mouse position
-
-You can get the position of the mouse using the `Position` property. It will return you the Point class with two values as X and Y.
+## Getting the mouse position
+ 
+You can get the position of the mouse by using the `Position` property. It will return the Point class with an X and Y value.
 
 ```c#
 var mouseListener = new MouseListener();
