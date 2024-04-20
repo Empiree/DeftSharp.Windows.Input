@@ -6,7 +6,7 @@ using DeftSharp.Windows.Input.Keyboard.Interceptors;
 namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
-/// Provides the option to change the bind of the specified button.
+/// Provides the ability to change the key bindings on the keyboard.
 /// </summary>
 public sealed class KeyboardBinder : IKeyboardBinder
 {

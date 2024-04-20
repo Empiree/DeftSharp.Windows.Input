@@ -27,7 +27,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
     public void SetPosition(int x, int y) => MouseAPI.SetPosition(x, y);
     public void SetMouseSpeed(int speed) => MouseAPI.SetMouseSpeed(speed);
     public void Click(int x, int y, MouseButton button) => MouseAPI.Click(x, y, button);
-    public void Scroll(int scrollAmount) => MouseAPI.Scroll(scrollAmount);
+    public void Scroll(int rotation) => MouseAPI.Scroll(rotation);
 
     /// <summary>
     /// Callback method for the mouse hook.

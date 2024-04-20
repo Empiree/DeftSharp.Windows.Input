@@ -36,7 +36,7 @@ public sealed class MouseManipulator : IMouseManipulator
     /// <summary>
     /// Prevents the specified mouse event.
     /// </summary>
-    [DangerousBehavior("Be careful with the use of this method. You can completely lock your mouse")]
+    [DangerousBehavior("Be careful with the use of this method. You can completely lock your mouse.")]
     public void Prevent(PreventMouseEvent mouseEvent, Func<bool>? predicate = null)
     {
         predicate ??= () => true;
@@ -90,14 +90,15 @@ public sealed class MouseManipulator : IMouseManipulator
     /// <summary>
     /// Scrolls the mouse wheel.
     /// </summary>
-    /// <param name="scrollAmount">The amount to scroll. 
+    /// <param name="rotation">The rotation of the mouse wheel. 
     /// Positive value scrolls the wheel up, negative scrolls the wheel down.</param>
-    public void Scroll(int scrollAmount) => _mouseInterceptor.Scroll(scrollAmount);
+    public void Scroll(int rotation) => _mouseInterceptor.Scroll(rotation);
 
     /// <summary>
     /// Sets the system mouse speed.
     /// </summary>
     /// <param name="speed">The desired mouse speed. Must be a value between 1 and 20.</param>
+    [SystemChanges("This function changes settings in your system.")]
     public void SetMouseSpeed(int speed) => _mouseInterceptor.SetMouseSpeed(speed);
 
     /// <summary>

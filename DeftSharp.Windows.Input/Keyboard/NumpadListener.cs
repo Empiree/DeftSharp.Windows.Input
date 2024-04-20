@@ -6,7 +6,7 @@ using System.Windows.Input;
 namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
-/// Provides functionality to listen for numpad key presses and trigger corresponding actions.
+/// Provides the ability to listen for numpad key presses and trigger corresponding actions.
 /// </summary>
 public sealed class NumpadListener
 {
