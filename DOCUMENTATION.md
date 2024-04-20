@@ -344,19 +344,13 @@ var mouseListener = new MouseListener();
 // Subscription for left button down event
 mouseListener.Subscribe(MouseEvent.LeftButtonDown,
     () => Trace.WriteLine($"The left mouse button was pressed"));
-```
-```c#
-var mouseListener = new MouseListener();
 
 // One-time subscription            
 mouseListener.SubscribeOnce(MouseEvent.RightButtonDown,
     () => Trace.WriteLine($"The right mouse button was pressed"));
-```
-```c#
-var mouseListener = new MouseListener();
 
 // Subscription to generic mouse down event that will trigger on any mouse button            
- mouseListener.Subscribe(MouseEvent.ButtonDown, mouseEvent 
+mouseListener.Subscribe(MouseEvent.ButtonDown, mouseEvent 
      => Trace.WriteLine($"The {mouseEvent} was pressed"));
 ```
 
