@@ -30,7 +30,7 @@ The principle of the library is based on a chain of interceptors that are formed
 
 New interceptors are registered by your interaction with classes such as [KeyboardListener](#keyboardlistener). This allows you to observe special events and have control over them. If the base classes are not enough for your needs, you can use [custom interceptors](#custom-interceptors).
 
-The functionality of the library can be divided into temporary and permanent changes. Temporary ones are those that will be active only while the program is running, such as subscribing to input events. Permanent changes are those that do not depend on your application, such as changes in mouse speed.
+The functionality of the library can be divided into temporary and permanent changes. Temporary ones are those that will be active only while the program is running, such as subscribing to input events. Permanent changes are those that do not depend on your application, such as changes in mouse speed. They are marked with the `SystemChanges` attribute.
 
 # Getting started
 
