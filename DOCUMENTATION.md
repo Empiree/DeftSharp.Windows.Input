@@ -160,6 +160,16 @@ keyboard.Press(Key.Space);
 keyboard.Press(Key.LeftCtrl, Key.V);
 ```
 
+Also, if you need to hold down a button or trigger a key release event, you can use `Simulate()` methods that directly simulate keyboard events. 
+
+```c#
+// Hold the button
+keyboard.Simulate(Key.LeftShift, KeyboardInputEvent.KeyDown); 
+
+// Release the button            
+keyboard.Simulate(Key.LeftShift, KeyboardInputEvent.KeyUp); 
+```
+
 ## Prevent input events
 
 You can prevent global input events by default or with some condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or the application is completed.
