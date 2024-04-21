@@ -148,7 +148,7 @@ The **KeyboardManipulator** class provides the ability to control the keyboard.
 
 ## Simulate keyboard input
 
-You can simulate button presses from the keyboard with this class. The simulated keys are fully compatible with other pressed keys. If you press the Shift button and simulate the call of some key, the Shift modifier will be applied to this input.
+You can simulate pressing buttons from the keyboard, they will be fully compatible with other pressed buttons.
 
 ```c#
 var keyboard = new KeyboardManipulator();
@@ -160,7 +160,7 @@ keyboard.Press(Key.Space);
 keyboard.Press(Key.LeftCtrl, Key.V);
 ```
 
-Also, if you need to hold down a button or trigger a key release event, you can use `Simulate()` methods that directly simulate keyboard events. 
+If you need to trigger a specific event, you can use `Simulate()` methods that directly simulate keyboard input events.
 
 ```c#
 // Hold the button
