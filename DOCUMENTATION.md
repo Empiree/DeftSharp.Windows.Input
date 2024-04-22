@@ -135,7 +135,7 @@ var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
 
 # KeyboardManipulator
 
-The **KeyboardManipulator** class provides the ability to control the keyboard. 
+The **KeyboardManipulator** class provides the ability to control the keyboard.
 
 > [!NOTE]
 > :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
@@ -148,7 +148,7 @@ The **KeyboardManipulator** class provides the ability to control the keyboard.
 
 ## Simulate keyboard input
 
-You can simulate pressing buttons from the keyboard, they will be fully compatible with other pressed buttons.
+You can simulate pressing buttons from the keyboard. To do this, you need to use the `Press()` method, which accepts a collection of keys. The simulated keys are fully compatible with your keyboard, so different active modifiers will be applied to them, such as the Shift key.
 
 ```c#
 var keyboard = new KeyboardManipulator();
