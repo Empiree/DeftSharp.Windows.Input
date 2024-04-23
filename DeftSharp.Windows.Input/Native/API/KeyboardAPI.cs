@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard;
-using DeftSharp.Windows.Input.Shared.Exceptions;
 using static DeftSharp.Windows.Input.Native.User32;
 using static DeftSharp.Windows.Input.Native.Kernel32;
 using static DeftSharp.Windows.Input.Native.System.InputMessages;
@@ -89,13 +88,10 @@ internal static class KeyboardAPI
     /// Presses the specified key.
     /// </summary>
     /// <param name="key">The key to press.</param>
-    /// <exception cref="KeyboardPressException">Thrown if the key press simulation fails.</exception>
     internal static void Press(Key key)
     {
-        var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
-        var result = SimulateKeyPress(keyCode);
-        if (!result)
-            throw new KeyboardPressException(key);
+        Simulate(key, KeyboardSimulateOption.KeyDown);
+        Simulate(key, KeyboardSimulateOption.KeyUp);
     }
 
     /// <summary>
@@ -119,26 +115,15 @@ internal static class KeyboardAPI
     }
 
     /// <summary>
-    /// Simulates a keyboard input event for the specified key.
+    /// Simulates a keyboard event based on the specified key and option.
     /// </summary>
     /// <param name="key">The key to simulate.</param>
-    /// <param name="keyboardEvent">The type of keyboard input event.</param>
-    /// <exception cref="NotImplementedException">Thrown if the specified keyboard event is not implemented.</exception>
-    internal static void Simulate(Key key, KeyboardInputEvent keyboardEvent)
+    /// <param name="option">The option specifying the type of keyboard event to simulate.</param>
+    internal static void Simulate(Key key, KeyboardSimulateOption option)
     {
         var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
-
-        switch (keyboardEvent)
-        {
-            case KeyboardInputEvent.KeyDown:
-                SimulateKeyDown(keyCode);
-                break;
-            case KeyboardInputEvent.KeyUp:
-                SimulateKeyUp(keyCode);
-                break;
-            default:
-                throw new NotImplementedException(nameof(keyboardEvent));
-        }
+        var input = CreateInput(keyCode, (uint)option);
+        SendInput(input);
     }
 
     /// <summary>
@@ -146,40 +131,6 @@ internal static class KeyboardAPI
     /// </summary>
     internal static IntPtr GetLayoutHandle()
         => GetKeyboardLayout(GetCurrentThreadId());
-
-    /// <summary>
-    /// Simulates pressing a key with the specified virtual key code.
-    /// </summary>
-    /// <param name="keyCode">The virtual key code of the key to simulate pressing.</param>
-    /// <returns>True if the key press simulation was successful; otherwise, false.</returns>
-    private static bool SimulateKeyPress(ushort keyCode)
-        => SimulateKeyDown(keyCode) && SimulateKeyUp(keyCode);
-
-    /// <summary>
-    /// Simulates a key down event for the specified virtual key code.
-    /// </summary>
-    /// <param name="keyCode">The virtual key code of the key to simulate.</param>
-    /// <returns>
-    /// <c>true</c> if the function succeeds, <c>false</c> otherwise. To get extended error information, call GetLastError.
-    /// </returns>
-    private static bool SimulateKeyDown(ushort keyCode)
-    {
-        var input = CreateInput(keyCode, InputKeyDown);
-        return SendInput(input);
-    }
-
-    /// <summary>
-    /// Simulates a key up event for the specified virtual key code.
-    /// </summary>
-    /// <param name="keyCode">The virtual key code of the key to simulate.</param>
-    /// <returns>
-    /// <c>true</c> if the function succeeds, <c>false</c> otherwise. To get extended error information, call GetLastError.
-    /// </returns>
-    private static bool SimulateKeyUp(ushort keyCode)
-    {
-        var input = CreateInput(keyCode, InputKeyUp);
-        return SendInput(input);
-    }
 
     /// <summary>
     /// Creates an INPUT structure representing a keyboard input event with the specified virtual key code.

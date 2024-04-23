@@ -26,7 +26,7 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
     public void Press(Key key) => Keyboard.Press(key);
     public void Press(IEnumerable<Key> combination) => Keyboard.Press(combination);
 
-    public void Simulate(Key key, KeyboardInputEvent keyboardEvent) => Keyboard.Simulate(key, keyboardEvent);
+    public void Simulate(Key key, KeyboardSimulateOption option) => Keyboard.Simulate(key, option);
 
     public void Prevent(Key key, Func<bool> predicate)
     {

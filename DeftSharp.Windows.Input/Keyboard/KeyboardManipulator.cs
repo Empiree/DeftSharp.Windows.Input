@@ -47,17 +47,17 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     public void Press(params Key[] keys) => _manipulator.Press(keys);
 
     /// <summary>
-    /// Simulates a keyboard input event for the specified key.
+    /// Simulates a keyboard event for the specified key.
     /// </summary>
-    public void Simulate(Key key, KeyboardInputEvent keyboardEvent) => _manipulator.Simulate(key, keyboardEvent);
+    public void Simulate(Key key, KeyboardSimulateOption option) => _manipulator.Simulate(key, option);
 
     /// <summary>
-    /// Simulates a keyboard input event for the specified keys.
+    /// Simulates a keyboard event for the specified keys.
     /// </summary>
-    public void Simulate(IEnumerable<Key> keys, KeyboardInputEvent keyboardEvent)
+    public void Simulate(IEnumerable<Key> keys, KeyboardSimulateOption option)
     {
         foreach (var key in keys.Distinct())
-            Simulate(key, keyboardEvent);
+            Simulate(key, option);
     }
 
     /// <summary>

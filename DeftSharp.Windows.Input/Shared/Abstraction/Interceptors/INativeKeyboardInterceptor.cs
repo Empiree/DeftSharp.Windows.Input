@@ -10,7 +10,7 @@ internal interface INativeKeyboardInterceptor : IRequestedInterceptor
     event KeyboardInputDelegate? KeyboardInput;
     void Press(Key key);
     void Press(IEnumerable<Key> keys);
-    void Simulate(Key key, KeyboardInputEvent keyboardEvent);
+    void Simulate(Key key, KeyboardSimulateOption option);
     bool IsKeyActive(Key key);
     bool IsKeyPressed(Key key);
     KeyboardLayout GetLayout();

@@ -13,32 +13,32 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
 
     public static KeyboardIntervalInterceptor Instance => LazyInstance.Value;
 
-    private readonly ConcurrentDictionary<Key, KeyClickInterval> _keyClickIntervals;
+    private readonly ConcurrentDictionary<Key, KeyPressInterval> _keyPressIntervals;
 
     private KeyboardIntervalInterceptor()
         : base(InterceptorType.Prohibitive) =>
-        _keyClickIntervals = new ConcurrentDictionary<Key, KeyClickInterval>();
+        _keyPressIntervals = new ConcurrentDictionary<Key, KeyPressInterval>();
 
     public void SetInterval(Key key, TimeSpan interval)
     {
         if (interval.Equals(TimeSpan.Zero))
         {
-            _keyClickIntervals.TryRemove(key, out _);
+            _keyPressIntervals.TryRemove(key, out _);
 
             TryUnhook();
             return;
         }
 
-        var keyClickInterval = new KeyClickInterval(key, interval);
+        var keyPressInterval = new KeyPressInterval(key, interval);
 
-        _keyClickIntervals.AddOrUpdate(key, keyClickInterval, (_, _) => keyClickInterval);
+        _keyPressIntervals.AddOrUpdate(key, keyPressInterval, (_, _) => keyPressInterval);
 
         Hook();
     }
 
     public void ResetInterval()
     {
-        _keyClickIntervals.Clear();
+        _keyPressIntervals.Clear();
         Unhook();
     }
 
@@ -48,17 +48,17 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
         base.Dispose();
     }
 
-    internal override bool OnPipelineUnhookRequested() => !_keyClickIntervals.Any();
+    internal override bool OnPipelineUnhookRequested() => !_keyPressIntervals.Any();
 
     protected override void OnInputSuccess(KeyPressedArgs args)
     {
         if (args.Event is KeyboardInputEvent.KeyUp)
             return;
 
-        _keyClickIntervals.TryGetValue(args.KeyPressed, out var clickInterval);
+        _keyPressIntervals.TryGetValue(args.KeyPressed, out var pressInterval);
 
-        if (clickInterval is not null)
-            clickInterval.LastClicked = DateTime.Now;
+        if (pressInterval is not null)
+            pressInterval.LastPressed = DateTime.Now;
     }
 
     protected override bool IsInputAllowed(KeyPressedArgs args)
@@ -66,14 +66,14 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
         if (args.Event is KeyboardInputEvent.KeyUp)
             return true;
 
-        _keyClickIntervals.TryGetValue(args.KeyPressed, out var keyClickInterval);
+        _keyPressIntervals.TryGetValue(args.KeyPressed, out var pressInterval);
 
-        return !(keyClickInterval is not null && keyClickInterval.IsBlocked);
+        return !(pressInterval is not null && pressInterval.IsBlocked);
     }
 
     private void TryUnhook()
     {
-        if (!_keyClickIntervals.Any())
+        if (!_keyPressIntervals.Any())
             Unhook();
     }
 }

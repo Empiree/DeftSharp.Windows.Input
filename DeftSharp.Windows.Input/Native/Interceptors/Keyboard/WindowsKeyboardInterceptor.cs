@@ -34,8 +34,8 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
     public void Press(IEnumerable<Key> keys) =>
         KeyboardAPI.PressSynchronously(keys);
 
-    public void Simulate(Key key, KeyboardInputEvent keyboardEvent)
-        => KeyboardAPI.Simulate(key, keyboardEvent);
+    public void Simulate(Key key, KeyboardSimulateOption option)
+        => KeyboardAPI.Simulate(key, option);
 
     public bool IsKeyActive(Key key) => KeyboardAPI.IsKeyActive(key);
     public bool IsKeyPressed(Key key) => KeyboardAPI.IsKeyPressed(key);
