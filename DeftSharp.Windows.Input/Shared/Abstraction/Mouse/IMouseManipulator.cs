@@ -16,6 +16,9 @@ public interface IMouseManipulator : IDisposable
     void Click(int x, int y, MouseButton button = MouseButton.Left);
     void Click(MouseButton button = MouseButton.Left);
 
+    void Simulate(int x, int y, MouseSimulateOption simulateOption);
+    void Simulate(MouseSimulateOption simulateOption);
+
     void DoubleClick(int x, int y);
     void DoubleClick();
 

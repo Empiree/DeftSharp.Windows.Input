@@ -60,9 +60,20 @@ public sealed class MouseManipulator : IMouseManipulator
     public void SetPosition(int x, int y) => _mouseInterceptor.SetPosition(x, y);
 
     /// <summary>
+    /// Simulates a mouse input for the specified event at the current coordinates.
+    /// </summary>
+    public void Simulate(MouseSimulateOption simulateOption) => _mouseInterceptor.Simulate(simulateOption);
+
+    /// <summary>
+    /// Simulates a mouse input for the specified event at the specified coordinates.
+    /// </summary>
+    public void Simulate(int x, int y, MouseSimulateOption simulateOption) =>
+        _mouseInterceptor.Simulate(x, y, simulateOption);
+
+    /// <summary>
     /// Simulates a mouse click at the specified coordinates.
     /// </summary>
-    public void Click(int x, int y, MouseButton button = MouseButton.Left) => _mouseInterceptor.Click(button, x, y);
+    public void Click(int x, int y, MouseButton button = MouseButton.Left) => _mouseInterceptor.Click(x, y, button);
 
     /// <summary>
     /// Simulates a mouse click at the current coordinates.

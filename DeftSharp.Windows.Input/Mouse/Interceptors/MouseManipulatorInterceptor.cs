@@ -26,12 +26,20 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
     public void SetPosition(int x, int y) => Mouse.SetPosition(x, y);
     public void SetMouseSpeed(int speed) => Mouse.SetMouseSpeed(speed);
-    public void Click(MouseButton button, int x, int y) => Mouse.Click(x, y, button);
+    public void Click(int x, int y, MouseButton button) => Mouse.Click(x, y, button);
 
     public void Click(MouseButton button)
     {
         var position = Mouse.GetPosition();
-        Click(button, position.X, position.Y);
+        Click(position.X, position.Y, button);
+    }
+
+    public void Simulate(int x, int y, MouseSimulateOption simulateOption) => Mouse.Simulate(x, y, simulateOption);
+
+    public void Simulate(MouseSimulateOption simulateOption)
+    {
+        var position = Mouse.GetPosition();
+        Simulate(position.X, position.Y, simulateOption);
     }
 
     public void Scroll(int rotation) => Mouse.Scroll(rotation);

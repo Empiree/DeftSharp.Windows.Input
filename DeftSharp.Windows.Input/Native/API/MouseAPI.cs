@@ -73,22 +73,40 @@ internal static class MouseAPI
     internal static void Click(int x, int y, MouseButton button)
     {
         SetPosition(x, y);
-
+        
         switch (button)
         {
             case MouseButton.Left:
-                ClickLeft(x, y);
+                ClickLeft();
                 break;
             case MouseButton.Right:
-                ClickRight(x, y);
+                ClickRight();
                 break;
             case MouseButton.Middle:
-                ClickMiddle(x, y);
+                ClickMiddle();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(button), button, null);
         }
     }
+
+    /// <summary>
+    /// Simulates a mouse event at the specified coordinates based on the specified option.
+    /// </summary>
+    /// <param name="x">The X-coordinate of the mouse event.</param>
+    /// <param name="y">The Y-coordinate of the mouse event.</param>
+    /// <param name="option">The option specifying the type of mouse event to simulate.</param>
+    internal static void Simulate(int x, int y, MouseSimulateOption option)
+    {
+        SetPosition(x, y);
+        Simulate(option);
+    }
+    
+    /// <summary>
+    /// Simulates a mouse event at the current coordinates based on the specified option.
+    /// </summary>
+    /// <param name="option">The option specifying the type of mouse event to simulate.</param>
+    internal static void Simulate(MouseSimulateOption option) => mouse_event((int)option, 0, 0, 0, 0);
 
     /// <summary>
     /// Retrieves the current mouse speed level, which ranges from 1 to 20.
@@ -126,36 +144,30 @@ internal static class MouseAPI
     }
 
     /// <summary>
-    /// Simulates a right mouse click at the specified position.
+    /// Simulates a right mouse click at the current position.
     /// </summary>
-    /// <param name="x">The x-coordinate of the click position.</param>
-    /// <param name="y">The y-coordinate of the click position.</param>
-    private static void ClickRight(int x, int y)
+    private static void ClickRight()
     {
-        mouse_event(InputMouseRightDown, x, y, 0, 0);
-        mouse_event(InputMouseRightUp, x, y, 0, 0);
+        Simulate(MouseSimulateOption.RightButtonDown);
+        Simulate(MouseSimulateOption.RightButtonUp);
     }
 
     /// <summary>
-    /// Simulates a left mouse click at the specified position.
+    /// Simulates a left mouse click at the current position.
     /// </summary>
-    /// <param name="x">The x-coordinate of the click position.</param>
-    /// <param name="y">The y-coordinate of the click position.</param>
-    private static void ClickLeft(int x, int y)
+    private static void ClickLeft()
     {
-        mouse_event(InputMouseLeftDown, x, y, 0, 0);
-        mouse_event(InputMouseLeftUp, x, y, 0, 0);
+        Simulate(MouseSimulateOption.LeftButtonDown);
+        Simulate(MouseSimulateOption.LeftButtonUp);
     }
 
     /// <summary>
-    /// Simulates a middle mouse click at the specified position.
+    /// Simulates a middle mouse click at the current position.
     /// </summary>
-    /// <param name="x">The x-coordinate of the click position.</param>
-    /// <param name="y">The y-coordinate of the click position.</param>
-    private static void ClickMiddle(int x, int y)
+    private static void ClickMiddle()
     {
-        mouse_event(InputMouseMiddleDown, x, y, 0, 0);
-        mouse_event(InputMouseMiddleUp, x, y, 0, 0);
+        Simulate(MouseSimulateOption.MiddleButtonDown);
+        Simulate(MouseSimulateOption.MiddleButtonUp);
     }
 
     /// <summary>
