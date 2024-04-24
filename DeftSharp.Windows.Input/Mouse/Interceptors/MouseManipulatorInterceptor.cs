@@ -44,7 +44,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
     public void Scroll(int rotation) => Mouse.Scroll(rotation);
 
-    public void Prevent(PreventMouseEvent preventOption, Func<bool> predicate)
+    public void Prevent(PreventMouseOption preventOption, Func<bool> predicate)
     {
         var preventEvents = preventOption.ToMouseEvents();
 
@@ -57,7 +57,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
         }
     }
 
-    public void Release(PreventMouseEvent preventOption)
+    public void Release(PreventMouseOption preventOption)
     {
         var preventEvents = preventOption.ToMouseEvents();
 
@@ -83,8 +83,8 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
         return predicate is not null && predicate.Invoke();
     }
 
-    public bool IsKeyLocked(PreventMouseEvent mouseEvent) 
-        => mouseEvent.ToMouseEvents().Any(IsKeyLocked);
+    public bool IsKeyLocked(PreventMouseOption option) 
+        => option.ToMouseEvents().Any(IsKeyLocked);
 
     public override void Dispose()
     {

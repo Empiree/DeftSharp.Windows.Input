@@ -31,23 +31,23 @@ public sealed class MouseManipulator : IMouseManipulator
     /// <summary>
     /// Checks if the mouse event is currently locked.
     /// </summary>
-    public bool IsKeyLocked(PreventMouseEvent mouseEvent) => _mouseInterceptor.IsKeyLocked(mouseEvent);
+    public bool IsKeyLocked(PreventMouseOption preventOption) => _mouseInterceptor.IsKeyLocked(preventOption);
 
     /// <summary>
     /// Prevents the specified mouse event.
     /// </summary>
     [DangerousBehavior("Be careful with the use of this method. You can completely lock your mouse.")]
-    public void Prevent(PreventMouseEvent mouseEvent, Func<bool>? predicate = null)
+    public void Prevent(PreventMouseOption preventOption, Func<bool>? predicate = null)
     {
         predicate ??= () => true;
 
-        _mouseInterceptor.Prevent(mouseEvent, predicate);
+        _mouseInterceptor.Prevent(preventOption, predicate);
     }
 
     /// <summary>
     /// Releases the prevention of the specified mouse event.
     /// </summary>
-    public void Release(PreventMouseEvent mouseEvent) => _mouseInterceptor.Release(mouseEvent);
+    public void Release(PreventMouseOption preventOption) => _mouseInterceptor.Release(preventOption);
 
     /// <summary>
     /// Releases the prevention of all mouse events.

@@ -6,41 +6,41 @@ using DeftSharp.Windows.Input.Mouse;
 
 namespace DeftSharp.Windows.Input.Extensions;
 
-internal static class EnumExtensions
+internal static class EventExtensions
 {
-    public static IEnumerable<MouseInputEvent> ToMouseEvents(this PreventMouseEvent preventEvent)
+    internal static IEnumerable<MouseInputEvent> ToMouseEvents(this PreventMouseOption preventOption)
     {
-        var preventEvents = new List<MouseInputEvent>();
+        var events = new List<MouseInputEvent>();
 
-        switch (preventEvent)
+        switch (preventOption)
         {
-            case PreventMouseEvent.Move:
-                preventEvents.Add(MouseInputEvent.Move);
+            case PreventMouseOption.Move:
+                events.Add(MouseInputEvent.Move);
                 break;
-            case PreventMouseEvent.LeftButton:
-                preventEvents.Add(MouseInputEvent.LeftButtonDown);
-                preventEvents.Add(MouseInputEvent.LeftButtonUp);
+            case PreventMouseOption.LeftButton:
+                events.Add(MouseInputEvent.LeftButtonDown);
+                events.Add(MouseInputEvent.LeftButtonUp);
                 break;
-            case PreventMouseEvent.RightButton:
-                preventEvents.Add(MouseInputEvent.RightButtonDown);
-                preventEvents.Add(MouseInputEvent.RightButtonUp);
+            case PreventMouseOption.RightButton:
+                events.Add(MouseInputEvent.RightButtonDown);
+                events.Add(MouseInputEvent.RightButtonUp);
                 break;
-            case PreventMouseEvent.MiddleButton:
-                preventEvents.Add(MouseInputEvent.MiddleButtonDown);
-                preventEvents.Add(MouseInputEvent.MiddleButtonUp);
+            case PreventMouseOption.MiddleButton:
+                events.Add(MouseInputEvent.MiddleButtonDown);
+                events.Add(MouseInputEvent.MiddleButtonUp);
                 break;
-            case PreventMouseEvent.Scroll:
-                preventEvents.Add(MouseInputEvent.Scroll);
+            case PreventMouseOption.Scroll:
+                events.Add(MouseInputEvent.Scroll);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(preventEvent), preventEvent,
-                    $"Invalid value for argument {nameof(preventEvent)}: {preventEvent}");
+                throw new ArgumentOutOfRangeException(nameof(preventOption), preventOption,
+                    $"Invalid value for argument {nameof(preventOption)}: {preventOption}");
         }
 
-        return preventEvents;
+        return events;
     }
 
-    public static IEnumerable<KeyboardEvent> ToKeyboardEvents(this KeyboardInputEvent inputEvent)
+    internal static IEnumerable<KeyboardEvent> ToKeyboardEvents(this KeyboardInputEvent inputEvent)
     {
         var events = new List<KeyboardEvent>();
 
@@ -60,7 +60,7 @@ internal static class EnumExtensions
         return events;
     }
 
-    public static IEnumerable<MouseEvent> ToMouseEvents(this MouseInputEvent inputEvent)
+    internal static IEnumerable<MouseEvent> ToMouseEvents(this MouseInputEvent inputEvent)
     {
         var events = new List<MouseEvent>();
 

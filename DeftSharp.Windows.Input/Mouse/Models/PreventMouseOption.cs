@@ -3,30 +3,30 @@
 /// <summary>
 /// Specifies options for preventing mouse events.
 /// </summary>
-public enum PreventMouseEvent : ushort
+public enum PreventMouseOption : ushort
 {
     /// <summary>
     /// Prevents mouse move events.
     /// </summary>
-    Move = 512,
+    Move,
 
     /// <summary>
     /// Prevents left mouse button events (down, up, double click).
     /// </summary>
-    LeftButton = 513,
+    LeftButton,
 
     /// <summary>
     /// Prevents right mouse button events (down, up).
     /// </summary>
-    RightButton = 516,
+    RightButton,
     
     /// <summary>
     /// Prevents middle mouse button events (down, up).
     /// </summary>
-    MiddleButton = 519,
+    MiddleButton,
     
     /// <summary>
     /// Prevents mouse scroll events.
     /// </summary>
-    Scroll = 522
+    Scroll
 }
