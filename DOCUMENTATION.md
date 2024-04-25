@@ -33,11 +33,11 @@ The DeftSharp library provides flexible and powerful functionality for keyboard 
 
 It is built using [P/Invoke](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke) methods, with the help of libraries such as [User32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files) and [Kernel32](https://en.wikipedia.org/wiki/Microsoft_Windows_library_files). 
 
-The principle of the library is based on a chain of interceptors that are formed into a pipeline. Before an incoming event can be successfully processed by the system, it must pass through all registered interceptors. If the pipeline is empty, the library will not use system resources and will not affect their operation in any way.
+The principle of the library is based on a chain of interceptors that are formed into a pipeline. Before an incoming event can be successfully processed by the system, it must pass through all registered interceptors. If the pipeline is empty, the library will not use system resources and will not affect their operation.
 
-New interceptors are registered by your interaction with classes such as [KeyboardListener](#keyboardlistener). This allows you to observe special events and have control over them. If the base classes are not enough for your needs, you can use [custom interceptors](#custom-interceptors).
+New interceptors are registered by your interaction with classes such as [KeyboardListener](#keyboardlistener). This allows you to observe special events and have control over them. If the provided classes do not fit your needs, you can create your own [custom interceptor](#custom-interceptors).
 
-The functionality of the library can be divided into temporary and permanent changes. Temporary ones are those that will be active only while the program is running, such as subscribing to input events. Permanent changes are those that do not depend on your application, such as changes in mouse speed. They are marked with the `SystemChanges` attribute.
+The functionality of the library is divided into two types of functionality, temporary and permanent changes. Temporary changes are active only while the program is running, such as subscribing to input events. Permanent changes do not depend on your application, such as changes in mouse speed. Permanent changes are marked with the `SystemChanges` attribute.
 
 # Getting started
 
