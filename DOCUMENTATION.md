@@ -3,7 +3,7 @@
 > [!NOTE]
 > Documentation is in the process of being written.
 
-# Overview
+## Overview
 
 - [Introduction](#introduction)
 - [Getting started](#getting-started)
@@ -18,7 +18,14 @@
      - [Mouse Manipulator](#mousemanipulator)
      - [Mouse Info](#mouseinfo)
 - [Custom Interceptors](#custom-interceptors)
+    - [Creating custom interceptors](#creating-custom-interceptors)
+    - [Examples of custom interceptors](#examples-of-custom-interceptors)
 - [Extensions](#extensions)
+    - [Classes](#classes)
+        - [NumpadListener](#numpadlistener)
+    - [Methods](#methods)
+        - [Key.ToUnicode()](#keytounicode) 
+
 
 # Introduction 
 
@@ -67,13 +74,14 @@ The DeftSharp library has many different classes for handle user input. Below, y
 
 In this section, you can familiarize yourself with all the existing classes.
 
-# Keyboard
+## Keyboard
 
 These classes provide global control and observation of the keyboard.
 
-# KeyboardListener
+### **KeyboardListener**
 
-The **KeyboardListener** class provides the ability to subscribe to global keyboard input events. This allows you, to get the information you need about the user's presses, sequences and key combinations. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to suit your needs.
+The **KeyboardListener** class provides the ability to subscribe to global keyboard input events. This allows you, to get the information you need about the user's presses, sequences and key combinations. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to sui
+t your needs.
 
 This class stores active subscriptions in properties: `Keys`, `Sequences` and `Combinations`.
 
@@ -82,7 +90,7 @@ Each object of the KeyboardListener class stores its own subscriptions. Keep thi
 > [!NOTE]
 > :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This will allow the application to correctly release all system resources it uses.
 
-## Subscribe to the press event
+#### **Subscribe to the press event**
 
 In order to subscribe to press events, you need to call one of the subscribe method. 
 
@@ -106,7 +114,7 @@ KeyboardEvent.Up); // Subscribe to up events
 
 Each subscription method returns a subscription object with all the details. Including the unique identifier and event type.
 
-## Unsubscribe from the event
+#### **Unsubscribe from the event**
 
 You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once.
 
@@ -120,7 +128,7 @@ keyboardListener.Unsubscribe(Key.A);
 keyboardListener.Unsubscribe(subscription.Id);
 ```
 
-## Get the current state of the keys
+#### **Get the current state of the keys**
 
 You can get information about the current state of the keys. To do this, you can use the already created properties, or you can call the `IsKeyPressed()` method.
 
@@ -133,20 +141,20 @@ var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
 
 --- 
 
-# KeyboardManipulator
+### **KeyboardManipulator**
 
 The **KeyboardManipulator** class provides the ability to control the keyboard.
 
 > [!NOTE]
 > :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
 
-## Features
+**Features**
 
 - Simulate keyboard input
 - Prevent input events 
 - Set the press interval 
 
-## Simulate keyboard input
+#### **Simulate keyboard input**
 
 You can simulate pressing buttons from the keyboard. To do this, you need to use the `Press()` method, which accepts a collection of keys. The simulated keys are fully compatible with your keyboard, so different active modifiers will be applied to them, such as the Shift key.
 
@@ -170,7 +178,7 @@ keyboard.Simulate(Key.LeftShift, KeyboardInputEvent.KeyDown);
 keyboard.Simulate(Key.LeftShift, KeyboardInputEvent.KeyUp); 
 ```
 
-## Prevent input events
+#### **Prevent input events**
 
 You can prevent global input events by default or with some condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or the application is completed.
 
@@ -206,7 +214,7 @@ Also, the class has a `KeyPrevented` event that fires when a press has been prev
 keyboard.KeyPrevented += args => Trace.WriteLine($"Pressing the {args.KeyPressed} button has been prevented");
 ```
 
-## Set the press interval
+#### **Set the press interval**
 
 The interval setting allows you to control the frequency of presses. With `SetInterval()` method, you will set a global interval for pressing a key on the keyboard. As with locked buttons, the interval will remain until you remove it or the application is completed.
 
@@ -225,14 +233,14 @@ keyboard.SetInterval(Key.Space, TimeSpan.Zero);
 
 ---
 
-# KeyboardBinder
+### **KeyboardBinder**
 
 The **KeyboardBinder** class provides the ability to modify the bindings of the specified keys. All bindings are stored in the `BoundedKeys` property.
 
 > [!NOTE]
 > :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
 
-## Change the button bind
+#### **Change the button bind**
 
 To change the button binding, you must call the `Bind()` method. This method always works, even if a bind already exists, it will just change it to a new one.
 
@@ -244,7 +252,7 @@ keyboardBinder.Bind(Key.Q, Key.W);
 // Now any time the 'Q' button is triggered, it will behave like the 'W' button
 ```
 
-## Swap button bindings
+#### **Swap button bindings**
 
 In order to swap the button bindings, you can use the `Swap()` method.
 
@@ -259,7 +267,7 @@ keyboardBinder.Bind(Key.Q, Key.W);
 keyboardBinder.Bind(Key.W, Key.Q);
 ```
 
-## Get current state
+#### **Get current state**
 
 Get the current state of the bindings using the `IsKeyBounded()` method, which returns true/false depending on the existence of the binding. And `GetBoundKey()` method which returns the current key to which the specified key belongs.
 
@@ -273,7 +281,7 @@ keyboardBinder.GetBoundKey(Key.Q); // W
 keyboardBinder.GetBoundKey(Key.W); // W
 ```
 
-## Unbind the key
+#### **Unbind the key**
 
 To unbind buttons, you need to call one of the `Unbind()` method overloads.
 
@@ -291,11 +299,11 @@ keyboardBinder.Unbind();
 
 ---
 
-# KeyboardInfo
+### **KeyboardInfo**
 
 This class provides various information about the keyboard, both physical and software.
 
-## Get the current keyboard layout
+#### **Get the current keyboard layout**
 
 This method helps to find out the active layout of the user.
 
@@ -312,7 +320,7 @@ Trace.WriteLine(layout.Name); // en-US
 Trace.WriteLine(layout.DisplayName); // English (United States)
 ```
 
-## Get the current keyboard type
+#### **Get the current keyboard type**
 
 Up to 7 basic keyboard types are supported. 
 
@@ -327,11 +335,11 @@ Trace.WriteLine(type.Value); // 4
 ```
 ---
 
-# Mouse
+## Mouse
 
 These classes provide global control and observation of the mouse.
 
-# MouseListener
+### **MouseListener**
 
 The **MouseListener** class provides the ability to use global mouse input events. This gives you information about mouse clicks, scrolling, mouse movement, and more. 
 
@@ -344,7 +352,7 @@ Each object of the MouseListener class stores its own subscriptions. Keep this i
 > [!NOTE]
 > :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This correctly releases the system resources used by the application.
 
-## Subscribing to mouse listener events
+#### **Subscribing to mouse listener events**
 
 Call one of the following methods to subscribe to a mouse event.
 
@@ -366,7 +374,7 @@ mouseListener.Subscribe(MouseEvent.ButtonDown, mouseEvent
 
 Each subscription method returns an object with event details, such as a unique identifier and event type.
 
-## Unsubscribing from mouse listener events
+#### **Unsubscribing from mouse listener events**
 
 You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once.
 
@@ -380,7 +388,7 @@ mouseListener.Unsubscribe(subscription.Id);
 mouseListener.Unsubscribe(MouseEvent.MiddleButtonDown);
 ```
 
-## Get the current state of the keys
+#### **Get the current state of the keys**
 
 You can get information about the current state of the keys. To do this you can call the `IsKeyPressed()` method.
 
@@ -388,7 +396,7 @@ You can get information about the current state of the keys. To do this you can 
 var isLeftButtonPressed = mouseListener.IsKeyPressed(MouseButton.Left);
 ```
 
-## Getting the mouse position
+#### **Getting the mouse position**
  
 You can get the position of the mouse by using the `Position` property. It will return the Point class with an X and Y value.
 
@@ -402,20 +410,20 @@ Trace.WriteLine($"X: {position.X} Y: {position.Y}"); // X: 943 Y: 378
 
 ---
 
-# MouseManipulator
+### **MouseManipulator**
 
 The **MouseManipulator** class provides the ability to control the mouse. 
 
 > [!NOTE]
 > :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
 
-## Features
+**Features**
 
 - Simulate mouse input
 - Prevent input events 
 - Global mouse configuration
 
-## Simulate mouse input
+#### **Simulate mouse input**
 
 You can simulate mouse clicks events.
 
@@ -446,7 +454,7 @@ mouse.Scroll(450);
 mouse.Scroll(-150);
 ```
 
-## Prevent input events
+#### **Prevent input events**
 
 You can prevent global input events by default or with some condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or the application is completed.
 
@@ -482,7 +490,7 @@ Also, the class has a `InputPrevented` event that fires when a input has been pr
 mouse.InputPrevented += mEvent => Trace.WriteLine($"The {mEvent} event was prevented");
 ```
 
-## Global mouse configuration
+#### **Global mouse configuration**
 
 You can make permanent changes with this class. They will be active even after your application is terminated.
 
@@ -493,11 +501,11 @@ mouse.SetMouseSpeed(5); // changes the mouse speed on your system
 ```
 ---
 
-# MouseInfo
+### **MouseInfo**
 
 This class provides various information about the mouse, both physical and software.
 
-## Get the current mouse speed
+#### **Get the current mouse speed**
 
 ```c#
 var mouseInfo = new MouseInfo();
@@ -520,7 +528,7 @@ The work of interceptors can be visualized as a pipeline. Before an incoming eve
 
 Interceptors are registered using the `Hook` method. A call to this method adds an interceptor to the pipeline, and a call to the `Unhook` method removes it.
 
-## Creating 
+## Creating custom interceptors
 
 To create an interceptor you need to inherit from `MouseInterceptor` or `KeyboardInterceptor` and implement `IsInputAllowed` method.
 
@@ -531,7 +539,7 @@ Also, interceptors have two optional methods, such as `OnInputSuccess` and `OnIn
 > [!NOTE]
 > :bulb: **Best Practice:** Design interceptors so that each interceptor solves only one specific problem.
 
-## Examples
+## Examples of custom interceptors
 
 As an example we will implement 2 interceptors. One of them will block mouse scroll event. The second one will output mouse input events.
 
@@ -621,9 +629,9 @@ mouseManipulator.InputPrevented += mouseEvent =>
 
 Additional functionality of the library.
 
-# Classes
+## Classes
 
-## NumpadListener
+### NumpadListener
 
 The **NumpadListener** class allows you to easily subscribe to numpad buttons. It is a decorator over the [KeyboardListener](#keyboardlistener) class. To create an object of this class, it needs to be passed an existing KeyboardListener through which it will create subscriptions. 
 
@@ -644,9 +652,9 @@ numpadListener.Subscribe(number =>
 numpadListener.Unsubscribe();
 ```
 
-# Methods
+## Methods
 
-## Key.ToUnicode()
+### Key.ToUnicode()
 
 This extension method is applied to [Key](https://learn.microsoft.com/en-us/dotnet/api/system.windows.input.key) enum. It returns the interpretation of the key as a unicode string depending on your current keyboard layout. If the key cannot be represented in text format, `String.Empty` will be returned.
 
