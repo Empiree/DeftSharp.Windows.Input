@@ -68,7 +68,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
 
     internal override bool OnPipelineUnhookRequested() => !_boundedKeys.Any();
 
-    protected override bool IsInputAllowed(KeyPressedArgs args)
+    protected override bool IsInputAllowed(KeyboardInputArgs args)
     {
         if (IsKeyBounded(args.KeyPressed) && _lastProcessedBoundedKey != args.KeyPressed)
             return false;
@@ -77,7 +77,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
         return true;
     }
 
-    protected override void OnInputFailure(KeyPressedArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
+    protected override void OnInputFailure(KeyboardInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {
         if (args.Event == KeyboardInputEvent.KeyUp)
             return;

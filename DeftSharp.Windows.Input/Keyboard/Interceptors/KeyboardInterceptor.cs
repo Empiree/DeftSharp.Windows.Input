@@ -43,7 +43,7 @@ public abstract class KeyboardInterceptor : IInterceptor
 
     public virtual void Dispose() => Unhook();
 
-    private InterceptorResponse OnKeyboardInput(KeyPressedArgs args) =>
+    private InterceptorResponse OnKeyboardInput(KeyboardInputArgs args) =>
         new(
             IsInputAllowed(args),
             _interceptorInfo,
@@ -87,14 +87,14 @@ public abstract class KeyboardInterceptor : IInterceptor
     /// </summary>
     /// <param name="args">Key pressed args</param>
     /// <returns><b>True</b> - allow input. <b>False</b> - cancel input.</returns>
-    protected abstract bool IsInputAllowed(KeyPressedArgs args);
+    protected abstract bool IsInputAllowed(KeyboardInputArgs args);
 
     /// <summary>
     /// This method is called when the IsInputAllowed() method is successfully executed on all active interceptors.
     /// And the input can be successfully processed.
     /// </summary>
     /// <param name="args">Key pressed args</param>
-    protected virtual void OnInputSuccess(KeyPressedArgs args)
+    protected virtual void OnInputSuccess(KeyboardInputArgs args)
     {
     }
 
@@ -103,7 +103,7 @@ public abstract class KeyboardInterceptor : IInterceptor
     /// </summary>
     /// <param name="args">Key pressed args</param>
     /// <param name="failedInterceptors">A list of interceptors that did not allowed the key press.</param>
-    protected virtual void OnInputFailure(KeyPressedArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
+    protected virtual void OnInputFailure(KeyboardInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {
     }
 }

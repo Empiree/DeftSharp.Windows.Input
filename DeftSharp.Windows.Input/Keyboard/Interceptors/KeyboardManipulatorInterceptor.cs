@@ -15,7 +15,7 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
     public static KeyboardManipulatorInterceptor Instance => LazyInstance.Value;
 
     private readonly ConcurrentDictionary<Key, Func<bool>> _lockedKeys;
-    public event Action<KeyPressedArgs>? KeyPrevented;
+    public event Action<KeyboardInputArgs>? KeyPrevented;
 
     public IEnumerable<Key> LockedKeys => _lockedKeys.Keys;
 
@@ -61,9 +61,9 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
     }
 
     internal override bool OnPipelineUnhookRequested() => !_lockedKeys.Any();
-    protected override bool IsInputAllowed(KeyPressedArgs args) => !IsKeyLocked(args.KeyPressed);
+    protected override bool IsInputAllowed(KeyboardInputArgs args) => !IsKeyLocked(args.KeyPressed);
 
-    protected override void OnInputFailure(KeyPressedArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
+    protected override void OnInputFailure(KeyboardInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {
         if (failedInterceptors.Any(i => i.Name.Equals(Name)))
             KeyPrevented?.Invoke(args);

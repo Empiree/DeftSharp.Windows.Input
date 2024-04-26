@@ -8,7 +8,7 @@ public interface IKeyboardManipulator : IDisposable
 {
     IEnumerable<Key> LockedKeys { get; }
 
-    event Action<KeyPressedArgs>? KeyPrevented;
+    event Action<KeyboardInputArgs>? KeyPrevented;
 
     bool IsKeyLocked(Key key);
 
