@@ -22,6 +22,7 @@ public sealed class NumpadListenerUnsubscribeTests
             numpadListener.Unsubscribe();
 
             Assert.False(keyboardListener.IsListening);
+            Assert.False(numpadListener.IsListening);
         });
     }
 
@@ -39,8 +40,10 @@ public sealed class NumpadListenerUnsubscribeTests
             numpadListener.Subscribe(_ => { });
             numpadListener.Unsubscribe();
 
-            Assert.True(keyboardListener.Keys.Count() == keys.Length);
+            Assert.True(keyboardListener.IsListening);
+            Assert.Equal(keyboardListener.Keys.Count(), keys.Length);
             Assert.True(keys.All(k => keyboardListener.Keys.Select(s => s.Key).Contains(k)));
+            Assert.False(numpadListener.IsListening);
         });
     }
 }
