@@ -80,19 +80,20 @@ These classes provide global control and observation of the keyboard.
 
 ### **KeyboardListener**
 
-The **KeyboardListener** class provides the ability to subscribe to global keyboard input events. This allows you, to get the information you need about the user's presses, sequences and key combinations. The whole operation of this class is based on subscriptions, you can subscribe to different events, customizing the configuration to sui
-t your needs.
+The **KeyboardListener** class provides the ability to subscribe to global keyboard input events. This can give you information about the user's presses, sequences, and key combinations.
 
-This class stores active subscriptions in properties: `Keys`, `Sequences` and `Combinations`.
+You can subscribe to different events from the KeyboardListener class to enable these features and customize them.
+
+This class stores active subscriptions in the `Keys`, `Sequences`, and `Combinations` properties.
 
 Each object of the KeyboardListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
 > [!NOTE]
-> :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This will allow the application to correctly release all system resources it uses.
+> :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This correctly releases the system resources used by the application.
 
-#### **Subscribe to the press event**
+#### **Subscribing to the press event**
 
-In order to subscribe to press events, you need to call one of the subscribe method. 
+Call one of the following methods to subscribe to a keyboard event. 
 
 ```c#
 var keyboardListener = new KeyboardListener();
@@ -112,11 +113,11 @@ TimeSpan.FromSeconds(1), // Interval of callback triggering
 KeyboardEvent.Up); // Subscribe to up events
 ```
 
-Each subscription method returns a subscription object with all the details. Including the unique identifier and event type.
+Each subscription method returns an object with event details, such as a unique identifier and event type.
 
-#### **Unsubscribe from the event**
+#### **Unsubscribing from keyboard listener events**
 
-You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once.
+You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, or unsubscribe from all events at once.
 
 ```c#
 // Subscribe to the event
@@ -128,9 +129,9 @@ keyboardListener.Unsubscribe(Key.A);
 keyboardListener.Unsubscribe(subscription.Id);
 ```
 
-#### **Get the current state of the keys**
+#### **Getting the current state of the keys**
 
-You can get information about the current state of the keys. To do this, you can use the already created properties, or you can call the `IsKeyPressed()` method.
+You can get information about the current state of the keys. To do this you can use the created properties or call the `IsKeyPressed()` method.
 
 ```c#
 var isNumLockActive = keyboardListener.IsNumLockActive;
@@ -154,9 +155,9 @@ The **KeyboardManipulator** class provides the ability to control the keyboard.
 - Prevent input events 
 - Set the press interval 
 
-#### **Simulate keyboard input**
+#### **Simulating keyboard input**
 
-You can simulate pressing buttons from the keyboard. To do this, you need to use the `Press()` method, which accepts a collection of keys. The simulated keys are fully compatible with your keyboard, so different active modifiers will be applied to them, such as the Shift key.
+You can simulate pressing keyboard buttons. To do this, use the `Press()` method, which accepts a collection of keys. The simulated keys are fully compatible with your keyboard, so different active modifiers will be applied to them, such as the Shift key.
 
 ```c#
 var keyboard = new KeyboardManipulator();
@@ -376,7 +377,7 @@ Each subscription method returns an object with event details, such as a unique 
 
 #### **Unsubscribing from mouse listener events**
 
-You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, and unsubscribe from all events at once.
+You can unsubscribe from an event using several options. Unsubscribe by GUID, by key, or unsubscribe from all events at once.
 
 ```c#
 // Subscribe to the event
@@ -388,7 +389,7 @@ mouseListener.Unsubscribe(subscription.Id);
 mouseListener.Unsubscribe(MouseEvent.MiddleButtonDown);
 ```
 
-#### **Get the current state of the keys**
+#### **Getting the current state of the keys**
 
 You can get information about the current state of the keys. To do this you can call the `IsKeyPressed()` method.
 
@@ -423,9 +424,9 @@ The **MouseManipulator** class provides the ability to control the mouse.
 - Prevent input events 
 - Global mouse configuration
 
-#### **Simulate mouse input**
+#### **Simulating mouse input**
 
-You can simulate mouse clicks events.
+You can simulate mouse click events.
 
 ```c#
 var mouse = new MouseManipulator();
