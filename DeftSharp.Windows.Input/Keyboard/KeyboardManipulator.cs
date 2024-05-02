@@ -22,7 +22,7 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     /// <summary>
     /// Event triggered when a key press event is prevented.
     /// </summary>
-    public event Action<KeyPressedArgs>? KeyPrevented;
+    public event Action<KeyboardInputArgs>? KeyPrevented;
 
     public KeyboardManipulator()
     {
@@ -132,5 +132,5 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     /// </summary>
     public void Dispose() => _manipulator.KeyPrevented -= OnInterceptorKeyPrevented;
 
-    private void OnInterceptorKeyPrevented(KeyPressedArgs args) => KeyPrevented?.Invoke(args);
+    private void OnInterceptorKeyPrevented(KeyboardInputArgs args) => KeyPrevented?.Invoke(args);
 }

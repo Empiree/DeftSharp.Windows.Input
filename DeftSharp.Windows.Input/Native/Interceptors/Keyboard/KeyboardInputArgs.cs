@@ -4,9 +4,9 @@ using System.Windows.Input;
 namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
-/// Provides data for the event that occurs when a key is pressed.
+/// Represents the arguments for keyboard input events.
 /// </summary>
-public class KeyPressedArgs : EventArgs
+public class KeyboardInputArgs : EventArgs
 {
     /// <summary>
     /// Gets the key that was pressed.
@@ -19,11 +19,11 @@ public class KeyPressedArgs : EventArgs
     public KeyboardInputEvent Event { get; }
 
     /// <summary>
-    /// Initializes a new instance of the KeyPressedArgs class with the specified key.
+    /// Initializes a new instance of the KeyboardInputArgs class with the specified key.
     /// </summary>
     /// <param name="key">The key that was pressed.</param>
     /// <param name="keyboardEvent">The key event</param>
-    public KeyPressedArgs(Key key, KeyboardInputEvent keyboardEvent)
+    public KeyboardInputArgs(Key key, KeyboardInputEvent keyboardEvent)
     {
         KeyPressed = key;
         Event = keyboardEvent;

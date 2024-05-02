@@ -55,7 +55,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
         var virtualKeyCode = Marshal.ReadInt32(lParam);
         var key = KeyInterop.KeyFromVirtualKey(virtualKeyCode);
         var keyEvent = (KeyboardInputEvent)wParam;
-        var keyPressedArgs = new KeyPressedArgs(key, keyEvent);
+        var keyPressedArgs = new KeyboardInputArgs(key, keyEvent);
 
         var pipeline = CreatePipeline(keyPressedArgs);
 
@@ -72,9 +72,9 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
     /// <summary>
     /// Checks whether the provided key press event can be processed by the registered middleware.
     /// </summary>
-    /// <param name="args">The <see cref="KeyPressedArgs"/> representing the key press event.</param>
+    /// <param name="args">The <see cref="KeyboardInputArgs"/> representing the key press event.</param>
     /// <returns>True if the event can be processed; otherwise, false.</returns>
-    private InterceptorPipeline? CreatePipeline(KeyPressedArgs args)
+    private InterceptorPipeline? CreatePipeline(KeyboardInputArgs args)
     {
         if (KeyboardInput is null)
         {

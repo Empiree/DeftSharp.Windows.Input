@@ -12,16 +12,16 @@ namespace WPF.Playground;
 /// </summary>
 public class KeyboardLogger : KeyboardInterceptor
 {
-    protected override bool IsInputAllowed(KeyPressedArgs args) => true; // Allow any keyboard input events
+    protected override bool IsInputAllowed(KeyboardInputArgs args) => true; // Allow any keyboard input events
 
     // If the keyboard input event has been processed
-    protected override void OnInputSuccess(KeyPressedArgs args)
+    protected override void OnInputSuccess(KeyboardInputArgs args)
     {
         Trace.WriteLine($"Pressed: {args.KeyPressed} ({args.Event})");
     }
 
     // If the keyboard input event has been failed
-    protected override void OnInputFailure(KeyPressedArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
+    protected override void OnInputFailure(KeyboardInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {
         var failureReason = failedInterceptors.ToNames();
         

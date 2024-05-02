@@ -50,7 +50,7 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
 
     internal override bool OnPipelineUnhookRequested() => !_keyPressIntervals.Any();
 
-    protected override void OnInputSuccess(KeyPressedArgs args)
+    protected override void OnInputSuccess(KeyboardInputArgs args)
     {
         if (args.Event is KeyboardInputEvent.KeyUp)
             return;
@@ -61,7 +61,7 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
             pressInterval.LastPressed = DateTime.Now;
     }
 
-    protected override bool IsInputAllowed(KeyPressedArgs args)
+    protected override bool IsInputAllowed(KeyboardInputArgs args)
     {
         if (args.Event is KeyboardInputEvent.KeyUp)
             return true;

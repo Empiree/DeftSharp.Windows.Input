@@ -60,9 +60,9 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor
     }
 
     internal override bool OnPipelineUnhookRequested() => !Subscriptions.Any();
-    protected override bool IsInputAllowed(KeyPressedArgs args) => true;
+    protected override bool IsInputAllowed(KeyboardInputArgs args) => true;
 
-    protected override void OnInputSuccess(KeyPressedArgs args)
+    protected override void OnInputSuccess(KeyboardInputArgs args)
     {
         if (args.Event == KeyboardInputEvent.KeyUp)
             return;
