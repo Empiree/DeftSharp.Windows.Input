@@ -2,12 +2,12 @@ namespace DeftSharp.Windows.Input.Tests.Keyboard;
 
 public sealed class NumpadListenerUnsubscribeTests
 {
-    private readonly NumButton[] _numKeys =
+    private readonly Key[] _keys =
     {
-        new(Key.NumPad7, 7), new(Key.NumPad8, 8), new(Key.NumPad9, 9),
-        new(Key.NumPad4, 4), new(Key.NumPad5, 5), new(Key.NumPad6, 6),
-        new(Key.NumPad1, 1), new(Key.NumPad2, 2), new(Key.NumPad3, 3),
-        new(Key.NumPad0, 0)
+        Key.NumPad7, Key.NumPad8, Key.NumPad9,
+        Key.NumPad4, Key.NumPad5, Key.NumPad6,
+        Key.NumPad1, Key.NumPad2, Key.NumPad3,
+        Key.NumPad0
     };
 
     [Fact]
@@ -31,18 +31,17 @@ public sealed class NumpadListenerUnsubscribeTests
     {
         var keyboardListener = new KeyboardListener();
         var numpadListener = new NumpadListener(keyboardListener);
-        var keys = _numKeys.Select(n => n.Key).ToArray();
 
         await Task.Run(() =>
         {
-            keyboardListener.Subscribe(keys, _ => { });
+            keyboardListener.Subscribe(_keys, _ => { });
 
             numpadListener.Subscribe(_ => { });
             numpadListener.Unsubscribe();
 
             Assert.True(keyboardListener.IsListening);
-            Assert.Equal(keyboardListener.Keys.Count(), keys.Length);
-            Assert.True(keys.All(k => keyboardListener.Keys.Select(s => s.Key).Contains(k)));
+            Assert.Equal(keyboardListener.Keys.Count(), _keys.Length);
+            Assert.True(_keys.All(k => keyboardListener.Keys.Select(s => s.Key).Contains(k)));
             Assert.False(numpadListener.IsListening);
         });
     }

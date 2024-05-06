@@ -2,12 +2,12 @@
 
 public sealed class NumpadListenerSubscribeTests
 {
-    private readonly NumButton[] _numKeys =
+    private readonly Key[] _keys =
     {
-        new(Key.NumPad7, 7), new(Key.NumPad8, 8), new(Key.NumPad9, 9),
-        new(Key.NumPad4, 4), new(Key.NumPad5, 5), new(Key.NumPad6, 6),
-        new(Key.NumPad1, 1), new(Key.NumPad2, 2), new(Key.NumPad3, 3),
-        new(Key.NumPad0, 0)
+        Key.NumPad7, Key.NumPad8, Key.NumPad9,
+        Key.NumPad4, Key.NumPad5, Key.NumPad6,
+        Key.NumPad1, Key.NumPad2, Key.NumPad3,
+        Key.NumPad0
     };
 
     [Fact]
@@ -22,8 +22,8 @@ public sealed class NumpadListenerSubscribeTests
 
             Assert.True(keyboardListener.IsListening, "Keyboard listener is not listening subscription events.");
             Assert.True(numpadListener.IsListening, "Numpad listener is not listening subscription events.");
-            Assert.Equal(keyboardListener.Keys.Count(), _numKeys.Length);
-            Assert.True(_numKeys.All(n => keyboardListener.Keys.Select(s => s.Key).Contains(n.Key)));
+            Assert.Equal(keyboardListener.Keys.Count(), _keys.Length);
+            Assert.True(_keys.All(k => keyboardListener.Keys.Select(s => s.Key).Contains(k)));
         });
     }
 }

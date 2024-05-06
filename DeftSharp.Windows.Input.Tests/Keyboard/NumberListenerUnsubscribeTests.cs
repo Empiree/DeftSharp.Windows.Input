@@ -2,14 +2,13 @@
 
 public sealed class NumberListenerUnsubscribeTests
 {
-    private readonly NumButton[] _numKeys =
+    private readonly Key[] _keys =
     {
-        new(Key.D1, 1), new(Key.D2, 2), new(Key.D3, 3), new(Key.D4, 4), new(Key.D5, 5),
-        new(Key.D6, 6), new(Key.D7, 7), new(Key.D8, 8), new(Key.D9, 9), new(Key.D0, 0),
-        new(Key.NumPad7, 7), new(Key.NumPad8, 8), new(Key.NumPad9, 9),
-        new(Key.NumPad4, 4), new(Key.NumPad5, 5), new(Key.NumPad6, 6),
-        new(Key.NumPad1, 1), new(Key.NumPad2, 2), new(Key.NumPad3, 3),
-        new(Key.NumPad0, 0)
+        Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9, Key.D0,
+        Key.NumPad7, Key.NumPad8, Key.NumPad9,
+        Key.NumPad4, Key.NumPad5, Key.NumPad6,
+        Key.NumPad1, Key.NumPad2, Key.NumPad3,
+        Key.NumPad0
     };
 
     [Fact]
@@ -33,18 +32,17 @@ public sealed class NumberListenerUnsubscribeTests
     {
         var keyboardListener = new KeyboardListener();
         var numberListener = new NumberListener(keyboardListener);
-        var keys = _numKeys.Select(n => n.Key).ToArray();
 
         await Task.Run(() =>
         {
-            keyboardListener.Subscribe(keys, _ => { });
+            keyboardListener.Subscribe(_keys, _ => { });
 
             numberListener.Subscribe(_ => { });
             numberListener.Unsubscribe();
 
             Assert.True(keyboardListener.IsListening);
-            Assert.Equal(keyboardListener.Keys.Count(), keys.Length);
-            Assert.True(keys.All(k => keyboardListener.Keys.Select(s => s.Key).Contains(k)));
+            Assert.Equal(keyboardListener.Keys.Count(), _keys.Length);
+            Assert.True(_keys.All(k => keyboardListener.Keys.Select(s => s.Key).Contains(k)));
             Assert.False(numberListener.IsListening);
         });
     }

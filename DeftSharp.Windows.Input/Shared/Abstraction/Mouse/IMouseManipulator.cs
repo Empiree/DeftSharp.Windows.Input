@@ -9,7 +9,7 @@ public interface IMouseManipulator : IDisposable
     
     event Action<MouseInputEvent> InputPrevented;
 
-    bool IsKeyLocked(PreventMouseOption mouseEvent);
+    bool IsKeyLocked(MousePreventOption mouseEvent);
     
     void SetPosition(int x, int y);
     void SetMouseSpeed(int speed);
@@ -24,7 +24,7 @@ public interface IMouseManipulator : IDisposable
 
     void Scroll(int rotation);
 
-    void Prevent(PreventMouseOption preventOption, Func<bool>? predicate = null);
-    void Release(PreventMouseOption preventOption);
+    void Prevent(MousePreventOption preventOption, Func<bool>? predicate = null);
+    void Release(MousePreventOption preventOption);
     void Release();
 }

@@ -10,12 +10,12 @@
 
             await Task.Run(() =>
             {
-                mouseManipulator1.Prevent(PreventMouseOption.MiddleButton);
-                mouseManipulator2.Prevent(PreventMouseOption.MiddleButton);
+                mouseManipulator1.Prevent(MousePreventOption.MiddleButton);
+                mouseManipulator2.Prevent(MousePreventOption.MiddleButton);
 
                 Assert.Equal(mouseManipulator1.LockedKeys.Count(), mouseManipulator2.LockedKeys.Count());
 
-                mouseManipulator1.Release(PreventMouseOption.MiddleButton);
+                mouseManipulator1.Release(MousePreventOption.MiddleButton);
             });
         }
 
@@ -27,8 +27,8 @@
 
             await Task.Run(() =>
             {
-                mouseManipulator1.Prevent(PreventMouseOption.MiddleButton);
-                mouseManipulator2.Prevent(PreventMouseOption.MiddleButton);
+                mouseManipulator1.Prevent(MousePreventOption.MiddleButton);
+                mouseManipulator2.Prevent(MousePreventOption.MiddleButton);
 
                 Assert.Equal(mouseManipulator1.LockedKeys.Count(), mouseManipulator2.LockedKeys.Count());
 
@@ -47,9 +47,9 @@
 
             await Task.Run(() =>
             {
-                mouseManipulator1.Prevent(PreventMouseOption.MiddleButton);
-                mouseManipulator2.Prevent(PreventMouseOption.RightButton);
-                mouseManipulator3.Prevent(PreventMouseOption.Scroll);
+                mouseManipulator1.Prevent(MousePreventOption.MiddleButton);
+                mouseManipulator2.Prevent(MousePreventOption.RightButton);
+                mouseManipulator3.Prevent(MousePreventOption.Scroll);
 
                 Assert.Equal(mouseManipulator1.LockedKeys.Count(), mouseManipulator2.LockedKeys.Count());
                 Assert.Equal(mouseManipulator2.LockedKeys.Count(), mouseManipulator3.LockedKeys.Count());
@@ -69,8 +69,8 @@
 
             await Task.Run(() =>
             {
-                mouseManipulator1.Prevent(PreventMouseOption.MiddleButton);
-                mouseManipulator2.Prevent(PreventMouseOption.RightButton);
+                mouseManipulator1.Prevent(MousePreventOption.MiddleButton);
+                mouseManipulator2.Prevent(MousePreventOption.RightButton);
 
                 mouseManipulator3.Release();
 
@@ -90,14 +90,14 @@
                     {
                         using (var mouseManipulator3 = new MouseManipulator())
                         {
-                            mouseManipulator1.Prevent(PreventMouseOption.MiddleButton);
-                            mouseManipulator2.Prevent(PreventMouseOption.RightButton);
+                            mouseManipulator1.Prevent(MousePreventOption.MiddleButton);
+                            mouseManipulator2.Prevent(MousePreventOption.RightButton);
                         }
 
                         Assert.NotEmpty(mouseManipulator1.LockedKeys);
 
-                        mouseManipulator1.Release(PreventMouseOption.MiddleButton);
-                        mouseManipulator1.Release(PreventMouseOption.RightButton);
+                        mouseManipulator1.Release(MousePreventOption.MiddleButton);
+                        mouseManipulator1.Release(MousePreventOption.RightButton);
                     }
                 }
             });

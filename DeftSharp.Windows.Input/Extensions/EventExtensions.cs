@@ -8,28 +8,28 @@ namespace DeftSharp.Windows.Input.Extensions;
 
 internal static class EventExtensions
 {
-    internal static IEnumerable<MouseInputEvent> ToMouseEvents(this PreventMouseOption preventOption)
+    internal static IEnumerable<MouseInputEvent> ToMouseEvents(this MousePreventOption preventOption)
     {
         var events = new List<MouseInputEvent>();
 
         switch (preventOption)
         {
-            case PreventMouseOption.Move:
+            case MousePreventOption.Move:
                 events.Add(MouseInputEvent.Move);
                 break;
-            case PreventMouseOption.LeftButton:
+            case MousePreventOption.LeftButton:
                 events.Add(MouseInputEvent.LeftButtonDown);
                 events.Add(MouseInputEvent.LeftButtonUp);
                 break;
-            case PreventMouseOption.RightButton:
+            case MousePreventOption.RightButton:
                 events.Add(MouseInputEvent.RightButtonDown);
                 events.Add(MouseInputEvent.RightButtonUp);
                 break;
-            case PreventMouseOption.MiddleButton:
+            case MousePreventOption.MiddleButton:
                 events.Add(MouseInputEvent.MiddleButtonDown);
                 events.Add(MouseInputEvent.MiddleButtonUp);
                 break;
-            case PreventMouseOption.Scroll:
+            case MousePreventOption.Scroll:
                 events.Add(MouseInputEvent.Scroll);
                 break;
             default:

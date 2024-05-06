@@ -2,7 +2,7 @@
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-public sealed class NumButton
+internal sealed class NumButton
 {
     public Key Key { get; }
     public int Number { get; }

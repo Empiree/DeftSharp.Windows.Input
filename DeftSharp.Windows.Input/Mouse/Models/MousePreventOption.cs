@@ -3,7 +3,7 @@
 /// <summary>
 /// Specifies options for preventing mouse events.
 /// </summary>
-public enum PreventMouseOption : ushort
+public enum MousePreventOption : ushort
 {
     /// <summary>
     /// Prevents mouse move events.
