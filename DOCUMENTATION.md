@@ -179,9 +179,9 @@ keyboard.Simulate(Key.LeftShift, KeyboardInputEvent.KeyDown);
 keyboard.Simulate(Key.LeftShift, KeyboardInputEvent.KeyUp); 
 ```
 
-#### **Prevent input events**
+#### **Preventing keyboard input events**
 
-You can prevent global input events by default or with some condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or the application is completed.
+Use `Prevent()` to prevent input events. You can prevent input events either by default or through a condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or you complete the application.
 
 ```c#
 var keyboard = new KeyboardManipulator();
@@ -201,17 +201,20 @@ keyboard.Prevent(Key.Escape, () =>
 keyboard.Release();
 ```
 
-To check the current state of a button you can use the `IsKeyLocked()` method.
+To check the current state of a button, use `IsKeyLocked()`.
 
 ```c#
+//
 keyboard.Prevent(Key.Space); 
 
-keyboard.IsKeyLocked(Key.Space); // true
+//
+keyboard.IsKeyLocked(Key.Space);
 ```
 
-Also, the class has a `KeyPrevented` event that fires when a press has been prevented by this class.
+You can also use the `KeyPrevented` event to display a message about the prevented input.
 
 ```c#
+// 
 keyboard.KeyPrevented += args => Trace.WriteLine($"Pressing the {args.KeyPressed} button has been prevented");
 ```
 
@@ -455,9 +458,9 @@ mouse.Scroll(450);
 mouse.Scroll(-150);
 ```
 
-#### **Prevent input events**
+#### **Preventing mouse input events**
 
-You can prevent global input events by default or with some condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or the application is completed.
+Use `Prevent()` to prevent input events. You can prevent input events either by default or through a condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or you complete the application.
 
 ```c#
 var mouse = new MouseManipulator();
@@ -477,17 +480,20 @@ mouse.Prevent(PreventMouseEvent.RightButton, () =>
 mouse.Release();
 ```
 
-To check the current state of a key you can use the `IsKeyLocked()` method.
+To check the current state of a button, use `IsKeyLocked()`.
 
 ```c#
+//
 mouse.Prevent(PreventMouseEvent.Move); 
 
+//
 mouse.IsKeyLocked(PreventMouseEvent.Move); // true
 ```
 
-Also, the class has a `InputPrevented` event that fires when a input has been prevented by this class.
+You can also use the `InputPrevented` event to display a message about the prevented input.
 
 ```c#
+//
 mouse.InputPrevented += mEvent => Trace.WriteLine($"The {mEvent} event was prevented");
 ```
 
