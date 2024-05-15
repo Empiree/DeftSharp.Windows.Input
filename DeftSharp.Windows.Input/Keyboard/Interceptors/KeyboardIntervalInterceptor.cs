@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
@@ -14,6 +15,8 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
     public static KeyboardIntervalInterceptor Instance => LazyInstance.Value;
 
     private readonly ConcurrentDictionary<Key, KeyPressInterval> _keyPressIntervals;
+
+    public IEnumerable<Key> KeyPressIntervals => _keyPressIntervals.Keys;
 
     private KeyboardIntervalInterceptor()
         : base(InterceptorType.Prohibitive) =>
