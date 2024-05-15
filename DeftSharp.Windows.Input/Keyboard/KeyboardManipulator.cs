@@ -19,6 +19,12 @@ public sealed class KeyboardManipulator : IKeyboardManipulator
     /// </summary>
     public IEnumerable<Key> LockedKeys => _manipulator.LockedKeys;
 
+
+    /// <summary>
+    /// Gets the key press intervals.
+    /// </summary>
+    public IEnumerable<Key> KeyPressIntervals => _intervalInterceptor.KeyPressIntervals;
+
     /// <summary>
     /// Event triggered when a key press event is prevented.
     /// </summary>
