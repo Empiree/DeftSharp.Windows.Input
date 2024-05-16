@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0-windows</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <PackageId>DeftSharp.Windows.Input</PackageId>
@@ -21,6 +21,7 @@
         <Version>0.9</Version>
         <PackageIcon>DeftSharp-icon.png</PackageIcon>
         <PackageReleaseNotes>You can see all the changes in the release changelog of our GitHub repository!</PackageReleaseNotes>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
