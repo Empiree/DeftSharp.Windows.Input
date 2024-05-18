@@ -1,7 +1,6 @@
 # Documentation
 
-> [!NOTE]
-> Documentation is in the process of being written.
+>:notebook: **Note:** Documentation is in the process of being written.
 
 ## Overview
 
@@ -179,7 +178,8 @@ keyboard.Simulate(Key.LeftShift, KeyboardInputEvent.KeyUp);
 
 ### Preventing keyboard input events
 
-Use `Prevent()` to prevent input events. You can prevent input events either by default or through a condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or you complete the application.
+Use `Prevent()` to prevent input events. You can prevent input events either by default or through a condition. All locked keys are stored in the `LockedKeys` collection. The keys will be locked until you call the `Release()` method or 
+complete the application.
 
 ```c#
 var keyboard = new KeyboardManipulator();
@@ -217,9 +217,9 @@ You can also use the `KeyPrevented` event to display a message about the prevent
 keyboard.KeyPrevented += args => Trace.WriteLine($"Pressing the {args.KeyPressed} button has been prevented");
 ```
 
-### Set the press interval
+### Setting the press interval
 
-The interval setting allows you to control the frequency of presses. With `SetInterval()` method, you will set a global interval for pressing a key on the keyboard. As with locked buttons, the interval will remain until you remove it or the application is completed.
+Use `SetInterval()` to control the frequency of presses. You can use this method to set a global interval for pressing a keyboard key. As with locked buttons, the interval will remain until you remove it or the application completes.
 
 ```c#
 var keyboard = new KeyboardManipulator();
@@ -408,16 +408,17 @@ Trace.WriteLine($"X: {position.X} Y: {position.Y}"); // X: 943 Y: 378
 
 ## MouseManipulator
 
-The **MouseManipulator** class provides the ability to control the mouse. 
+The **MouseManipulator** class provides the ability to control the mouse. This class contains both temporal and permanent methods that change mouse behavior. Temporary methods will cease once the application terminates. Permanent methods will stay active after the application terminates.
 
-> [!NOTE]
 > :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
 
-**Features**
+**Temporary changes**
 
-- Simulate mouse input
-- Prevent input events 
-- Global mouse configuration
+- Simulating mouse input
+- Preventing input events
+
+**Permanent changes**
+- Setting the mouse speed
 
 ### Simulating mouse input
 
@@ -425,8 +426,11 @@ You can simulate mouse click events.
 
 ```c#
 var mouse = new MouseManipulator();
-      
+
+// Simulates one click      
 mouse.Click();
+
+// Simulates two clicks
 mouse.DoubleClick();
 ```
 
@@ -490,14 +494,15 @@ You can also use the `InputPrevented` event to display a message about the preve
 mouse.InputPrevented += mEvent => Trace.WriteLine($"The {mEvent} event was prevented");
 ```
 
-### Global mouse configuration
+### Setting the mouse speed
 
-You can make permanent changes with this class. They will be active even after your application is terminated.
+Use `SetMouseSpeed()` to change the mouse speed on your system. This method will persist regardless of your system changes.
 
 ```c#
 var mouse = new MouseManipulator();
-            
-mouse.SetMouseSpeed(5); // changes the mouse speed on your system
+
+// changes the mouse speed on your system            
+mouse.SetMouseSpeed(5);
 ```
 
 ## MouseInfo
@@ -534,7 +539,6 @@ To create an interceptor you need to inherit from `MouseInterceptor` or `Keyboar
 
 Also, interceptors have two optional methods, such as `OnInputSuccess` and `OnInputFailure`. The `OnInputSuccess` method is called when the input event is successfully processed by all interceptors. In this method we can get the details of the event and execute the code we need. The `OnInputFailure` method is called if the event was blocked, and besides the event details we can also get the list of interceptors that did not approve this input.
 
-> [!NOTE]
 > :bulb: **Best Practice:** Design interceptors so that each interceptor solves only one specific problem.
 
 ## **Examples of custom interceptors**
