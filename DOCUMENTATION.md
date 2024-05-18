@@ -1,6 +1,6 @@
 # Documentation
 
->:notebook: **Note:** Documentation is in the process of being written.
+>:pushpin: **Note:** Documentation is in the process of being written.
 
 ## Overview
 
@@ -236,65 +236,73 @@ keyboard.SetInterval(Key.Space, TimeSpan.Zero);
 
 ## KeyboardBinder
 
-The **KeyboardBinder** class provides the ability to modify the bindings of the specified keys. All bindings are stored in the `BoundedKeys` property.
+The **KeyboardBinder** class provides the ability to modify the bindings of specific keys. All bindings are stored in the `BoundedKeys` property.
 
-> [!NOTE]
-> :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
+> :pushpin: **Note:** This class works with a single context. Therefore, all your objects of this class have the same state.
 
-### Change the button bind
+### Changing the key binding
 
-To change the button binding, you must call the `Bind()` method. This method always works, even if a bind already exists, it will just change it to a new one.
+Use `Bind()` to change the binding of a key. This enables a key to behave like another key. If used on a already binded key, it will update the bind to the key you choose.
 
 ```c#
 var keyboardBinder = new KeyboardBinder();
             
+// Sets the 'Q' key to behave like the 'W' key. Any time the 'Q' button is triggered, it will behave like the 'W' button
 keyboardBinder.Bind(Key.Q, Key.W); 
 
-// Now any time the 'Q' button is triggered, it will behave like the 'W' button
 ```
 
-### Swap button bindings
+### Swapping key bindings
 
-In order to swap the button bindings, you can use the `Swap()` method.
+Use `Swap()` to swap key bindings. You can also swap keys by using the `Bind()` method. 
 
 ```c#
 var keyboardBinder = new KeyboardBinder();
 
+// Swaps the 'Q' key with the 'W' key
 keyboardBinder.Swap(Key.Q, Key.W);
             
-// Alternative option
-            
+// Alternate way to swap the 'Q' key with the 'W' key
 keyboardBinder.Bind(Key.Q, Key.W);
 keyboardBinder.Bind(Key.W, Key.Q);
 ```
 
-### Get current state
+### Getting the current binding state
 
-Get the current state of the bindings using the `IsKeyBounded()` method, which returns true/false depending on the existence of the binding. And `GetBoundKey()` method which returns the current key to which the specified key belongs.
+Use `IsKeyBounded()` to get the current state of the bindings. This method returns true or false depending on the existence of the binding.
+
+To return the binding of a specific key, use `GetBoundKey()`.
 
 ```c#
 var keyboardBinder = new KeyboardBinder();
 
+// Binds 'Q' to behave like 'W'
 keyboardBinder.Bind(Key.Q, Key.W);
 
-keyboardBinder.IsKeyBounded(Key.Q); // true
-keyboardBinder.GetBoundKey(Key.Q); // W
-keyboardBinder.GetBoundKey(Key.W); // W
+// Returns true
+keyboardBinder.IsKeyBounded(Key.Q);
+
+//Returns 'W'
+keyboardBinder.GetBoundKey(Key.Q);
+
+//Returns 'W'
+keyboardBinder.GetBoundKey(Key.W);
 ```
 
-### Unbind the key
+### Unbinding the key
 
-To unbind buttons, you need to call one of the `Unbind()` method overloads.
+Use `Unbind()` to unbind keys. You can use this method for specific binded keys, or all binded keys.
 
 ```c#
 var keyboardBinder = new KeyboardBinder();
 
+// Binds 'Q' to behave like 'W'
 keyboardBinder.Bind(Key.Q, Key.W);
 
+// Unbinds 'Q'
 keyboardBinder.Unbind(Key.Q);
 
-// Unbind all the buttons, alternatively
-
+// Unbinds all binded keys
 keyboardBinder.Unbind();
 ```
 
