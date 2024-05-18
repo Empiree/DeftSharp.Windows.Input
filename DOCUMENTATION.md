@@ -87,7 +87,6 @@ This class stores active subscriptions in the `Keys`, `Sequences`, and `Combinat
 
 Each object of the KeyboardListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
-> [!NOTE]
 > :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This correctly releases the system resources used by the application.
 
 ### Subscribing to the press event
@@ -143,8 +142,7 @@ var isSpacePressed = keyboardListener.IsKeyPressed(Key.Space);
 
 The **KeyboardManipulator** class provides the ability to control the keyboard.
 
-> [!NOTE]
-> :pushpin: This class works with a single context. Therefore, all your objects of this class have the same state.
+> :pushpin: **Note:** This class works with a single context. Therefore, all your objects of this class have the same state.
 
 **Features**
 
@@ -355,7 +353,6 @@ This class stores active subscriptions in the `Subscriptions` property.
 
 Each object of the MouseListener class stores its own subscriptions. Keep this in mind when you use the `Unsubscribe` methods.
 
-> [!NOTE]
 > :bulb: **Best Practice:** Before closing the application, unsubscribe from all events. This correctly releases the system resources used by the application.
 
 ### Subscribing to mouse listener events
