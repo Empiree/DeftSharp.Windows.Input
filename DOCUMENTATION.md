@@ -202,11 +202,12 @@ keyboard.Release();
 To check the current state of a button, use `IsKeyLocked()`.
 
 ```c#
-//
+// Preventing input of the space button
 keyboard.Prevent(Key.Space); 
 
-//
+// Checks if the code prevents the space button input
 keyboard.IsKeyLocked(Key.Space);
+// Returns true
 ```
 
 You can also use the `KeyPrevented` event to display a message about the prevented input.
@@ -474,11 +475,12 @@ mouse.Release();
 To check the current state of a button, use `IsKeyLocked()`.
 
 ```c#
-//
+// Preventing the input of mouse movement
 mouse.Prevent(PreventMouseEvent.Move); 
 
-//
-mouse.IsKeyLocked(PreventMouseEvent.Move); // true
+// Checks if the code prevents the mouse movement input
+mouse.IsKeyLocked(PreventMouseEvent.Move); 
+// Returns true
 ```
 
 You can also use the `InputPrevented` event to display a message about the prevented input.
