@@ -211,7 +211,7 @@ keyboard.IsKeyLocked(Key.Space);
 You can also use the `KeyPrevented` event to display a message about the prevented input.
 
 ```c#
-// 
+// Subscription to input preventing event
 keyboard.KeyPrevented += args => Trace.WriteLine($"Pressing the {args.KeyPressed} button has been prevented");
 ```
 
@@ -495,7 +495,7 @@ mouse.IsKeyLocked(PreventMouseEvent.Move);
 You can also use the `InputPrevented` event to display a message about the prevented input.
 
 ```c#
-//
+// Subscription to mouse input preventing event
 mouse.InputPrevented += mEvent => Trace.WriteLine($"The {mEvent} event was prevented");
 ```
 
