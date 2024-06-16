@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
@@ -14,13 +13,7 @@ public sealed class NumpadListener
 
     private readonly HashSet<Guid> _subscriptionIds;
 
-    private readonly NumButton[] _numKeys =
-    {
-        new(Key.NumPad7, 7), new(Key.NumPad8, 8), new(Key.NumPad9, 9),
-        new(Key.NumPad4, 4), new(Key.NumPad5, 5), new(Key.NumPad6, 6),
-        new(Key.NumPad1, 1), new(Key.NumPad2, 2), new(Key.NumPad3, 3),
-        new(Key.NumPad0, 0)
-    };
+    private readonly IEnumerable<NumButton> _numKeys = KeyboardButtonSet.NumpadButtons;
 
     /// <summary>
     /// Checks if the numpad listener is actively listening for events.
