@@ -2,14 +2,7 @@
 
 public sealed class NumberListenerUnsubscribeTests
 {
-    private readonly Key[] _keys =
-    {
-        Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9, Key.D0,
-        Key.NumPad7, Key.NumPad8, Key.NumPad9,
-        Key.NumPad4, Key.NumPad5, Key.NumPad6,
-        Key.NumPad1, Key.NumPad2, Key.NumPad3,
-        Key.NumPad0
-    };
+    private readonly IEnumerable<Key> _keys = KeyboardKeySet.NumberKeys;
 
     [Fact]
     public async void NumberListener_SubscribeUnsubscribe()
@@ -41,7 +34,7 @@ public sealed class NumberListenerUnsubscribeTests
             numberListener.Unsubscribe();
 
             Assert.True(keyboardListener.IsListening);
-            Assert.Equal(keyboardListener.Keys.Count(), _keys.Length);
+            Assert.Equal(keyboardListener.Keys.Count(), _keys.Count());
             Assert.True(_keys.All(k => keyboardListener.Keys.Select(s => s.Key).Contains(k)));
             Assert.False(numberListener.IsListening);
         });
