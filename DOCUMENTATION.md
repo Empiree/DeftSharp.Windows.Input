@@ -168,10 +168,10 @@ If you need to trigger a specific event, you can use `Simulate()` methods that d
 
 ```c#
 // Hold the button
-keyboard.Simulate(Key.LeftShift, KeyboardInputEvent.KeyDown); 
+keyboard.Simulate(Key.LeftShift, KeyboardSimulateOption.KeyDown); 
 
 // Release the button            
-keyboard.Simulate(Key.LeftShift, KeyboardInputEvent.KeyUp); 
+keyboard.Simulate(Key.LeftShift, KeyboardSimulateOption.KeyUp); 
 ```
 
 ### Preventing keyboard input events
