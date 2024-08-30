@@ -6,7 +6,7 @@ using System.Windows.Input;
 namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
-/// Provides the ability to listen for letter key presses and trigger corresponding actions.
+/// Provides the ability to listen for QWERTY layout letter key presses and trigger corresponding actions.
 /// </summary>
 public sealed class LetterListener
 {
