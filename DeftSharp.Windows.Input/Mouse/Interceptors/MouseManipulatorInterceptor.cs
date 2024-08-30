@@ -69,7 +69,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
     public void Release()
     {
-        if (!_lockedKeys.Any())
+        if (_lockedKeys.IsEmpty)
             return;
 
         _lockedKeys.Clear();
@@ -92,7 +92,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
         base.Dispose();
     }
 
-    internal override bool OnPipelineUnhookRequested() => !_lockedKeys.Any();
+    internal override bool OnPipelineUnhookRequested() => _lockedKeys.IsEmpty;
     protected override bool IsInputAllowed(MouseInputArgs args) => !IsKeyLocked(args.Event);
 
     protected override void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
@@ -103,7 +103,7 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
     private void TryUnhook()
     {
-        if (!_lockedKeys.Any())
+        if (_lockedKeys.IsEmpty)
             Unhook();
     }
 }

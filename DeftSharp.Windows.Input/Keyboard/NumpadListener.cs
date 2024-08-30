@@ -18,7 +18,7 @@ public sealed class NumpadListener
     /// <summary>
     /// Checks if the numpad listener is actively listening for events.
     /// </summary>
-    public bool IsListening => _subscriptionIds.Any();
+    public bool IsListening => _subscriptionIds.Count != 0;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="NumpadListener"/> class.

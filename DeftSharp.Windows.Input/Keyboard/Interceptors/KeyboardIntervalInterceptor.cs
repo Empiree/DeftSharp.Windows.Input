@@ -76,7 +76,7 @@ internal sealed class KeyboardIntervalInterceptor : KeyboardInterceptor
 
     private void TryUnhook()
     {
-        if (!_keyPressIntervals.Any())
+        if (_keyPressIntervals.IsEmpty)
             Unhook();
     }
 }

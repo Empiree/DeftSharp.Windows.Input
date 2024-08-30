@@ -2,14 +2,8 @@
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-public sealed class LetterButton
+public sealed class LetterButton(Key key, string letter)
 {
-    public Key Key { get; }
-    public string Letter { get; }
-
-    public LetterButton(Key key, string letter)
-    {
-        Key = key;
-        Letter = letter;
-    }
+    public Key Key { get; } = key;
+    public string Letter { get; } = letter;
 }

@@ -36,6 +36,8 @@ public sealed class MouseManipulator : IMouseManipulator
     /// <summary>
     /// Prevents the specified mouse event.
     /// </summary>
+    /// <param name="preventOption">The prevent mouse option.</param>
+    /// <param name="predicate">An optional predicate to conditionally prevent the specified mouse input event.</param>
     [DangerousBehavior("Be careful with the use of this method. You can completely lock your mouse.")]
     public void Prevent(MousePreventOption preventOption, Func<bool>? predicate = null)
     {

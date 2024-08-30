@@ -10,7 +10,7 @@ public static class InterceptorExtensions
     {
         var array = interceptors.ToArray();
 
-        if (!array.Any())
+        if (array.Length == 0)
             return string.Empty;
 
         return string.Join(", ", array.Select(i => i.Name));

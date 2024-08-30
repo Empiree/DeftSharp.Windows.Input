@@ -2,8 +2,4 @@
 
 namespace DeftSharp.Windows.Input.Shared.Exceptions;
 
-public class KeyCombinationLengthException : Exception
-{
-    public KeyCombinationLengthException(string message) 
-        : base(message) { }
-}
+public class KeyCombinationLengthException(string message) : Exception(message);

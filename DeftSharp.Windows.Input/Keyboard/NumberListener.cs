@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
@@ -19,7 +18,7 @@ public sealed class NumberListener
     /// <summary>
     /// Checks if the number listener is actively listening for events.
     /// </summary>
-    public bool IsListening => _subscriptionIds.Any();
+    public bool IsListening => _subscriptionIds.Count != 0;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="NumberListener"/> class.

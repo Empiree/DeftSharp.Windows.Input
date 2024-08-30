@@ -60,7 +60,7 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
         base.Dispose();
     }
 
-    internal override bool OnPipelineUnhookRequested() => !_lockedKeys.Any();
+    internal override bool OnPipelineUnhookRequested() => _lockedKeys.IsEmpty;
     protected override bool IsInputAllowed(KeyboardInputArgs args) => !IsKeyLocked(args.KeyPressed);
 
     protected override void OnInputFailure(KeyboardInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
@@ -71,7 +71,7 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
 
     private void TryUnhook()
     {
-        if (!_lockedKeys.Any())
+        if (_lockedKeys.IsEmpty)
             Unhook();
     }
 }

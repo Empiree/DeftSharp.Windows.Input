@@ -45,7 +45,7 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
 
         _boundedKeys.TryRemove(boundedKey);
 
-        if (!_boundedKeys.Any())
+        if (_boundedKeys.IsEmpty)
             Unhook();
     }
 

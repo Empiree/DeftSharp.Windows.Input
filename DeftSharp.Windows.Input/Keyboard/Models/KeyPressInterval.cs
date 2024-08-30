@@ -3,16 +3,10 @@ using System.Windows.Input;
 
 namespace DeftSharp.Windows.Input.Keyboard;
 
-internal sealed class KeyPressInterval
+internal sealed class KeyPressInterval(Key key, TimeSpan interval)
 {
-    public Key Key { get; }
-    public TimeSpan Interval { get; }
+    public Key Key { get; } = key;
+    public TimeSpan Interval { get; } = interval;
     public DateTime? LastPressed { get; set; }
     public bool IsBlocked => LastPressed?.Add(Interval) > DateTime.Now;
-
-    public KeyPressInterval(Key key, TimeSpan interval)
-    {
-        Key = key;
-        Interval = interval;
-    }
 }

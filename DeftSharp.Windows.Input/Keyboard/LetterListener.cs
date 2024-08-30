@@ -17,43 +17,39 @@ public sealed class LetterListener
     private readonly LetterButton[] _letKeys =
     {
         // QWERTY Keyboard (English)
-        new LetterButton(Key.A, "A"),
-        new LetterButton(Key.B, "B"),
-        new LetterButton(Key.C, "C"),
-        new LetterButton(Key.D, "D"),
-        new LetterButton(Key.E, "E"),
-        new LetterButton(Key.F, "F"),
-        new LetterButton(Key.G, "G"),
-        new LetterButton(Key.H, "H"),
-        new LetterButton(Key.I, "I"),
-        new LetterButton(Key.J, "J"),
-        new LetterButton(Key.K, "K"),
-        new LetterButton(Key.L, "L"),
-        new LetterButton(Key.M, "M"),
-        new LetterButton(Key.N, "N"),
-        new LetterButton(Key.O, "O"),
-        new LetterButton(Key.P, "P"),
-        new LetterButton(Key.Q, "Q"),
-        new LetterButton(Key.R, "R"),
-        new LetterButton(Key.S, "S"),
-        new LetterButton(Key.T, "T"),
-        new LetterButton(Key.U, "U"),
-        new LetterButton(Key.V, "V"),
-        new LetterButton(Key.W, "W"),
-        new LetterButton(Key.X, "X"),
-        new LetterButton(Key.Y, "Y"),
-        new LetterButton(Key.Z, "Z"),
-
-        //// QWERTY Keyboard (Spanish)
-        new LetterButton((Key)192, "Ñ"), // Adding letter Ñ
-
+        new(Key.A, "A"),
+        new(Key.B, "B"),
+        new(Key.C, "C"),
+        new(Key.D, "D"),
+        new(Key.E, "E"),
+        new(Key.F, "F"),
+        new(Key.G, "G"),
+        new(Key.H, "H"),
+        new(Key.I, "I"),
+        new(Key.J, "J"),
+        new(Key.K, "K"),
+        new(Key.L, "L"),
+        new(Key.M, "M"),
+        new(Key.N, "N"),
+        new(Key.O, "O"),
+        new(Key.P, "P"),
+        new(Key.Q, "Q"),
+        new(Key.R, "R"),
+        new(Key.S, "S"),
+        new(Key.T, "T"),
+        new(Key.U, "U"),
+        new(Key.V, "V"),
+        new(Key.W, "W"),
+        new(Key.X, "X"),
+        new(Key.Y, "Y"),
+        new(Key.Z, "Z"),
     };
 
 
     /// <summary>
     /// Checks if the letter listener is actively listening for events.
     /// </summary>
-    public bool IsListening => _subscriptionIds.Any();
+    public bool IsListening => _subscriptionIds.Count != 0;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LetterListener"/> class.

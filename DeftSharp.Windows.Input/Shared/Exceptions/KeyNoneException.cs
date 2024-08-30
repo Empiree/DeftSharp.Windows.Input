@@ -2,8 +2,4 @@
 
 namespace DeftSharp.Windows.Input.Shared.Exceptions;
 
-public class KeyNoneException : Exception
-{
-    public KeyNoneException()
-        : base("You can't subscribe to the Key.None event") { }
-}
+public class KeyNoneException() : Exception("You can't subscribe to the Key.None event");

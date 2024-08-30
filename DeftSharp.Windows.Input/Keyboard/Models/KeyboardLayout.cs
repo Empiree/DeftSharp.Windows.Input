@@ -3,33 +3,25 @@
 /// <summary>
 /// Represents a keyboard layout.
 /// </summary>
-public sealed class KeyboardLayout
+public sealed class KeyboardLayout(int id, int localeId, string name, string displayName)
 {
     /// <summary>
     /// Gets the identifier of the keyboard layout.
     /// </summary>
-    public int Id { get; }
+    public int Id { get; } = id;
 
     /// <summary>
     /// Gets the locale identifier (LCID) of the keyboard layout.
     /// </summary>
-    public int LocaleId { get; }
+    public int LocaleId { get; } = localeId;
 
     /// <summary>
     /// Gets the display name of the keyboard layout.
     /// </summary>
-    public string DisplayName { get; }
+    public string DisplayName { get; } = displayName;
 
     /// <summary>
     /// Gets the name of the keyboard layout.
     /// </summary>
-    public string Name { get; }
-
-    public KeyboardLayout(int id, int localeId, string name, string displayName)
-    {
-        Id = id;
-        LocaleId = localeId;
-        Name = name;
-        DisplayName = displayName;
-    }
+    public string Name { get; } = name;
 }
