@@ -44,7 +44,7 @@ The functionality of the library is divided into two types of functionality, tem
 
 You should make sure that your application fits the requirements of this library.
 
-- Version .NET 7 or higher ([Install](https://dotnet.microsoft.com/en-us/download/dotnet))
+- Version .NET 8 or higher ([Install](https://dotnet.microsoft.com/en-us/download/dotnet))
 - Any Windows UI framework (WPF, WinUI, Avalonia, and MAUI)
 
 ### 2. Installation
