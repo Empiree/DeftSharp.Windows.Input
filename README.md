@@ -108,7 +108,7 @@ mouseListener.Subscribe(MouseEvent.Move, () =>
 
 # Requirements
 
-- .NET 7.0 for Windows
+- .NET 8.0 for Windows
 - Any UI framework (WPF, WinUI, MAUI, Avalonia)
 
 # License
