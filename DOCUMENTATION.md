@@ -467,10 +467,10 @@ Use `Prevent()` to prevent input events. You can prevent input events either by 
 var mouse = new MouseManipulator();
         
 // Each scroll event will be ignored
-mouse.Prevent(PreventMouseEvent.Scroll); 
+mouse.Prevent(MousePreventOption.Scroll); 
 
 // Prevent with condition
-mouse.Prevent(PreventMouseEvent.RightButton, () => 
+mouse.Prevent(MousePreventOption.RightButton, () => 
 {
    var currentTime = DateTime.Now;
 
@@ -485,10 +485,10 @@ To check the current state of a button, use `IsKeyLocked()`.
 
 ```c#
 // Preventing the input of mouse movement
-mouse.Prevent(PreventMouseEvent.Move); 
+mouse.Prevent(MousePreventOption.Move); 
 
 // Checks if the code prevents the mouse movement input
-mouse.IsKeyLocked(PreventMouseEvent.Move); 
+mouse.IsKeyLocked(MousePreventOption.Move); 
 // Returns true
 ```
 
@@ -624,7 +624,7 @@ mouseListener.SubscribeAll(mouseEvent =>
      Trace.WriteLine($"Processed {mouseEvent}");
 });
             
-mouseManipulator.Prevent(PreventMouseEvent.Scroll);
+mouseManipulator.Prevent(MousePreventOption.Scroll);
 
 mouseManipulator.InputPrevented += mouseEvent => 
      Trace.WriteLine($"Failed {mouseEvent} by MouseManipulator");
