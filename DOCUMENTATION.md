@@ -534,7 +534,7 @@ Trace.WriteLine(speed); // 10
 You can change the speed of the mouse using the [MouseManipulator](#mousemanipulator) class.
 
 
-# Custom Interceptors
+# Custom Interceptors (Advanced Guide)
 
 Custom interceptors provide the ability for users to manage incoming events themselves. This is a bit more complex than using already created interceptors such as [KeyboardListener](#keyboardlistener). But in some cases you can't do without it.
 
