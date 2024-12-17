@@ -4,6 +4,7 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
+        <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <UseWPF>true</UseWPF>
         <AssemblyName>WPF.Playground</AssemblyName>
         <RootNamespace>WPF.Playground</RootNamespace>
