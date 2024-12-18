@@ -6,7 +6,7 @@ using System.Windows.Input;
 namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
-/// Provides the ability to listen for QWERTY layout letter key presses and trigger corresponding actions.
+/// Provides the ability to listen for various layout letter key presses and trigger corresponding actions.
 /// </summary>
 public sealed class LetterListener
 {
@@ -14,37 +14,9 @@ public sealed class LetterListener
 
     private readonly HashSet<Guid> _subscriptionIds;
 
-    private readonly LetterButton[] _letKeys =
-    {
-        // QWERTY Keyboard (English)
-        new(Key.A, "A"),
-        new(Key.B, "B"),
-        new(Key.C, "C"),
-        new(Key.D, "D"),
-        new(Key.E, "E"),
-        new(Key.F, "F"),
-        new(Key.G, "G"),
-        new(Key.H, "H"),
-        new(Key.I, "I"),
-        new(Key.J, "J"),
-        new(Key.K, "K"),
-        new(Key.L, "L"),
-        new(Key.M, "M"),
-        new(Key.N, "N"),
-        new(Key.O, "O"),
-        new(Key.P, "P"),
-        new(Key.Q, "Q"),
-        new(Key.R, "R"),
-        new(Key.S, "S"),
-        new(Key.T, "T"),
-        new(Key.U, "U"),
-        new(Key.V, "V"),
-        new(Key.W, "W"),
-        new(Key.X, "X"),
-        new(Key.Y, "Y"),
-        new(Key.Z, "Z"),
-    };
+    private readonly Dictionary<KeyboardLayoutType, LetterButton[]> _layouts = KeyboardLayouts.Layouts;
 
+    private readonly LetterButton[] _letKeys;
 
     /// <summary>
     /// Checks if the letter listener is actively listening for events.
@@ -52,13 +24,20 @@ public sealed class LetterListener
     public bool IsListening => _subscriptionIds.Count != 0;
 
     /// <summary>
+    /// Gets letter keys
+    /// </summary>
+    public IEnumerable<Key> Keys => _letKeys.Select(letter => letter.Key);
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="LetterListener"/> class.
     /// </summary>
     /// <param name="keyboardListener">The keyboard listener instance to use for listening to key presses.</param>
-    public LetterListener(KeyboardListener keyboardListener)
+    /// <param name="keyboardLayoutType">The keyboard layout to be used. By default, it is QWERTY</param>
+    public LetterListener(KeyboardListener keyboardListener, KeyboardLayoutType keyboardLayoutType = KeyboardLayoutType.Qwerty)
     {
         _subscriptionIds = new HashSet<Guid>();
         _keyboardListener = keyboardListener;
+        _letKeys = _layouts[keyboardLayoutType];
     }
 
     /// <summary>
@@ -96,4 +75,3 @@ public sealed class LetterListener
         _subscriptionIds.Clear();
     }
 }
-
