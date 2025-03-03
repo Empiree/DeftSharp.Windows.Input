@@ -49,6 +49,18 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
         _subscriptions.Remove(keyboardSubscribe);
     }
 
+    public void Unsubscribe(Key[] keyCombination)
+    {
+        var keyboardSubscribe =
+            _subscriptions.FirstOrDefault(sub => sub.Combination.SequenceEqual(keyCombination) );
+
+        if (keyboardSubscribe is null)
+            return;
+
+        _subscriptions.Remove(keyboardSubscribe);
+    }
+
+
     public override void Dispose()
     {
         Unsubscribe();

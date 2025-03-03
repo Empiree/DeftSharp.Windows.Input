@@ -350,4 +350,11 @@ public sealed class KeyboardListener : IKeyboardListener
         _sequenceListener.Dispose();
         _combinationListener.Dispose();
     }
+
+    public void UnsubscribeCombination(Key[] combination)
+    {
+            _combinationListener.Unsubscribe(combination);
+    }
+
+
 }
