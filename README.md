@@ -1,3 +1,8 @@
+### what is different?:
+* it also works on .NET 4.7.2 - (@ branch: patch--add-net472-support)
+ 
+----
+
 <h1 align="center">DeftSharp.Windows.Input</h1>
 
 <div align="center">
