@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Extensions;
@@ -37,8 +39,8 @@ namespace WPF.Playground
 
         public MainWindow() => InitializeComponent();
 
-       private ScrollDisable sd = new ScrollDisable();
-       private MouseLog mml = new MouseLog();
+       private ScrollDisabler sd = new ScrollDisabler();
+       private MouseLogger mml = new MouseLogger();
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
         }
@@ -58,51 +60,20 @@ namespace WPF.Playground
 
         private void OnClickButton3(object sender, RoutedEventArgs e)
         {
+            Trace.WriteLine("Sleeping...");
+            Thread.Sleep(3000);
+            _mouseManipulator.Click();
         }
 
         private void OnClickButton4(object sender, RoutedEventArgs e)
         {
+            Trace.WriteLine("Sleeping...");
+            Thread.Sleep(3000);
+            _mouseManipulator.Scroll(400);
         }
 
         private void OnClickButton5(object sender, RoutedEventArgs e)
         {
         }
-    }
-
-    public class ScrollDisable : MouseInterceptor
-    {
-        protected override bool IsInputAllowed(MouseInputArgs args)
-        {
-            if(args.Event is MouseInputEvent.Scroll)
-            {
-                return false;
-            }
-
-            return true;
-        }
-    }
-
-    public class MouseLog : MouseInterceptor
-    {
-        protected override bool IsInputAllowed(MouseInputArgs args)
-        {
-            return true;
-        }
-
-        protected override void OnInputSuccess(MouseInputArgs args)
-        {
-            if (args.Event is MouseInputEvent.Move)
-                return;
-
-            Console.WriteLine(args.Event);
-
-        }
-
-        protected override void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
-        {
-            Console.WriteLine($"{args.Event} failed at {failedInterceptors.ToNames}");
-        }
-
-
     }
 }
