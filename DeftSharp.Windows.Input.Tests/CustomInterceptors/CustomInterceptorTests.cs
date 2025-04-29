@@ -15,23 +15,24 @@ public sealed class CustomInterceptorTests
         ScrollDisabler _scrollDisable = new();
         MouseLogger _mouseLog = new();
 
-        await Task.Run(() =>
-        {
-            _scrollDisable.Hook();
-            _mouseLog.Hook();
+        _scrollDisable.Hook();
+        _mouseLog.Hook();
 
-            _mouseManipulator.Click();
-            _mouseManipulator.Click();
 
-            //Assert.False(_mouseLog.WasEventBlocked);
-            Assert.True(_mouseLog.WasEventCatched);
-            
-            
-            _scrollDisable.Unhook();
-            _mouseLog.Unhook();
-        });
+        //Simulate a mouse click
+        _mouseManipulator.Click();
 
+        //Assert
+        var exception = await _mouseLog.ExceptionThrown.Task.WaitAsync(TimeSpan.FromSeconds(1));
         
+        Assert.NotNull(exception);
+        Assert.IsType<EventCatchedException>(exception);
+
+
+        _scrollDisable.Unhook();
+        _mouseLog.Unhook();
+
+
     }
 
     [Fact]
@@ -40,24 +41,26 @@ public sealed class CustomInterceptorTests
         ScrollDisabler _scrollDisable = new();
         MouseLogger _mouseLog = new();
 
-        await Task.Run(() =>
-        {
-            _scrollDisable.Hook();
-            _mouseLog.Hook();
-
-            _mouseManipulator.Scroll(400);
-            _mouseManipulator.Scroll(-800);
-
-            //Assert.False(_mouseLog.WasEventCatched);
-            Assert.True(_mouseLog.WasEventBlocked);
+        _scrollDisable.Hook();
+        _mouseLog.Hook();
 
 
-            _scrollDisable.Unhook();
-            _mouseLog.Unhook();
-        });
+        //Simulate a mouse scroll
+        _mouseManipulator.Scroll(400);
+
+        //Assert
+        var exception = await _mouseLog.ExceptionThrown.Task.WaitAsync(TimeSpan.FromSeconds(1));
+
+        Assert.NotNull(exception);
+        Assert.IsType<EventBlockedException>(exception);
+
+
+        _scrollDisable.Unhook();
+        _mouseLog.Unhook();
 
 
     }
+
 
 }
 
@@ -75,19 +78,32 @@ internal class ScrollDisabler : MouseInterceptor
 
 internal class MouseLogger : MouseInterceptor
 {
-    internal bool WasEventCatched { get; private set; } = false;
-    internal bool WasEventBlocked { get; private set; } = false;
+    internal TaskCompletionSource<Exception> ExceptionThrown { get; } = new();
 
     protected override bool IsInputAllowed(MouseInputArgs args) => true;
 
     protected override void OnInputSuccess(MouseInputArgs args)
     {
-        WasEventCatched = true;
+        ExceptionThrown.TrySetResult(new EventCatchedException("Click Catched"));
     }
 
     protected override void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {
-       WasEventBlocked = true;
+        ExceptionThrown.TrySetResult(new EventBlockedException("Scroll Blocked"));
+    }
+}
+
+public class EventCatchedException : Exception
+{
+    public EventCatchedException(string message) : base(message)
+    {
+    }
+}
+
+public class EventBlockedException : Exception
+{
+    public EventBlockedException(string message) : base(message)
+    {
     }
 }
 
