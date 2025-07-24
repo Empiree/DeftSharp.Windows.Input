@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Shared.Exceptions;
+using Microsoft.Win32;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -16,6 +17,7 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
 
     private readonly HashSet<Key> _heldKeys;
     private readonly ObservableCollection<KeyCombinationSubscription> _subscriptions;
+    private readonly List<KeyCombinationSubscription> _winSessionCachedSubscriptions;
     public IEnumerable<KeyCombinationSubscription> Subscriptions => _subscriptions;
 
     public KeyboardCombinationListenerInterceptor()
@@ -24,6 +26,9 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
         _heldKeys = new HashSet<Key>();
         _subscriptions = new ObservableCollection<KeyCombinationSubscription>();
         _subscriptions.CollectionChanged += SubscriptionsOnCollectionChanged;
+        _winSessionCachedSubscriptions = new List<KeyCombinationSubscription>();
+        
+        SystemEvents.SessionSwitch += SystemEventsOnSessionSwitch;
     }
 
     public void Subscribe(KeyCombinationSubscription subscription)
@@ -108,5 +113,24 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
 
         if (!_subscriptions.Any())
             Unhook();
+    }
+    
+    /// <summary>
+    /// Unregisters and registers subscriptions when the user locks his computer (Win+L).
+    /// This is required to preserve the expected behavior of a KeyCombinationSubscription.
+    /// </summary>
+    private void SystemEventsOnSessionSwitch(object sender, SessionSwitchEventArgs e)
+    {
+        if (e.Reason == SessionSwitchReason.SessionLock)
+        {
+            _winSessionCachedSubscriptions.Clear();
+            _winSessionCachedSubscriptions.AddRange(_subscriptions);
+            Unsubscribe();
+        }
+        else if (e.Reason == SessionSwitchReason.SessionUnlock)
+        {
+            _winSessionCachedSubscriptions.ForEach(Subscribe);
+            _winSessionCachedSubscriptions.Clear();
+        }
     }
 }
