@@ -16,7 +16,7 @@ The library offers a wide range of features including event subscriptions, bindi
 
 The main goal of this library is to provide maximum user-friendliness so that you don't have to write a lot of code. Therefore, it includes many convenient methods that facilitate an intuitive and efficient process of working with input events.
 
-**You can read the full documentation [here](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md)**
+**You can read the full documentation: [here](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md)**
 
 **The story of DeftSharp library development:** [My Journey in Open-Source Library Development](https://dev.to/empiree/my-journey-in-open-source-library-development-375g)
 
