@@ -18,6 +18,8 @@ The main goal of this library is to provide maximum user-friendliness so that yo
 
 **You can read the full documentation [here](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md)**
 
+**The story of DeftSharp library development:** [My Journey in Open-Source Library Development](https://dev.to/empiree/my-journey-in-open-source-library-development-375g)
+
 # Main Features
 
 * Subscribe to global keyboard and mouse events
