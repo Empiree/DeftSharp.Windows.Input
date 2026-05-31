@@ -1,7 +1,14 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Windows;
 using System.Windows.Input;
+using DeftSharp.Windows.Input.Extensions;
+using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Keyboard;
 using DeftSharp.Windows.Input.Mouse;
+using DeftSharp.Windows.Input.Mouse.Interceptors;
 
 namespace WPF.Playground
 {
@@ -32,25 +39,37 @@ namespace WPF.Playground
 
         public MainWindow() => InitializeComponent();
 
-
+       private ScrollDisabler sd = new ScrollDisabler();
+       private MouseLogger mml = new MouseLogger();
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
         }
 
         private void OnClickButton1(object sender, RoutedEventArgs e)
         {
+
+            sd.Hook();
+            mml.Hook();
         }
 
         private void OnClickButton2(object sender, RoutedEventArgs e)
         {
+            sd.Unhook();
+            mml.Unhook();
         }
 
         private void OnClickButton3(object sender, RoutedEventArgs e)
         {
+            Trace.WriteLine("Sleeping...");
+            Thread.Sleep(3000);
+            _mouseManipulator.Click();
         }
 
         private void OnClickButton4(object sender, RoutedEventArgs e)
         {
+            Trace.WriteLine("Sleeping...");
+            Thread.Sleep(3000);
+            _mouseManipulator.Scroll(400);
         }
 
         private void OnClickButton5(object sender, RoutedEventArgs e)
