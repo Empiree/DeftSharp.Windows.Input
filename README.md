@@ -19,7 +19,7 @@ The main goal of this library is to provide maximum user-friendliness so that yo
 **Useful links:**
 - **Documentation: [here](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md)**
 - **Support the library:** [BuyMeCoffee](buymeacoffee.com/empiree)
-- **The story of DeftSharp library development:** [My Journey in Open-Source Library Development](https://dev.to/empiree/my-journey-in-open-source-library-development-375g)
+- **The story of DeftSharp library development:** [My Journey in Open-Source Library Development](https://olegdubovoi.com/publications/my-journey-in-open-source-library-development/)
 
 # Main Features
 
