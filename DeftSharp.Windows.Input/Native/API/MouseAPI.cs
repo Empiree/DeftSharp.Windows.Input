@@ -140,7 +140,7 @@ internal static class MouseAPI
             _ => speed
         };
 
-        SystemParametersInfo(setMouseSpeedInfo, 0, mouseSpeed, updateIniFile | sendChangeInfo);
+        SystemParametersInfo(setMouseSpeedInfo, 0, out mouseSpeed, updateIniFile | sendChangeInfo);
     }
 
     /// <summary>

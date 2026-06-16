@@ -1,9 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0-windows</TargetFramework>
+        <TargetFrameworks>net8.0-windows;net472</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
@@ -30,6 +32,14 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DeftSharp.Windows.Input\DeftSharp.Windows.Input.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="WindowsBase" Condition="'$(TargetFramework)' == 'net472'" />
+        <PackageReference Include="PolySharp" Version="1.15.0" Condition="'$(TargetFramework)' == 'net472'">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
 </Project>

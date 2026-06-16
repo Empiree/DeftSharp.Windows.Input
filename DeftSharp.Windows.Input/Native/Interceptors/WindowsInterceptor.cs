@@ -26,7 +26,7 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
     /// <summary>
     /// Identifier for the installed WinAPI hook.
     /// </summary>
-    protected nint HookId = nint.Zero;
+    protected nint HookId = (nint)0;//nint.Zero;
 
     /// <summary>
     /// Initializes a new instance of the WindowsListener class.
@@ -61,7 +61,7 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
             return;
 
         User32.UnhookWindowsHookEx(HookId);
-        HookId = nint.Zero;
+        HookId = (nint)0; //nint.Zero;
         _isHandled = false;
     }
 
