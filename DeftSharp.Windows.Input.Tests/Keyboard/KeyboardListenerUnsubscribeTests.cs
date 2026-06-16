@@ -121,6 +121,40 @@ public sealed class KeyboardListenerUnsubscribeTests
     }
 
     [Fact]
+    public void KeyboardListener_SubscribeCombinationUnsubscribeCombinaiton()
+    {
+        var keyboardListener = new KeyboardListener();
+        Key[] combination = { Key.W, Key.A };
+        keyboardListener.SubscribeCombination(combination, () => { });
+        keyboardListener.UnsubscribeCombination(combination);
+
+        Assert.Empty(keyboardListener.Combinations);
+
+    }
+    [Fact]
+    public void KeyboardListener_SubscribeCombinationUnsubscribeCombinaiton2()
+    {
+        var keyboardListener = new KeyboardListener();
+        Key[] combination1 = { Key.W, Key.A };
+        Key[] combination2 = { Key.W, Key.K };
+        keyboardListener.SubscribeCombination(combination1, () => { });
+        keyboardListener.SubscribeCombination(combination2, () => { });
+        keyboardListener.UnsubscribeCombination(combination2);
+
+
+        var test1 = keyboardListener.Combinations
+            .FirstOrDefault(x=> x.Combination.SequenceEqual(combination2)) is null;
+        Assert.True(test1);
+
+        var test2 = keyboardListener.Combinations
+            .FirstOrDefault(x => x.Combination.SequenceEqual(combination1)) != null;
+        Assert.True(test2);
+
+        Assert.Single(keyboardListener.Combinations);
+
+    }
+
+    [Fact]
     public void KeyboardListener_SubscribeSequenceUnsubscribeSingleKey()
     {
         var keyboardListener = new KeyboardListener();
@@ -159,4 +193,6 @@ public sealed class KeyboardListenerUnsubscribeTests
             listener.Unsubscribe();
         });
     }
+
+
 }

@@ -127,6 +127,13 @@ var subscription = keyboardListener.Subscribe(Key.A, key => { });
 keyboardListener.Unsubscribe(); 
 keyboardListener.Unsubscribe(Key.A);
 keyboardListener.Unsubscribe(subscription.Id);
+
+
+// Subscribe to the event
+Key[] keyCombo = [Key.LeftCtrl, Key.V];
+var subscription2 = keyboardListener.SubscribeCombination(keyCombo, key => { });
+keyboardListener.UnsubscribeCombination(keyCombo);
+
 ```
 
 ## Getting the current state of the keys
