@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Native.Interceptors;
 using DeftSharp.Windows.Input.Shared.Exceptions;
 using Microsoft.Win32;
 
@@ -21,7 +22,12 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
     public IEnumerable<KeyCombinationSubscription> Subscriptions => _subscriptions;
 
     public KeyboardCombinationListenerInterceptor()
-        : base(InterceptorType.Observable)
+        : this(WindowsKeyboardInterceptor.Instance)
+    {
+    }
+
+    internal KeyboardCombinationListenerInterceptor(INativeKeyboardInterceptor keyboard)
+        : base(InterceptorType.Observable, keyboard)
     {
         _heldKeys = new HashSet<Key>();
         _subscriptions = new ObservableCollection<KeyCombinationSubscription>();
@@ -56,6 +62,7 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
 
     public override void Dispose()
     {
+        SystemEvents.SessionSwitch -= SystemEventsOnSessionSwitch;
         Unsubscribe();
         base.Dispose();
     }
@@ -115,20 +122,26 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
             Unhook();
     }
     
+    private void SystemEventsOnSessionSwitch(object sender, SessionSwitchEventArgs e) =>
+        OnSessionSwitch(e.Reason);
+
     /// <summary>
     /// Unregisters and registers subscriptions when the user locks his computer (Win+L).
+    /// Also forgets the held keys, because their key up events are not seen while the session is locked.
     /// This is required to preserve the expected behavior of a KeyCombinationSubscription.
     /// </summary>
-    private void SystemEventsOnSessionSwitch(object sender, SessionSwitchEventArgs e)
+    internal void OnSessionSwitch(SessionSwitchReason reason)
     {
-        if (e.Reason == SessionSwitchReason.SessionLock)
+        if (reason == SessionSwitchReason.SessionLock)
         {
+            _heldKeys.Clear();
             _winSessionCachedSubscriptions.Clear();
             _winSessionCachedSubscriptions.AddRange(_subscriptions);
             Unsubscribe();
         }
-        else if (e.Reason == SessionSwitchReason.SessionUnlock)
+        else if (reason == SessionSwitchReason.SessionUnlock)
         {
+            _heldKeys.Clear();
             _winSessionCachedSubscriptions.ForEach(Subscribe);
             _winSessionCachedSubscriptions.Clear();
         }
