@@ -36,8 +36,13 @@ public abstract class KeyboardInterceptor : IInterceptor
     }
 
     internal KeyboardInterceptor(InterceptorType interceptorType)
+        : this(interceptorType, WindowsKeyboardInterceptor.Instance)
     {
-        Keyboard = WindowsKeyboardInterceptor.Instance;
+    }
+
+    internal KeyboardInterceptor(InterceptorType interceptorType, INativeKeyboardInterceptor keyboard)
+    {
+        Keyboard = keyboard;
         _interceptorInfo = new InterceptorInfo(GetType().Name, interceptorType);
     }
 

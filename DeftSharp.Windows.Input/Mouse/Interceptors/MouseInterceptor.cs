@@ -36,8 +36,13 @@ public abstract class MouseInterceptor : IInterceptor
     }
 
     internal MouseInterceptor(InterceptorType type)
+        : this(type, WindowsMouseInterceptor.Instance)
     {
-        Mouse = WindowsMouseInterceptor.Instance;
+    }
+
+    internal MouseInterceptor(InterceptorType type, INativeMouseInterceptor mouse)
+    {
+        Mouse = mouse;
         _interceptorInfo = new InterceptorInfo(GetType().Name, type);
     }
 

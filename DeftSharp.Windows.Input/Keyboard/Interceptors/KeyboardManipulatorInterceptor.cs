@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Native.Interceptors;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -15,12 +16,22 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
     public static KeyboardManipulatorInterceptor Instance => LazyInstance.Value;
 
     private readonly ConcurrentDictionary<Key, Func<bool>> _lockedKeys;
+
+    // Keys whose KeyDown was blocked here. Only their KeyUp is blocked as well,
+    // so a key that was already down when it got locked does not stay pressed in the system.
+    private readonly HashSet<Key> _blockedPresses = new();
+
     public event Action<KeyboardInputArgs>? KeyPrevented;
 
     public IEnumerable<Key> LockedKeys => _lockedKeys.Keys;
 
     private KeyboardManipulatorInterceptor()
-        : base(InterceptorType.Prohibitive) =>
+        : this(WindowsKeyboardInterceptor.Instance)
+    {
+    }
+
+    internal KeyboardManipulatorInterceptor(INativeKeyboardInterceptor keyboard)
+        : base(InterceptorType.Prohibitive, keyboard) =>
         _lockedKeys = new ConcurrentDictionary<Key, Func<bool>>();
 
     public void Press(Key key) => Keyboard.Press(key);
@@ -61,7 +72,27 @@ internal sealed class KeyboardManipulatorInterceptor : KeyboardInterceptor
     }
 
     internal override bool OnPipelineUnhookRequested() => _lockedKeys.IsEmpty;
-    protected override bool IsInputAllowed(KeyboardInputArgs args) => !IsKeyLocked(args.KeyPressed);
+
+    protected override bool IsInputAllowed(KeyboardInputArgs args)
+    {
+        var key = args.KeyPressed;
+
+        if (args.Event is KeyboardInputEvent.KeyUp)
+            return !_blockedPresses.Remove(key);
+
+        if (!IsKeyLocked(key))
+        {
+            _blockedPresses.Remove(key);
+            return true;
+        }
+
+        // If the system already has the key down, this KeyDown is an auto-repeat
+        // of a press that went through, so its KeyUp has to go through too.
+        if (!Keyboard.IsKeyPressed(key))
+            _blockedPresses.Add(key);
+
+        return false;
+    }
 
     protected override void OnInputFailure(KeyboardInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {

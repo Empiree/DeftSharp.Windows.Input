@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DeftSharp.Windows.Input.Extensions;
 using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Native.Interceptors;
 
 namespace DeftSharp.Windows.Input.Mouse.Interceptors;
 
@@ -16,12 +17,21 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
 
     private readonly ConcurrentDictionary<MouseInputEvent, Func<bool>> _lockedKeys;
 
+    // Button presses blocked here. Only their releases are blocked as well,
+    // so a button that was already down when it got locked does not stay pressed in the system.
+    private readonly HashSet<MouseInputEvent> _blockedPresses = new();
+
     public event Action<MouseInputEvent>? InputPrevented;
 
     public IEnumerable<MouseInputEvent> LockedKeys => _lockedKeys.Keys;
 
     public MouseManipulatorInterceptor()
-        : base(InterceptorType.Prohibitive) =>
+        : this(WindowsMouseInterceptor.Instance)
+    {
+    }
+
+    internal MouseManipulatorInterceptor(INativeMouseInterceptor mouse)
+        : base(InterceptorType.Prohibitive, mouse) =>
         _lockedKeys = new ConcurrentDictionary<MouseInputEvent, Func<bool>>();
 
     public void SetPosition(int x, int y) => Mouse.SetPosition(x, y);
@@ -93,7 +103,32 @@ internal sealed class MouseManipulatorInterceptor : MouseInterceptor
     }
 
     internal override bool OnPipelineUnhookRequested() => _lockedKeys.IsEmpty;
-    protected override bool IsInputAllowed(MouseInputArgs args) => !IsKeyLocked(args.Event);
+
+    protected override bool IsInputAllowed(MouseInputArgs args)
+    {
+        var inputEvent = args.Event;
+
+        switch (inputEvent)
+        {
+            case MouseInputEvent.LeftButtonUp:
+                return !_blockedPresses.Remove(MouseInputEvent.LeftButtonDown);
+            case MouseInputEvent.RightButtonUp:
+                return !_blockedPresses.Remove(MouseInputEvent.RightButtonDown);
+            case MouseInputEvent.MiddleButtonUp:
+                return !_blockedPresses.Remove(MouseInputEvent.MiddleButtonDown);
+        }
+
+        if (!IsKeyLocked(inputEvent))
+        {
+            _blockedPresses.Remove(inputEvent);
+            return true;
+        }
+
+        if (inputEvent is MouseInputEvent.LeftButtonDown or MouseInputEvent.RightButtonDown or MouseInputEvent.MiddleButtonDown)
+            _blockedPresses.Add(inputEvent);
+
+        return false;
+    }
 
     protected override void OnInputFailure(MouseInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {
