@@ -38,12 +38,8 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
 
     public void Unbind(Key key)
     {
-        if (!_boundedKeys.ContainsKey(key))
+        if (!_boundedKeys.TryRemove(key, out _))
             return;
-
-        var boundedKey = _boundedKeys.FirstOrDefault();
-
-        _boundedKeys.TryRemove(boundedKey);
 
         if (_boundedKeys.IsEmpty)
             Unhook();

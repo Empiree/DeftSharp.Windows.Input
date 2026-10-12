@@ -86,6 +86,22 @@ public class KeyboardBinderTests
     }
 
     [Fact]
+    public void KeyboardBinder_UnbindOneOfSeveralKeys()
+    {
+        var keyboardBinder = new KeyboardBinder();
+
+        keyboardBinder.Bind(Key.F1, Key.F2);
+        keyboardBinder.Bind(Key.F3, Key.F4);
+
+        keyboardBinder.Unbind(Key.F3);
+
+        Assert.True(keyboardBinder.IsKeyBounded(Key.F1));
+        Assert.False(keyboardBinder.IsKeyBounded(Key.F3));
+
+        keyboardBinder.Unbind(Key.F1);
+    }
+
+    [Fact]
     public async void KeyboardBinder_UnbindAll()
     {
         var keyboardBinder = new KeyboardBinder();
