@@ -18,7 +18,7 @@ The main goal of this library is to provide maximum user-friendliness so that yo
 
 **Useful links:**
 - **Documentation: [here](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/DOCUMENTATION.md)**
-- **Support the library:** [BuyMeCoffee](buymeacoffee.com/empiree)
+- **Support the library:** [BuyMeCoffee](https://buymeacoffee.com/empiree)
 - **The story of DeftSharp library development:** [My Journey in Open-Source Library Development](https://olegdubovoi.com/publications/my-journey-in-open-source-library-development/)
 
 # Main Features
@@ -94,7 +94,7 @@ keyboard.Prevent(Key.Escape, () =>
 });
 
 // Prevent mouse scroll            
-mouse.Prevent(PreventMouseEvent.Scroll);
+mouse.Prevent(MousePreventOption.Scroll);
 ```
 
 ### Subscription to mouse move and get current coordinates
@@ -116,7 +116,7 @@ mouseListener.Subscribe(MouseEvent.Move, () =>
 
 # License
 
-This project is licensed under the terms of the MIT license. See the [LICENSE](https://github.com/Empiree/DeftSharp.WPF.Keyboard/blob/main/LICENSE) file for details.
+This project is licensed under the terms of the MIT license. See the [LICENSE](https://github.com/Empiree/DeftSharp.Windows.Input/blob/main/LICENSE) file for details.
 
 # Contributing
 

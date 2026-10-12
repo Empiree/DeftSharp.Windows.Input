@@ -29,11 +29,20 @@ public sealed class LetterListener
     public IEnumerable<Key> Keys => _letKeys.Select(letter => letter.Key);
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="LetterListener"/> class with the QWERTY layout.
+    /// </summary>
+    /// <param name="keyboardListener">The keyboard listener instance to use for listening to key presses.</param>
+    public LetterListener(KeyboardListener keyboardListener)
+        : this(keyboardListener, KeyboardLayoutType.Qwerty)
+    {
+    }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="LetterListener"/> class.
     /// </summary>
     /// <param name="keyboardListener">The keyboard listener instance to use for listening to key presses.</param>
-    /// <param name="keyboardLayoutType">The keyboard layout to be used. By default, it is QWERTY</param>
-    public LetterListener(KeyboardListener keyboardListener, KeyboardLayoutType keyboardLayoutType = KeyboardLayoutType.Qwerty)
+    /// <param name="keyboardLayoutType">The keyboard layout to be used.</param>
+    public LetterListener(KeyboardListener keyboardListener, KeyboardLayoutType keyboardLayoutType)
     {
         _subscriptionIds = new HashSet<Guid>();
         _keyboardListener = keyboardListener;

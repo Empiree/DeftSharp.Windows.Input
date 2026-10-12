@@ -11,17 +11,22 @@
         <RootNamespace>DeftSharp.Windows.Input</RootNamespace>
         <AssemblyName>DeftSharp.Windows.Input</AssemblyName>
         <Title>DeftSharp.Windows.Input</Title>
-        <Description>An open-source .NET library designed for keyboard and mouse control in Windows. </Description>
-        <Copyright>@ DeftSharp. All rights reserved.</Copyright>
+        <Description>An open-source .NET library designed for keyboard and mouse control in Windows.</Description>
+        <Copyright>Copyright (c) 2024 Oleg Dubovoi</Copyright>
         <PackageProjectUrl>https://github.com/Empiree/DeftSharp.Windows.Input</PackageProjectUrl>
-        <PackageLicenseUrl></PackageLicenseUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/Empiree/DeftSharp.Windows.Input</RepositoryUrl>
-        <RepositoryType>Open-Source</RepositoryType>
-        <PackageTags>#WPF #Input #Keyboard-Listener #Mouse-Listener #WinAPI #listener #WinUI #WinUI3 #MAUI #Avalonia #Windows #Input #Keyboard #Mouse</PackageTags>
-        <Version>0.10</Version>
+        <RepositoryType>git</RepositoryType>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <PackageTags>WPF WinUI WinUI3 MAUI Avalonia Windows WinAPI Input Keyboard Mouse Keyboard-Listener Mouse-Listener Hook Hotkey</PackageTags>
+        <Version>0.11</Version>
         <PackageIcon>DeftSharp-icon.png</PackageIcon>
-        <PackageReleaseNotes>You can see all the changes in the release changelog of our GitHub repository!</PackageReleaseNotes>
+        <PackageReleaseNotes>https://github.com/Empiree/DeftSharp.Windows.Input/releases/tag/v0.11</PackageReleaseNotes>
         <LangVersion>12</LangVersion>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -29,6 +34,7 @@
         <Pack>True</Pack>
         <PackagePath></PackagePath>
       </None>
+      <None Include="README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 
     <ItemGroup>
