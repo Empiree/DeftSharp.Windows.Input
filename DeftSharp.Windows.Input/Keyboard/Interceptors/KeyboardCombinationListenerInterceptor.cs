@@ -60,6 +60,18 @@ internal sealed class KeyboardCombinationListenerInterceptor : KeyboardIntercept
         _subscriptions.Remove(keyboardSubscribe);
     }
 
+    public void Unsubscribe(IEnumerable<Key> combination)
+    {
+        var keys = combination.ToHashSet();
+
+        var subscriptions = _subscriptions
+            .Where(sub => keys.SetEquals(sub.Combination))
+            .ToArray();
+
+        foreach (var subscription in subscriptions)
+            _subscriptions.Remove(subscription);
+    }
+
     public override void Dispose()
     {
         SystemEvents.SessionSwitch -= SystemEventsOnSessionSwitch;

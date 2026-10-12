@@ -159,4 +159,57 @@ public sealed class KeyboardListenerUnsubscribeTests
             listener.Unsubscribe();
         });
     }
+
+    [Fact]
+    public void KeyboardListener_UnsubscribeCombination_RemovesAllMatches()
+    {
+        using var keyboardListener = new KeyboardListener();
+        keyboardListener.SubscribeCombination(new[] { Key.LeftCtrl, Key.V }, () => { });
+        keyboardListener.SubscribeCombination(new[] { Key.LeftCtrl, Key.V }, () => { });
+        keyboardListener.SubscribeCombination(new[] { Key.LeftCtrl, Key.C }, () => { });
+
+        keyboardListener.UnsubscribeCombination(new[] { Key.LeftCtrl, Key.V });
+
+        var remaining = Assert.Single(keyboardListener.Combinations);
+        Assert.Equal(new[] { Key.LeftCtrl, Key.C }, remaining.Combination);
+    }
+
+    [Fact]
+    public void KeyboardListener_UnsubscribeCombination_KeyOrderDoesNotMatter()
+    {
+        using var keyboardListener = new KeyboardListener();
+        keyboardListener.SubscribeCombination(new[] { Key.LeftCtrl, Key.V }, () => { });
+
+        keyboardListener.UnsubscribeCombination(new[] { Key.V, Key.LeftCtrl });
+
+        Assert.Empty(keyboardListener.Combinations);
+    }
+
+    [Fact]
+    public void KeyboardListener_UnsubscribeCombination_KeepsOtherSubscriptions()
+    {
+        using var keyboardListener = new KeyboardListener();
+        keyboardListener.Subscribe(Key.V, () => { });
+        keyboardListener.SubscribeSequence(new[] { Key.LeftCtrl, Key.V }, () => { });
+        keyboardListener.SubscribeCombination(new[] { Key.LeftCtrl, Key.V }, () => { });
+
+        keyboardListener.UnsubscribeCombination(new[] { Key.LeftCtrl, Key.V });
+
+        Assert.Empty(keyboardListener.Combinations);
+        Assert.Single(keyboardListener.Keys);
+        Assert.Single(keyboardListener.Sequences);
+    }
+
+    [Fact]
+    public void KeyboardListener_UnsubscribeSequence_KeyOrderMatters()
+    {
+        using var keyboardListener = new KeyboardListener();
+        keyboardListener.SubscribeSequence(new[] { Key.A, Key.B, Key.C }, () => { });
+
+        keyboardListener.UnsubscribeSequence(new[] { Key.C, Key.B, Key.A });
+        Assert.Single(keyboardListener.Sequences);
+
+        keyboardListener.UnsubscribeSequence(new[] { Key.A, Key.B, Key.C });
+        Assert.Empty(keyboardListener.Sequences);
+    }
 }

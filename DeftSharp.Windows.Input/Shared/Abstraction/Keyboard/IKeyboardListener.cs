@@ -79,5 +79,7 @@ public interface IKeyboardListener : IDisposable
     void Unsubscribe(Key key);
     void Unsubscribe(Guid id);
     void Unsubscribe(IEnumerable<Guid> ids);
+    void UnsubscribeCombination(IEnumerable<Key> combination);
+    void UnsubscribeSequence(IEnumerable<Key> sequence);
     void Unsubscribe();
 }

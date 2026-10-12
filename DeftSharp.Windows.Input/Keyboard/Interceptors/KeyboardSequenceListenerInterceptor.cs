@@ -53,6 +53,18 @@ internal sealed class KeyboardSequenceListenerInterceptor : KeyboardInterceptor
         _subscriptions.Remove(keyboardSubscribe);
     }
 
+    public void Unsubscribe(IEnumerable<Key> sequence)
+    {
+        var keys = sequence.ToArray();
+
+        var subscriptions = _subscriptions
+            .Where(sub => sub.Sequence.SequenceEqual(keys))
+            .ToArray();
+
+        foreach (var subscription in subscriptions)
+            _subscriptions.Remove(subscription);
+    }
+
     public void Unsubscribe()
     {
         if (_subscriptions.Any())

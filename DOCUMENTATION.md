@@ -129,6 +129,19 @@ keyboardListener.Unsubscribe(Key.A);
 keyboardListener.Unsubscribe(subscription.Id);
 ```
 
+To unsubscribe from a combination or a sequence, pass its keys. For a combination the order of the keys does not matter, for a sequence it does.
+
+```c#
+keyboardListener.SubscribeCombination([Key.LeftCtrl, Key.V], () => { });
+keyboardListener.SubscribeSequence([Key.A, Key.B, Key.C], () => { });
+
+// Removes all subscriptions to this combination
+keyboardListener.UnsubscribeCombination([Key.V, Key.LeftCtrl]);
+
+// Removes all subscriptions to this sequence
+keyboardListener.UnsubscribeSequence([Key.A, Key.B, Key.C]);
+```
+
 ## Getting the current state of the keys
 
 You can get information about the current state of the keys. To do this you can use the created properties or call the `IsKeyPressed()` method.

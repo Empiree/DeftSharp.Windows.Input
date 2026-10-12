@@ -327,6 +327,18 @@ public sealed class KeyboardListener : IKeyboardListener
     }
 
     /// <summary>
+    /// Unsubscribes all subscriptions to the specified key combination. The order of the keys does not matter.
+    /// </summary>
+    public void UnsubscribeCombination(IEnumerable<Key> combination) =>
+        _combinationListener.Unsubscribe(combination);
+
+    /// <summary>
+    /// Unsubscribes all subscriptions to the specified key sequence.
+    /// </summary>
+    public void UnsubscribeSequence(IEnumerable<Key> sequence) =>
+        _sequenceListener.Unsubscribe(sequence);
+
+    /// <summary>
     /// Unsubscribes all subscriptions.
     /// </summary>
     public void Unsubscribe()
