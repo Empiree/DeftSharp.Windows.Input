@@ -49,12 +49,12 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
     /// <returns>The return value of the next hook procedure in the chain.</returns>
     protected override nint HookCallback(int nCode, nint wParam, nint lParam)
     {
-        if ((nCode < 0 || !SystemEvents.IsKeyboardEvent(wParam)) && wParam != SystemEvents.WmSystemKeyDown)
+        if (nCode < 0 || !SystemEvents.IsKeyboardEvent(wParam))
             return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
 
         var virtualKeyCode = Marshal.ReadInt32(lParam);
         var key = KeyInterop.KeyFromVirtualKey(virtualKeyCode);
-        var keyEvent = (KeyboardInputEvent)wParam;
+        var keyEvent = SystemEvents.ToKeyboardInputEvent(wParam);
         var keyPressedArgs = new KeyboardInputArgs(key, keyEvent);
 
         var pipeline = CreatePipeline(keyPressedArgs);

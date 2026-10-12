@@ -1,4 +1,6 @@
-﻿namespace DeftSharp.Windows.Input.Native;
+﻿using DeftSharp.Windows.Input.Keyboard;
+
+namespace DeftSharp.Windows.Input.Native;
 
 /// <summary>
 /// Provides constants for Windows events
@@ -27,8 +29,14 @@ internal static class SystemEvents
 
     /// <summary>
     /// Defines a system keystroke message sent to the active window when a system key is pressed.
+    /// System keystrokes are F10 and any key pressed while the ALT key is held down, including ALT itself.
     /// </summary>
     internal const int WmSystemKeyDown = 0x0104;
+
+    /// <summary>
+    /// Defines a system keystroke message sent to the active window when a system key is released.
+    /// </summary>
+    internal const int WmSystemKeyUp = 0x0105;
 
     /// <summary>
     /// The message for a mouse move event.
@@ -91,5 +99,13 @@ internal static class SystemEvents
     /// <param name="wParam">The wParam value of the Windows message.</param>
     /// <returns>True if the message is a keyboard event; otherwise, false.</returns>
     internal static bool IsKeyboardEvent(nint wParam) =>
-        wParam is KeyDown or KeyUp;
+        wParam is KeyDown or KeyUp or WmSystemKeyDown or WmSystemKeyUp;
+
+    /// <summary>
+    /// Converts the specified keyboard message to a keyboard input event.
+    /// </summary>
+    /// <param name="wParam">The wParam value of the keyboard message.</param>
+    /// <returns><see cref="KeyboardInputEvent.KeyUp"/> for a key release; otherwise, <see cref="KeyboardInputEvent.KeyDown"/>.</returns>
+    internal static KeyboardInputEvent ToKeyboardInputEvent(nint wParam) =>
+        wParam is KeyUp or WmSystemKeyUp ? KeyboardInputEvent.KeyUp : KeyboardInputEvent.KeyDown;
 }

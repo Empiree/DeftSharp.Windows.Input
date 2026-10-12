@@ -31,4 +31,8 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <InternalsVisibleTo Include="DeftSharp.Windows.Input.Tests" />
+    </ItemGroup>
+
 </Project>
