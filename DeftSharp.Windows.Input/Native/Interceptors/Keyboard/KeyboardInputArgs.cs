@@ -19,6 +19,11 @@ public class KeyboardInputArgs : EventArgs
     public KeyboardInputEvent Event { get; }
 
     /// <summary>
+    /// Gets a value indicating whether the input was sent by the key binder.
+    /// </summary>
+    internal bool IsBinderInput { get; init; }
+
+    /// <summary>
     /// Initializes a new instance of the KeyboardInputArgs class with the specified key.
     /// </summary>
     /// <param name="key">The key that was pressed.</param>

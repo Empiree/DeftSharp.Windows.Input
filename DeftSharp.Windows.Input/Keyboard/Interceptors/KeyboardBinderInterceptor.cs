@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
+using DeftSharp.Windows.Input.Native.Interceptors;
 
 namespace DeftSharp.Windows.Input.Keyboard.Interceptors;
 
@@ -16,12 +17,21 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
 
     private readonly ConcurrentDictionary<Key, Key> _boundedKeys;
 
-    private Key? _lastProcessedBoundedKey;
+    // Bound keys that are held right now, with the key that was pressed instead of each of them.
+    private readonly ConcurrentDictionary<Key, Key> _remappedPresses = new();
+
+    // Input to send for the events blocked here, in the same order as the events.
+    private readonly ConcurrentQueue<(Key Key, KeyboardSimulateOption Option)> _pendingInputs = new();
 
     public IReadOnlyDictionary<Key, Key> BoundedKeys => _boundedKeys;
 
     private KeyboardBinderInterceptor()
-        : base(InterceptorType.Prohibitive) =>
+        : this(WindowsKeyboardInterceptor.Instance)
+    {
+    }
+
+    internal KeyboardBinderInterceptor(INativeKeyboardInterceptor keyboard)
+        : base(InterceptorType.Prohibitive, keyboard) =>
         _boundedKeys = new ConcurrentDictionary<Key, Key>();
 
     public void Bind(Key oldKey, Key newKey)
@@ -41,8 +51,11 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
         if (!_boundedKeys.TryRemove(key, out _))
             return;
 
-        if (_boundedKeys.IsEmpty)
-            Unhook();
+        if (!_boundedKeys.IsEmpty)
+            return;
+
+        Unhook();
+        ReleaseRemappedPresses();
     }
 
     public void Unbind()
@@ -66,26 +79,56 @@ internal sealed class KeyboardBinderInterceptor : KeyboardInterceptor
 
     protected override bool IsInputAllowed(KeyboardInputArgs args)
     {
-        if (IsKeyBounded(args.KeyPressed) && _lastProcessedBoundedKey != args.KeyPressed)
-            return false;
+        if (args.IsBinderInput)
+            return true;
 
-        _lastProcessedBoundedKey = null;
-        return true;
+        var key = args.KeyPressed;
+
+        if (args.Event is KeyboardInputEvent.KeyUp)
+        {
+            // Release the key that was pressed instead, even if the binding has changed since then
+            if (!_remappedPresses.TryRemove(key, out var releasedKey))
+                return true;
+
+            _pendingInputs.Enqueue((releasedKey, KeyboardSimulateOption.KeyUp));
+            return false;
+        }
+
+        if (!_boundedKeys.TryGetValue(key, out var boundKey))
+            return true;
+
+        if (!_remappedPresses.TryGetValue(key, out var pressedKey))
+        {
+            // The key was already down before it got bound, so this press goes through as is
+            if (Keyboard.IsKeyPressed(key))
+                return true;
+
+            pressedKey = boundKey;
+            _remappedPresses[key] = pressedKey;
+        }
+
+        _pendingInputs.Enqueue((pressedKey, KeyboardSimulateOption.KeyDown));
+        return false;
     }
 
     protected override void OnInputFailure(KeyboardInputArgs args, IEnumerable<InterceptorInfo> failedInterceptors)
     {
-        if (args.Event == KeyboardInputEvent.KeyUp)
-            return;
-
         if (!failedInterceptors.Any(i => i.Name.Equals(Name)))
             return;
 
-        if (!IsKeyBounded(args.KeyPressed))
-            return;
+        if (_pendingInputs.TryDequeue(out var input))
+            Keyboard.SimulateBinderInput(input.Key, input.Option);
+    }
 
-        var key = _boundedKeys[args.KeyPressed];
-        _lastProcessedBoundedKey = key;
-        Keyboard.Press(key);
+    private void ReleaseRemappedPresses()
+    {
+        foreach (var key in _remappedPresses.Keys)
+        {
+            if (_remappedPresses.TryRemove(key, out var pressedKey))
+                _pendingInputs.Enqueue((pressedKey, KeyboardSimulateOption.KeyUp));
+        }
+
+        while (_pendingInputs.TryDequeue(out var input))
+            Keyboard.SimulateBinderInput(input.Key, input.Option);
     }
 }

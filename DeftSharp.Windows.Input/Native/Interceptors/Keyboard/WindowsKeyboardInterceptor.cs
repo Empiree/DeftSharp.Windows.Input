@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Interceptors;
 using DeftSharp.Windows.Input.Keyboard;
+using DeftSharp.Windows.Input.Native.System;
 using DeftSharp.Windows.Input.Shared.Delegates;
 
 namespace DeftSharp.Windows.Input.Native.Interceptors;
@@ -15,6 +16,9 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
 {
     // Specifies a low-level keyboard input event.
     private const int WhKeyboardLl = 13;
+
+    // The event was injected, for example with SendInput.
+    private const uint InjectedFlag = 0x10;
 
     private static readonly Lazy<WindowsKeyboardInterceptor> LazyInstance = new(() => new WindowsKeyboardInterceptor());
     public static WindowsKeyboardInterceptor Instance => LazyInstance.Value;
@@ -37,6 +41,9 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
     public void Simulate(Key key, KeyboardSimulateOption option)
         => KeyboardAPI.Simulate(key, option);
 
+    public void SimulateBinderInput(Key key, KeyboardSimulateOption option)
+        => KeyboardAPI.Simulate(key, option, KeyboardAPI.BinderInputExtraInfo);
+
     public bool IsKeyActive(Key key) => KeyboardAPI.IsKeyActive(key);
     public bool IsKeyPressed(Key key) => KeyboardAPI.IsKeyPressed(key);
 
@@ -52,10 +59,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
         if (nCode < 0 || !SystemEvents.IsKeyboardEvent(wParam))
             return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
 
-        var virtualKeyCode = Marshal.ReadInt32(lParam);
-        var key = KeyInterop.KeyFromVirtualKey(virtualKeyCode);
-        var keyEvent = SystemEvents.ToKeyboardInputEvent(wParam);
-        var keyPressedArgs = new KeyboardInputArgs(key, keyEvent);
+        var keyPressedArgs = CreateInputArgs(wParam, lParam);
 
         var pipeline = CreatePipeline(keyPressedArgs);
 
@@ -67,6 +71,24 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
         return pipeline.IsAllowed
             ? User32.CallNextHookEx(HookId, nCode, wParam, lParam)
             : 1;
+    }
+
+    /// <summary>
+    /// Creates the input arguments from the data of a low-level keyboard hook event.
+    /// </summary>
+    /// <param name="wParam">The keyboard message.</param>
+    /// <param name="lParam">A pointer to the KBDLLHOOKSTRUCT structure of the event.</param>
+    /// <returns>The arguments for the keyboard input event.</returns>
+    internal static KeyboardInputArgs CreateInputArgs(nint wParam, nint lParam)
+    {
+        var data = Marshal.PtrToStructure<KeyboardHookStruct>(lParam);
+        var key = KeyInterop.KeyFromVirtualKey((int)data.vkCode);
+        var isInjected = (data.flags & InjectedFlag) != 0;
+
+        return new KeyboardInputArgs(key, SystemEvents.ToKeyboardInputEvent(wParam))
+        {
+            IsBinderInput = isInjected && data.dwExtraInfo == KeyboardAPI.BinderInputExtraInfo
+        };
     }
 
     /// <summary>

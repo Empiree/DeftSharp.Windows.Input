@@ -19,12 +19,17 @@ internal sealed class FakeKeyboard : INativeKeyboardInterceptor
     }
 
     /// <summary>
+    /// Keyboard input that interceptors sent to the system, in order.
+    /// </summary>
+    public List<(Key Key, KeyboardSimulateOption Option)> SimulatedInputs { get; } = new();
+
+    /// <summary>
     /// Sends the input through the hooked interceptors the same way the system hook does.
     /// </summary>
     /// <returns>True if the input is allowed; false if it is blocked.</returns>
-    public bool Send(Key key, KeyboardInputEvent inputEvent)
+    public bool Send(Key key, KeyboardInputEvent inputEvent, bool isBinderInput = false)
     {
-        var args = new KeyboardInputArgs(key, inputEvent);
+        var args = new KeyboardInputArgs(key, inputEvent) { IsBinderInput = isBinderInput };
 
         var responses = KeyboardInput?.GetInvocationList()
             .Cast<KeyboardInputDelegate>()
@@ -58,11 +63,17 @@ internal sealed class FakeKeyboard : INativeKeyboardInterceptor
     {
     }
 
-    public void Press(Key key) => throw new NotSupportedException();
+    public void Press(Key key)
+    {
+        SimulatedInputs.Add((key, KeyboardSimulateOption.KeyDown));
+        SimulatedInputs.Add((key, KeyboardSimulateOption.KeyUp));
+    }
 
     public void Press(IEnumerable<Key> keys) => throw new NotSupportedException();
 
     public void Simulate(Key key, KeyboardSimulateOption option) => throw new NotSupportedException();
+
+    public void SimulateBinderInput(Key key, KeyboardSimulateOption option) => SimulatedInputs.Add((key, option));
 
     public KeyboardLayout GetLayout() => throw new NotSupportedException();
 

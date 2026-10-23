@@ -17,6 +17,11 @@ namespace DeftSharp.Windows.Input.Native;
 internal static class KeyboardAPI
 {
     /// <summary>
+    /// Marks the input that the key binder sends, so it can be told apart from real key presses.
+    /// </summary>
+    internal const nint BinderInputExtraInfo = 0x44534249;
+
+    /// <summary>
     /// Retrieves the type of keyboard hardware.
     /// </summary>
     /// <returns>
@@ -119,10 +124,11 @@ internal static class KeyboardAPI
     /// </summary>
     /// <param name="key">The key to simulate.</param>
     /// <param name="option">The option specifying the type of keyboard event to simulate.</param>
-    internal static void Simulate(Key key, KeyboardSimulateOption option)
+    /// <param name="extraInfo">An additional value that the keyboard hook receives with the event.</param>
+    internal static void Simulate(Key key, KeyboardSimulateOption option, nint extraInfo = 0)
     {
         var keyCode = (byte)KeyInterop.VirtualKeyFromKey(key);
-        var input = CreateInput(keyCode, (uint)option);
+        var input = CreateInput(keyCode, (uint)option, extraInfo);
         SendInput(input);
     }
 
@@ -137,12 +143,14 @@ internal static class KeyboardAPI
     /// </summary>
     /// <param name="keyCode">The virtual key code of the key.</param>
     /// <param name="dwFlags">Flags that specify various aspects of function operation.</param>
+    /// <param name="extraInfo">An additional value that the keyboard hook receives with the event.</param>
     /// <returns>The created INPUT structure.</returns>
-    private static System.Input CreateInput(ushort keyCode, uint dwFlags = InputKeyDown)
+    private static System.Input CreateInput(ushort keyCode, uint dwFlags = InputKeyDown, nint extraInfo = 0)
     {
         var input = new System.Input(InputKeyboard);
         input.u.ki.wVk = keyCode;
         input.u.ki.dwFlags = dwFlags;
+        input.u.ki.dwExtraInfo = extraInfo;
         return input;
     }
 }
