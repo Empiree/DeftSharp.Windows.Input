@@ -170,6 +170,34 @@ internal static class User32
     internal static extern uint MapVirtualKey(uint uCode, uint uMapType);
 
     /// <summary>
+    /// Translates (maps) a virtual-key code into a scan code or character value using the specified keyboard layout.
+    /// </summary>
+    /// <param name="uCode">The virtual-key code or scan code for a key.</param>
+    /// <param name="uMapType">The translation to be performed.</param>
+    /// <param name="dwhkl">The input locale identifier to use for translating the code.</param>
+    /// <returns>
+    /// The return value is either a scan code, a virtual-key code, or a character value, depending on the value of uCode and uMapType.
+    /// </returns>
+    [DllImport("user32.dll")]
+    internal static extern uint MapVirtualKeyEx(uint uCode, uint uMapType, IntPtr dwhkl);
+
+    /// <summary>
+    /// Retrieves a handle to the foreground window (the window with which the user is currently working).
+    /// </summary>
+    /// <returns>A handle to the foreground window, or zero if there is no foreground window.</returns>
+    [DllImport("user32.dll")]
+    internal static extern IntPtr GetForegroundWindow();
+
+    /// <summary>
+    /// Retrieves the identifier of the thread that created the specified window.
+    /// </summary>
+    /// <param name="hWnd">A handle to the window.</param>
+    /// <param name="lpdwProcessId">A pointer to a variable that receives the process identifier, or zero.</param>
+    /// <returns>The identifier of the thread that created the window.</returns>
+    [DllImport("user32.dll")]
+    internal static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr lpdwProcessId);
+
+    /// <summary>
     /// Retrieves or sets system parameters.
     /// </summary>
     /// <param name="uiAction">The system parameter to query or set.</param>

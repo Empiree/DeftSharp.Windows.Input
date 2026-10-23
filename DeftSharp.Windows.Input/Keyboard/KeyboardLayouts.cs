@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -6,6 +7,7 @@ namespace DeftSharp.Windows.Input.Keyboard;
 /// <summary>
 /// Provides predefined keyboard layouts.
 /// </summary>
+[Obsolete("These tables do not match how Windows maps keys in these layouts. LetterListener reports the letters of the active layout instead.")]
 public static class KeyboardLayouts
 {
     public static readonly Dictionary<KeyboardLayoutType, LetterButton[]> Layouts = new()

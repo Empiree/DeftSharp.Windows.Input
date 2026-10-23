@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows.Input;
 using DeftSharp.Windows.Input.Keyboard;
 using static DeftSharp.Windows.Input.Native.User32;
@@ -137,6 +138,64 @@ internal static class KeyboardAPI
     /// </summary>
     internal static IntPtr GetLayoutHandle()
         => GetKeyboardLayout(GetCurrentThreadId());
+
+    /// <summary>
+    /// Retrieves the handle to the keyboard layout of the active window, the layout the user types with.
+    /// </summary>
+    internal static IntPtr GetForegroundLayoutHandle()
+    {
+        var threadId = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
+        return GetKeyboardLayout(threadId);
+    }
+
+    /// <summary>
+    /// Gets the letter that the key types in the keyboard layout of the active window.
+    /// </summary>
+    /// <param name="key">The key to check.</param>
+    /// <returns>The letter in upper case, or <c>null</c> if the key does not type a letter.</returns>
+    internal static string? GetLetter(Key key) => GetLetter(key, GetForegroundLayoutHandle());
+
+    /// <summary>
+    /// Gets the letter that the key types in the specified keyboard layout.
+    /// </summary>
+    /// <param name="key">The key to check.</param>
+    /// <param name="layout">The handle to the keyboard layout.</param>
+    /// <returns>The letter in upper case, or <c>null</c> if the key does not type a letter.</returns>
+    internal static string? GetLetter(Key key, IntPtr layout)
+    {
+        var virtualKeyCode = (uint)KeyInterop.VirtualKeyFromKey(key);
+        var scanCode = MapVirtualKeyEx(virtualKeyCode, 0, layout);
+        var buffer = new StringBuilder(8);
+
+        // Flag 0x4 keeps the keyboard state as is, so a dead key the user has just pressed still works
+        var length = ToUnicodeEx(virtualKeyCode, scanCode, new byte[256], buffer, buffer.Capacity, 0x4, layout);
+
+        return length == 1 ? ToLetter(buffer[0], GetLayoutCulture(layout)) : null;
+    }
+
+    /// <summary>
+    /// Converts a typed character to an upper case letter.
+    /// </summary>
+    /// <param name="character">The typed character.</param>
+    /// <param name="culture">The culture of the keyboard layout, it decides the upper case form.</param>
+    /// <returns>The letter in upper case, or <c>null</c> if the character is not a letter.</returns>
+    internal static string? ToLetter(char character, CultureInfo culture) =>
+        char.IsLetter(character) ? char.ToUpper(character, culture).ToString() : null;
+
+    /// <summary>
+    /// Gets the culture of the language that the keyboard layout belongs to.
+    /// </summary>
+    private static CultureInfo GetLayoutCulture(IntPtr layout)
+    {
+        try
+        {
+            return CultureInfo.GetCultureInfo((int)(layout.ToInt64() & 0xFFFF));
+        }
+        catch (CultureNotFoundException)
+        {
+            return CultureInfo.InvariantCulture;
+        }
+    }
 
     /// <summary>
     /// Creates an INPUT structure representing a keyboard input event with the specified virtual key code.

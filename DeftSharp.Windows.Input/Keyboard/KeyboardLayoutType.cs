@@ -1,8 +1,11 @@
+using System;
+
 namespace DeftSharp.Windows.Input.Keyboard;
 
 /// <summary>
 /// Represents the different types of keyboard layouts.
 /// </summary>
+[Obsolete("Windows already applies the active keyboard layout, and LetterListener reports the letters of that layout. A layout type is not needed.")]
 public enum KeyboardLayoutType
 {
     /// <summary>
