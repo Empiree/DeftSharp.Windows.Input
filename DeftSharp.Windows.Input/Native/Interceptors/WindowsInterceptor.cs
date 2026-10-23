@@ -72,7 +72,7 @@ internal abstract class WindowsInterceptor : IRequestedInterceptor
     /// <param name="wParam">Specifies additional information about the message.</param>
     /// <param name="lParam">Specifies additional information about the message.</param>
     /// <returns>The return value of the next hook procedure in the chain.</returns>
-    protected abstract nint HookCallback(int nCode, nint wParam, nint lParam);
+    protected internal abstract nint HookCallback(int nCode, nint wParam, nint lParam);
 
     /// <summary>
     /// Checks whether the keyboard hook can be unhooked based on the registered unhook request handlers.

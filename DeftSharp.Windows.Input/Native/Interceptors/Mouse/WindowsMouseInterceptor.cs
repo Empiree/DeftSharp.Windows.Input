@@ -17,7 +17,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
 
     public event MouseInputDelegate? MouseInput;
 
-    private WindowsMouseInterceptor()
+    internal WindowsMouseInterceptor()
         : base(WhMouseLl)
     {
     }
@@ -38,7 +38,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
     /// <param name="wParam">Specifies additional information about the message.</param>
     /// <param name="lParam">Specifies additional information about the message.</param>
     /// <returns>The return value of the next hook procedure in the chain.</returns>
-    protected override nint HookCallback(int nCode, nint wParam, nint lParam)
+    protected internal override nint HookCallback(int nCode, nint wParam, nint lParam)
     {
         if (nCode < 0 || !SystemEvents.IsMouseEvent(wParam))
             return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
@@ -51,7 +51,7 @@ internal sealed class WindowsMouseInterceptor : WindowsInterceptor, INativeMouse
         if (pipeline is null)
             return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
 
-        pipeline.Run();
+        pipeline.RunAsync();
 
         return pipeline.IsAllowed
             ? User32.CallNextHookEx(HookId, nCode, wParam, lParam)

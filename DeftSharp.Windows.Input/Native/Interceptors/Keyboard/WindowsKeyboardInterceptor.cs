@@ -54,7 +54,7 @@ internal sealed class WindowsKeyboardInterceptor : WindowsInterceptor, INativeKe
     /// <param name="wParam">Specifies additional information about the message.</param>
     /// <param name="lParam">Specifies additional information about the message.</param>
     /// <returns>The return value of the next hook procedure in the chain.</returns>
-    protected override nint HookCallback(int nCode, nint wParam, nint lParam)
+    protected internal override nint HookCallback(int nCode, nint wParam, nint lParam)
     {
         if (nCode < 0 || !SystemEvents.IsKeyboardEvent(wParam))
             return User32.CallNextHookEx(HookId, nCode, wParam, lParam);
